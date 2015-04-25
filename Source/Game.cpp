@@ -1,7 +1,14 @@
 #include <SFML/Graphics.hpp>
+#include <entityx/entityx.h>
+#include <iostream>
 
 int main()
 {
+	entityx::EntityX entityX;
+	entityx::Entity entity = entityX.entities.create();
+
+	std::cout << entity << std::endl;
+
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
