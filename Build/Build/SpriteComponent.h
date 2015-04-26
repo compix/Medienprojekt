@@ -3,5 +3,7 @@
 
 struct SpriteComponent
 {
+	SpriteComponent(const sf::Sprite& sprite) : sprite(sprite) {}
+
 	sf::Sprite sprite;
 };

@@ -11,14 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="AssetLoader.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TransformComponent.h" />
