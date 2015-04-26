@@ -2,8 +2,6 @@
 *.a
 *.so
 *.o
-entityx/config.h
-Makefile
 html/
 Vagrantfile
 .vagrant
