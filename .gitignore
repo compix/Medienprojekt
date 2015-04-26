@@ -52,7 +52,6 @@ $RECYCLE.BIN/
 *.log
 *.vspscc
 *.vssscc
-.builds
 *.pidb
 *.log
 *.scc

@@ -2,7 +2,6 @@
 *.a
 *.so
 *.o
-build/*
 entityx/config.h
 Makefile
 html/
