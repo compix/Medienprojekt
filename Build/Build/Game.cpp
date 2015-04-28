@@ -1,12 +1,19 @@
 #include "Game.h"
 #include "AnimationSystem.h"
+#include "BodySystem.h"
 #include "RenderSystem.h"
 #include "TransformComponent.h"
+#include <Box2D\Box2D.h>
 
 Game::Game(sf::RenderWindow* pWindow)
 {
+
+	b2Vec2 gravity(0.0f, 10.0f);
+	m_pWorld = make_unique<b2World>(gravity);
+
 	m_pLayerManager = make_unique<LayerManager>();
 
+	systems.add<BodySystem>();
 	systems.add<AnimationSystem>();
 	systems.add<RenderSystem>(pWindow, m_pLayerManager.get());
 	systems.configure();
@@ -14,14 +21,14 @@ Game::Game(sf::RenderWindow* pWindow)
 	m_pTextureLoader = make_unique<TextureLoader>();
 	m_pTextureLoader->loadAllFromJson("assets/json/textures.json");
 
-	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get());
+	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_pWorld.get());
 
 	Entity entity = m_pEntityFactory->createTestEntity1();
 	Entity entity2 = m_pEntityFactory->createTestEntity2();
 
 	ComponentHandle<TransformComponent> t = entity.component<TransformComponent>();
 
-	EntityLayer& entityLayer = m_pLayerManager->createLayer(0, true);
+	EntityLayer& entityLayer = m_pLayerManager->createLayer(0, false);
 	entityLayer.add(entity2);
 	entityLayer.add(entity);
 
@@ -36,8 +43,8 @@ Game::~Game()
 
 void Game::update(TimeDelta dt)
 {
-	systems.update<AnimationSystem>(dt);
-	systems.update<RenderSystem>(dt);
+	m_pWorld->Step(dt, 6, 2);
+	systems.update_all(dt);
 }
 
 void Game::createTestLevel(EntityLayer& layer)
@@ -63,5 +70,4 @@ void Game::createTestLevel(EntityLayer& layer)
 			}	
 		}
 	}
-
 }

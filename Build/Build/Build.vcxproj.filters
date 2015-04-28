@@ -25,6 +25,15 @@
     <Filter Include="Util\Source Files">
       <UniqueIdentifier>{10953413-3546-46e9-b781-353678cea6c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{6bcc04c8-037d-4e51-be54-11978c66b58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Header Files">
+      <UniqueIdentifier>{28065b1b-4e76-4e79-878b-5e3fde4675ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Source Files">
+      <UniqueIdentifier>{fa29c0d7-687c-4f56-bd77-ad895ef26de6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -36,12 +45,6 @@
     <ClCompile Include="TextureLoader.cpp">
       <Filter>Util\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EntityLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,6 +53,15 @@
     </ClCompile>
     <ClCompile Include="LayerManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationSystem.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Systems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BodySystem.cpp">
+      <Filter>Systems\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,14 +83,8 @@
     <ClInclude Include="AssetLoader.h">
       <Filter>Util\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationSystem.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityLayer.h">
       <Filter>Header Files</Filter>
@@ -88,6 +94,18 @@
     </ClInclude>
     <ClInclude Include="LayerManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationSystem.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Systems\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BodyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BodySystem.h">
+      <Filter>Systems\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

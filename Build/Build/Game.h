@@ -24,5 +24,6 @@ private:
 	unique_ptr<TextureLoader> m_pTextureLoader;
 	unique_ptr<EntityFactory> m_pEntityFactory;
 	unique_ptr<LayerManager> m_pLayerManager;
+	unique_ptr<b2World> m_pWorld;
 };
 

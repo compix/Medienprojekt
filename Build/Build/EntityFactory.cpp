@@ -2,12 +2,13 @@
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
+#include "BodyComponent.h"
 #include <SFML/Graphics.hpp>
 
-EntityFactory::EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader)
-	:m_pEntityX(pEntityX), m_pTextureLoader(pTextureLoader)
-{
 
+EntityFactory::EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, b2World* world)
+	:m_pEntityX(pEntityX), m_pTextureLoader(pTextureLoader), m_world(world)
+{
 }
 
 Entity EntityFactory::createTestEntity1()
@@ -33,6 +34,19 @@ Entity EntityFactory::createTestEntity1()
 	animationComponent.frameDuration = 0.025f;
 	animationComponent.playMode = PlayMode::LOOP;
 	entity.assign<AnimationComponent>(animationComponent);
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(100.0f, 100.0f);
+	b2Body* body = m_world->CreateBody(&bodyDef);
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(1.0f, 1.0f);	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+	body->CreateFixture(&fixtureDef);	BodyComponent bodyComponent;	bodyComponent.body = body;
+
+	entity.assign<BodyComponent>(bodyComponent);
 
 	return entity;
 }
