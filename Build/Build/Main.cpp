@@ -5,6 +5,7 @@
 #include <fstream>
 #include "TextureLoader.h"
 #include "Game.h"
+#include "Menu.h"
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
@@ -18,6 +19,8 @@ int main()
 
 	Game game(&window);
 
+	Menu menu(window);
+
 	sf::Clock clock;
 	while (window.isOpen())
 	{
@@ -26,12 +29,15 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+
+			menu.handleEvent(event);
 		}
 
 		sf::Time deltaTime = clock.restart();
 
 		window.clear();
 		game.update(deltaTime.asSeconds());
+		menu.draw();
 		window.display();
 	}
 
