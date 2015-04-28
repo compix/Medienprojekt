@@ -28,7 +28,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 			break;
 		case LOOP:
 			if (animation->stateTime >= animationDuration)
-				animation->stateTime = animation->stateTime - animationDuration;
+				animation->stateTime -= animationDuration;
 			break;
 		case REVERSED:
 			frame = (animationDuration - animation->stateTime) / animationDuration * animation->frameCount;
@@ -36,7 +36,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 			break;
 		case LOOP_REVERSED:
 			if (animation->stateTime >= animationDuration)
-				animation->stateTime = animation->stateTime - animationDuration;
+				animation->stateTime -= animationDuration;
 
 			frame = (animationDuration - animation->stateTime) / animationDuration * animation->frameCount;
 			frame = std::max(frame, 0);
@@ -55,7 +55,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 				float stateTime = animation->stateTime - animationDuration;
 				frame = (animationDuration - stateTime) / animationDuration * animation->frameCount;
 				if (animation->stateTime >= animationDuration*2.f)
-					animation->stateTime = animation->stateTime - animationDuration*2.f;
+					animation->stateTime -= animationDuration*2.f;
 			}
 			break;
 		}
@@ -63,9 +63,10 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 		int row = frame / animation->colCount;
 		int col = frame % animation->colCount;
 
-		int rectStartX = (int)col*frameWidth;
-		int rectStartY = (int)row*frameHeight;
+		int rectStartX = col*frameWidth;
+		int rectStartY = row*frameHeight;
 
 		sprite->sprite.setTextureRect(sf::IntRect(rectStartX, rectStartY, frameWidth, frameHeight));
+		sprite->sprite.setOrigin(frameWidth * 0.5f, frameHeight * 0.5f);
 	}
 }

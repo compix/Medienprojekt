@@ -11,7 +11,7 @@ TextureLoader::TextureLoader(string basePath)
 	m_basePath = basePath;
 }
 
-const Texture& TextureLoader::load(const string& filename, const string& name)
+Texture& TextureLoader::load(const string& filename, const string& name)
 {
 	Texture texture;
 	string path = m_basePath + filename;

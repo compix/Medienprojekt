@@ -18,9 +18,9 @@ public:
 	virtual ~AssetLoader() {};
 
 	virtual bool loadAllFromJson(const string& path);
-	virtual const T& load(const string& filename);
-	virtual const T& load(const string& filename, const string& name) = 0;
-	virtual const T& get(const string& name) const;
+	virtual T& load(const string& filename);
+	virtual T& load(const string& filename, const string& name) = 0;
+	virtual T& get(const string& name);
 
 	void setBasePath(const string& path);
 protected:
@@ -50,13 +50,13 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 }
 
 template<class T>
-const T&  AssetLoader<T>::get(const string& name) const
+T&  AssetLoader<T>::get(const string& name)
 {
 	return m_assets.at(name);
 }
 
 template<class T>
-const T& AssetLoader<T>::load(const string& filename)
+T& AssetLoader<T>::load(const string& filename)
 {
 	return load(filename, filename);
 }

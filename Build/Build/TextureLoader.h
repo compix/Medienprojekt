@@ -7,5 +7,5 @@ public:
 	TextureLoader();
 	TextureLoader(string basePath);
 
-	virtual const Texture& load(const string& filename, const string& name) override;
+	virtual Texture& load(const string& filename, const string& name) override;
 };
