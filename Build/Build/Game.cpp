@@ -1,11 +1,12 @@
 #include "Game.h"
 #include "AnimationSystem.h"
+#include "InputSystem.h"
 #include "BodySystem.h"
 #include "RenderSystem.h"
 #include "TransformComponent.h"
 #include <Box2D\Box2D.h>
 
-Game::Game(sf::RenderWindow* pWindow)
+Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager)
 {
 
 	b2Vec2 gravity(0.0f, 10.0f);
@@ -14,6 +15,7 @@ Game::Game(sf::RenderWindow* pWindow)
 	m_pLayerManager = make_unique<LayerManager>();
 
 	systems.add<BodySystem>();
+	systems.add<InputSystem>(inputManager);
 	systems.add<AnimationSystem>();
 	systems.add<RenderSystem>(pWindow, m_pLayerManager.get());
 	systems.configure();

@@ -2,6 +2,7 @@
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
+#include "InputComponent.h"
 #include "BodyComponent.h"
 #include <SFML/Graphics.hpp>
 
@@ -40,13 +41,20 @@ Entity EntityFactory::createTestEntity1()
 	bodyDef.position.Set(100.0f, 100.0f);
 	b2Body* body = m_world->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);	b2FixtureDef fixtureDef;
+	dynamicBox.SetAsBox(1.0f, 1.0f);
+	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);	BodyComponent bodyComponent;	bodyComponent.body = body;
+	body->CreateFixture(&fixtureDef);
+	BodyComponent bodyComponent;
+	bodyComponent.body = body;
 
 	entity.assign<BodyComponent>(bodyComponent);
+
+	InputComponent inputComponent;
+	inputComponent.playerIndex = 0;
+	entity.assign<InputComponent>(inputComponent);
 
 	return entity;
 }

@@ -16,6 +16,8 @@
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="EntityLayer.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="LayerManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -32,6 +34,9 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="EntityLayer.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputSystem.h" />
     <ClInclude Include="LayerManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="RenderSystem.h" />

@@ -10,14 +10,18 @@
 #include "SpriteComponent.h"
 #include "AnimationComponent.h"
 #include "EntityLayer.h"
+#include "InputManager.h"
 
 using namespace std;
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	window.setKeyRepeatEnabled(false);
 
-	Game game(&window);
+	InputManager inputManager;
+
+	Game game(&window, inputManager);
 
 	Menu menu(window);
 
@@ -30,7 +34,8 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			menu.handleEvent(event);
+			if (!menu.handleEvent(event))
+				inputManager.handleEvent(event);
 		}
 
 		sf::Time deltaTime = clock.restart();

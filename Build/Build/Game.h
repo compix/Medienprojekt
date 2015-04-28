@@ -9,10 +9,12 @@
 using namespace entityx;
 using namespace std;
 
+class InputManager;
+
 class Game : public EntityX
 {
 public:
-	Game(sf::RenderWindow* pWindow);
+	Game(sf::RenderWindow* pWindow, InputManager &inputManager);
 	~Game();
 
 	void update(TimeDelta dt);
