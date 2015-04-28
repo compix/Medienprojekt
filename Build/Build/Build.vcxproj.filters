@@ -54,7 +54,6 @@
     <ClCompile Include="LayerManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="AnimationSystem.cpp">
       <Filter>Systems\Source Files</Filter>
     </ClCompile>
@@ -63,10 +62,9 @@
     </ClCompile>
     <ClCompile Include="BodySystem.cpp">
       <Filter>Systems\Source Files</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +98,6 @@
     <ClInclude Include="LayerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="AnimationSystem.h">
       <Filter>Systems\Header Files</Filter>
     </ClInclude>
@@ -112,10 +109,9 @@
     </ClInclude>
     <ClInclude Include="BodySystem.h">
       <Filter>Systems\Header Files</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
     </ClInclude>
   </ItemGroup>
 </Project>

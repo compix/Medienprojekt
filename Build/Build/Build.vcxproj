@@ -89,22 +89,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\TGUI-0.6\include\;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\TGUI-0.6\include\;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< HEAD
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D\Build\vs2013\Box2D\Debug;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Debug;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Debug;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;sfml-system-s-d.lib;ws2_32.lib;sfml-network-s-d.lib;sndfile.lib;entityx-d.lib;openal32.lib;sfml-audio-s-d.lib;opengl32.lib;gdi32.lib;sfml-window-s-d.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s-d.lib;lib_json.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-=======
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Debug;$(SolutionDir)..\Source\3rdParty\TGUI-0.6\lib;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Debug;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;sfml-system-s-d.lib;ws2_32.lib;sfml-network-s-d.lib;sndfile.lib;entityx-d.lib;openal32.lib;sfml-audio-s-d.lib;opengl32.lib;gdi32.lib;sfml-window-s-d.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s-d.lib;lib_json.lib;tgui-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
+      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\TGUI-0.6\lib;$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D\Build\vs2013\Box2D\Debug;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Debug;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Debug;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;sfml-system-s-d.lib;ws2_32.lib;sfml-network-s-d.lib;sndfile.lib;entityx-d.lib;openal32.lib;sfml-audio-s-d.lib;opengl32.lib;gdi32.lib;sfml-window-s-d.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s-d.lib;lib_json.lib;Box2D.lib;tgui-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,24 +108,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\TGUI-0.6\include\;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Source\3rdParty\TGUI-0.6\include\;$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\include;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1;$(SolutionDir)..\Source\3rdParty\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-<<<<<<< HEAD
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D\Build\vs2013\Box2D\Release;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Release;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Release;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;sfml-system-s.lib;ws2_32.lib;sfml-network-s.lib;sndfile.lib;Box2D.lib;openal32.lib;sfml-audio-s.lib;opengl32.lib;gdi32.lib;sfml-window-s.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s.lib;entityx.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
-=======
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Release;$(SolutionDir)..\Source\3rdParty\TGUI-0.6\lib;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Release;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;sfml-system-s.lib;ws2_32.lib;sfml-network-s.lib;sndfile.lib;openal32.lib;sfml-audio-s.lib;opengl32.lib;gdi32.lib;sfml-window-s.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s.lib;entityx.lib;lib_json.lib;tgui-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
->>>>>>> 07827d0529cf51a693de9dd90c6d7693d1e5786c
+      <AdditionalLibraryDirectories>$(SolutionDir)..\Source\3rdParty\TGUI-0.6\lib;$(SolutionDir)..\Source\3rdParty\Box2D_v2.3.0\Box2D\Build\vs2013\Box2D\Release;$(SolutionDir)..\Source\3rdParty\jsoncpp-1.6.2\makefiles\msvc2013\Release;$(SolutionDir)..\Source\3rdParty\entityx-1.1.1\build\Release;$(SolutionDir)..\Source\3rdParty\SFML-2.2\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;sfml-system-s.lib;ws2_32.lib;sfml-network-s.lib;sndfile.lib;Box2D.lib;openal32.lib;sfml-audio-s.lib;opengl32.lib;gdi32.lib;sfml-window-s.lib;glew.lib;freetype.lib;jpeg.lib;sfml-graphics-s.lib;entityx.lib;lib_json.lib;tgui-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
