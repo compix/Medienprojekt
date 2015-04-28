@@ -1,6 +1,8 @@
 [Bb]ackup*/
 [Tt]emp*/
 
+*.exe
+
 # User-specific files
 *.suo
 *.user
