@@ -6,6 +6,8 @@
 *.class binary
 *.dll binary
 *.exe binary
+*.lib binary
+*.a binary
 *.ear binary
 *.gif binary
 *.ico binary
@@ -20,3 +22,9 @@
 *.psd binary
 *.bin binary
 *.ttf binary
+*.doc binary
+*.docx binary
+*.dox binary
+*.pdf binary
+*.zip binary
+*.expected

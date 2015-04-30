@@ -55,5 +55,6 @@ $RECYCLE.BIN/
 *.vspscc
 *.vssscc
 *.pidb
+*.idb
 *.log
 *.scc
