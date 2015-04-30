@@ -1,7 +1,0 @@
-.*.dep
-*.a
-*.so
-*.o
-html/
-Vagrantfile
-.vagrant
