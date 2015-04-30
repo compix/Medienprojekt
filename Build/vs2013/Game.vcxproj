@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Game</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\Game\</OutDir>
+    <IntDir>..\..\Temp\Game\Debug\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\Game\</OutDir>
+    <IntDir>..\..\Temp\Game\Release\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
+    <ClInclude Include="..\..\Source\Components\InputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
+    <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
+    <ClInclude Include="..\..\Source\EntityFactory.h" />
+    <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Game.h" />
+    <ClInclude Include="..\..\Source\LayerManager.h" />
+    <ClInclude Include="..\..\Source\Menu.h" />
+    <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
+    <ClInclude Include="..\..\Source\Utils\InputManager.h" />
+    <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\EntityFactory.cpp" />
+    <ClCompile Include="..\..\Source\EntityLayer.cpp" />
+    <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\LayerManager.cpp" />
+    <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\Menu.cpp" />
+    <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

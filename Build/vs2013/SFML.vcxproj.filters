@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\stb_image">
+      <UniqueIdentifier>{3057C4CE-1C3B-8524-859B-7F77719E6FA6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4AF3887C-362A-8A0D-DF16-7010CB2C060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{8F6A0D6C-FB49-8C07-0462-17DE70C0F268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Win32">
+      <UniqueIdentifier>{B111C192-1DD2-3CC9-E60C-8646528C81A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{6AD049D2-5672-74A8-3F2D-88FC2B6EFBF8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Win32">
+      <UniqueIdentifier>{CC2F074A-B892-96EE-6118-CFA44D5A6271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{3DEA79DA-298C-A4B0-1247-B804FE872B01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\Win32">
+      <UniqueIdentifier>{DF1B6698-CB7E-F53C-7404-2EF36046C1BF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window\glext">
+      <UniqueIdentifier>{F02B8999-DC8E-183E-8514-51F47156E4C0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ThirdParty\SFML\src\SFML\Graphics\stb_image\stb_image.h">
+      <Filter>Graphics\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\SFML\src\SFML\Graphics\stb_image\stb_image_write.h">
+      <Filter>Graphics\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\SFML\src\SFML\Window\glext\glext.h">
+      <Filter>Window\glext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\SFML\src\SFML\Window\glext\wglext.h">
+      <Filter>Window\glext</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\ALCheck.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\AudioDevice.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\Listener.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\Music.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\Sound.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundBuffer.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundBufferRecorder.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundFile.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundRecorder.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundSource.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Audio\SoundStream.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\BlendMode.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\CircleShape.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Color.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\ConvexShape.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Font.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\GLCheck.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\GLExtensions.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Image.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\ImageLoader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RectangleShape.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderStates.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderTexture.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderTextureImpl.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderTextureImplDefault.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderTextureImplFBO.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\RenderWindow.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Shader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Shape.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Sprite.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Text.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Texture.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\TextureSaver.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Transform.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Transformable.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\Vertex.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\VertexArray.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Graphics\View.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Main\MainWin32.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\Ftp.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\Http.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\IpAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\Packet.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\Socket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\SocketSelector.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\TcpListener.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\TcpSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\UdpSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Network\Win32\SocketImpl.cpp">
+      <Filter>Network\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Clock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Err.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Lock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Mutex.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Sleep.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\String.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Thread.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\ThreadLocal.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Time.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Win32\ClockImpl.cpp">
+      <Filter>System\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Win32\MutexImpl.cpp">
+      <Filter>System\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Win32\SleepImpl.cpp">
+      <Filter>System\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Win32\ThreadImpl.cpp">
+      <Filter>System\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\System\Win32\ThreadLocalImpl.cpp">
+      <Filter>System\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Context.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\GlContext.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\GlResource.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Joystick.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\JoystickManager.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Keyboard.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Mouse.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Sensor.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\SensorManager.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Touch.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\VideoMode.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\InputImpl.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\JoystickImpl.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\SensorImpl.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\VideoModeImpl.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\WglContext.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Win32\WindowImplWin32.cpp">
+      <Filter>Window\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\Window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\SFML\src\SFML\Window\WindowImpl.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
