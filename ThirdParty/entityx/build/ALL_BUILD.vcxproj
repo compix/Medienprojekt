@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{AFCDB708-15CD-4E4D-AC90-B37B98B8E91A}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1 -BC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build --check-stamp-file C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCCompiler.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckCXXSourceCompiles.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CheckCXX11Features.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx\config.h.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx.pc.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1 -BC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build --check-stamp-file C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCCompiler.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckCXXSourceCompiles.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CheckCXX11Features.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx\config.h.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx.pc.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1 -BC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build --check-stamp-file C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCCompiler.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckCXXSourceCompiles.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CheckCXX11Features.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx\config.h.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx.pc.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1 -BC:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build --check-stamp-file C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCCompiler.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\3.1.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake\share\cmake-3.1\Modules\CheckCXXSourceCompiles.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CheckCXX11Features.cmake;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx\config.h.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\entityx.pc.in;C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\compie\Desktop\Medienprojekt\Source\3rdParty\entityx-1.1.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/ZERO_CHECK.vcxproj">
+      <Project>2505606B-D5D8-4C7F-A121-5589CD9AD915</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/dependencies_test.vcxproj">
+      <Project>803B1AEC-5ADB-4E3F-92E9-78A3E0679E3E</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/entity_test.vcxproj">
+      <Project>DE29B1A5-84F3-47F4-B02C-CB81B9C03E6E</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/entityx.vcxproj">
+      <Project>C002FD93-D8D2-43AF-B6E9-96F93694975B</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/entityx_shared.vcxproj">
+      <Project>53CA1489-2610-48FE-938C-D219510C0B37</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/event_test.vcxproj">
+      <Project>BF9671EF-C90A-438A-B6ED-1F6468FF0E53</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/pool_test.vcxproj">
+      <Project>2859D0FA-7256-425F-8451-5ADF0151D99F</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/system_test.vcxproj">
+      <Project>D18CCC96-2591-4D82-AC3A-74FBA8E212AB</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/compie/Desktop/Medienprojekt/Source/3rdParty/entityx-1.1.1/build/tags_component_test.vcxproj">
+      <Project>09E17FE8-B308-41EB-9715-EB3647E8C6FC</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,7 @@
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/Testbed/CMakeFiles/Testbed.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/glui/CMakeFiles/glui.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/HelloWorld/CMakeFiles/HelloWorld.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/CMakeFiles/ALL_BUILD.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/freeglut/CMakeFiles/freeglut_static.dir
+C:/Users/Dennis/CloudStation/Workspaces/SourceTree/Medienprojekt/Source/3rdParty/Box2D_v2.3.0/Box2D/Build/vs/Box2D/CMakeFiles/Box2D.dir
