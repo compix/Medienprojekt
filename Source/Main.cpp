@@ -11,6 +11,7 @@
 #include "Components/AnimationComponent.h"
 #include "EntityLayer.h"
 #include "Utils/InputManager.h"
+#include "SFMLDebugDraw.h"
 
 using namespace std;
 
@@ -21,7 +22,14 @@ int main()
 
 	InputManager inputManager;
 
-	Game game(&window, inputManager);
+	SFMLDebugDraw debugDraw(window);
+
+	debugDraw.SetFlags(b2Draw::e_shapeBit);
+	debugDraw.AppendFlags(b2Draw::e_jointBit);
+	debugDraw.AppendFlags(b2Draw::e_centerOfMassBit);
+	debugDraw.AppendFlags(b2Draw::e_aabbBit);
+
+	Game game(&window, inputManager, debugDraw);
 
 	Menu menu(window);
 

@@ -93,6 +93,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />

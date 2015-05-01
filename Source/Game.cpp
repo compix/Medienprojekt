@@ -15,7 +15,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 #endif
 
-Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager)
+Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw debugDraw)
 {
 
 	b2Vec2 gravity(0.0f, 10.0f);

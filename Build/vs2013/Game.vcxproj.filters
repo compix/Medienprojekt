@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -56,6 +56,7 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -82,5 +83,6 @@
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.cpp" />
   </ItemGroup>
 </Project>
