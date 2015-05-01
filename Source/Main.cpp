@@ -50,7 +50,7 @@ int main()
 
 		window.clear();
 		game.update(deltaTime.asSeconds());
-		menu.draw();
+		//menu.draw();
 		window.display();
 	}
 

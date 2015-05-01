@@ -103,6 +103,7 @@
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
+    <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu.cpp" />
+    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />

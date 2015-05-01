@@ -6,6 +6,7 @@
 #include "Components/TransformComponent.h"
 #include <Box2D/Box2D.h>
 
+
 #ifndef _MSC_VER
 
 template<typename T, typename... Args>
@@ -19,9 +20,9 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw 
 {
 
 	b2Vec2 gravity(10.0f, 10.0f);
-	m_pWorld = make_unique<b2World>(gravity);
+	m_pPhysixSystem = make_unique<PhysixSystem>(32.f, 6, 3);
 
-	m_pWorld->SetDebugDraw(&debugDraw);
+	m_pPhysixSystem->GetWorld().SetDebugDraw(&debugDraw);
 
 	m_pLayerManager = make_unique<LayerManager>();
 
@@ -34,7 +35,7 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw 
 	m_pTextureLoader = make_unique<TextureLoader>();
 	m_pTextureLoader->loadAllFromJson("assets/json/textures.json");
 
-	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_pWorld.get());
+	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_pPhysixSystem.get());
 
 	Entity entity = m_pEntityFactory->createTestEntity1();
 	Entity entity2 = m_pEntityFactory->createTestEntity2();
@@ -54,9 +55,9 @@ Game::~Game() { }
 
 void Game::update(TimeDelta dt)
 {
-	m_pWorld->Step(dt, 6, 2);
+	m_pPhysixSystem->update(dt);
 	systems.update_all(dt);
-	m_pWorld->DrawDebugData(); //Box2D Debugmode
+	m_pPhysixSystem->GetWorld().DrawDebugData(); //Box2D Debugmode
 	
 }
 
