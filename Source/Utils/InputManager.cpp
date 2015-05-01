@@ -116,12 +116,12 @@ void InputManager::updatePlayerMove(PlayerInput &playerInput)
 	bool right = playerInput.buttonPressed[PlayerButton::RIGHT];
 
 	if (left != right)
-		playerInput.moveX = left ? -1 : 1;
+		playerInput.moveX = left ? -1.f : 1.f;
 	else
 		playerInput.moveX = 0;
 
 	if (up != down)
-		playerInput.moveY = up ? -1 : 1;
+		playerInput.moveY = up ? -1.f : 1.f;
 	else
 		playerInput.moveY = 0;
 

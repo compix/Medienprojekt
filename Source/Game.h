@@ -14,7 +14,7 @@ class InputManager;
 class Game : public EntityX
 {
 public:
-	Game(sf::RenderWindow* pWindow, InputManager &inputManager);
+	Game(sf::RenderWindow* window, InputManager &inputManager);
 	~Game();
 
 	void update(TimeDelta dt);
@@ -23,9 +23,9 @@ private:
 	void createTestLevel(EntityLayer& layer);
 
 private:
-	unique_ptr<TextureLoader> m_pTextureLoader;
-	unique_ptr<EntityFactory> m_pEntityFactory;
-	unique_ptr<LayerManager> m_pLayerManager;
-	unique_ptr<b2World> m_pWorld;
+	unique_ptr<TextureLoader> m_textureLoader;
+	unique_ptr<EntityFactory> m_entityFactory;
+	unique_ptr<LayerManager> m_layerManager;
+	unique_ptr<b2World> m_world;
 };
 

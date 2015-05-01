@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\Game\</OutDir>
+    <OutDir>..\..\Test\</OutDir>
     <IntDir>..\..\Temp\Game\Debug\</IntDir>
     <TargetName>Game</TargetName>
     <TargetExt>.exe</TargetExt>
@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -110,6 +110,8 @@
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
+    <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
+    <ClInclude Include="..\..\Source\Utils\Random.h" />
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +126,7 @@
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -12,6 +12,8 @@ public:
 
 	vector<EntityLayer>& getLayers() { return m_layers; }
 
+	void addToLayer(int layer, Entity entity);
+
 	template<class T>
 	void sortLayers(T comparator);
 private:

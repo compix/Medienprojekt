@@ -7,22 +7,22 @@
 #include <SFML/Graphics.hpp>
 
 
-EntityFactory::EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, b2World* world)
-	:m_pEntityX(pEntityX), m_pTextureLoader(pTextureLoader), m_world(world)
+EntityFactory::EntityFactory(EntityX* entityX, TextureLoader* textureLoader, b2World* world, LayerManager* layerManager)
+	:m_entityX(entityX), m_textureLoader(textureLoader), m_world(world), m_layerManager(layerManager)
 {
 }
 
-Entity EntityFactory::createTestEntity1()
+Entity EntityFactory::createTestEntity1(int row, int col)
 {
-	Entity entity = m_pEntityX->entities.create();
+	Entity entity = m_entityX->entities.create();
 
-	Texture& tex = m_pTextureLoader->get("char_idle");
+	Texture& tex = m_textureLoader->get("char_idle");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 
 	TransformComponent transformComponent;
-	transformComponent.x = 100.f;
-	transformComponent.y = 100.f;
+	transformComponent.x = 25.f * col + 12.f;
+	transformComponent.y = 25.f * row;
 	transformComponent.scaleX = 0.2f;
 	transformComponent.scaleY = 0.2f;
 	entity.assign<TransformComponent>(transformComponent);
@@ -36,25 +36,27 @@ Entity EntityFactory::createTestEntity1()
 	animationComponent.playMode = PlayMode::LOOP;
 	entity.assign<AnimationComponent>(animationComponent);
 
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(100.0f, 100.0f);
-	b2Body* body = m_world->CreateBody(&bodyDef);
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
-	BodyComponent bodyComponent;
-	bodyComponent.body = body;
-
-	entity.assign<BodyComponent>(bodyComponent);
+// 	b2BodyDef bodyDef;
+// 	bodyDef.type = b2_dynamicBody;
+// 	bodyDef.position.Set(100.0f, 100.0f);
+// 	b2Body* body = m_world->CreateBody(&bodyDef);
+// 	b2PolygonShape dynamicBox;
+// 	dynamicBox.SetAsBox(1.0f, 1.0f);
+// 	b2FixtureDef fixtureDef;
+// 	fixtureDef.shape = &dynamicBox;
+// 	fixtureDef.density = 1.0f;
+// 	fixtureDef.friction = 0.3f;
+// 	body->CreateFixture(&fixtureDef);
+// 	BodyComponent bodyComponent;
+// 	bodyComponent.body = body;
+// 
+// 	entity.assign<BodyComponent>(bodyComponent);
 
 	InputComponent inputComponent;
 	inputComponent.playerIndex = 0;
 	entity.assign<InputComponent>(inputComponent);
+
+	m_layerManager->addToLayer(0, entity);
 
 	return entity;
 }
@@ -62,10 +64,10 @@ Entity EntityFactory::createTestEntity1()
 Entity EntityFactory::createTestEntity2()
 {
 	sf::Sprite sprite;
-	Texture& tex = m_pTextureLoader->get("char_death");
+	Texture& tex = m_textureLoader->get("char_death");
 	sprite.setTexture(tex);
 
-	Entity entity = m_pEntityX->entities.create();
+	Entity entity = m_entityX->entities.create();
 
 	TransformComponent transformComponent;
 	transformComponent.x = 220.f;
@@ -83,39 +85,45 @@ Entity EntityFactory::createTestEntity2()
 	animationComponent.playMode = PlayMode::LOOP_PING_PONG;
 	entity.assign<AnimationComponent>(animationComponent);
 
-	return entity;
-}
-
-entityx::Entity EntityFactory::createBlock(float x, float y)
-{
-	Entity entity = m_pEntityX->entities.create();
-
-	Texture& tex = m_pTextureLoader->get("block");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-
-	TransformComponent transformComponent;
-	transformComponent.x = x;
-	transformComponent.y = y;
-	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
+	m_layerManager->addToLayer(0, entity);
 
 	return entity;
 }
 
-entityx::Entity EntityFactory::createSolidBlock(float x, float y)
+entityx::Entity EntityFactory::createBlock(int row, int col)
 {
-	Entity entity = m_pEntityX->entities.create();
+	Entity entity = m_entityX->entities.create();
 
-	Texture& tex = m_pTextureLoader->get("solid_block");
+	Texture& tex = m_textureLoader->get("block");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 
 	TransformComponent transformComponent;
-	transformComponent.x = x;
-	transformComponent.y = y;
+	transformComponent.x = (float) tex.getSize().x * col;
+	transformComponent.y = (float) tex.getSize().x * row;
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<SpriteComponent>(sprite);
+
+	m_layerManager->addToLayer(0, entity);
+
+	return entity;
+}
+
+entityx::Entity EntityFactory::createSolidBlock(int row, int col)
+{
+	Entity entity = m_entityX->entities.create();
+
+	Texture& tex = m_textureLoader->get("solid_block");
+	sf::Sprite sprite;
+	sprite.setTexture(tex);
+
+	TransformComponent transformComponent;
+	transformComponent.x = (float) tex.getSize().x * col;
+	transformComponent.y = (float)tex.getSize().x * row;
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<SpriteComponent>(sprite);
+
+	m_layerManager->addToLayer(0, entity);
 
 	return entity;
 }
