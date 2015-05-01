@@ -56,7 +56,7 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -83,6 +83,6 @@
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
   </ItemGroup>
 </Project>

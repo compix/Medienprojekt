@@ -18,8 +18,10 @@ std::unique_ptr<T> make_unique(Args&&... args)
 Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw debugDraw)
 {
 
-	b2Vec2 gravity(0.0f, 10.0f);
+	b2Vec2 gravity(10.0f, 10.0f);
 	m_pWorld = make_unique<b2World>(gravity);
+
+	m_pWorld->SetDebugDraw(&debugDraw);
 
 	m_pLayerManager = make_unique<LayerManager>();
 
@@ -54,6 +56,8 @@ void Game::update(TimeDelta dt)
 {
 	m_pWorld->Step(dt, 6, 2);
 	systems.update_all(dt);
+	m_pWorld->DrawDebugData(); //Box2D Debugmode
+	
 }
 
 void Game::createTestLevel(EntityLayer& layer)

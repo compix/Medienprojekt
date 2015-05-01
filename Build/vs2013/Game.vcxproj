@@ -93,7 +93,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
@@ -104,6 +103,7 @@
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
@@ -114,13 +114,13 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Visual Studio 2013\Projects\Prototypes\Prototypes\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
