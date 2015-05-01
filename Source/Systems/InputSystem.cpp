@@ -5,9 +5,7 @@
 
 using namespace std;
 
-InputSystem::InputSystem(InputManager &inputManager) : inputManager(inputManager)
-{
-}
+InputSystem::InputSystem(InputManager &inputManager) : inputManager(inputManager) { }
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {

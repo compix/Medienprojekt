@@ -7,10 +7,11 @@
 #include <Box2D/Box2D.h>
 
 #ifndef _MSC_VER
+
 template<typename T, typename... Args>
 std::unique_ptr<T> make_unique(Args&&... args)
 {
-    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 #endif
 
@@ -47,9 +48,7 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager)
 	m_pLayerManager->sortLayers(DepthComparator());
 }
 
-Game::~Game()
-{
-}
+Game::~Game() { }
 
 void Game::update(TimeDelta dt)
 {
@@ -68,16 +67,16 @@ void Game::createTestLevel(EntityLayer& layer)
 		{
 			Entity e;
 
-			if (x == 0 || x == 20 || y == 0 || y == 20|| (x % 2 == 0 && y % 2 == 0))
+			if (x == 0 || x == 20 || y == 0 || y == 20 || (x % 2 == 0 && y % 2 == 0))
 			{
-				e = m_pEntityFactory->createSolidBlock(x*blockWidth, y*blockHeight);
+				e = m_pEntityFactory->createSolidBlock(x*blockWidth, y * blockHeight);
 				layer.add(e);
 			}
 			else
 			{
 				//e = m_pEntityFactory->createBlock(x*blockWidth, y*blockHeight);
 				//layer.add(e);
-			}	
+			}
 		}
 	}
 }

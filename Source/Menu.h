@@ -2,11 +2,13 @@
 
 #include <TGUI/TGUI.hpp>
 
-enum MenuCallbacks {
+enum MenuCallbacks
+{
 	NONE,
 
 	LOGIN_CLICKED,
 };
+
 class Menu
 {
 public:

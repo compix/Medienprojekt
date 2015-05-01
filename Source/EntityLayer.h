@@ -9,9 +9,9 @@ class EntityLayer
 {
 public:
 	/**
-	int value: Value of the layer for a correct drawing order.
-	bool _static: To indicate whether the entities in this layer are static or dynamic.
-	*/
+     * @param int value Value of the layer for a correct drawing order.
+     * @param bool _static  To indicate whether the entities in this layer are static or dynamic.
+     */
 	EntityLayer(int value, bool _static);
 
 	inline const vector<Entity>& getEntities() const { return m_entities; };
@@ -23,9 +23,9 @@ public:
 	void remove(Entity entity);
 
 	/**
-	Indicates whether the entities in this layer are static or dynamic.
-	A static layer rarely needs to be resorted.
-	*/
+	 * Indicates whether the entities in this layer are static or dynamic.
+	 * A static layer rarely needs to be resorted.
+	 */
 	inline bool isStatic() const { return m_static; };
 	inline int getValue() const { return m_value; }
 private:
@@ -41,8 +41,8 @@ void EntityLayer::sort(T comparator)
 }
 
 /**
-Used for rendering to create depth. Entities farther away are rendered first.
-*/
+ * Used for rendering to create depth. Entities farther away are rendered first.
+ */
 struct DepthComparator
 {
 	bool operator()(Entity& e1, Entity& e2)

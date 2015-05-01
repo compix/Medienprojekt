@@ -9,9 +9,7 @@ Menu::Menu(sf::RenderWindow &window) : m_gui(window)
 	loadWidgets();
 }
 
-Menu::~Menu()
-{
-}
+Menu::~Menu() { }
 
 void Menu::loadWidgets()
 {
@@ -50,7 +48,8 @@ void Menu::loadWidgets()
 	button->bindCallback(&Menu::loginClicked, this, tgui::Button::LeftMouseClicked);
 }
 
-void Menu::loginClicked() {
+void Menu::loginClicked()
+{
 	// Get the username and password
 	tgui::EditBox::Ptr editBoxUsername = m_gui.get("Username");
 	tgui::EditBox::Ptr editBoxPassword = m_gui.get("Password");

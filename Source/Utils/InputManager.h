@@ -1,13 +1,15 @@
 #pragma once
 #include <map>
 
-namespace sf {
+namespace sf
+{
 	class Event;
 }
 
 const int MAX_PLAYER_INPUTS = 4;
 
-enum PlayerButton {
+enum PlayerButton
+{
 	BOMB,
 	SKILL,
 	UP,
@@ -18,13 +20,15 @@ enum PlayerButton {
 	COUNT
 };
 
-struct PlayerInput {
+struct PlayerInput
+{
 	float moveX;
 	float moveY;
 	bool buttonPressed[PlayerButton::COUNT];
 };
 
-struct KeycodeMapEntry {
+struct KeycodeMapEntry
+{
 	PlayerButton button;
 	int playerIndex;
 };

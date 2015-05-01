@@ -54,8 +54,8 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 			{
 				float stateTime = animation->stateTime - animationDuration;
 				frame = (animationDuration - stateTime) / animationDuration * animation->frameCount;
-				if (animation->stateTime >= animationDuration*2.f)
-					animation->stateTime -= animationDuration*2.f;
+				if (animation->stateTime >= animationDuration * 2.f)
+					animation->stateTime -= animationDuration * 2.f;
 			}
 			break;
 		}

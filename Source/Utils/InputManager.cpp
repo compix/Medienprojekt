@@ -28,9 +28,7 @@ InputManager::InputManager()
 	bindKey(0, PlayerButton::RIGHT, sf::Keyboard::Key::Right);
 }
 
-InputManager::~InputManager()
-{
-}
+InputManager::~InputManager() { }
 
 PlayerInput &InputManager::getPlayerInput(int id)
 {
@@ -69,7 +67,6 @@ void InputManager::handleEvent(const sf::Event &evt)
 		break;
 	}
 }
-
 
 void InputManager::onKeyPressed(int code)
 {
@@ -161,8 +158,7 @@ void InputManager::onJoystickDisconnected(int id)
 }
 
 // Keep in sync with sf::Keyboard::Key
-static const char *keyNames[] =
-{
+static const char *keyNames[] = {
 	"A",
 	"B",
 	"C",
@@ -266,17 +262,18 @@ static const char *keyNames[] =
 	"Pause"
 };
 
-static const int keyNamesLength = (sizeof(keyNames) / sizeof(*keyNames));
-static_assert (keyNamesLength == sf::Keyboard::Key::KeyCount, "sf::Keyboard::Key::KeyCount does not match expectations");
+static const int keyNamesLength = (sizeof (keyNames) / sizeof (*keyNames));
+static_assert(keyNamesLength == sf::Keyboard::Key::KeyCount, "sf::Keyboard::Key::KeyCount does not match expectations");
 
 const char *InputManager::getKeyName(int code)
 {
-	if (code >= 0 && code < sizeof(keyNames))
+	if (code >= 0 && code < sizeof (keyNames))
 		return keyNames[code];
 	return nullptr;
 }
 
-int InputManager::getKeyCode(const char *name) {
+int InputManager::getKeyCode(const char *name)
+{
 	if (name)
 	{
 		for (int i = 0; i < keyNamesLength; i++)

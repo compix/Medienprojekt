@@ -15,7 +15,8 @@ class AssetLoader
 {
 	typedef unordered_map<string, T> AssetMap;
 public:
-	virtual ~AssetLoader() {};
+
+	virtual ~AssetLoader() { };
 
 	virtual bool loadAllFromJson(const string& path);
 	virtual T& load(const string& filename);
@@ -50,7 +51,7 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 }
 
 template<class T>
-T&  AssetLoader<T>::get(const string& name)
+T& AssetLoader<T>::get(const string& name)
 {
 	return m_assets.at(name);
 }
