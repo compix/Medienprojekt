@@ -3,7 +3,7 @@
 Lib/
 
 Game/*.exe
-Test/*.exe
+Test/**
 
 #Netbeans temp files
 Build/netbeans/*/build/
