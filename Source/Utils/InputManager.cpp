@@ -85,7 +85,7 @@ void InputManager::onKeyPressed(int code)
 			break;
 		}
 	}
-	cout << "Key pressed: " << getKeyName(code) << endl;
+//	cout << "Key pressed: " << getKeyName(code) << endl;
 }
 
 void InputManager::onKeyReleased(int code)
@@ -105,7 +105,7 @@ void InputManager::onKeyReleased(int code)
 			break;
 		}
 	}
-	cout << "Key released: " << getKeyName(code) << endl;
+//	cout << "Key released: " << getKeyName(code) << endl;
 }
 
 void InputManager::updatePlayerMove(PlayerInput &playerInput)
@@ -132,7 +132,7 @@ void InputManager::updatePlayerMove(PlayerInput &playerInput)
 		playerInput.moveX /= len;
 		playerInput.moveY /= len;
 	}
-	cout << playerInput.moveX << "/" << playerInput.moveY << endl;
+//	cout << playerInput.moveX << "/" << playerInput.moveY << endl;
 }
 
 void InputManager::onJoystickButtonPressed(int id, int button)
@@ -196,14 +196,14 @@ static const char *keyNames[] = {
 	"8",
 	"9",
 	"Escape",
-	"left Control",
-	"left Shift",
-	"left Alt",
-	"left Super",
-	"right Control",
-	"right Shift",
-	"right Alt",
-	"right Super",
+	"Left Control",
+	"Left Shift",
+	"Left Alt",
+	"Left Super",
+	"Right Control",
+	"Right Shift",
+	"Right Alt",
+	"Right Super",
 	"Menu",
 	"[",
 	"]",
@@ -220,8 +220,8 @@ static const char *keyNames[] = {
 	"Return",
 	"Backspace",
 	"Tab",
-	"Page up",
-	"Page down",
+	"Page Up",
+	"Page Down",
 	"End",
 	"Home",
 	"Insert",
@@ -230,20 +230,20 @@ static const char *keyNames[] = {
 	"-",
 	"*",
 	"/",
-	"Left arrow",
-	"Right arrow",
-	"Up arrow",
-	"Down arrow",
-	"numpad 0",
-	"numpad 1",
-	"numpad 2",
-	"numpad 3",
-	"numpad 4",
-	"numpad 5",
-	"numpad 6",
-	"numpad 7",
-	"numpad 8",
-	"numpad 9",
+	"Left Arrow",
+	"Right Arrow",
+	"Up Arrow",
+	"Down Arrow",
+	"Numpad 0",
+	"Numpad 1",
+	"Numpad 2",
+	"Numpad 3",
+	"Numpad 4",
+	"Numpad 5",
+	"Numpad 6",
+	"Numpad 7",
+	"Numpad 8",
+	"Numpad 9",
 	"F1",
 	"F2",
 	"F3",
