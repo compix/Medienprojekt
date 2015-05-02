@@ -31,6 +31,7 @@ libDir			= rootDir .. "/Lib/" .. _ACTION
 sourceDir		= rootDir .. "/Source"
 thirdPartyDir	= rootDir .. "/ThirdParty"
 gameDir			= rootDir .. "/Game"
+testDir			= rootDir .. "/Test"
 buildDir		= (_ACTION)
 
 -- [start] Settings that are true for all projects
@@ -63,7 +64,6 @@ solution "Game"
 		language "C++"
 		location (buildDir)
 		objdir( objectDir .. "/Game" )
-		targetdir( gameDir )
 		defines { "SFML_STATIC", "GLEW_STATIC" }
 		includedirs {
 			sourceDir,
@@ -93,6 +93,7 @@ solution "Game"
 		end
 		--linkoptions{"-lTGUI -lBox2D -ljsoncpp -lentityx"}
 		filter { "Debug" }
+			targetdir( testDir )
 			links {
 				"TGUI-s-d",
 				"Box2D-s-d",
@@ -101,6 +102,7 @@ solution "Game"
 				"SFML-s-d"
 			}
 		filter { "Release" }
+			targetdir( gameDir )
 			links {
 				"TGUI-s",
 				"Box2D-s",

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -53,13 +53,13 @@
     <ClInclude Include="..\..\Source\Utils\InputManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Random.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -85,10 +85,10 @@
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
+    <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
+    <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
