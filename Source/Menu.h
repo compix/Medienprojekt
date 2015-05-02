@@ -20,7 +20,7 @@ public:
 
 private:
 	tgui::Gui m_gui;
-	bool m_visible = true;
+	bool m_visible = false;
 
 	void loadWidgets();
 	void loginClicked();
