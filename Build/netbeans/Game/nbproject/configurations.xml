@@ -67,6 +67,7 @@
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
@@ -85,6 +86,7 @@
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
@@ -104,6 +106,7 @@
 					<linkerLibItems>
 						<linkerLibLibItem>TGUI-s-d</linkerLibLibItem>
 						<linkerLibLibItem>Box2D-s-d</linkerLibLibItem>
+						<linkerLibLibItem>enet-s-d</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s-d</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s-d</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s-d</linkerLibLibItem>
@@ -169,6 +172,7 @@
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
@@ -188,6 +192,7 @@
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
@@ -207,6 +212,7 @@
 					<linkerLibItems>
 						<linkerLibLibItem>TGUI-s</linkerLibLibItem>
 						<linkerLibLibItem>Box2D-s</linkerLibLibItem>
+						<linkerLibLibItem>enet-s</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s</linkerLibLibItem>

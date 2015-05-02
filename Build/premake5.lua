@@ -70,6 +70,7 @@ solution "Game"
 			thirdPartyDir .. "/Box2D/Box2D",
 			thirdPartyDir .. "/TGUI/include",
 			thirdPartyDir .. "/SFML/include",
+			thirdPartyDir .. "/enet/include",
 			thirdPartyDir .. "/jsoncpp/include",
 			thirdPartyDir .. "/entityx"
 		}
@@ -97,6 +98,7 @@ solution "Game"
 			links {
 				"TGUI-s-d",
 				"Box2D-s-d",
+				"enet-s-d",
 				"jsoncpp-s-d",
 				"entityx-s-d",
 				"SFML-s-d"
@@ -106,6 +108,7 @@ solution "Game"
 			links {
 				"TGUI-s",
 				"Box2D-s",
+				"enet-s",
 				"jsoncpp-s",
 				"entityx-s",
 				"SFML-s"
@@ -138,6 +141,25 @@ solution "Thirdparty"
 		targetsuffix  "-s-d"
 
 	-- Thirdparty Projects
+	project "enet"
+		kind "StaticLib"
+		language "C"
+		objdir( objectDir .. "/enet" )
+		includedirs { thirdPartyDir .. "/enet/include" }
+		files {
+			thirdPartyDir .. "/enet/**.h",
+			thirdPartyDir .. "/enet/**.c"
+		}
+		if isWindows then 
+			excludes {
+				thirdPartyDir .. "/enet/unix.c"
+			}
+		else
+			excludes {
+				thirdPartyDir .. "/enet/win32.c"
+			}
+		end
+
 	project "entityx"
 		kind "StaticLib"
 		language "C++"
