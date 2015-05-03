@@ -16,6 +16,8 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 #endif
 
+using namespace std;
+
 Game::Game(sf::RenderWindow* window, InputManager &inputManager)
 {
 

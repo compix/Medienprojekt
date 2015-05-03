@@ -2,8 +2,10 @@
 #include <vector>
 #include <entityx/entityx.h>
 #include "Components/TransformComponent.h"
-using namespace std;
-using namespace entityx;
+
+using std::vector;
+using entityx::Entity;
+using entityx::ComponentHandle;
 
 class EntityLayer
 {

@@ -4,7 +4,7 @@
 #include "Utils/TextureLoader.h"
 #include "LayerManager.h"
 
-using namespace entityx;
+using entityx::EntityX;
 
 class EntityFactory
 {

@@ -26,5 +26,5 @@ void LayerManager::addToLayer(int layer, Entity entity)
 			return;
 		}
 
-	std::cout << "Warning: Attempt to add an entity failed. Reason: Layer " << layer << " does not exist. " << endl;
+	std::cout << "Warning: Attempt to add an entity failed. Reason: Layer " << layer << " does not exist. " << std::endl;
 }

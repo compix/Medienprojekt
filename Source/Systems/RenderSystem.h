@@ -4,7 +4,10 @@
 #include "EntityLayer.h"
 #include "LayerManager.h"
 
-using namespace entityx;
+using entityx::System;
+using entityx::EntityManager;
+using entityx::EventManager;
+using entityx::TimeDelta;
 
 class RenderSystem : public System<RenderSystem>
 {

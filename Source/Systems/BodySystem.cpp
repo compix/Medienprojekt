@@ -2,6 +2,8 @@
 #include "../Components/BodyComponent.h"
 #include "../Components/TransformComponent.h"
 
+using namespace entityx;
+
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
 	ComponentHandle<BodyComponent> body;
