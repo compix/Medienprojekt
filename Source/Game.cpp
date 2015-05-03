@@ -6,15 +6,7 @@
 #include "Components/TransformComponent.h"
 #include <Box2D/Box2D.h>
 #include "Utils/LevelGenerator.h"
-
-#ifndef _MSC_VER
-
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
-{
-	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-#endif
+#include "Utils/make_unique.h"
 
 using namespace std;
 

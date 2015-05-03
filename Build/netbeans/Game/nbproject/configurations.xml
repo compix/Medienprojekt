@@ -41,6 +41,7 @@
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
 				<itemPath>../../../Source/Utils/TextureLoader.cpp</itemPath>
 				<itemPath>../../../Source/Utils/TextureLoader.h</itemPath>
+				<itemPath>../../../Source/Utils/make_unique.h</itemPath>
 			</logicalFolder>
 		</logicalFolder>
 		<logicalFolder name="ExternalFiles" displayName="Important Files" projectFiles="false" kind="IMPORTANT_FILES_FOLDER">
@@ -140,6 +141,7 @@
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -246,6 +248,7 @@
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>

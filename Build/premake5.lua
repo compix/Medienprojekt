@@ -84,6 +84,7 @@ solution "Game"
 			libDir
 		}
 		if isVisualStudio then 
+			defines { "HAS_STD_MAKE_UNIQUE" }
 			libdirs {
 				thirdPartyDir .. "/SFML/extlibs/libs-msvc/x86"
 			}

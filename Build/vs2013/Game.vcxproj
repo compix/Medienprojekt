@@ -57,7 +57,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -74,7 +74,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />

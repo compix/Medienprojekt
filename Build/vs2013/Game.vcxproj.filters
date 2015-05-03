@@ -62,6 +62,9 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\make_unique.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
