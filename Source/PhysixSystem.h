@@ -1,32 +1,32 @@
-#pragma once
+﻿#pragma once
 #include <Box2D/Box2D.h>
-#include <memory>
+#include <entityx/config.h>
+#include "SFMLDebugDraw.h"
 
 class PhysixSystem
 {
+	enum _entityCategory {
+		PLAYER = 0x0001,
+		WALL = 0x0002
+	};
+
 public:
-	PhysixSystem(float scale, int velocityIterations, int positionIterations);
+	PhysixSystem(int velocityIterations, int positionIteration, float scale);
 	~PhysixSystem();
-	unique_ptr<float> m_scale;
-	unique_ptr<float> m_scaleInv;
+	
+	void SetWorld(b2World b2_world);
+	void SetScale(float scale);
+	void SetDebugDrawer(SFMLDebugDraw* debugDraw);
+	void SetGravity(b2Vec2 gravity);
 
-private:
-	unique_ptr<b2World> m_world;
-	unique_ptr<b2Vec2> m_gravity;
-	unique_ptr<int> m_velocityIterations;
-	unique_ptr<int> m_positionIterations;
-
-public:
+	void Update(entityx::TimeDelta dt);
+	void DrawDebug();
+	b2Vec2 GetGravity();
+	b2World* GetWorld();
 	float GetScale();
-	void Reset();
-	b2World GetWorld();
-	void Destroy(b2Body* body);
-	void SetGravity(float x, float y);
-	void RopeConnect(b2Body* a, b2Body* b, float length);
-	float ToBox2D(float pixel);
-	float ToWorld(float num);
-	b2Vec2 ToBox2D(float x, float y, b2Vec2* out);
-	b2Vec2 ToBox2D(const b2Vec2 in, b2Vec2* out);
-	b2Vec2 ToWorld(const b2Vec2 in, b2Vec2* out);
-	void update(float deltaTime);
+	
+private:
+	int m_velocityIterations, m_positionIteration;
+	float m_Scale, m_InvScale;
+	b2World m_World;
 };

@@ -27,6 +27,7 @@ private:
 	unique_ptr<TextureLoader> m_pTextureLoader;
 	unique_ptr<EntityFactory> m_pEntityFactory;
 	unique_ptr<LayerManager> m_pLayerManager;
+	PhysixSystem* m_PhysixSystem;
 	b2World* m_World;
 	SFMLDebugDraw* debug;
 };

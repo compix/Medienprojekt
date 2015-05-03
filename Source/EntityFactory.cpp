@@ -7,8 +7,8 @@
 #include <SFML/Graphics.hpp>
 
 
-EntityFactory::EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, b2World* world)
-	:m_pEntityX(pEntityX), m_pTextureLoader(pTextureLoader), m_World(world)
+EntityFactory::EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, PhysixSystem* physixSystem)
+	:m_pEntityX(pEntityX), m_pTextureLoader(pTextureLoader), m_PhysixSystem(physixSystem)
 {
 }
 
@@ -39,7 +39,7 @@ Entity EntityFactory::createTestEntity1()
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(200.0f, 200.0f);
-	b2Body* body = m_World->CreateBody(&bodyDef);
+	b2Body* body = m_PhysixSystem->GetWorld()->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(10.0f, 10.0f);
 	b2FixtureDef fixtureDef;

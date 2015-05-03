@@ -9,7 +9,7 @@ using namespace entityx;
 class EntityFactory
 {
 public:
-	EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, b2World* m_World);
+	EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, PhysixSystem* physixSystem);
 
 	Entity createTestEntity1();
 	Entity createTestEntity2();
@@ -19,6 +19,6 @@ public:
 private:
 	EntityX* m_pEntityX;
 	TextureLoader* m_pTextureLoader;
-	b2World* m_World;
+	PhysixSystem* m_PhysixSystem;
 };
 
