@@ -50,6 +50,9 @@
     <ClInclude Include="..\..\Source\Utils\Exceptions.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\FpsCalculator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\InputManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -84,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp">
       <Filter>Utils</Filter>

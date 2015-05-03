@@ -34,6 +34,8 @@
 			<logicalFolder name="Utils" displayName="Utils" projectFiles="true">
 				<itemPath>../../../Source/Utils/AssetLoader.h</itemPath>
 				<itemPath>../../../Source/Utils/Exceptions.h</itemPath>
+				<itemPath>../../../Source/Utils/FpsCalculator.cpp</itemPath>
+				<itemPath>../../../Source/Utils/FpsCalculator.h</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.cpp</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.h</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
@@ -139,6 +141,7 @@
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
@@ -154,6 +157,7 @@
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -246,6 +250,7 @@
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
@@ -261,6 +266,7 @@
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>

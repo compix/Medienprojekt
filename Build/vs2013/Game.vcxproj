@@ -109,6 +109,7 @@
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
+    <ClInclude Include="..\..\Source\Utils\FpsCalculator.h" />
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
@@ -126,6 +127,7 @@
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
