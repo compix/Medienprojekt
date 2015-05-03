@@ -39,6 +39,11 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 	Json::Value root;
 	Json::Reader reader;
 	ifstream ifs(path, ifstream::binary);
+
+	if(!ifs.is_open()) {
+		cerr << "Can't find file: " << path << endl;
+		exit(EXIT_FAILURE);
+	}
 	
 	if (!reader.parse(ifs, root, false))
 	{
