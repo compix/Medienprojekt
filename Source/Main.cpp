@@ -29,7 +29,7 @@ int main()
 	debugDraw.AppendFlags(b2Draw::e_centerOfMassBit);
 	debugDraw.AppendFlags(b2Draw::e_aabbBit);
 
-	Game game(&window, inputManager, debugDraw);
+	Game game(&window, inputManager, &debugDraw);
 
 	Menu menu(window);
 

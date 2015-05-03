@@ -57,7 +57,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
-    <ClInclude Include="..\..\Source\PhysixSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -85,6 +84,5 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
-    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
   </ItemGroup>
 </Project>

@@ -16,13 +16,13 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 #endif
 
-Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw debugDraw)
+Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw* debugDraw)
 {
 
-	b2Vec2 gravity(10.0f, 10.0f);
-	m_pPhysixSystem = make_unique<PhysixSystem>(32.f, 6, 3);
+	b2Vec2 gravity(0.0f, 10.0f);
+	m_World = new b2World(gravity);
 
-	m_pPhysixSystem->GetWorld().SetDebugDraw(&debugDraw);
+	m_World->SetDebugDraw(debugDraw);
 
 	m_pLayerManager = make_unique<LayerManager>();
 
@@ -35,7 +35,7 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw 
 	m_pTextureLoader = make_unique<TextureLoader>();
 	m_pTextureLoader->loadAllFromJson("assets/json/textures.json");
 
-	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_pPhysixSystem.get());
+	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_World);
 
 	Entity entity = m_pEntityFactory->createTestEntity1();
 	Entity entity2 = m_pEntityFactory->createTestEntity2();
@@ -51,14 +51,15 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw 
 	m_pLayerManager->sortLayers(DepthComparator());
 }
 
-Game::~Game() { }
+Game::~Game() { 
+	delete m_World;
+}
 
 void Game::update(TimeDelta dt)
 {
-	m_pPhysixSystem->update(dt);
+	m_World->Step(dt, 6, 3);
 	systems.update_all(dt);
-	m_pPhysixSystem->GetWorld().DrawDebugData(); //Box2D Debugmode
-	
+	m_World->DrawDebugData();
 }
 
 void Game::createTestLevel(EntityLayer& layer)

@@ -6,7 +6,6 @@
 #include "EntityFactory.h"
 #include "LayerManager.h"
 #include "SFMLDebugDraw.h"
-#include "PhysixSystem.h"
 
 using namespace entityx;
 using namespace std;
@@ -16,7 +15,7 @@ class InputManager;
 class Game : public EntityX
 {
 public:
-	Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw debugDraw);
+	Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw* debugDraw);
 	~Game();
 
 	void update(TimeDelta dt);
@@ -28,6 +27,7 @@ private:
 	unique_ptr<TextureLoader> m_pTextureLoader;
 	unique_ptr<EntityFactory> m_pEntityFactory;
 	unique_ptr<LayerManager> m_pLayerManager;
-	unique_ptr<PhysixSystem> m_pPhysixSystem;
+	b2World* m_World;
+	SFMLDebugDraw* debug;
 };
 

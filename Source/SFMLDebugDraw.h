@@ -41,7 +41,7 @@ public:
 	}
 
 	/// Convert Box2D's vector to SFML vector [Default - scales the vector up by SCALE constants amount]
-	static sf::Vector2f B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = true)
+	static sf::Vector2f B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = false)
 	{
 		return sf::Vector2f(vector.x * (scaleToPixels ? sfdd::SCALE : 1.f), vector.y * (scaleToPixels ? sfdd::SCALE : 1.f));
 	}

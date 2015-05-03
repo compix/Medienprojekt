@@ -1,18 +1,20 @@
 #pragma once
 #include <Box2D/Box2D.h>
+#include <memory>
 
 class PhysixSystem
 {
 public:
 	PhysixSystem(float scale, int velocityIterations, int positionIterations);
 	~PhysixSystem();
-	float m_scale, m_scaleInv;
+	unique_ptr<float> m_scale;
+	unique_ptr<float> m_scaleInv;
 
 private:
-	b2World m_world;
-	b2Vec2 m_gravity;
-	int m_velocityIterations;
-	int m_positionIterations;
+	unique_ptr<b2World> m_world;
+	unique_ptr<b2Vec2> m_gravity;
+	unique_ptr<int> m_velocityIterations;
+	unique_ptr<int> m_positionIterations;
 
 public:
 	float GetScale();
