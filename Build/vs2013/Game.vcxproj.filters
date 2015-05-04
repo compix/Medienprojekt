@@ -58,6 +58,7 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
+    <ClInclude Include="..\..\Source\Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />

@@ -1,13 +1,18 @@
 ﻿#include "PhysixSystem.h"
 
+float PhysixSystem::m_Scale(1.f);
+float PhysixSystem::m_InvScale(1.f / PhysixSystem::m_Scale);
+
 PhysixSystem::PhysixSystem(int velocityIterations, int positionIteration, float scale) :
-m_World(b2Vec2(0,0)), m_Scale(scale), m_InvScale(1.f / m_Scale), m_velocityIterations(velocityIterations), m_positionIteration(positionIteration)
+m_velocityIterations(velocityIterations), m_positionIteration(positionIteration), m_World(b2Vec2(0,1))
 {
+	PhysixSystem::m_Scale = scale;
+	PhysixSystem::m_InvScale = 1.f / PhysixSystem::m_Scale;
 }
 
 PhysixSystem::~PhysixSystem()
 {
-	delete &m_World;
+	//delete m_World;
 }
 
 b2World* PhysixSystem::GetWorld()
@@ -20,11 +25,11 @@ void PhysixSystem::SetWorld(b2World b2_world)
 	m_World = b2_world;
 }
 
-void PhysixSystem::SetScale(float scale)
+/*void PhysixSystem::SetScale(float scale)
 {
-	m_Scale = scale;
-	m_InvScale = 1.f / m_Scale;
-}
+	PhysixSystem::m_Scale = scale;
+	PhysixSystem::m_InvScale = 1.f / PhysixSystem::m_Scale;
+}*/
 
 void PhysixSystem::SetDebugDrawer(SFMLDebugDraw* debugDraw)
 {
@@ -53,5 +58,15 @@ b2Vec2 PhysixSystem::GetGravity()
 
 float PhysixSystem::GetScale()
 {
-	return m_Scale;
+	return PhysixSystem::m_Scale;
+}
+
+float PhysixSystem::toBox2D(float pixel)
+{
+	return pixel / PhysixSystem::m_Scale;
+}
+
+float PhysixSystem::toWorld(float meters)
+{
+	return meters*PhysixSystem::m_InvScale;
 }

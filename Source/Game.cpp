@@ -21,7 +21,7 @@ Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw*
 {
 
 
-	m_PhysixSystem = new PhysixSystem(6, 3, 1.f);
+	m_PhysixSystem = new PhysixSystem(6, 3, S_SCALE);
 	m_PhysixSystem->SetDebugDrawer(debugDraw);
 
 	m_pLayerManager = make_unique<LayerManager>();

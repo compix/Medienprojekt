@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
+    <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />

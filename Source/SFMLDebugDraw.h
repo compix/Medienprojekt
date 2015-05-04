@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SFMLDEBUGDRAW_H
-#define SFMLDEBUGDRAW_H
+#pragma once
 
 #include <Box2D/Box2D.h>
+#include "Settings.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
 namespace sfdd
 {
-	const float SCALE = 32.f;
+	const float SCALE = S_SCALE;
 }
 
 class SFMLDebugDraw : public b2Draw
@@ -41,27 +41,26 @@ public:
 	}
 
 	/// Convert Box2D's vector to SFML vector [Default - scales the vector up by SCALE constants amount]
-	static sf::Vector2f B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = false)
+	static sf::Vector2f B2VecToSFVec(const b2Vec2 &vector, bool scaleToPixels = true)
 	{
 		return sf::Vector2f(vector.x * (scaleToPixels ? sfdd::SCALE : 1.f), vector.y * (scaleToPixels ? sfdd::SCALE : 1.f));
 	}
 
 	/// Draw a closed polygon provided in CCW order.
-	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
+	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
 
 	/// Draw a solid closed polygon provided in CCW order.
-	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
+	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
 
 	/// Draw a circle.
-	void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color);
+	void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) override;
 
 	/// Draw a solid circle.
-	void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color);
+	void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) override;
 
 	/// Draw a line segment.
-	void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color);
+	void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
 
 	/// Draw a transform. Choose your own length scale.
-	void DrawTransform(const b2Transform& xf);
+	void DrawTransform(const b2Transform& xf) override;
 };
-#endif //SFMLDEBUGDRAW_H

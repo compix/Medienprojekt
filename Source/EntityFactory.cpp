@@ -38,10 +38,10 @@ Entity EntityFactory::createTestEntity1()
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(200.0f, 200.0f);
+	bodyDef.position.Set(PhysixSystem::toBox2D(200.0f), PhysixSystem::toBox2D(200.0f));
 	b2Body* body = m_PhysixSystem->GetWorld()->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(10.0f, 10.0f);
+	dynamicBox.SetAsBox(PhysixSystem::toBox2D(10.0f), PhysixSystem::toBox2D(10.0f));
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
