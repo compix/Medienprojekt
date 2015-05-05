@@ -41,6 +41,8 @@
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.h</itemPath>
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
+				<itemPath>../../../Source/Utils/SystemUtils.cpp</itemPath>
+				<itemPath>../../../Source/Utils/SystemUtils.h</itemPath>
 				<itemPath>../../../Source/Utils/TextureLoader.cpp</itemPath>
 				<itemPath>../../../Source/Utils/TextureLoader.h</itemPath>
 				<itemPath>../../../Source/Utils/make_unique.h</itemPath>
@@ -140,6 +142,7 @@
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -156,6 +159,7 @@
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -248,6 +252,7 @@
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -264,6 +269,7 @@
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
