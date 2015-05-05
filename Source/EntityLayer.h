@@ -6,6 +6,7 @@
 using std::vector;
 using entityx::Entity;
 using entityx::ComponentHandle;
+using entityx::EntityManager;
 
 class EntityLayer
 {
@@ -47,11 +48,11 @@ void EntityLayer::sort(T comparator)
  */
 struct DepthComparator
 {
-	bool operator()(Entity& e1, Entity& e2)
+	bool operator()(const Entity& e1, const Entity& e2)
 	{
 		assert(e1.has_component<TransformComponent>() && e2.has_component<TransformComponent>());
-		ComponentHandle<TransformComponent> t1 = e1.component<TransformComponent>();
-		ComponentHandle<TransformComponent> t2 = e2.component<TransformComponent>();
+		const ComponentHandle<const TransformComponent, const EntityManager> t1 = e1.component<const TransformComponent, const EntityManager>();
+		const ComponentHandle<const TransformComponent, const EntityManager> t2 = e2.component<const TransformComponent, const EntityManager>();
 
 		return (t1->y == t2->y) ? (t1->x < t2->x) : (t1->y < t2->y);
 	}

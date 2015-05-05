@@ -25,7 +25,7 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager)
 	systems.configure();
 
 	m_textureLoader = make_unique<TextureLoader>();
-	m_textureLoader->loadAllFromJson("assets/json/textures.json");
+	m_textureLoader->loadAllFromJson("Assets/json/textures.json");
 
 	m_entityFactory = make_unique<EntityFactory>(this, m_textureLoader.get(), m_world.get(), m_layerManager.get());
 

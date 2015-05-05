@@ -47,6 +47,10 @@ void RenderSystem::render(EntityLayer& layer)
 	}
 }
 
+#ifndef WIN32
+	#define _snprintf snprintf
+#endif
+
 void RenderSystem::showFPS()
 {
 	m_fpsCalculator.addFrame();
