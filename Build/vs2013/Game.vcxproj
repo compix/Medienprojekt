@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
+    <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
@@ -130,6 +131,7 @@
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
