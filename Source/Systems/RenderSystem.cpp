@@ -47,15 +47,15 @@ void RenderSystem::render(EntityLayer& layer)
 	}
 }
 
-#ifndef WIN32
-	#define _snprintf snprintf
+#ifdef _MSC_VER
+	#define snprintf _snprintf
 #endif
 
 void RenderSystem::showFPS()
 {
 	m_fpsCalculator.addFrame();
 	char buffer [20];
-	_snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
+	snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
 	m_fpsText.setString(buffer);
 	float w = m_fpsText.getLocalBounds().width;
 	float x = m_pWindow->getSize().x - w;
