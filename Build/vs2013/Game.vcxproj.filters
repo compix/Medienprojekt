@@ -50,7 +50,16 @@
     <ClInclude Include="..\..\Source\Utils\Exceptions.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\FpsCalculator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\InputManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\LevelGenerator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
@@ -59,6 +68,9 @@
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\Settings.h" />
+    <ClInclude Include="..\..\Source\Utils\make_unique.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -79,7 +91,13 @@
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">

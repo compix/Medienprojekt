@@ -3,6 +3,8 @@
 #include "../Components/TransformComponent.h"
 #include <PhysixSystem.h>
 
+using namespace entityx;
+
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
 	ComponentHandle<BodyComponent> body;

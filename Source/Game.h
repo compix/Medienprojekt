@@ -7,15 +7,16 @@
 #include "LayerManager.h"
 #include "SFMLDebugDraw.h"
 
-using namespace entityx;
-using namespace std;
+using entityx::EntityX;
+using entityx::TimeDelta;
+using std::unique_ptr;
 
 class InputManager;
 
 class Game : public EntityX
 {
 public:
-	Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw* debugDraw);
+	Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw);
 	~Game();
 
 	void update(TimeDelta dt);
@@ -24,11 +25,11 @@ private:
 	void createTestLevel(EntityLayer& layer);
 
 private:
-	unique_ptr<TextureLoader> m_pTextureLoader;
-	unique_ptr<EntityFactory> m_pEntityFactory;
-	unique_ptr<LayerManager> m_pLayerManager;
+	unique_ptr<TextureLoader> m_textureLoader;
+	unique_ptr<EntityFactory> m_entityFactory;
+	unique_ptr<LayerManager> m_layerManager;
+	unique_ptr<b2World> m_world;
 	PhysixSystem* m_PhysixSystem;
-	b2World* m_World;
 	SFMLDebugDraw* debug;
 };
 

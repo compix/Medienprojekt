@@ -17,9 +17,9 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 
 		float animationDuration = animation->frameCount * animation->frameDuration;
 
-		int frame = animation->stateTime / animationDuration * animation->frameCount;
+		int frame = (int) (animation->stateTime / animationDuration * animation->frameCount);
 
-		animation->stateTime += dt;
+		animation->stateTime += (float) dt;
 
 		switch (animation->playMode)
 		{
@@ -31,21 +31,21 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 				animation->stateTime -= animationDuration;
 			break;
 		case REVERSED:
-			frame = (animationDuration - animation->stateTime) / animationDuration * animation->frameCount;
+			frame = (int) ((animationDuration - animation->stateTime) / animationDuration * animation->frameCount);
 			frame = std::max(frame, 0);
 			break;
 		case LOOP_REVERSED:
 			if (animation->stateTime >= animationDuration)
 				animation->stateTime -= animationDuration;
 
-			frame = (animationDuration - animation->stateTime) / animationDuration * animation->frameCount;
+			frame = (int) ((animationDuration - animation->stateTime) / animationDuration * animation->frameCount);
 			frame = std::max(frame, 0);
 			break;
 		case PING_PONG:
 			if (animation->stateTime >= animationDuration)
 			{
 				float stateTime = animation->stateTime - animationDuration;
-				frame = (animationDuration - stateTime) / animationDuration * animation->frameCount;
+				frame = (int) ((animationDuration - stateTime) / animationDuration * animation->frameCount);
 				frame = std::max(frame, 0);
 			}
 			break;
@@ -53,7 +53,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 			if (animation->stateTime >= animationDuration)
 			{
 				float stateTime = animation->stateTime - animationDuration;
-				frame = (animationDuration - stateTime) / animationDuration * animation->frameCount;
+				frame = (int) ((animationDuration - stateTime) / animationDuration * animation->frameCount);
 				if (animation->stateTime >= animationDuration * 2.f)
 					animation->stateTime -= animationDuration * 2.f;
 			}

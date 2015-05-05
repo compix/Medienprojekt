@@ -3,8 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include "EntityLayer.h"
 #include "LayerManager.h"
+#include "../Utils/FpsCalculator.h"
 
-using namespace entityx;
+using entityx::System;
+using entityx::EntityManager;
+using entityx::EventManager;
+using entityx::TimeDelta;
 
 class RenderSystem : public System<RenderSystem>
 {
@@ -15,9 +19,13 @@ public:
 
 private:
 	void render(EntityLayer& layer);
+	void showFPS();
 
 private:
 	sf::RenderWindow* m_pWindow;
 	LayerManager* m_pLayerManager;
+	sf::Font m_font;
+	sf::Text m_fpsText;
+	FpsCalculator m_fpsCalculator;
 };
 

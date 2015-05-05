@@ -5,50 +5,49 @@
 #include "Systems/RenderSystem.h"
 #include "Components/TransformComponent.h"
 #include <Box2D/Box2D.h>
+#include "Utils/LevelGenerator.h"
+#include "Utils/make_unique.h"
 
 
-#ifndef _MSC_VER
+using namespace std;
 
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
-{
-	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-#endif
-
-
-Game::Game(sf::RenderWindow* pWindow, InputManager &inputManager, SFMLDebugDraw* debugDraw)
+Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw)
 {
 
 
 	m_PhysixSystem = new PhysixSystem(6, 3, S_SCALE);
 	m_PhysixSystem->SetDebugDrawer(debugDraw);
 
-	m_pLayerManager = make_unique<LayerManager>();
+	m_layerManager = make_unique<LayerManager>();
 
 	systems.add<BodySystem>();
 	systems.add<InputSystem>(inputManager);
 	systems.add<AnimationSystem>();
-	systems.add<RenderSystem>(pWindow, m_pLayerManager.get());
+	systems.add<RenderSystem>(window, m_layerManager.get());
 	systems.configure();
 
-	m_pTextureLoader = make_unique<TextureLoader>();
-	m_pTextureLoader->loadAllFromJson("assets/json/textures.json");
+	m_textureLoader = make_unique<TextureLoader>();
+	m_textureLoader->loadAllFromJson("assets/json/textures.json");
 
-	m_pEntityFactory = make_unique<EntityFactory>(this, m_pTextureLoader.get(), m_PhysixSystem);
+	m_entityFactory = make_unique<EntityFactory>(this, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get());
 
-	Entity entity = m_pEntityFactory->createTestEntity1();
-	Entity entity2 = m_pEntityFactory->createTestEntity2();
+// 	Entity entity = m_pEntityFactory->createTestEntity1(100.f, 100.f);
+// 	Entity entity2 = m_pEntityFactory->createTestEntity2();
 
-	ComponentHandle<TransformComponent> t = entity.component<TransformComponent>();
+	//ComponentHandle<TransformComponent> t = entity.component<TransformComponent>();
 
-	EntityLayer& entityLayer = m_pLayerManager->createLayer(0, false);
-	entityLayer.add(entity2);
-	entityLayer.add(entity);
+	EntityLayer& entityLayer = m_layerManager->createLayer(0, true);
 
-	createTestLevel(entityLayer);
+	LevelGenerator levelGenerator(m_entityFactory.get(), 21, 21);
+	levelGenerator.generateRandomLevel();
 
-	m_pLayerManager->sortLayers(DepthComparator());
+
+// 	entityLayer.add(entity2);
+// 	entityLayer.add(entity);
+
+	//createTestLevel(entityLayer);
+
+	m_layerManager->sortLayers(DepthComparator());
 }
 
 Game::~Game() { 
@@ -75,7 +74,7 @@ void Game::createTestLevel(EntityLayer& layer)
 
 			if (x == 0 || x == 20 || y == 0 || y == 20 || (x % 2 == 0 && y % 2 == 0))
 			{
-				e = m_pEntityFactory->createSolidBlock(x*blockWidth, y * blockHeight);
+				e = m_entityFactory->createSolidBlock(x*blockWidth, y * blockHeight);
 				layer.add(e);
 			}
 			else

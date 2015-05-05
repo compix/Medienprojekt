@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-using namespace std;
+using std::vector;
 
 class LayerManager
 {
@@ -11,6 +11,8 @@ public:
 	EntityLayer& createLayer(int layer, bool _static);
 
 	vector<EntityLayer>& getLayers() { return m_layers; }
+
+	void addToLayer(int layer, Entity entity);
 
 	template<class T>
 	void sortLayers(T comparator);

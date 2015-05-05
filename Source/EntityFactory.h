@@ -3,22 +3,24 @@
 #include<Box2D/Box2D.h>
 #include "Utils/TextureLoader.h"
 #include "PhysixSystem.h"
+#include "LayerManager.h"
 
-using namespace entityx;
+using entityx::EntityX;
 
 class EntityFactory
 {
 public:
-	EntityFactory(EntityX* pEntityX, TextureLoader* pTextureLoader, PhysixSystem* physixSystem);
+	EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager);
 
-	Entity createTestEntity1();
+	Entity createTestEntity1(int row, int col);
 	Entity createTestEntity2();
 
-	Entity createBlock(float x, float y);
-	Entity createSolidBlock(float x, float y);
+	Entity createBlock(int row, int col);
+	Entity createSolidBlock(int row, int col);
 private:
-	EntityX* m_pEntityX;
-	TextureLoader* m_pTextureLoader;
+	EntityX* m_entityX;
+	TextureLoader* m_textureLoader;
 	PhysixSystem* m_PhysixSystem;
+	LayerManager* m_layerManager;
 };
 

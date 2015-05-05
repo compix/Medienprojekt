@@ -7,8 +7,12 @@
 #include <fstream>
 #include <iostream>
 
-using namespace sf;
-using namespace std;
+using std::unordered_map;
+using std::ifstream;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
 
 template<class T>
 class AssetLoader
@@ -36,6 +40,11 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 	Json::Reader reader;
 	ifstream ifs(path, ifstream::binary);
 
+	if(!ifs.is_open()) {
+		cerr << "Can't find file: " << path << endl;
+		exit(EXIT_FAILURE);
+	}
+	
 	if (!reader.parse(ifs, root, false))
 	{
 		cout << "Parsing error: " << reader.getFormattedErrorMessages() << endl;

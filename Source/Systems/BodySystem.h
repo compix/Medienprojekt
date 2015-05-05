@@ -1,7 +1,10 @@
 #pragma once
 #include <entityx/entityx.h>
 
-using namespace entityx;
+using entityx::System;
+using entityx::EntityManager;
+using entityx::EventManager;
+using entityx::TimeDelta;
 
 class BodySystem : public System<BodySystem>
 {
