@@ -5,10 +5,7 @@
 
 class PhysixSystem
 {
-	enum _entityCategory {
-		PLAYER = 0x0001,
-		WALL = 0x0002
-	};
+	
 
 public:
 	PhysixSystem(int velocityIterations, int positionIteration, float scale);

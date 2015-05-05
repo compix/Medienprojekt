@@ -71,6 +71,7 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\BodyFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -105,5 +106,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
+    <ClCompile Include="..\..\Source\BodyFactory.cpp" />
   </ItemGroup>
 </Project>

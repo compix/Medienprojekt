@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/BodyComponent.h"
 #include <SFML/Graphics.hpp>
+#include "BodyFactory.h"
 
 
 EntityFactory::EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
@@ -36,19 +37,20 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	animationComponent.playMode = PlayMode::LOOP;
 	entity.assign<AnimationComponent>(animationComponent);
 
-	b2BodyDef bodyDef;
+	/*b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(PhysixSystem::toBox2D(200.0f), PhysixSystem::toBox2D(200.0f));
+	bodyDef.position.Set(PhysixSystem::toBox2D(25.f * col + 12.f), PhysixSystem::toBox2D(25.f * row));
 	b2Body* body = m_PhysixSystem->GetWorld()->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(PhysixSystem::toBox2D(10.0f), PhysixSystem::toBox2D(10.0f));
 	b2FixtureDef fixtureDef;
+	//fixtureDef.filter.categoryBits = PhysixSystem::_entityCategory::PLAYER;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
+	fixtureDef.friction = 0.f;
+	body->CreateFixture(&fixtureDef);*/
 	BodyComponent bodyComponent;
-	bodyComponent.body = body;
+	bodyComponent.body = BodyFactory::CreateBox(25.f * col + 12.f, 25.f * row, 10.f, 10.f, b2_kinematicBody, BodyFactory::CollsionCategory::PLAYER, BodyFactory::CollsionCategory::PLAYER);
 
 	entity.assign<BodyComponent>(bodyComponent);
 

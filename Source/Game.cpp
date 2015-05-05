@@ -3,10 +3,9 @@
 #include "Systems/InputSystem.h"
 #include "Systems/BodySystem.h"
 #include "Systems/RenderSystem.h"
-#include "Components/TransformComponent.h"
-#include <Box2D/Box2D.h>
 #include "Utils/LevelGenerator.h"
 #include "Utils/make_unique.h"
+#include "BodyFactory.h"
 
 
 using namespace std;
@@ -14,9 +13,11 @@ using namespace std;
 Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw)
 {
 
-
+	/*Setup PhysixSystem*/
 	m_PhysixSystem = new PhysixSystem(6, 3, S_SCALE);
 	m_PhysixSystem->SetDebugDrawer(debugDraw);
+	BodyFactory::m_World = m_PhysixSystem->GetWorld();
+	/*Setup PhysixSystem End*/
 
 	m_layerManager = make_unique<LayerManager>();
 
