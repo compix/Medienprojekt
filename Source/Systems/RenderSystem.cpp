@@ -34,10 +34,12 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 
 void RenderSystem::render(EntityLayer& layer)
 {
+	ComponentHandle<TransformComponent> transform;
+	ComponentHandle<SpriteComponent> sprite;
 	for (auto e : layer.getEntities())
 	{
-		ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
-		ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
+		transform = e.component<TransformComponent>();
+		sprite = e.component<SpriteComponent>();
 
 		sprite->sprite.setPosition(transform->x, transform->y);
 		sprite->sprite.setRotation(transform->rotation);

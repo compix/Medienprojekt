@@ -10,6 +10,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DebugRenderer">
+      <UniqueIdentifier>{c349e990-84e6-4db1-bef8-a42b08f78f7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h">
@@ -65,13 +68,18 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h">
+      <Filter>DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\debugrender.h">
+      <Filter>DebugRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
@@ -104,8 +112,13 @@
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp">
+      <Filter>DebugRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\debugrender.cpp">
+      <Filter>DebugRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

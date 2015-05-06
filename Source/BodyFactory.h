@@ -9,7 +9,7 @@ public:
 
 	enum CollsionCategory {
 		PLAYER = 0x0001,
-		WALL = 0x0002
+		SOLID_BLOCK = 0x0002
 	};
 
 	BodyFactory(b2World b2_world);

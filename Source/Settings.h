@@ -1,4 +1,4 @@
 ﻿#pragma once
 
-const float S_SCALE = 23.f;
+const float S_SCALE = 32.f;
 

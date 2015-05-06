@@ -99,6 +99,7 @@
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
+    <ClInclude Include="..\..\Source\debugrender.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Game.h" />
@@ -122,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\debugrender.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />

@@ -25,9 +25,9 @@ int main()
 	SFMLDebugDraw debugDraw(window);
 
 	debugDraw.SetFlags(b2Draw::e_shapeBit);
-	debugDraw.AppendFlags(b2Draw::e_jointBit);
-	debugDraw.AppendFlags(b2Draw::e_centerOfMassBit);
-	debugDraw.AppendFlags(b2Draw::e_aabbBit);
+	//debugDraw.AppendFlags(b2Draw::e_jointBit);
+	//AppendFlags(b2Draw::e_centerOfMassBit);
+	//debugDraw.AppendFlags(b2Draw::e_aabbBit);
 
 	Game game(&window, inputManager, &debugDraw);
 

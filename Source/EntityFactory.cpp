@@ -37,20 +37,14 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	animationComponent.playMode = PlayMode::LOOP;
 	entity.assign<AnimationComponent>(animationComponent);
 
-	/*b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(PhysixSystem::toBox2D(25.f * col + 12.f), PhysixSystem::toBox2D(25.f * row));
-	b2Body* body = m_PhysixSystem->GetWorld()->CreateBody(&bodyDef);
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(PhysixSystem::toBox2D(10.0f), PhysixSystem::toBox2D(10.0f));
-	b2FixtureDef fixtureDef;
-	//fixtureDef.filter.categoryBits = PhysixSystem::_entityCategory::PLAYER;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.f;
-	body->CreateFixture(&fixtureDef);*/
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(25.f * col + 12.f, 25.f * row, 10.f, 10.f, b2_kinematicBody, BodyFactory::CollsionCategory::PLAYER, BodyFactory::CollsionCategory::PLAYER);
+	bodyComponent.body = BodyFactory::CreateBox(25.f * col + 12.f, 
+												25.f * row + 15.f,
+												10.f, 
+												10.f, 
+												b2_dynamicBody, 
+												BodyFactory::CollsionCategory::PLAYER, 
+												BodyFactory::CollsionCategory::SOLID_BLOCK);
 
 	entity.assign<BodyComponent>(bodyComponent);
 
@@ -120,10 +114,22 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 	sprite.setTexture(tex);
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float) tex.getSize().x * col;
+	transformComponent.x = (float)tex.getSize().x * col;
 	transformComponent.y = (float)tex.getSize().x * row;
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<SpriteComponent>(sprite);
+
+	BodyComponent bodyComponent;
+	bodyComponent.body = BodyFactory::CreateBox(tex.getSize().x * col + tex.getSize().x/2.f,
+												(tex.getSize().x * row + tex.getSize().y/2.f)-4.f,
+												tex.getSize().x / 2,
+												tex.getSize().x / 2, 
+												b2_staticBody, 
+												BodyFactory::CollsionCategory::SOLID_BLOCK,
+												BodyFactory::CollsionCategory::PLAYER);
+
+
+	entity.assign<BodyComponent>(bodyComponent);
 
 	m_layerManager->addToLayer(0, entity);
 

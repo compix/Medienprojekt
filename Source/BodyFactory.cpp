@@ -15,7 +15,7 @@ BodyFactory::~BodyFactory()
 b2Body* BodyFactory::CreateBox(float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith)
 {
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = type;
 	bodyDef.position.Set(PhysixSystem::toBox2D(posX), PhysixSystem::toBox2D(posY));
 	b2Body* body = m_World->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
