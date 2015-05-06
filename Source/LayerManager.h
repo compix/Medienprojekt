@@ -3,7 +3,7 @@
 #include <memory>
 #include <map>
 
-using namespace std;
+using std::vector;
 
 typedef std::shared_ptr<EntityLayer> EntityLayerPtr;
 typedef std::map<int, EntityLayerPtr> LayerContainer;

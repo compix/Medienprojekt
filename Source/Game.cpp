@@ -9,15 +9,7 @@
 #include "Systems/DeathSystem.h"
 #include "Systems/HealthSystem.h"
 #include "Events/EntityGotHitEvent.h"
-
-#ifndef _MSC_VER
-
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
-{
-	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-#endif
+#include "Utils/make_unique.h"
 #include "Components/ExplosionComponent.h"
 #include "Systems/ExplosionSystem.h"
 #include <Components/DestructionDelayComponent.h>

@@ -6,8 +6,9 @@
 #include "EntityFactory.h"
 #include "LayerManager.h"
 
-using namespace entityx;
-using namespace std;
+using entityx::EntityX;
+using entityx::TimeDelta;
+using std::unique_ptr;
 
 class InputManager;
 

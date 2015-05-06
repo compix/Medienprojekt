@@ -1,6 +1,8 @@
 #pragma once
 #include "AssetLoader.h"
 
+using sf::Texture;
+
 class TextureLoader : public AssetLoader<Texture>
 {
 public:

@@ -53,6 +53,9 @@
     <ClInclude Include="..\..\Source\Utils\Exceptions.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\FpsCalculator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\InputManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -60,6 +63,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Random.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\SystemUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
@@ -77,6 +83,8 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\DeathEvent.h">
       <Filter>Events</Filter>
+    <ClInclude Include="..\..\Source\Utils\make_unique.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h">
       <Filter>Systems</Filter>
@@ -134,10 +142,16 @@
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">

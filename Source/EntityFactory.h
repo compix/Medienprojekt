@@ -7,8 +7,8 @@
 namespace ExplosionDirection{
 	enum Direction;
 }
+using entityx::EntityX;
 
-using namespace entityx;
 
 class EntityFactory
 {

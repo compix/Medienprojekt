@@ -1,7 +1,8 @@
 #pragma once
 #include <exception>
 
-using namespace std;
+using std::exception;
+using std::string;
 
 class file_not_found : public exception
 {

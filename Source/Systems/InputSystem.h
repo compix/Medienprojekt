@@ -2,7 +2,10 @@
 #include <entityx/entityx.h>
 #include "EntityLayer.h"
 
-using namespace entityx;
+using entityx::System;
+using entityx::EntityManager;
+using entityx::EventManager;
+using entityx::TimeDelta;
 
 class InputManager;
 
