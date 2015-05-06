@@ -16,18 +16,9 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 
 	for (Entity entity : entityManager.entities_with_components(body, transform, sprite))
 	{
-		/*
-		transform->x = (body->body->GetPosition().x*scale - (sprite->sprite.getTexture()->getSize().y / 2.f - 3.f));
-		transform->y = (body->body->GetPosition().y*scale - (sprite->sprite.getTexture()->getSize().y / 2.f - 5.f));
-		*/
 
-		transform->x = (body->body->GetPosition().x*scale + body->xOffset - (sprite->sprite.getLocalBounds().width/2));
-		transform->y = (body->body->GetPosition().y*scale + body->yOffset - (sprite->sprite.getLocalBounds().height / 2));
-
-		
-
-		//transform->x = (body->body->GetPosition().x*scale);
-		//transform->y = (body->body->GetPosition().y*scale);
+		transform->x = (body->body->GetPosition().x*scale);
+		transform->y = (body->body->GetPosition().y*scale);
 
 	}
 }

@@ -25,11 +25,12 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* 
 
 
 	m_layerManager = std::make_unique<LayerManager>();
+	m_layerManager->createLayer(21, 21, 0);
 	m_layerManager->configure(events);
 
 	m_textureLoader = std::make_unique<TextureLoader>();
 	m_textureLoader->loadAllFromJson("assets/json/textures.json");
-	m_entityFactory = std::make_unique<EntityFactory>(this, m_textureLoader.get(), m_world.get(), m_layerManager.get());
+	m_entityFactory = std::make_unique<EntityFactory>(this, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get());
 
 	systems.add<DamageSystem>(m_layerManager.get());
 	systems.add<DestructionSystem>();
@@ -41,12 +42,6 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* 
 	systems.add<AnimationSystem>();
 	systems.add<RenderSystem>(window, m_layerManager.get());
 	systems.configure();
-
-	m_textureLoader = make_unique<TextureLoader>();
-	m_textureLoader->loadAllFromJson("assets/json/textures.json");
-
-	m_entityFactory = make_unique<EntityFactory>(this, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get());
-	EntityLayer* entityLayer = m_layerManager->createLayer(21, 21, 0);
 
 	LevelGenerator levelGenerator(m_entityFactory.get(), 21, 21);
 	levelGenerator.generateRandomLevel();

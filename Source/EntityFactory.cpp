@@ -47,10 +47,10 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	entity.assign<AnimationComponent>(animationComponent);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(25.f * col + 12.f, 
-												25.f * row + 15.f,
-												10.f, 
-												10.f, 
+	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
+												(float)GameConstants::CELL_HEIGHT * row,
+												10.f,
+												10.f,
 												b2_dynamicBody, 
 												BodyFactory::CollsionCategory::PLAYER, 
 												BodyFactory::CollsionCategory::SOLID_BLOCK);
@@ -113,7 +113,10 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 	entity.assign<CellComponent>(col, row);
 	entity.assign<HealthComponent>(1);
 
+
 	m_layerManager->addToLayer(0, entity);
+
+
 
 	return entity;
 }
@@ -136,6 +139,16 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 
 	entity.assign<CellComponent>(col, row);
 
+
+	BodyComponent bodyComponent;
+	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
+		(float)GameConstants::CELL_HEIGHT * row,
+		10.f,
+		10.f,
+		b2_staticBody,
+		BodyFactory::CollsionCategory::SOLID_BLOCK,
+		BodyFactory::CollsionCategory::PLAYER);
+
 	m_layerManager->addToLayer(0, entity);
 
 	return entity;
@@ -155,16 +168,7 @@ Entity EntityFactory::createBomb(int row, int col)
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<SpriteComponent>(sprite);
 
-	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(tex.getSize().x * col + sprite.getLocalBounds().width/2.f,
-												(tex.getSize().x * row + sprite.getLocalBounds().height/2.f),
-												tex.getSize().x / 2,
-												tex.getSize().x / 2, 
-												b2_staticBody, 
-												BodyFactory::CollsionCategory::SOLID_BLOCK,
-												BodyFactory::CollsionCategory::PLAYER);
-
-	entity.assign<BodyComponent>(bodyComponent);
+	
 
 	entity.assign<CellComponent>(col, row);
 

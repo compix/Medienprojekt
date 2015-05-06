@@ -22,6 +22,7 @@ b2Body* BodyFactory::CreateBox(float posX, float posY, float width, float height
 	dynamicBox.SetAsBox(PhysixSystem::toBox2D(width), PhysixSystem::toBox2D(height));
 	b2FixtureDef fixtureDef;
 	fixtureDef.filter.categoryBits = isA;
+	fixtureDef.filter.maskBits = collideWith;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.f;
