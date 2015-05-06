@@ -12,6 +12,8 @@
     </Filter>
     <Filter Include="DebugRenderer">
       <UniqueIdentifier>{c349e990-84e6-4db1-bef8-a42b08f78f7a}</UniqueIdentifier>
+    <Filter Include="Events">
+      <UniqueIdentifier>{75eb7dce-8476-408b-b5f4-abfae235c95b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,11 +67,27 @@
     <ClInclude Include="..\..\Source\Utils\Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\SystemUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\Settings.h" />
+    <ClInclude Include="..\..\Source\Components\CellComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameConstants.h" />
+    <ClInclude Include="..\..\Source\Components\TimerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\HealthComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\DeathEvent.h">
+      <Filter>Events</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -79,6 +97,42 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h">
       <Filter>DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\HealthSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DeathSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DestructionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DestructionSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DamageSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LayerComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +163,9 @@
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -119,6 +176,24 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp">
       <Filter>DebugRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Random.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

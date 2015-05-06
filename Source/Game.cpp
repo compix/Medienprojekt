@@ -1,16 +1,20 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/InputSystem.h"
 #include "Systems/BodySystem.h"
 #include "Systems/RenderSystem.h"
 #include "Utils/LevelGenerator.h"
+#include "Systems/DeathSystem.h"
+#include "Systems/HealthSystem.h"
 #include "Utils/make_unique.h"
 #include "BodyFactory.h"
+#include "Systems/ExplosionSystem.h"
+#include "Systems/DestructionSystem.h"
+#include "Systems/DamageSystem.h"
+#include "Utils/Random.h"
 
 
-using namespace std;
-
-Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw)
+Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw):m_timer(1.f)
 {
 
 	/*Setup PhysixSystem*/
@@ -19,8 +23,19 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* 
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
 
-	m_layerManager = make_unique<LayerManager>();
 
+	m_layerManager = std::make_unique<LayerManager>();
+	m_layerManager->configure(events);
+
+	m_textureLoader = std::make_unique<TextureLoader>();
+	m_textureLoader->loadAllFromJson("assets/json/textures.json");
+	m_entityFactory = std::make_unique<EntityFactory>(this, m_textureLoader.get(), m_world.get(), m_layerManager.get());
+
+	systems.add<DamageSystem>(m_layerManager.get());
+	systems.add<DestructionSystem>();
+	systems.add<ExplosionSystem>(m_entityFactory.get(), m_layerManager.get());
+	systems.add<HealthSystem>();
+	systems.add<DeathSystem>();
 	systems.add<BodySystem>();
 	systems.add<InputSystem>(inputManager);
 	systems.add<AnimationSystem>();
@@ -31,24 +46,10 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* 
 	m_textureLoader->loadAllFromJson("assets/json/textures.json");
 
 	m_entityFactory = make_unique<EntityFactory>(this, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get());
-
-// 	Entity entity = m_pEntityFactory->createTestEntity1(100.f, 100.f);
-// 	Entity entity2 = m_pEntityFactory->createTestEntity2();
-
-	//ComponentHandle<TransformComponent> t = entity.component<TransformComponent>();
-
-	EntityLayer& entityLayer = m_layerManager->createLayer(0, true);
+	EntityLayer* entityLayer = m_layerManager->createLayer(21, 21, 0);
 
 	LevelGenerator levelGenerator(m_entityFactory.get(), 21, 21);
 	levelGenerator.generateRandomLevel();
-
-
-// 	entityLayer.add(entity2);
-// 	entityLayer.add(entity);
-
-	//createTestLevel(entityLayer);
-
-	m_layerManager->sortLayers(DepthComparator());
 }
 
 Game::~Game() { 
@@ -60,29 +61,27 @@ void Game::update(TimeDelta dt)
 	m_PhysixSystem->Update(dt);
 	systems.update_all(dt);
 	m_PhysixSystem->DrawDebug();
+	m_layerManager->update();
+
+	testExplosions(dt);
 }
 
-void Game::createTestLevel(EntityLayer& layer)
+void Game::testExplosions(TimeDelta dt)
 {
-	int blockWidth = 25;
-	int blockHeight = 25;
+	m_timer -= (float)dt;
 
-	for (int x = 0; x < 21; x++)
+	if (m_timer <= 0.f)
 	{
-		for (int y = 0; y < 21; y++)
-		{
-			Entity e;
+		m_timer = 1.f;
 
-			if (x == 0 || x == 20 || y == 0 || y == 20 || (x % 2 == 0 && y % 2 == 0))
-			{
-				e = m_entityFactory->createSolidBlock(x*blockWidth, y * blockHeight);
-				layer.add(e);
-			}
-			else
-			{
-				//e = m_pEntityFactory->createBlock(x*blockWidth, y*blockHeight);
-				//layer.add(e);
-			}
-		}
+		int cellX, cellY;
+
+		do
+		{
+			cellX = Random::getInt(1, 19);
+			cellY = Random::getInt(1, 19);
+		} while (m_layerManager->hasSolidBlock(0, cellX, cellY));
+
+		m_entityFactory->createExplosion(cellY, cellX, 3, 0.06f);
 	}
 }

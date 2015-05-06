@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "entityx/entityx.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -24,12 +24,14 @@ public:
 private:
 	void createTestLevel(EntityLayer& layer);
 
+	void testExplosions(TimeDelta dt);
 private:
 	unique_ptr<TextureLoader> m_textureLoader;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
-	unique_ptr<b2World> m_world;
 	PhysixSystem* m_PhysixSystem;
 	SFMLDebugDraw* debug;
+
+	float m_timer;
 };
 

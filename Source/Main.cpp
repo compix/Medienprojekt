@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include <entityx/entityx.h>
 #include <iostream>
 #include "json/json.h"
@@ -12,11 +12,22 @@
 #include "EntityLayer.h"
 #include "Utils/InputManager.h"
 #include "SFMLDebugDraw.h"
+#include "Utils/SystemUtils.h"
 
 using namespace std;
 
+void changeToGameDir() {
+	string exeDir = SystemUtils::getExecutableDirectory();
+	SystemUtils::setCwd(exeDir);
+#if defined(_DEBUG) || defined(DEBUG)
+	SystemUtils::setCwd("../Game");
+#endif
+}
+
 int main()
 {
+	changeToGameDir();
+
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 	window.setKeyRepeatEnabled(false);
 

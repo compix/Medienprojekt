@@ -1,4 +1,4 @@
-#include "RenderSystem.h"
+﻿#include "RenderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
 #include <iostream>
@@ -23,37 +23,50 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 {
 	for (auto& layer : m_pLayerManager->getLayers())
 	{
-		if (!layer.isStatic())
-			layer.sort(DepthComparator());
-
-		render(layer);
+		render(layer.second.get());
 	}
 
 	showFPS();
 }
 
-void RenderSystem::render(EntityLayer& layer)
+void RenderSystem::render(EntityLayer* layer)
 {
-	ComponentHandle<TransformComponent> transform;
-	ComponentHandle<SpriteComponent> sprite;
-	for (auto e : layer.getEntities())
+	EntityGrid grid = layer->getEntityGrid();
+
+	for (int y = 0; y < layer->getHeight(); y++)
 	{
-		transform = e.component<TransformComponent>();
-		sprite = e.component<SpriteComponent>();
+		for (int x = 0; x < layer->getWidth(); x++)
+		{
+			layer->sort(DepthComparator(), x, y);
+			EntityCollection collection = grid[x][y];
 
-		sprite->sprite.setPosition(transform->x, transform->y);
-		sprite->sprite.setRotation(transform->rotation);
-		sprite->sprite.setScale(transform->scaleX, transform->scaleY);
+			for (auto& e : collection)
+			{
+				ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
+				ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
 
-		m_pWindow->draw(sprite->sprite);
+				if (!transform || !sprite)
+					continue;
+
+				sprite->sprite.setPosition(transform->x, transform->y);
+				sprite->sprite.setRotation(transform->rotation);
+				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
+
+				m_pWindow->draw(sprite->sprite);
+			}
+		}
 	}
 }
+
+#ifdef _MSC_VER
+	#define snprintf _snprintf
+#endif
 
 void RenderSystem::showFPS()
 {
 	m_fpsCalculator.addFrame();
 	char buffer [20];
-	_snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
+	snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
 	m_fpsText.setString(buffer);
 	float w = m_fpsText.getLocalBounds().width;
 	float x = m_pWindow->getSize().x - w;

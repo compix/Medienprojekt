@@ -3,7 +3,7 @@
 
 TextureLoader::TextureLoader()
 {
-	m_basePath = "assets/textures/";
+	m_basePath = "Assets/textures/";
 }
 
 TextureLoader::TextureLoader(string basePath)

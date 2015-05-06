@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;glew.lib;freetype.lib;jpeg.lib;opengl32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -96,13 +96,25 @@
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
+    <ClInclude Include="..\..\Source\Components\CellComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
+    <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
     <ClInclude Include="..\..\Source\debugrender.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
+    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
+    <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
@@ -110,6 +122,11 @@
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
@@ -118,6 +135,7 @@
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
+    <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
@@ -134,11 +152,18 @@
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Random.cpp" />
+    <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
