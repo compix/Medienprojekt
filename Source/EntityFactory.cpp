@@ -45,7 +45,7 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 												b2_dynamicBody, 
 												BodyFactory::CollsionCategory::PLAYER, 
 												BodyFactory::CollsionCategory::SOLID_BLOCK);
-
+	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
 
 	InputComponent inputComponent;
@@ -120,14 +120,13 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 	entity.assign<SpriteComponent>(sprite);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(tex.getSize().x * col + tex.getSize().x/2.f,
-												(tex.getSize().x * row + tex.getSize().y/2.f)-4.f,
+	bodyComponent.body = BodyFactory::CreateBox(tex.getSize().x * col + sprite.getLocalBounds().width/2.f,
+												(tex.getSize().x * row + sprite.getLocalBounds().height/2.f),
 												tex.getSize().x / 2,
 												tex.getSize().x / 2, 
 												b2_staticBody, 
 												BodyFactory::CollsionCategory::SOLID_BLOCK,
 												BodyFactory::CollsionCategory::PLAYER);
-
 
 	entity.assign<BodyComponent>(bodyComponent);
 

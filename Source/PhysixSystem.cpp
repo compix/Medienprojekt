@@ -4,7 +4,7 @@ float PhysixSystem::m_Scale(1.f);
 float PhysixSystem::m_InvScale(1.f / PhysixSystem::m_Scale);
 
 PhysixSystem::PhysixSystem(int velocityIterations, int positionIteration, float scale) :
-m_velocityIterations(velocityIterations), m_positionIteration(positionIteration), m_World(b2Vec2(1,1))
+m_velocityIterations(velocityIterations), m_positionIteration(positionIteration), m_World(b2Vec2(0,0))
 {
 	PhysixSystem::m_Scale = scale;
 	PhysixSystem::m_InvScale = 1.f / PhysixSystem::m_Scale;
