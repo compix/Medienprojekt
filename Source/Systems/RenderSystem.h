@@ -14,7 +14,7 @@ public:
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 
 private:
-	void render(EntityLayer& layer);
+	void render(EntityLayer* layer);
 
 private:
 	sf::RenderWindow* m_pWindow;

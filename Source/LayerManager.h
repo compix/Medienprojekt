@@ -1,31 +1,30 @@
 #pragma once
 #include "EntityLayer.h"
-#include <vector>
 #include <memory>
+#include <map>
 
 using namespace std;
 
-class LayerManager
+typedef std::shared_ptr<EntityLayer> EntityLayerPtr;
+typedef std::map<int, EntityLayerPtr> LayerContainer;
+
+class LayerManager : public Receiver<LayerManager>
 {
 public:
-	EntityLayer& createLayer(int layer, bool _static);
+	EntityLayer* createLayer(int width, int height, int layer);
 
-	vector<EntityLayer>& getLayers() { return m_layers; }
+	inline LayerContainer& getLayers() { return m_layers; }
+
+	void configure(entityx::EventManager& events);
+	void receive(const EntityDestroyedEvent& e);
 
 	void addToLayer(int layer, Entity entity);
+	void removeFromLayer(int layer, Entity entity);
+	void remove(Entity entity);
+	void update();
 
-	template<class T>
-	void sortLayers(T comparator);
+	EntityCollection& getEntities(int layer, int cellX, int cellY);
+	bool hasSolidBlock(int layer, int cellX, int cellY);
 private:
-	void sort();
-private:
-	vector<EntityLayer> m_layers;
+	LayerContainer m_layers;
 };
-
-template<class T>
-void LayerManager::sortLayers(T comparator)
-{
-	for (auto& layer : m_layers)
-		layer.sort(comparator);
-}
-

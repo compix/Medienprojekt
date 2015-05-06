@@ -22,10 +22,13 @@ public:
 private:
 	void createTestLevel(EntityLayer& layer);
 
+	void testExplosions(TimeDelta dt);
 private:
 	unique_ptr<TextureLoader> m_textureLoader;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
 	unique_ptr<b2World> m_world;
+
+	float m_timer;
 };
 

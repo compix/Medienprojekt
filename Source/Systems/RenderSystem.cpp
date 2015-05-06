@@ -10,25 +10,36 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 {
 	for (auto& layer : m_pLayerManager->getLayers())
 	{
-		if (!layer.isStatic())
-			layer.sort(DepthComparator());
-
-		render(layer);
+		render(layer.second.get());
 	}
 }
 
-void RenderSystem::render(EntityLayer& layer)
+void RenderSystem::render(EntityLayer* layer)
 {
-	for (auto e : layer.getEntities())
+	EntityGrid grid = layer->getEntityGrid();
+
+	for (int y = 0; y < layer->getHeight(); y++)
 	{
-		ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
-		ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
+		for (int x = 0; x < layer->getWidth(); x++)
+		{
+			layer->sort(DepthComparator(), x, y);
+			EntityCollection collection = grid[x][y];
 
-		sprite->sprite.setPosition(transform->x, transform->y);
-		sprite->sprite.setRotation(transform->rotation);
-		sprite->sprite.setScale(transform->scaleX, transform->scaleY);
+			for (auto& e : collection)
+			{
+				ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
+				ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
 
-		m_pWindow->draw(sprite->sprite);
+				if (!transform || !sprite)
+					continue;
+
+				sprite->sprite.setPosition(transform->x, transform->y);
+				sprite->sprite.setRotation(transform->rotation);
+				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
+
+				m_pWindow->draw(sprite->sprite);
+			}
+		}
 	}
 }
 
