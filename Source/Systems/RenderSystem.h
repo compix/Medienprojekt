@@ -19,6 +19,7 @@ public:
 
 private:
 	void render(EntityLayer* layer);
+	void showFPS();
 
 private:
 	sf::RenderWindow* m_pWindow;

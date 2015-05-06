@@ -8,7 +8,7 @@ using std::vector;
 typedef std::shared_ptr<EntityLayer> EntityLayerPtr;
 typedef std::map<int, EntityLayerPtr> LayerContainer;
 
-class LayerManager : public Receiver<LayerManager>
+class LayerManager : public entityx::Receiver<LayerManager>
 {
 public:
 	EntityLayer* createLayer(int width, int height, int layer);
@@ -16,7 +16,7 @@ public:
 	inline LayerContainer& getLayers() { return m_layers; }
 
 	void configure(entityx::EventManager& events);
-	void receive(const EntityDestroyedEvent& e);
+	void receive(const entityx::EntityDestroyedEvent& e);
 
 	void addToLayer(int layer, Entity entity);
 	void removeFromLayer(int layer, Entity entity);

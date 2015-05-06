@@ -3,16 +3,12 @@
 #include "Systems/InputSystem.h"
 #include "Systems/BodySystem.h"
 #include "Systems/RenderSystem.h"
-#include "Components/TransformComponent.h"
 #include <Box2D/Box2D.h>
 #include "Utils/LevelGenerator.h"
 #include "Systems/DeathSystem.h"
 #include "Systems/HealthSystem.h"
-#include "Events/EntityGotHitEvent.h"
 #include "Utils/make_unique.h"
-#include "Components/ExplosionComponent.h"
 #include "Systems/ExplosionSystem.h"
-#include <Components/DestructionDelayComponent.h>
 #include "Systems/DestructionSystem.h"
 #include "Systems/DamageSystem.h"
 #include "Utils/Random.h"
@@ -22,14 +18,14 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager)
 {
 
 	b2Vec2 gravity(0.0f, 10.0f);
-	m_world = make_unique<b2World>(gravity);
+	m_world = std::make_unique<b2World>(gravity);
 
-	m_layerManager = make_unique<LayerManager>();
+	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->configure(events);
 
-	m_textureLoader = make_unique<TextureLoader>();
+	m_textureLoader = std::make_unique<TextureLoader>();
 	m_textureLoader->loadAllFromJson("assets/json/textures.json");
-	m_entityFactory = make_unique<EntityFactory>(this, m_textureLoader.get(), m_world.get(), m_layerManager.get());
+	m_entityFactory = std::make_unique<EntityFactory>(this, m_textureLoader.get(), m_world.get(), m_layerManager.get());
 
 	systems.add<DamageSystem>(m_layerManager.get());
 	systems.add<DestructionSystem>();

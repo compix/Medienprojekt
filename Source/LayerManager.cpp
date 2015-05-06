@@ -15,10 +15,10 @@ EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 
 void LayerManager::configure(entityx::EventManager& events)
 {
-	events.subscribe<EntityDestroyedEvent>(*this);
+	events.subscribe<entityx::EntityDestroyedEvent>(*this);
 }
 
-void LayerManager::receive(const EntityDestroyedEvent& e)
+void LayerManager::receive(const entityx::EntityDestroyedEvent& e)
 {
 	Entity entity = e.entity;
 	auto cell = entity.component<CellComponent>();

@@ -4,12 +4,13 @@
 #include "Components/TransformComponent.h"
 #include <array>
 
-typedef std::vector<Entity> EntityCollection; // A collection is needed because more than one entity can be on the same cell
-typedef EntityCollection** EntityGrid;
 using std::vector;
 using entityx::Entity;
 using entityx::ComponentHandle;
 using entityx::EntityManager;
+
+typedef std::vector<Entity> EntityCollection; // A collection is needed because more than one entity can be on the same cell
+typedef EntityCollection** EntityGrid;
 
 class EntityLayer
 {

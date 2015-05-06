@@ -83,6 +83,7 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\DeathEvent.h">
       <Filter>Events</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
