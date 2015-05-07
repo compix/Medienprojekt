@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -12,6 +12,9 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physix">
+      <UniqueIdentifier>{e4f90643-14b7-46b2-91ae-47ad6e96b53c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +73,6 @@
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
-    <ClInclude Include="..\..\Source\PhysixSystem.h" />
-    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
-    <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -127,7 +127,15 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h">
+      <Filter>Physix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\debugrender.h">
+      <Filter>Physix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PhysixSystem.h">
+      <Filter>Physix</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -137,9 +145,6 @@
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu.cpp" />
-    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
-    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
-    <ClCompile Include="..\..\Source\Settings.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -185,6 +190,14 @@
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\debugrender.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp">
+      <Filter>Physix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\debugrender.cpp">
+      <Filter>Physix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PhysixSystem.cpp">
+      <Filter>Physix</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

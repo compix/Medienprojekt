@@ -17,14 +17,14 @@
 #pragma once
 
 #include <Box2D/Box2D.h>
-#include "Settings.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include "GameConstants.h"
 
 namespace sfdd
 {
-	const float SCALE = S_SCALE;
+	const float SCALE = GameConstants::S_SCALE;
 }
 
 class SFMLDebugDraw : public b2Draw

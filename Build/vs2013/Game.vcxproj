@@ -118,7 +118,6 @@
     <ClInclude Include="..\..\Source\Menu.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
-    <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
@@ -149,7 +148,6 @@
     <ClCompile Include="..\..\Source\Menu.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
-    <ClCompile Include="..\..\Source\Settings.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />

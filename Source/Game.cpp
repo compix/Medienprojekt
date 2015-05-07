@@ -12,13 +12,14 @@
 #include "Systems/DestructionSystem.h"
 #include "Systems/DamageSystem.h"
 #include "Utils/Random.h"
+#include "GameConstants.h"
 
 
 Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw):m_timer(1.f)
 {
 
 	/*Setup PhysixSystem*/
-	m_PhysixSystem = new PhysixSystem(6, 3, S_SCALE);
+	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
 	m_PhysixSystem->SetDebugDrawer(debugDraw);
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
