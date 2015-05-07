@@ -33,7 +33,7 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 		if (playerInput.buttonPressed[PlayerButton::RIGHT]){
 			input->moveX = true;
 			playerInput.buttonPressed[PlayerButton::RIGHT] = false;
-			body->body->ApplyForceToCenter(b2Vec2(1, 0),true);
+			body->body->SetLinearVelocity(b2Vec2(1,0));
 		}
 
 		if (playerInput.buttonPressed[PlayerButton::DOWN]){

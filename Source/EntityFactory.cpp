@@ -5,9 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/BodyComponent.h"
 #include <SFML/Graphics.hpp>
-
 #include "BodyFactory.h"
-
 #include "Components/CellComponent.h"
 #include "Components/HealthComponent.h"
 #include "GameConstants.h"
@@ -46,6 +44,8 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	animationComponent.playMode = PlayMode::LOOP;
 	entity.assign<AnimationComponent>(animationComponent);
 
+	entity.assign<CellComponent>(col, row);
+
 	BodyComponent bodyComponent;
 	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * row,
@@ -54,6 +54,7 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 												b2_dynamicBody, 
 												BodyFactory::CollsionCategory::PLAYER, 
 												BodyFactory::CollsionCategory::SOLID_BLOCK);
+
 	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
 
@@ -142,12 +143,12 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 
 	BodyComponent bodyComponent;
 	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
-		(float)GameConstants::CELL_HEIGHT * row,
-		10.f,
-		10.f,
-		b2_staticBody,
-		BodyFactory::CollsionCategory::SOLID_BLOCK,
-		BodyFactory::CollsionCategory::PLAYER);
+												(float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f,
+												(float)GameConstants::CELL_WIDTH/2.f,
+												(float)GameConstants::CELL_HEIGHT/2.f,
+												b2_staticBody,
+												BodyFactory::CollsionCategory::SOLID_BLOCK,
+												BodyFactory::CollsionCategory::PLAYER);
 
 	m_layerManager->addToLayer(0, entity);
 
