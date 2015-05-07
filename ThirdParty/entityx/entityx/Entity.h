@@ -161,8 +161,7 @@ public:
   void destroy();
 
   std::bitset<entityx::MAX_COMPONENTS> component_mask() const;
-
- private:
+private:
   EntityManager *manager_ = nullptr;
   Entity::Id id_ = INVALID;
 };

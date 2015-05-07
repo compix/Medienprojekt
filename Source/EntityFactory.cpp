@@ -50,9 +50,8 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	entity.assign<CellComponent>(col, row);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
+	bodyComponent.body = BodyFactory::CreateCircle((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * row,
-												10.f,
 												10.f,
 												b2_dynamicBody, 
 												BodyFactory::CollsionCategory::PLAYER, 
@@ -154,7 +153,7 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 												(float)GameConstants::CELL_HEIGHT/2.f,
 												b2_staticBody,
 												BodyFactory::CollsionCategory::SOLID_BLOCK,
-												BodyFactory::CollsionCategory::PLAYER);
+												~BodyFactory::CollsionCategory::NOTHING);
 
 	entity.assign<LayerComponent>(0);
 

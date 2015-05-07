@@ -6,6 +6,19 @@
 
 using namespace entityx;
 
+void BodySystem::configure(entityx::EventManager& event_manager)
+{
+	event_manager.subscribe<ComponentAddedEvent<BodyComponent>>(*this);
+}
+
+void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& event)
+{
+	auto body = event.component;
+	auto entity = event.entity;
+
+	body->body->SetUserData(&entity);
+}
+
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
 	ComponentHandle<BodyComponent> body;
