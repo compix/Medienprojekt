@@ -11,11 +11,22 @@
 #include "Components/AnimationComponent.h"
 #include "EntityLayer.h"
 #include "Utils/InputManager.h"
+#include "Utils/SystemUtils.h"
 
 using namespace std;
 
+void changeToGameDir() {
+	string exeDir = SystemUtils::getExecutableDirectory();
+	SystemUtils::setCwd(exeDir);
+#if defined(_DEBUG) || defined(DEBUG)
+	SystemUtils::setCwd("../Game");
+#endif
+}
+
 int main()
 {
+	changeToGameDir();
+
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 	window.setKeyRepeatEnabled(false);
 

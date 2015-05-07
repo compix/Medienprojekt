@@ -19,7 +19,7 @@ end
 isWindows = os.is( "windows" )
 isLinux = os.is( "linux" )
 isMacOSX = os.is( "macosx" )
-if not isWindows then
+if not isWindows and not isLinux then
 	printf("Error: %s is not supported yet", os.get())
 	return
 end
@@ -36,7 +36,11 @@ buildDir		= (_ACTION)
 
 -- [start] Settings that are true for all projects
 configurations { "Debug", "Release" }
-location (buildDir)
+if isLinux and isNetbeans then
+	location ("netbeans-linux")
+else
+	location (buildDir)
+end
 
 filter { "system:windows" }
 	defines { "WIN32" }
@@ -62,7 +66,6 @@ solution "Game"
 	project "Game"
 		kind "ConsoleApp"
 		language "C++"
-		location (buildDir)
 		objdir( objectDir .. "/Game" )
 		defines { "SFML_STATIC", "GLEW_STATIC" }
 		includedirs {
@@ -88,7 +91,7 @@ solution "Game"
 			libdirs {
 				thirdPartyDir .. "/SFML/extlibs/libs-msvc/x86"
 			}
-		else
+		elseif isWindows then
 			libdirs {
 				thirdPartyDir .. "/SFML/extlibs/libs-mingw/x86"
 			}
@@ -119,22 +122,29 @@ solution "Game"
 		filter {}
 			links {
 				"sndfile",
-				"glew",
+				"GLEW",
 				"freetype",
-				"jpeg",
-				"opengl32",
-				"gdi32"
+				"jpeg"
 			}
 			if isWindows then
 				links {
-					"winmm"
+					"winmm",
+					"gdi32",
+					"opengl32"
+				}
+			else
+				links {
+					"GL",
+					"X11",
+					"Xrandr",
+					"pthread",
+					"udev"
 				}
 			end
 	
 -- The Thirdparty Solution
 solution "Thirdparty"
 	targetdir( libDir )
-	location (buildDir)
 	
 	filter { "Release" }
 		targetsuffix  "-s"
@@ -156,6 +166,7 @@ solution "Thirdparty"
 				thirdPartyDir .. "/enet/unix.c"
 			}
 		else
+			defines { "HAS_SOCKLEN_T" }
 			excludes {
 				thirdPartyDir .. "/enet/win32.c"
 			}
@@ -192,7 +203,6 @@ solution "Thirdparty"
 		language "C++"
 		objdir( objectDir .. "/Box2D" )
 		targetdir( libDir )
-		location (buildDir)
 		includedirs {
 			thirdPartyDir .. "/Box2D/Box2D"
 		}
@@ -206,7 +216,6 @@ solution "Thirdparty"
 		language "C++"
 		objdir( objectDir .. "/TGUI" )
 		targetdir( libDir )
-		location (buildDir)
 		defines { "SFML_STATIC", "GLEW_STATIC" }
 		includedirs {
 			thirdPartyDir .. "/TGUI/include",
@@ -222,7 +231,6 @@ solution "Thirdparty"
 		language "C++"
 		objdir( objectDir .. "/SFML" )
 		targetdir( libDir )
-		location (buildDir)
 		defines { "SFML_STATIC", "STBI_FAILURE_USERMSG", "GLEW_STATIC", "UNICODE", "_UNICODE" }
 		includedirs {
 			thirdPartyDir .. "/SFML/include",
@@ -248,6 +256,23 @@ solution "Thirdparty"
 				thirdPartyDir .. "/SFML/src/SFML/Window/FreeBSD/**.*",
 				thirdPartyDir .. "/SFML/src/SFML/Window/OSX/**.*",
 				thirdPartyDir .. "/SFML/src/SFML/Window/Unix/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/EGL*.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/Egl*.*",
+				thirdPartyDir .. "/SFML/src/SFML/Main/MainAndroid.cpp",
+				thirdPartyDir .. "/SFML/src/SFML/Main/SFMLActivity.cpp"
+			}
+		elseif isLinux then
+			includedirs {
+				"/usr/include/freetype2"
+			}
+			excludes {
+				thirdPartyDir .. "/SFML/src/SFML/Network/Win32/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/System/Win32/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/System/Android/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/Android/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/FreeBSD/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/OSX/**.*",
+				thirdPartyDir .. "/SFML/src/SFML/Window/Win32/**.*",
 				thirdPartyDir .. "/SFML/src/SFML/Window/EGL*.*",
 				thirdPartyDir .. "/SFML/src/SFML/Window/Egl*.*",
 				thirdPartyDir .. "/SFML/src/SFML/Main/MainAndroid.cpp",
