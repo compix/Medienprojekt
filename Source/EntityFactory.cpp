@@ -208,23 +208,56 @@ Entity EntityFactory::createExplosion(int row, int col, ExplosionDirection::Dire
 {
 	Entity entity = m_entityX->entities.create();
 
-	Texture& tex = m_textureLoader->get("subExplosion");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
-	tex.setRepeated(true);
-
 	TransformComponent transformComponent;
-	transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
-	
-	if (direction == ExplosionDirection::UP || direction == ExplosionDirection::DOWN)
-		transformComponent.rotation = 90.f;
+
+	if (range == 0)
+	{
+		Texture& tex = m_textureLoader->get("exploEnd");
+		sf::Sprite sprite;
+		sprite.setTexture(tex);
+		sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
+
+		transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
+		transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
+
+		switch (direction)
+		{
+		case ExplosionDirection::UP:
+			transformComponent.rotation = -90.f;
+			break;
+		case ExplosionDirection::DOWN:
+			transformComponent.rotation = 90.f;
+			break;
+		case ExplosionDirection::LEFT:
+			transformComponent.rotation = 180.f;
+			break;
+		case ExplosionDirection::RIGHT:
+			break;
+		}
+
+		if (visible)
+			entity.assign<SpriteComponent>(sprite);
+	}
+	else
+	{
+		Texture& tex = m_textureLoader->get("subExplosion");
+		sf::Sprite sprite;
+		sprite.setTexture(tex);
+		sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
+
+		transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
+		transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
+
+		if (direction == ExplosionDirection::UP || direction == ExplosionDirection::DOWN)
+			transformComponent.rotation = 90.f;
+
+		if (visible)
+			entity.assign<SpriteComponent>(sprite);
+	}
 
 	entity.assign<ExplosionComponent>(direction, range, spreadTime);
 	entity.assign<TransformComponent>(transformComponent);
-	if (visible)
-		entity.assign<SpriteComponent>(sprite);
+
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(col, row);
 	entity.assign<DestructionComponent>(lifeTime);

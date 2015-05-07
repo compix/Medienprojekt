@@ -6,5 +6,6 @@
     "solid_block":  "SolidBlock.png",
 	"bomb": "Bomb.png",
 	"explosion": "explosion.png",
-	"subExplosion": "subExplosion.png"
+	"subExplosion": "subExplosion.png",
+	"exploEnd": "exploEnd.png"
 }
