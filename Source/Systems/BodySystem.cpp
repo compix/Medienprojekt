@@ -9,6 +9,7 @@ using namespace entityx;
 void BodySystem::configure(entityx::EventManager& event_manager)
 {
 	event_manager.subscribe<ComponentAddedEvent<BodyComponent>>(*this);
+	event_manager.subscribe<EntityDestroyedEvent>(*this);
 }
 
 void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& event)
@@ -17,6 +18,16 @@ void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& even
 	auto entity = event.entity;
 
 	body->body->SetUserData(&entity);
+}
+
+void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
+{
+	
+	auto entity = event.entity;
+	if (entity.has_component<BodyComponent>()){
+		auto body = entity.component<BodyComponent>()->body;
+		body->GetWorld()->DestroyBody(body);
+	}
 }
 
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)

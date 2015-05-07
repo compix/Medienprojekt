@@ -119,6 +119,18 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 	entity.assign<CellComponent>(col, row);
 	entity.assign<HealthComponent>(1);
 
+	BodyComponent bodyComponent;
+	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
+												(float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f,
+												(float)GameConstants::CELL_WIDTH / 2.f,
+												(float)GameConstants::CELL_HEIGHT / 2.f,
+												b2_staticBody,
+												BodyFactory::CollsionCategory::SOLID_BLOCK,
+												~BodyFactory::CollsionCategory::NOTHING);
+
+
+	entity.assign<BodyComponent>(bodyComponent);
+
 
 	entity.assign<LayerComponent>(0);
 
@@ -154,6 +166,9 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 												b2_staticBody,
 												BodyFactory::CollsionCategory::SOLID_BLOCK,
 												~BodyFactory::CollsionCategory::NOTHING);
+
+
+	entity.assign<BodyComponent>(bodyComponent);
 
 	entity.assign<LayerComponent>(0);
 
