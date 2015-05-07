@@ -83,10 +83,8 @@ bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 
 bool LevelGenerator::neighbors(LevelPosition pos1, LevelPosition pos2)
 {
-	return (pos1.row == pos2.row + 1) ||
-		   (pos1.row == pos2.row - 1) || 
-		   (pos1.col == pos2.col + 1) ||
-		   (pos1.col == pos2.col - 1);
+	return ((pos1.col == pos2.col) && ((pos1.row == pos2.row + 1) || (pos1.row == pos2.row - 1))) ||
+		   ((pos1.row == pos2.row) && ((pos1.col == pos2.col + 1) || (pos1.col == pos2.col - 1)));
 }
 
 
