@@ -30,3 +30,22 @@ b2Body* BodyFactory::CreateBox(float posX, float posY, float width, float height
 
 	return body;
 }
+
+b2Body* BodyFactory::CreateCircle(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = type;
+	bodyDef.position.Set(PhysixSystem::toBox2D(posX), PhysixSystem::toBox2D(posY));
+	b2Body* body = m_World->CreateBody(&bodyDef);
+	b2CircleShape dynamicBox;
+	dynamicBox.m_radius = PhysixSystem::toBox2D(radius);
+	b2FixtureDef fixtureDef;
+	fixtureDef.filter.categoryBits = isA;
+	fixtureDef.filter.maskBits = collideWith;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.f;
+	body->CreateFixture(&fixtureDef);
+
+	return body;
+}
