@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -96,6 +96,7 @@
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BombComponent.h" />
     <ClInclude Include="..\..\Source\Components\CellComponent.h" />
     <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
+    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
@@ -120,6 +122,7 @@
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
@@ -127,6 +130,7 @@
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
     <ClInclude Include="..\..\Source\Utils\FpsCalculator.h" />
@@ -150,6 +154,7 @@
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
@@ -157,6 +162,7 @@
     <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />

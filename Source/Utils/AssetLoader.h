@@ -1,11 +1,10 @@
 #pragma once
 #include <unordered_map>
 #include <string>
-#include <SFML/Graphics.hpp>
-#include <memory>
 #include "json/json.h"
 #include <fstream>
 #include <iostream>
+#include "Exceptions.h"
 
 using std::unordered_map;
 using std::ifstream;
@@ -42,12 +41,12 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 
 	if(!ifs.is_open()) {
 		cerr << "Can't find file: " << path << endl;
-		exit(EXIT_FAILURE);
+		throw file_not_found(path);
 	}
 	
 	if (!reader.parse(ifs, root, false))
 	{
-		cout << "Parsing error: " << reader.getFormattedErrorMessages() << endl;
+		cerr << "Parsing error: " << reader.getFormattedErrorMessages() << endl;
 		return false;
 	}
 

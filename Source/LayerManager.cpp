@@ -29,49 +29,53 @@ void LayerManager::receive(const entityx::EntityDestroyedEvent& e)
 	}
 }
 
-void LayerManager::addToLayer(int layer, Entity entity)
+void LayerManager::add(Entity entity)
 {
-	if (m_layers.count(layer))
+	auto cell = entity.component<CellComponent>();
+	auto layerComponent = entity.component<LayerComponent>();
+
+	if (!cell)
+		std::cout << "Warning: Attempt to add an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
+
+	if (!layerComponent)
+		std::cout << "Warning: Attempt to add an entity failed. Reason: " << entity << " does not have a LayerComponent." << std::endl;
+
+	if (cell && layerComponent)
 	{
-		auto cellPosition = entity.component<CellComponent>();
-		if (cellPosition)
+		if (m_layers.count(layerComponent->layer) == 0)
 		{
-			m_layers[layer]->add(entity, cellPosition->x, cellPosition->y);
-			if (entity.has_component<LayerComponent>())
-				entity.remove<LayerComponent>();
-			entity.assign<LayerComponent>(layer);
+			std::cout << "Warning: Attempt to add an entity failed. Reason: Layer " << layerComponent->layer << " does not exist." << std::endl;
+			std::cout << "Please create the Layer first." << std::endl;
+			return;
 		}
-		else
-			std::cout << "Warning: Attempt to add an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
-		return;
+
+		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
 	}
-
-	std::cout << "Warning: Attempt to add an entity failed. Reason: Layer " << layer << " does not exist. " << std::endl;
-}
-
-void LayerManager::removeFromLayer(int layer, Entity entity)
-{
-	if (m_layers.count(layer))
-	{
-		auto cellPosition = entity.component<CellComponent>();
-		if (cellPosition)
-			m_layers[layer]->remove(entity, cellPosition->x, cellPosition->y);
-		else
-			std::cout << "Warning: Attempt to remove an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
-		return;
-	}
-
-	std::cout << "Warning: Attempt to remove an entity failed. Reason: Layer " << layer << " does not exist. " << std::endl;
 }
 
 void LayerManager::remove(Entity entity)
 {
-	auto cellPosition = entity.component<CellComponent>();
-	if (!cellPosition)
+	auto cell = entity.component<CellComponent>();
+	auto layerComponent = entity.component<LayerComponent>();
+
+	if (!cell)
 		std::cout << "Warning: Attempt to remove an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
 
-	for (auto& l : m_layers)
-		l.second->remove(entity, cellPosition->x, cellPosition->y);
+	if (!layerComponent)
+		std::cout << "Warning: Attempt to remove an entity failed. Reason: " << entity << " does not have a LayerComponent." << std::endl;
+
+	if (cell && layerComponent)
+	{
+		if (m_layers.count(layerComponent->layer) == 0)
+		{
+			std::cout << "Warning: Attempt to remove an entity failed. Reason: Layer " << layerComponent->layer << " does not exist." << std::endl;
+			std::cout << "Please create the Layer first." << std::endl;
+			return;
+		}
+
+		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+	}
+		
 }
 
 /**
@@ -117,7 +121,7 @@ void LayerManager::update()
 	}
 }
 
-EntityCollection& LayerManager::getEntities(int layer, int cellX, int cellY)
+EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)
 {
 	assert(m_layers.count(layer));
 
@@ -131,4 +135,9 @@ bool LayerManager::hasSolidBlock(int layer, int cellX, int cellY)
 			return true;
 
 	return false;
+}
+
+bool LayerManager::isFree(int layer, int cellX, int cellY)
+{
+	return getEntities(layer, cellX, cellY).size() == 0;
 }

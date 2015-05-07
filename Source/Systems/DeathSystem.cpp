@@ -28,6 +28,7 @@ void DeathSystem::receive(const DeathEvent& deathEvent)
 	}
 	else
 	{
-		dieingEntity.assign<DestructionComponent>();
+		if (!dieingEntity.has_component<DestructionComponent>())
+			dieingEntity.assign<DestructionComponent>();
 	}
 }

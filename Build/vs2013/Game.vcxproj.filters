@@ -136,6 +136,18 @@
     <ClInclude Include="..\..\Source\PhysixSystem.h">
       <Filter>Physix</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\BombComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\BombSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -198,6 +210,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\PhysixSystem.cpp">
       <Filter>Physix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\BombSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

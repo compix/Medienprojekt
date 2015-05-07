@@ -13,6 +13,9 @@
 #include "Components/DamageDealerComponent.h"
 #include "Components/SolidBlockComponent.h"
 #include "Components/DestructionComponent.h"
+#include "Components/BombComponent.h"
+#include "Components/TimerComponent.h"
+#include "Components/LayerComponent.h"
 
 EntityFactory::EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
 	:m_entityX(entityX), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager)
@@ -61,8 +64,9 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	InputComponent inputComponent;
 	inputComponent.playerIndex = 0;
 	entity.assign<InputComponent>(inputComponent);
+	entity.assign<LayerComponent>(0);
 
-	m_layerManager->addToLayer(0, entity);
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -91,7 +95,9 @@ Entity EntityFactory::createTestEntity2()
 	animationComponent.playMode = PlayMode::LOOP_PING_PONG;
 	entity.assign<AnimationComponent>(animationComponent);
 
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -115,9 +121,9 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 	entity.assign<HealthComponent>(1);
 
 
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
 
-
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -150,7 +156,9 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 												BodyFactory::CollsionCategory::SOLID_BLOCK,
 												BodyFactory::CollsionCategory::PLAYER);
 
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -161,19 +169,23 @@ Entity EntityFactory::createBomb(int row, int col)
 
 	Texture& tex = m_textureLoader->get("bomb");
 	sf::Sprite sprite;
+	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
 	sprite.setTexture(tex);
 
 	TransformComponent transformComponent;
 	transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)tex.getSize().x * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<SpriteComponent>(sprite);
-
-	
+	entity.assign<BombComponent>(4, 0.06f);
+	entity.assign<TimerComponent>(2.f);
+	entity.assign<HealthComponent>(1);
 
 	entity.assign<CellComponent>(col, row);
 
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -203,7 +215,9 @@ Entity EntityFactory::createExplosion(int row, int col, ExplosionDirection::Dire
 	entity.assign<CellComponent>(col, row);
 	entity.assign<DestructionComponent>(lifeTime);
 
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -234,7 +248,9 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 	createExplosion(row, col, ExplosionDirection::RIGHT, range, spreadTime, lifeTime, false);
 
 	entity.assign<DestructionComponent>(lifeTime);
-	m_layerManager->addToLayer(0, entity);
+	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
 
 	return entity;
 }

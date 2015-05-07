@@ -13,6 +13,8 @@
 #include "Systems/DamageSystem.h"
 #include "Utils/Random.h"
 #include "GameConstants.h"
+#include "Systems/TimerSystem.h"
+#include "Systems/BombSystem.h"
 
 
 Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* debugDraw):m_timer(1.f)
@@ -33,6 +35,8 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, SFMLDebugDraw* 
 	m_textureLoader->loadAllFromJson("assets/json/textures.json");
 	m_entityFactory = std::make_unique<EntityFactory>(this, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get());
 
+	systems.add<TimerSystem>();
+	systems.add<BombSystem>(m_entityFactory.get());
 	systems.add<DamageSystem>(m_layerManager.get());
 	systems.add<DestructionSystem>();
 	systems.add<ExplosionSystem>(m_entityFactory.get(), m_layerManager.get());
@@ -76,8 +80,8 @@ void Game::testExplosions(TimeDelta dt)
 		{
 			cellX = Random::getInt(1, 19);
 			cellY = Random::getInt(1, 19);
-		} while (m_layerManager->hasSolidBlock(0, cellX, cellY));
+		} while (!m_layerManager->isFree(0, cellX, cellY));
 
-		m_entityFactory->createExplosion(cellY, cellX, 3, 0.06f);
+		m_entityFactory->createBomb(cellY, cellX);
 	}
 }

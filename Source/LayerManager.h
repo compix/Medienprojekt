@@ -18,13 +18,14 @@ public:
 	void configure(entityx::EventManager& events);
 	void receive(const entityx::EntityDestroyedEvent& e);
 
-	void addToLayer(int layer, Entity entity);
-	void removeFromLayer(int layer, Entity entity);
+	void add(Entity entity);
 	void remove(Entity entity);
 	void update();
 
-	EntityCollection& getEntities(int layer, int cellX, int cellY);
+	EntityCollection getEntities(int layer, int cellX, int cellY);
 	bool hasSolidBlock(int layer, int cellX, int cellY);
+	bool isFree(int layer, int cellX, int cellY);
+
 private:
 	LayerContainer m_layers;
 };

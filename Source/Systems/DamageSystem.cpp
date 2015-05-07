@@ -21,10 +21,13 @@ void DamageSystem::update(entityx::EntityManager& entities, entityx::EventManage
 		// damage all other entities with a health component on the same cell
 		for (auto entity : m_layerManager->getEntities(layer->layer, cell->x, cell->y))
 		{
-			auto health = entity.component<HealthComponent>();
-			if (health && entity.valid())
+			if (entity.valid())
 			{
-				events.emit<EntityGotHitEvent>(damageDealer, entity, ddComponent->damage);
+				auto health = entity.component<HealthComponent>();
+				if (health)
+				{
+					events.emit<EntityGotHitEvent>(damageDealer, entity, ddComponent->damage);
+				}
 			}
 		}
 	}

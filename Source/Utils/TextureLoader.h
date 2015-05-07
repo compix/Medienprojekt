@@ -1,5 +1,6 @@
 #pragma once
 #include "AssetLoader.h"
+#include <SFML/Graphics/Texture.hpp>
 
 using sf::Texture;
 
