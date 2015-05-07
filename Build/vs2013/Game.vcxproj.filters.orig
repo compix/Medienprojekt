@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
       <UniqueIdentifier>{6B7DD516-5735-1764-C03C-F0BFAC13B254}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{1DDE831B-89BD-02B7-92D5-8D8DFE336918}</UniqueIdentifier>
@@ -13,46 +10,26 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
+    <Filter Include="DebugRenderer">
+      <UniqueIdentifier>{c349e990-84e6-4db1-bef8-a42b08f78f7a}</UniqueIdentifier>
+=======
+    <Filter Include="Events">
+      <UniqueIdentifier>{75eb7dce-8476-408b-b5f4-abfae235c95b}</UniqueIdentifier>
+>>>>>>> develop
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\BodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\CellComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\DestructionComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Components\InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\LayerComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\TimerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\TransformComponent.h">
@@ -60,38 +37,13 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
-    <ClInclude Include="..\..\Source\Events\DeathEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Game.h" />
-    <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
-    <ClInclude Include="..\..\Source\PhysixSystem.h" />
-    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
-    <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\BodySystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\DamageSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\DeathSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\DestructionSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\HealthSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\InputSystem.h">
@@ -124,41 +76,84 @@
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="..\..\Source\PhysixSystem.h" />
+    <ClInclude Include="..\..\Source\Settings.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="..\..\Source\BodyFactory.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h">
+      <Filter>DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\debugrender.h">
+      <Filter>DebugRenderer</Filter>
+=======
+    <ClInclude Include="..\..\Source\Components\CellComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GameConstants.h" />
+    <ClInclude Include="..\..\Source\Components\TimerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\HealthComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\DeathEvent.h">
+      <Filter>Events</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\Source\Utils\make_unique.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\HealthSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DeathSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DestructionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DestructionSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DamageSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LayerComponent.h">
+      <Filter>Components</Filter>
+>>>>>>> develop
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\BodyFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu.cpp" />
-    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
-    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
-    <ClCompile Include="..\..\Source\Settings.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp">
@@ -176,15 +171,39 @@
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\Random.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\debugrender.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
+    <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp">
+      <Filter>DebugRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\debugrender.cpp">
+      <Filter>DebugRenderer</Filter>
+=======
+    <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Random.cpp">
+      <Filter>Utils</Filter>
+>>>>>>> develop
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿#include "RenderSystem.h"
+#include "RenderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
 #include <iostream>
@@ -31,6 +31,14 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 
 void RenderSystem::render(EntityLayer* layer)
 {
+<<<<<<< HEAD
+	ComponentHandle<TransformComponent> transform;
+	ComponentHandle<SpriteComponent> sprite;
+	for (auto e : layer.getEntities())
+	{
+		transform = e.component<TransformComponent>();
+		sprite = e.component<SpriteComponent>();
+=======
 	EntityGrid grid = layer->getEntityGrid();
 
 	for (int y = 0; y < layer->getHeight(); y++)
@@ -44,6 +52,7 @@ void RenderSystem::render(EntityLayer* layer)
 			{
 				ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
 				ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
+>>>>>>> develop
 
 				if (!transform || !sprite)
 					continue;

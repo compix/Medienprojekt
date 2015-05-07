@@ -2,6 +2,7 @@
 #include <entityx/entityx.h>
 #include<Box2D/Box2D.h>
 #include "Utils/TextureLoader.h"
+#include "PhysixSystem.h"
 #include "LayerManager.h"
 
 namespace ExplosionDirection{
@@ -13,7 +14,7 @@ using entityx::EntityX;
 class EntityFactory
 {
 public:
-	EntityFactory(EntityX* entityX, TextureLoader* textureLoader, b2World* world, LayerManager* layerManager);
+	EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 	
@@ -30,7 +31,7 @@ public:
 private:
 	EntityX* m_entityX;
 	TextureLoader* m_textureLoader;
-	b2World* m_world;
+	PhysixSystem* m_PhysixSystem;
 	LayerManager* m_layerManager;
 };
 

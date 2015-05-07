@@ -1,4 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <entityx/entityx.h>
 #include <iostream>
 #include "json/json.h"
@@ -11,8 +11,11 @@
 #include "Components/AnimationComponent.h"
 #include "EntityLayer.h"
 #include "Utils/InputManager.h"
+<<<<<<< HEAD
 #include "SFMLDebugDraw.h"
+=======
 #include "Utils/SystemUtils.h"
+>>>>>>> develop
 
 using namespace std;
 
