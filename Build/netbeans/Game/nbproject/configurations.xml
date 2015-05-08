@@ -3,33 +3,69 @@
 <configurationDescriptor version="88">
 	<logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
 		<logicalFolder name="sourceFiles" displayName="Source Files" projectFiles="true">
+			<itemPath>../../../Source/BodyFactory.cpp</itemPath>
+			<itemPath>../../../Source/BodyFactory.h</itemPath>
 			<logicalFolder name="Components" displayName="Components" projectFiles="true">
 				<itemPath>../../../Source/Components/AnimationComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BodyComponent.h</itemPath>
+				<itemPath>../../../Source/Components/BombComponent.h</itemPath>
+				<itemPath>../../../Source/Components/CellComponent.h</itemPath>
+				<itemPath>../../../Source/Components/DamageDealerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/DestructionComponent.h</itemPath>
+				<itemPath>../../../Source/Components/DestructionDelayComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ExplosionComponent.h</itemPath>
+				<itemPath>../../../Source/Components/HealthComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InputComponent.h</itemPath>
+				<itemPath>../../../Source/Components/LayerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/SolidBlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SpriteComponent.h</itemPath>
+				<itemPath>../../../Source/Components/TimerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/TransformComponent.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/EntityFactory.cpp</itemPath>
 			<itemPath>../../../Source/EntityFactory.h</itemPath>
 			<itemPath>../../../Source/EntityLayer.cpp</itemPath>
 			<itemPath>../../../Source/EntityLayer.h</itemPath>
+			<logicalFolder name="Events" displayName="Events" projectFiles="true">
+				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
+				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
+				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
+			</logicalFolder>
 			<itemPath>../../../Source/Game.cpp</itemPath>
 			<itemPath>../../../Source/Game.h</itemPath>
+			<itemPath>../../../Source/GameConstants.h</itemPath>
 			<itemPath>../../../Source/LayerManager.cpp</itemPath>
 			<itemPath>../../../Source/LayerManager.h</itemPath>
 			<itemPath>../../../Source/Main.cpp</itemPath>
 			<itemPath>../../../Source/Menu.cpp</itemPath>
 			<itemPath>../../../Source/Menu.h</itemPath>
+			<itemPath>../../../Source/PhysixSystem.cpp</itemPath>
+			<itemPath>../../../Source/PhysixSystem.h</itemPath>
+			<itemPath>../../../Source/SFMLDebugDraw.cpp</itemPath>
+			<itemPath>../../../Source/SFMLDebugDraw.h</itemPath>
 			<logicalFolder name="Systems" displayName="Systems" projectFiles="true">
 				<itemPath>../../../Source/Systems/AnimationSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/AnimationSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.h</itemPath>
+				<itemPath>../../../Source/Systems/BombSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/BombSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/DamageSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/DamageSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/DeathSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/DeathSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/DestructionSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/DestructionSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ExplosionSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ExplosionSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/HealthSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/HealthSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/InputSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/InputSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/TimerSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/TimerSystem.h</itemPath>
 			</logicalFolder>
 			<logicalFolder name="Utils" displayName="Utils" projectFiles="true">
 				<itemPath>../../../Source/Utils/AssetLoader.h</itemPath>
@@ -40,6 +76,7 @@
 				<itemPath>../../../Source/Utils/InputManager.h</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.h</itemPath>
+				<itemPath>../../../Source/Utils/Random.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
 				<itemPath>../../../Source/Utils/SystemUtils.cpp</itemPath>
 				<itemPath>../../../Source/Utils/SystemUtils.h</itemPath>
@@ -47,6 +84,8 @@
 				<itemPath>../../../Source/Utils/TextureLoader.h</itemPath>
 				<itemPath>../../../Source/Utils/make_unique.h</itemPath>
 			</logicalFolder>
+			<itemPath>../../../Source/debugrender.cpp</itemPath>
+			<itemPath>../../../Source/debugrender.h</itemPath>
 		</logicalFolder>
 		<logicalFolder name="ExternalFiles" displayName="Important Files" projectFiles="false" kind="IMPORTANT_FILES_FOLDER">
 			<itemPath>Makefile</itemPath>
@@ -127,20 +166,45 @@
 					<output>../../../Test/Game.exe</output>
 				</linkerTool>
 			</compileType>
+			<item path="../../../Source/BodyFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/debugrender.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
@@ -150,19 +214,31 @@
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/debugrender.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Game.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
@@ -238,20 +314,45 @@
 					<output>../../../Game/Game.exe</output>
 				</linkerTool>
 			</compileType>
+			<item path="../../../Source/BodyFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/debugrender.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
@@ -261,19 +362,31 @@
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/debugrender.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Game.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>

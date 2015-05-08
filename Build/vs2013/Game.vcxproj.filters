@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -13,9 +13,6 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physix">
-      <UniqueIdentifier>{e4f90643-14b7-46b2-91ae-47ad6e96b53c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
@@ -23,6 +20,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\BodyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\BombComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\CellComponent.h">
@@ -69,14 +69,22 @@
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Menu.h" />
+    <ClInclude Include="..\..\Source\PhysixSystem.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\BodySystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\BombSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h">
@@ -98,6 +106,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h">
@@ -127,30 +138,7 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\SFMLDebugDraw.h">
-      <Filter>Physix</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\debugrender.h">
-      <Filter>Physix</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PhysixSystem.h">
-      <Filter>Physix</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\BombComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\BombSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\LinkComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
+    <ClInclude Include="..\..\Source\debugrender.h" />
     <ClInclude Include="..\..\Source\Utils\Common.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -163,10 +151,15 @@
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu.cpp" />
+    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\BombSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp">
@@ -190,6 +183,9 @@
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -208,20 +204,6 @@
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp">
-      <Filter>Physix</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\debugrender.cpp">
-      <Filter>Physix</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\PhysixSystem.cpp">
-      <Filter>Physix</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\BombSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\Source\debugrender.cpp" />
   </ItemGroup>
 </Project>

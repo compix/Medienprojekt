@@ -5,7 +5,9 @@ using std::string;
 #ifdef WIN32
 	#include <windows.h>
 	#include <direct.h>
-	#define PATH_MAX MAX_PATH
+	#ifndef PATH_MAX
+		#define PATH_MAX MAX_PATH
+	#endif
 #else
 	#include <unistd.h>
 	#include <linux/limits.h>

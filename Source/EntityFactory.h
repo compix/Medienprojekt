@@ -5,6 +5,7 @@
 #include "PhysixSystem.h"
 #include "LayerManager.h"
 #include "Utils/Common.h"
+#include "Components/ExplosionComponent.h"
 
 using entityx::EntityX;
 
