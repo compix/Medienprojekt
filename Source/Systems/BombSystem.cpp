@@ -46,6 +46,6 @@ void BombSystem::detonate(entityx::Entity entity)
 
 		m_entityFactory->createExplosion(cell->y, cell->x, bomb->explosionRange, bomb->explosionSpreadTime);
 		if (!entity.has_component<DestructionComponent>())
-			entity.assign<DestructionComponent>(0.f);
+			entity.assign<DestructionComponent>();
 	}
 }

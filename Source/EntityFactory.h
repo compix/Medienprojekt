@@ -4,12 +4,9 @@
 #include "Utils/TextureLoader.h"
 #include "PhysixSystem.h"
 #include "LayerManager.h"
+#include "Utils/Common.h"
 
-namespace ExplosionDirection{
-	enum Direction;
-}
 using entityx::EntityX;
-
 
 class EntityFactory
 {
@@ -26,7 +23,7 @@ public:
 
 	Entity createBomb(int row, int col);
 	
-	Entity createExplosion(int row, int col, ExplosionDirection::Direction direction, int range, float spreadTime, float lifeTime, bool visible);
+	Entity createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible);
 	Entity createExplosion(int row, int col, int range, float spreadTime);
 private:
 	EntityX* m_entityX;

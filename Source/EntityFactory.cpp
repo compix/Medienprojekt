@@ -16,6 +16,7 @@
 #include "Components/BombComponent.h"
 #include "Components/TimerComponent.h"
 #include "Components/LayerComponent.h"
+#include "Components/LinkComponent.h"
 
 EntityFactory::EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
 	:m_entityX(entityX), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager)
@@ -204,7 +205,7 @@ Entity EntityFactory::createBomb(int row, int col)
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(int row, int col, ExplosionDirection::Direction direction, int range, float spreadTime, float lifeTime, bool visible)
+Entity EntityFactory::createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible)
 {
 	Entity entity = m_entityX->entities.create();
 
@@ -222,16 +223,16 @@ Entity EntityFactory::createExplosion(int row, int col, ExplosionDirection::Dire
 
 		switch (direction)
 		{
-		case ExplosionDirection::UP:
+		case Common::UP:
 			transformComponent.rotation = -90.f;
 			break;
-		case ExplosionDirection::DOWN:
+		case Common::DOWN:
 			transformComponent.rotation = 90.f;
 			break;
-		case ExplosionDirection::LEFT:
+		case Common::LEFT:
 			transformComponent.rotation = 180.f;
 			break;
-		case ExplosionDirection::RIGHT:
+		case Common::RIGHT:
 			break;
 		}
 
@@ -248,19 +249,19 @@ Entity EntityFactory::createExplosion(int row, int col, ExplosionDirection::Dire
 		transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
 		transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
 
-		if (direction == ExplosionDirection::UP || direction == ExplosionDirection::DOWN)
+		if (direction == Common::UP || direction == Common::DOWN)
 			transformComponent.rotation = 90.f;
 
 		if (visible)
 			entity.assign<SpriteComponent>(sprite);
 	}
 
-	entity.assign<ExplosionComponent>(direction, range, spreadTime);
+	entity.assign<SpreadComponent>(direction, range, spreadTime);
+	entity.assign<ExplosionComponent>();
 	entity.assign<TransformComponent>(transformComponent);
 
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(col, row);
-	entity.assign<DestructionComponent>(lifeTime);
 
 	entity.assign<LayerComponent>(0);
 
@@ -287,14 +288,15 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(col, row);
+	
+	LinkComponent linkComponent;
+	linkComponent.links.push_back(createExplosion(row, col, Common::DOWN, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Common::UP, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Common::LEFT, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Common::RIGHT, range, spreadTime, false));
 
-	float lifeTime = (range + 1)*spreadTime;
-	createExplosion(row, col, ExplosionDirection::DOWN, range, spreadTime, lifeTime, false);
-	createExplosion(row, col, ExplosionDirection::UP, range, spreadTime, lifeTime, false);
-	createExplosion(row, col, ExplosionDirection::LEFT, range, spreadTime, lifeTime, false);
-	createExplosion(row, col, ExplosionDirection::RIGHT, range, spreadTime, lifeTime, false);
-
-	entity.assign<DestructionComponent>(lifeTime);
+	entity.assign<ExplosionComponent>();
+	entity.assign<LinkComponent>(linkComponent);
 	entity.assign<LayerComponent>(0);
 
 	m_layerManager->add(entity);

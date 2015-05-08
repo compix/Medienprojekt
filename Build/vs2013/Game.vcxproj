@@ -105,6 +105,7 @@
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\Common.h" />
     <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
     <ClInclude Include="..\..\Source\Utils\FpsCalculator.h" />
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />

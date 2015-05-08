@@ -2,44 +2,73 @@
 #include <Components/ExplosionComponent.h>
 #include <Components/CellComponent.h>
 #include <Components/LayerComponent.h>
+#include <Components/LinkComponent.h>
+#include <Components/DestructionComponent.h>
 
 ExplosionSystem::ExplosionSystem(EntityFactory* entityFactory, LayerManager* layerManager)
 	:m_entityFactory(entityFactory), m_layerManager(layerManager) {}
 
 void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
-	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent>())
+	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent, LinkComponent>())
 	{
-		auto explosion = entity.component<ExplosionComponent>();
-		auto cell = entity.component<CellComponent>();
 		auto layer = entity.component<LayerComponent>();
+		auto link = entity.component<LinkComponent>();
 
-		explosion->timeTillNext -= dt;
+		vector<Entity> scheduled;
 
-		if (explosion->timeTillNext <= 0.f)
+		bool allStopped = true;
+
+		for (auto fire : link->links)
 		{
-			if (explosion->range > 0)
+			auto spread = fire.component<SpreadComponent>();
+			auto cell = fire.component<CellComponent>();
+
+			if (!spread->stopped)
+				allStopped = false;
+			else
+				continue;
+
+			if (!spread || !cell)
+				continue;			
+
+			spread->timeTillNext -= dt;
+
+			if (spread->timeTillNext <= 0.f)
 			{
-				int nextRow = explosion->direction == ExplosionDirection::UP ? cell->y - 1 : explosion->direction == ExplosionDirection::DOWN ? cell->y + 1 : cell->y;
-				int nextCol = explosion->direction == ExplosionDirection::LEFT ? cell->x - 1 : explosion->direction == ExplosionDirection::RIGHT ? cell->x + 1 : cell->x;
-				int nextRange = explosion->range - 1;
-
-				for (auto& e : m_layerManager->getEntities(layer->layer, nextCol, nextRow))
+				if (spread->range > 0)
 				{
-					if(!e.has_component<ExplosionComponent>())
+					int nextRow = spread->direction == Common::UP ? cell->y - 1 : spread->direction == Common::DOWN ? cell->y + 1 : cell->y;
+					int nextCol = spread->direction == Common::LEFT ? cell->x - 1 : spread->direction == Common::RIGHT ? cell->x + 1 : cell->x;
+					int nextRange = spread->range - 1;
+
+					for (auto& e : m_layerManager->getEntities(layer->layer, nextCol, nextRow))
 					{
-						nextRange = 0;
-						break;
+						if (!e.has_component<ExplosionComponent>())
+						{
+							nextRange = 0;
+							break;
+						}
 					}
+
+					if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))
+					{
+						scheduled.push_back(m_entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime, true));
+					}				
 				}
 
-				if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))
-				{
-					float lifeTime = explosion->range*explosion->spreadTime;
-					m_entityFactory->createExplosion(nextRow, nextCol, explosion->direction, nextRange, explosion->spreadTime, lifeTime, true);
-					explosion->range = 0; // Set the range of this explosion to 0 since it already spawned a new explosion entity.
-				}
+				spread->stopped = true;
 			}
 		}
+
+
+		if (allStopped)
+		{
+			if (!entity.has_component<DestructionComponent>())
+				entity.assign<DestructionComponent>(0.1f);
+		}
+		else
+			for (auto e : scheduled)
+				link->links.push_back(e);
 	}
 }

@@ -1,25 +1,20 @@
 #pragma once
+#include <Utils/Common.h>
 
-namespace ExplosionDirection
+
+struct SpreadComponent
 {
-	enum Direction
-	{
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT
-	};
-}
+	SpreadComponent(Common::Direction direction, int range, float spreadTime) 
+		: direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime), stopped(false) {}
 
-/**
- * @brief	The explosion that spreads in a direction.
- */
-struct ExplosionComponent
-{
-	ExplosionComponent(ExplosionDirection::Direction direction, int range, float spreadTime) : direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime) {}
-
-	ExplosionDirection::Direction direction;
+	Common::Direction direction;
 	int range; // how far it can spread in cells
 	float spreadTime; // in seconds
 	float timeTillNext; // in seconds
+	bool stopped;
 };
+
+/**
+ * @brief	Just a flag.
+ */
+struct ExplosionComponent {};
