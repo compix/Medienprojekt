@@ -1,4 +1,5 @@
 #include "Random.h"
+#include <float.h>
 
 std::mt19937 Random::m_rng;
 

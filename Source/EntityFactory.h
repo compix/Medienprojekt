@@ -4,10 +4,8 @@
 #include "Utils/TextureLoader.h"
 #include "PhysixSystem.h"
 #include "LayerManager.h"
+#include "Components/ExplosionComponent.h"
 
-namespace ExplosionDirection{
-	enum Direction;
-}
 using entityx::EntityX;
 
 
