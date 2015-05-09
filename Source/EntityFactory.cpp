@@ -18,14 +18,14 @@
 #include "Components/LayerComponent.h"
 #include "Components/LinkComponent.h"
 
-EntityFactory::EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
-	:m_entityX(entityX), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager)
+EntityFactory::EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
+	:m_entities(entities), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager)
 {
 }
 
 Entity EntityFactory::createTestEntity1(int row, int col)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	Texture& tex = m_textureLoader->get("char_idle");
 	sf::Sprite sprite;
@@ -77,7 +77,7 @@ Entity EntityFactory::createTestEntity2()
 	Texture& tex = m_textureLoader->get("char_death");
 	sprite.setTexture(tex);
 
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	TransformComponent transformComponent;
 	transformComponent.x = 220.f;
@@ -104,7 +104,7 @@ Entity EntityFactory::createTestEntity2()
 
 entityx::Entity EntityFactory::createBlock(int row, int col)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	Texture& tex = m_textureLoader->get("block");
 	sf::Sprite sprite;
@@ -142,7 +142,7 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 
 entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	Texture& tex = m_textureLoader->get("solid_block");
 	sf::Sprite sprite;
@@ -180,7 +180,7 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 
 Entity EntityFactory::createBomb(int row, int col)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	Texture& tex = m_textureLoader->get("bomb");
 	sf::Sprite sprite;
@@ -207,7 +207,7 @@ Entity EntityFactory::createBomb(int row, int col)
 
 Entity EntityFactory::createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	TransformComponent transformComponent;
 
@@ -272,7 +272,7 @@ Entity EntityFactory::createExplosion(int row, int col, Common::Direction direct
 
 Entity EntityFactory::createExplosion(int row, int col, int range, float spreadTime)
 {
-	Entity entity = m_entityX->entities.create();
+	Entity entity = m_entities.create();
 
 	Texture& tex = m_textureLoader->get("explosion");
 	sf::Sprite sprite;

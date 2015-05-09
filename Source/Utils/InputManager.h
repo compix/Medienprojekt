@@ -1,10 +1,15 @@
 #pragma once
 #include <map>
+#include <entityx/entityx.h>
+#include "../Events/MenuShowEvent.h"
 
 namespace sf
 {
 	class Event;
 }
+
+using entityx::EventManager;
+using entityx::Receiver;
 
 const int MAX_PLAYER_INPUTS = 4;
 
@@ -33,20 +38,22 @@ struct KeycodeMapEntry
 	int playerIndex;
 };
 
-class InputManager
+class InputManager : public Receiver<InputManager>
 {
 public:
-	InputManager();
+	InputManager(EventManager &events);
 	~InputManager();
 
 	PlayerInput &getPlayerInput(int id);
 
-	void handleEvent(const sf::Event &evt);
-
 	static const char *getKeyName(int code);
 	static int getKeyCode(const char *name);
 
+	void receive(const sf::Event &evt);
+	void receive(const MenuShowEvent &evt);
+
 private:
+	EventManager &m_events;
 	PlayerInput m_playerInputs[MAX_PLAYER_INPUTS];
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
 	std::map<int, int> m_joystickMap;
