@@ -13,12 +13,13 @@ using std::string;
 	#include <linux/limits.h>
 #endif
 
-namespace SystemUtils {
+namespace SystemUtils
+{
 	string getExecutableDirectory()
 	{
 		char buffer[PATH_MAX + 1] = { 0 };
 #ifdef WIN32
-		GetModuleFileName(NULL, buffer, PATH_MAX);
+		GetModuleFileName(nullptr, buffer, PATH_MAX);
 #else
 		char linkPath[20];
 		snprintf(linkPath, 20, "/proc/%d/exe", getpid());
@@ -27,6 +28,7 @@ namespace SystemUtils {
 		string::size_type pos = string(buffer).find_last_of("\\/");
 		return string(buffer).substr(0, pos);
 	}
+
 	void setCwd(const string &dir)
 	{
 #ifdef WIN32
