@@ -49,6 +49,9 @@
     <ClInclude Include="..\..\Source\Components\LayerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LinkComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -114,6 +117,9 @@
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Common.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Exceptions.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -139,9 +145,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="..\..\Source\Utils\Common.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />

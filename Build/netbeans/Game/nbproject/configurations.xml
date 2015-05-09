@@ -17,6 +17,7 @@
 				<itemPath>../../../Source/Components/HealthComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InputComponent.h</itemPath>
 				<itemPath>../../../Source/Components/LayerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/LinkComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SolidBlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SpriteComponent.h</itemPath>
 				<itemPath>../../../Source/Components/TimerComponent.h</itemPath>
@@ -69,6 +70,7 @@
 			</logicalFolder>
 			<logicalFolder name="Utils" displayName="Utils" projectFiles="true">
 				<itemPath>../../../Source/Utils/AssetLoader.h</itemPath>
+				<itemPath>../../../Source/Utils/Common.h</itemPath>
 				<itemPath>../../../Source/Utils/Exceptions.h</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.h</itemPath>
@@ -187,6 +189,7 @@
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -206,6 +209,7 @@
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
@@ -335,6 +339,7 @@
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -354,6 +359,7 @@
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
