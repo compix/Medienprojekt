@@ -7,12 +7,12 @@
 #include "Utils/Common.h"
 #include "Components/ExplosionComponent.h"
 
-using entityx::EntityX;
+using entityx::EntityManager;
 
 class EntityFactory
 {
 public:
-	EntityFactory(EntityX* entityX, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager);
+	EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 	
@@ -27,7 +27,7 @@ public:
 	Entity createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible);
 	Entity createExplosion(int row, int col, int range, float spreadTime);
 private:
-	EntityX* m_entityX;
+	EntityManager &m_entities;
 	TextureLoader* m_textureLoader;
 	PhysixSystem* m_PhysixSystem;
 	LayerManager* m_layerManager;

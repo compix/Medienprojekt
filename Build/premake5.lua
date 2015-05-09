@@ -129,6 +129,7 @@ solution "Game"
 			if isWindows then
 				links {
 					"winmm",
+					"ws2_32",
 					"gdi32",
 					"opengl32"
 				}

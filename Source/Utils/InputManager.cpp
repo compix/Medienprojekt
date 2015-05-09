@@ -6,8 +6,12 @@
 
 using namespace std;
 
-InputManager::InputManager()
+InputManager::InputManager(EventManager &events)
+	:m_events(events)
 {
+	m_events.subscribe<MenuShowEvent>(*this);
+	m_events.subscribe<sf::Event>(*this);
+
 	for (int i = 0; i < MAX_PLAYER_INPUTS; i++)
 	{
 		PlayerInput &pi = m_playerInputs[i];
@@ -43,7 +47,7 @@ void InputManager::bindKey(int playerIndex, PlayerButton button, int keyCode)
 	entry.playerIndex = playerIndex;
 }
 
-void InputManager::handleEvent(const sf::Event &evt)
+void InputManager::receive(const sf::Event& evt)
 {
 	switch (evt.type)
 	{
@@ -66,6 +70,14 @@ void InputManager::handleEvent(const sf::Event &evt)
 		onJoystickDisconnected(evt.joystickConnect.joystickId);
 		break;
 	}
+}
+
+void InputManager::receive(const MenuShowEvent &evt)
+{
+	if (evt.visible)
+		m_events.unsubscribe<sf::Event>(*this);
+	else
+		m_events.subscribe<sf::Event>(*this);
 }
 
 void InputManager::onKeyPressed(int code)

@@ -28,8 +28,11 @@
 			<itemPath>../../../Source/EntityLayer.cpp</itemPath>
 			<itemPath>../../../Source/EntityLayer.h</itemPath>
 			<logicalFolder name="Events" displayName="Events" projectFiles="true">
+				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
+				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/Game.cpp</itemPath>
@@ -40,6 +43,17 @@
 			<itemPath>../../../Source/Main.cpp</itemPath>
 			<itemPath>../../../Source/Menu.cpp</itemPath>
 			<itemPath>../../../Source/Menu.h</itemPath>
+			<logicalFolder name="NetCode" displayName="NetCode" projectFiles="true">
+				<itemPath>../../../Source/NetCode/Connection.h</itemPath>
+				<itemPath>../../../Source/NetCode/Message.h</itemPath>
+			</logicalFolder>
+			<logicalFolder name="Network" displayName="Network" projectFiles="true">
+				<itemPath>../../../Source/Network/NetClient.cpp</itemPath>
+				<itemPath>../../../Source/Network/NetClient.h</itemPath>
+				<itemPath>../../../Source/Network/NetConstants.h</itemPath>
+				<itemPath>../../../Source/Network/NetServer.cpp</itemPath>
+				<itemPath>../../../Source/Network/NetServer.h</itemPath>
+			</logicalFolder>
 			<itemPath>../../../Source/PhysixSystem.cpp</itemPath>
 			<itemPath>../../../Source/PhysixSystem.h</itemPath>
 			<itemPath>../../../Source/SFMLDebugDraw.cpp</itemPath>
@@ -161,6 +175,7 @@
 						<linkerLibLibItem>freetype</linkerLibLibItem>
 						<linkerLibLibItem>jpeg</linkerLibLibItem>
 						<linkerLibLibItem>winmm</linkerLibLibItem>
+						<linkerLibLibItem>ws2_32</linkerLibLibItem>
 						<linkerLibLibItem>gdi32</linkerLibLibItem>
 						<linkerLibLibItem>opengl32</linkerLibLibItem>
 					</linkerLibItems>
@@ -194,9 +209,17 @@
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -228,6 +251,8 @@
 			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -311,6 +336,7 @@
 						<linkerLibLibItem>freetype</linkerLibLibItem>
 						<linkerLibLibItem>jpeg</linkerLibLibItem>
 						<linkerLibLibItem>winmm</linkerLibLibItem>
+						<linkerLibLibItem>ws2_32</linkerLibLibItem>
 						<linkerLibLibItem>gdi32</linkerLibLibItem>
 						<linkerLibLibItem>opengl32</linkerLibLibItem>
 					</linkerLibItems>
@@ -344,9 +370,17 @@
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -378,6 +412,8 @@
 			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
