@@ -27,4 +27,4 @@
 *.dox binary
 *.pdf binary
 *.zip binary
-*.expected
+*.expected binary
