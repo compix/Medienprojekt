@@ -31,30 +31,10 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 			cout << "Skill triggered" << endl;
 		}
 
-		if (playerInput.buttonPressed[PlayerButton::RIGHT]){
-			input->moveX = true;
-			playerInput.buttonPressed[PlayerButton::RIGHT] = false;
-			body->body->SetLinearVelocity(b2Vec2(GameConstants::PLAYER_SPEED, 0));
-		}
-
-		if (playerInput.buttonPressed[PlayerButton::DOWN]){
-			input->moveX = true;
-			playerInput.buttonPressed[PlayerButton::DOWN] = false;
-			body->body->SetLinearVelocity(b2Vec2(0, GameConstants::PLAYER_SPEED));
-		}
-
-		if (playerInput.buttonPressed[PlayerButton::LEFT]){
-			input->moveX = true;
-			playerInput.buttonPressed[PlayerButton::LEFT] = false;
-			body->body->SetLinearVelocity(b2Vec2(-GameConstants::PLAYER_SPEED, 0));
-		}
-
-		if (playerInput.buttonPressed[PlayerButton::UP]){
-			input->moveX = true;
-			playerInput.buttonPressed[PlayerButton::UP] = false;
-			body->body->SetLinearVelocity(b2Vec2(0, -GameConstants::PLAYER_SPEED));
-		}
 		input->moveX = playerInput.moveX;
-		input->moveX = playerInput.moveY;
+		input->moveY = playerInput.moveY;
+
+		//fixme: this should be in a separate system
+		body->body->SetLinearVelocity(b2Vec2(playerInput.moveX * GameConstants::PLAYER_SPEED, playerInput.moveY * GameConstants::PLAYER_SPEED));
 	}
 }
