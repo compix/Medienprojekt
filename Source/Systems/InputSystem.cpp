@@ -15,7 +15,6 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 	for (auto entity : entities)
 	{
 		auto input = entity.component<InputComponent>();
-		auto body = entity.component<BodyComponent>();
 
 		auto &playerInput = inputManager.getPlayerInput(input->playerIndex);
 		if (playerInput.buttonPressed[PlayerButton::BOMB])
@@ -35,6 +34,7 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 		input->moveY = playerInput.moveY;
 
 		//fixme: this should be in a separate system
+		auto body = entity.component<BodyComponent>();
 		body->body->SetLinearVelocity(b2Vec2(playerInput.moveX * GameConstants::PLAYER_SPEED, playerInput.moveY * GameConstants::PLAYER_SPEED));
 	}
 }
