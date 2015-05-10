@@ -10,7 +10,6 @@ public:
 	MenuPageChat(Menu &menu);
 
 	void receive(const ChatEvent& evt);
-	void show() override;
 
 protected:
 	void onSubmit();

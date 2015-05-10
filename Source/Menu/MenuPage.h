@@ -14,7 +14,8 @@ public:
 	MenuPage(Menu &menu);
 	virtual ~MenuPage();
 	virtual void hide() { m_panel->hide(); }
-	virtual void show() { m_panel->show(); }
+
+	virtual void show();
 	virtual void close();
 	virtual void onEscape() { close(); }
 
@@ -30,4 +31,5 @@ protected:
 	EventManager &m_events;
 	tgui::Gui &m_gui;
 	tgui::Panel::Ptr m_panel;
+	tgui::Widget *m_onShowFocus;
 };
