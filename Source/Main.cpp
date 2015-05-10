@@ -77,6 +77,9 @@ int main()
 	ExitListener exitListener;
 	events.subscribe<ExitEvent>(exitListener);
 
+	sf::View gameView(sf::FloatRect(0, 0, 800, 600));
+	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
+
 	sf::Clock clock;
 	while (window.isOpen() && !exitListener.triggered)
 	{
@@ -85,6 +88,11 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			else if (event.type == sf::Event::Resized)
+			{
+				gameView.setSize(event.size.width, event.size.height);
+				menuView.setSize(event.size.width, event.size.height);
+			}
 
 			events.emit(event);
 		}
@@ -92,7 +100,10 @@ int main()
 		sf::Time deltaTime = clock.restart();
 
 		window.clear();
+		window.setView(gameView);
 		game.update(deltaTime.asSeconds());
+
+		window.setView(menuView);
 		menu.draw();
 		window.display();
 

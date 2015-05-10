@@ -11,7 +11,7 @@ Menu::Menu(sf::RenderWindow &window, EventManager &events)
 void Menu::draw()
 {
 	if (!m_pageStack.empty())
-		m_gui.draw();
+		m_gui.draw(false);
 }
 
 void Menu::receive(const sf::Event &evt)
@@ -21,7 +21,7 @@ void Menu::receive(const sf::Event &evt)
 		if (evt.type == sf::Event::KeyPressed && evt.key.code == sf::Keyboard::Escape)
 			m_pageStack.top()->onEscape();
 		else
-			m_gui.handleEvent(evt);
+			m_gui.handleEvent(evt, false);
 	}
 	else if (evt.type == sf::Event::KeyPressed)
 	{
