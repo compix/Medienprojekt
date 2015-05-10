@@ -2,12 +2,13 @@
 #include <entityx/entityx.h>
 #include <iostream>
 #include "Game.h"
-#include "Menu.h"
+#include "Menu/Menu.h"
 #include "Utils/InputManager.h"
 #include "SFMLDebugDraw.h"
 #include "Utils/SystemUtils.h"
 #include "Network/NetServer.h"
 #include "Network/NetClient.h"
+#include "Events/ExitEvent.h"
 
 using namespace std;
 
@@ -19,6 +20,15 @@ void changeToGameDir()
 	SystemUtils::setCwd("../Game");
 #endif
 }
+
+struct ExitListener : public Receiver<ExitListener>
+{
+	bool triggered = false;
+	void receive(const ExitEvent& evt)
+	{
+		triggered = true;
+	}
+};
 
 int main()
 {
@@ -64,8 +74,11 @@ int main()
 
 	Game game(&window, inputManager, events, &debugDraw);
 
+	ExitListener exitListener;
+	events.subscribe<ExitEvent>(exitListener);
+
 	sf::Clock clock;
-	while (window.isOpen())
+	while (window.isOpen() && !exitListener.triggered)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))

@@ -7,6 +7,12 @@
     <Filter Include="Events">
       <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{FA04897C-E63B-8A0D-8F28-70107B3E060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu\Pages">
+      <UniqueIdentifier>{B96A1C88-A522-5ED5-0E2A-3731FA00F9C5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="NetCode">
       <UniqueIdentifier>{07E5F06B-73C4-6F07-7CDC-FADDE83AD668}</UniqueIdentifier>
     </Filter>
@@ -81,6 +87,9 @@
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ExitEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -93,7 +102,18 @@
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
-    <ClInclude Include="..\..\Source\Menu.h" />
+    <ClInclude Include="..\..\Source\Menu\Menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\MenuPage.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h">
+      <Filter>Menu\Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h">
+      <Filter>Menu\Pages</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\NetCode\Connection.h">
       <Filter>NetCode</Filter>
     </ClInclude>
@@ -183,7 +203,18 @@
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
-    <ClCompile Include="..\..\Source\Menu.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Menu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\MenuPage.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp">
+      <Filter>Menu\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp">
+      <Filter>Menu\Pages</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Network\NetClient.cpp">
       <Filter>Network</Filter>
     </ClCompile>
