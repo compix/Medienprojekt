@@ -2,7 +2,7 @@
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
 #include <iostream>
-#include <stdio.h>
+#include <format.h>
 
 RenderSystem::RenderSystem(sf::RenderWindow* pWindow, LayerManager* pLayerManager)
 	: m_pWindow(pWindow), m_pLayerManager(pLayerManager), m_fpsCalculator(200, 100, 16)
@@ -58,16 +58,10 @@ void RenderSystem::render(EntityLayer* layer)
 	}
 }
 
-#ifdef _MSC_VER
-	#define snprintf _snprintf
-#endif
-
 void RenderSystem::showFPS()
 {
 	m_fpsCalculator.addFrame();
-	char buffer [20];
-	snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
-	m_fpsText.setString(buffer);
+	m_fpsText.setString(fmt::format("{:.1f} FPS", m_fpsCalculator.getFps()));
 	float w = m_fpsText.getLocalBounds().width;
 	float x = 790 - w;
 	m_fpsText.setPosition(x, 0);
