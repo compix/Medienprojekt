@@ -1,8 +1,9 @@
 #include "MenuPageRoot.h"
 #include "../../Events/ExitEvent.h"
+#include "../Menu.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
-	:MenuPage(menu)
+	:MenuPage(menu), m_localGamePage(menu), m_createServerPage(menu), m_joinServerPage(menu), m_settingsPage(menu), m_creditsPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 
@@ -12,8 +13,8 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	auto width = 200;
 	auto height = 40;
 
-	tgui::Button::Ptr button = createButton(x, y, width, height, "Single Player");
-	button->bindCallback(&MenuPageRoot::onSingleplayer, this, tgui::Button::LeftMouseClicked);
+	tgui::Button::Ptr button = createButton(x, y, width, height, "Local Game");
+	button->bindCallback(&MenuPageRoot::onLocalGame, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
 	button = createButton(x, y, width, height, "Create Server");
@@ -36,29 +37,29 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	button->bindCallback(&MenuPageRoot::onExit, this, tgui::Button::LeftMouseClicked);
 }
 
-void MenuPageRoot::onSingleplayer()
+void MenuPageRoot::onLocalGame()
 {
-	close();
+	m_menu.pushPage(&m_localGamePage);
 }
 
 void MenuPageRoot::onCreateServer()
 {
-	close();
+	m_menu.pushPage(&m_createServerPage);
 }
 
 void MenuPageRoot::onJoinServer()
 {
-	close();
+	m_menu.pushPage(&m_joinServerPage);
 }
 
 void MenuPageRoot::onSettings()
 {
-	close();
+	m_menu.pushPage(&m_settingsPage);
 }
 
 void MenuPageRoot::onCredits()
 {
-	close();
+	m_menu.pushPage(&m_creditsPage);
 }
 
 void MenuPageRoot::onExit()

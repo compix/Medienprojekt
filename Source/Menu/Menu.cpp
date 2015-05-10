@@ -39,7 +39,9 @@ void Menu::pushPage(MenuPage *page)
 
 	m_pageStack.push(page);
 	page->show();
-	m_events.emit<MenuShowEvent>(true);
+
+	if (m_pageStack.size() == 1)
+		m_events.emit<MenuShowEvent>(true);
 }
 
 void Menu::popPage()

@@ -125,7 +125,13 @@
     <ClInclude Include="..\..\Source\Menu\Menu.h" />
     <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLocalGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageSettings.h" />
     <ClInclude Include="..\..\Source\NetCode\Connection.h" />
     <ClInclude Include="..\..\Source\NetCode\Message.h" />
     <ClInclude Include="..\..\Source\Network\NetClient.h" />
@@ -166,7 +172,13 @@
     <ClCompile Include="..\..\Source\Menu\Menu.cpp" />
     <ClCompile Include="..\..\Source\Menu\MenuPage.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
     <ClCompile Include="..\..\Source\Network\NetClient.cpp" />
     <ClCompile Include="..\..\Source\Network\NetServer.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
