@@ -11,13 +11,13 @@ NetServer::NetServer(EventManager &events)
 {
 	m_handler.setCallback(MessageType::CHAT, [this](MessageReader<MessageType> &reader, ENetEvent &event)
 	{
-		string msg = (const char *)event.peer->data;
-		msg += ": ";
-		msg += reader.read<string>();
-		m_events.emit<ChatEvent>(msg);
+		string msg = reader.read<string>();
+		string name = (const char *)event.peer->data;
+		m_events.emit<ChatEvent>(msg, name);
 
 		m_messageWriter.init(MessageType::CHAT);
 		m_messageWriter.write<string>(msg);
+		m_messageWriter.write<string>(name);
 		ENetPacket *packet = m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 		enet_host_broadcast(m_connection.getHost(), (enet_uint8) NetChannel::CHAT, packet);
 	});
@@ -51,10 +51,10 @@ void NetServer::disconnect()
 
 void NetServer::receive(const SendChatEvent& evt)
 {
-	string msg = "Server: " + evt.message;
 	m_messageWriter.init(MessageType::CHAT);
-	m_messageWriter.write<string>(msg);
+	m_messageWriter.write<string>(evt.message);
+	m_messageWriter.write<string>("Server");
 	ENetPacket *packet = m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 	enet_host_broadcast(m_connection.getHost(), (enet_uint8)NetChannel::CHAT, packet);
-	m_events.emit<ChatEvent>(msg);
+	m_events.emit<ChatEvent>(evt.message, "Server");
 }

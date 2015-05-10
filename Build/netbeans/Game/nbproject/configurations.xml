@@ -31,6 +31,7 @@
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
@@ -41,8 +42,30 @@
 			<itemPath>../../../Source/LayerManager.cpp</itemPath>
 			<itemPath>../../../Source/LayerManager.h</itemPath>
 			<itemPath>../../../Source/Main.cpp</itemPath>
-			<itemPath>../../../Source/Menu.cpp</itemPath>
-			<itemPath>../../../Source/Menu.h</itemPath>
+			<logicalFolder name="Menu" displayName="Menu" projectFiles="true">
+				<itemPath>../../../Source/Menu/Menu.cpp</itemPath>
+				<itemPath>../../../Source/Menu/Menu.h</itemPath>
+				<itemPath>../../../Source/Menu/MenuPage.cpp</itemPath>
+				<itemPath>../../../Source/Menu/MenuPage.h</itemPath>
+				<logicalFolder name="Pages" displayName="Pages" projectFiles="true">
+					<itemPath>../../../Source/Menu/Pages/MenuPageChat.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageChat.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCreateServer.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCreateServer.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageJoinServer.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageJoinServer.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLocalGame.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLocalGame.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageRoot.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageRoot.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageSettings.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageSettings.h</itemPath>
+				</logicalFolder>
+			</logicalFolder>
 			<logicalFolder name="NetCode" displayName="NetCode" projectFiles="true">
 				<itemPath>../../../Source/NetCode/Connection.h</itemPath>
 				<itemPath>../../../Source/NetCode/Message.h</itemPath>
@@ -190,7 +213,6 @@
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -212,9 +234,20 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
@@ -248,9 +281,18 @@
 			<item path="../../../Source/Game.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -351,7 +393,6 @@
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -373,9 +414,20 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
@@ -409,9 +461,18 @@
 			<item path="../../../Source/Game.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>

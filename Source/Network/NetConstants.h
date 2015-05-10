@@ -11,6 +11,9 @@ enum class MessageType : uint16_t
 enum class NetChannel : uint8_t
 {
 	CHAT,
+	STATUS,
+	WORLD,
+	MOVEMENT,
 
 	COUNT
 };
