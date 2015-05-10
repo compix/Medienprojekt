@@ -69,7 +69,7 @@ void RenderSystem::showFPS()
 	snprintf(buffer, 20, "%.1f FPS", m_fpsCalculator.getFps());
 	m_fpsText.setString(buffer);
 	float w = m_fpsText.getLocalBounds().width;
-	float x = m_pWindow->getSize().x - w;
+	float x = 790 - w;
 	m_fpsText.setPosition(x, 0);
 	m_pWindow->draw(m_fpsText);
 }
