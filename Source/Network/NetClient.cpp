@@ -12,7 +12,8 @@ NetClient::NetClient(EventManager &events)
 	m_handler.setCallback(MessageType::CHAT, [this](MessageReader<MessageType> &reader, ENetEvent &event)
 	{
 		string msg = reader.read<string>();
-		m_events.emit<ChatEvent>(msg);
+		string name = reader.read<string>();
+		m_events.emit<ChatEvent>(msg, name);
 	});
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([](ENetEvent &event)

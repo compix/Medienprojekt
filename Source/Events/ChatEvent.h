@@ -3,7 +3,8 @@
 
 struct ChatEvent
 {
-	explicit ChatEvent(std::string message) : message(message) {}
+	explicit ChatEvent(std::string message, std::string name) : message(message), name(name) {}
 
 	std::string message;
+	std::string name;
 };

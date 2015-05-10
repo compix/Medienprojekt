@@ -20,7 +20,7 @@ void MenuPageChat::onSubmit()
 
 void MenuPageChat::receive(const ChatEvent &evt)
 {
-	m_chatBox->addLine(evt.message);
+	m_chatBox->addLine(evt.name + ": " + evt.message);
 }
 
 void MenuPageChat::show()
