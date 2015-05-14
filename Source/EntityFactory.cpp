@@ -17,9 +17,11 @@
 #include "Components/TimerComponent.h"
 #include "Components/LayerComponent.h"
 #include "Components/LinkComponent.h"
+#include "Components/LightComponent.h"
+#include "Utils/Shaders.h"
 
-EntityFactory::EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager)
-	:m_entities(entities), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager)
+EntityFactory::EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager)
+	:m_entities(entities), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager)
 {
 }
 
@@ -237,7 +239,13 @@ Entity EntityFactory::createExplosion(int row, int col, Common::Direction direct
 		}
 
 		if (visible)
+		{
+			entity.assign<LightComponent>(sf::Vector2f(transformComponent.x, transformComponent.y), sf::Color(255, 140, 0), 100.f, 360.f, 0.f);
+			auto lightComponent = entity.component<LightComponent>();
+			lightComponent->light.setShader(m_shaderManager->getLightShader());
+			lightComponent->light.setAttenuation(sf::Vector3f(200.f, 10.f, 0.2f));
 			entity.assign<SpriteComponent>(sprite);
+		}
 	}
 	else
 	{
@@ -253,7 +261,14 @@ Entity EntityFactory::createExplosion(int row, int col, Common::Direction direct
 			transformComponent.rotation = 90.f;
 
 		if (visible)
+		{
+			entity.assign<LightComponent>(sf::Vector2f(transformComponent.x, transformComponent.y), sf::Color(255, 140, 0), 100.f, 360.f, 0.f);
+			auto lightComponent = entity.component<LightComponent>();
+			lightComponent->light.setShader(m_shaderManager->getLightShader());
+			lightComponent->light.setAttenuation(sf::Vector3f(200.f, 10.f, 0.2f));
 			entity.assign<SpriteComponent>(sprite);
+		}
+			
 	}
 
 	entity.assign<SpreadComponent>(direction, range, spreadTime);
@@ -294,10 +309,37 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 	linkComponent.links.push_back(createExplosion(row, col, Common::UP, range, spreadTime, false));
 	linkComponent.links.push_back(createExplosion(row, col, Common::LEFT, range, spreadTime, false));
 	linkComponent.links.push_back(createExplosion(row, col, Common::RIGHT, range, spreadTime, false));
+	
+	entity.assign<LightComponent>(sf::Vector2f(transformComponent.x, transformComponent.y), sf::Color(255, 140, 0), 200.f, 360.f, 0.f);
+	auto lightComponent = entity.component<LightComponent>();
+	lightComponent->light.setShader(m_shaderManager->getLightShader());
 
 	entity.assign<ExplosionComponent>();
 	entity.assign<LinkComponent>(linkComponent);
 	entity.assign<LayerComponent>(0);
+
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
+Entity EntityFactory::createFloor(int row, int col)
+{
+	Entity entity = m_entities.create();
+
+	Texture& tex = m_textureLoader->get("floor");
+	sf::Sprite sprite;
+	sprite.setTexture(tex);
+	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
+
+	TransformComponent transformComponent;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f + 5.f;
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<SpriteComponent>(sprite);
+
+	entity.assign<CellComponent>(col, row);
+	entity.assign<LayerComponent>(-1);
 
 	m_layerManager->add(entity);
 

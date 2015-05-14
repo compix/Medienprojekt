@@ -48,7 +48,7 @@ void PhysixSystem::Update(entityx::TimeDelta dt)
 
 void PhysixSystem::DrawDebug()
 {
-	m_World.DrawDebugData();
+	//m_World.DrawDebugData();
 }
 
 b2Vec2 PhysixSystem::GetGravity()
@@ -68,5 +68,5 @@ float PhysixSystem::toBox2D(float pixel)
 
 float PhysixSystem::toWorld(float meters)
 {
-	return meters*PhysixSystem::m_InvScale;
+	return meters*PhysixSystem::m_Scale;
 }

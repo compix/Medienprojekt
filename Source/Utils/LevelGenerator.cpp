@@ -28,6 +28,7 @@ void LevelGenerator::generateRandomLevel()
 	{
 		for (int col = 0; col < m_colCount; col++)
 		{
+			m_entityFactory->createFloor(row, col);
 			for (auto rule : rules)
 				if ((this->*rule)(LevelPosition(row, col)))
 					break;
@@ -74,7 +75,7 @@ bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 
 bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
-	bool condition = Random::getInt(1, 100) <= 85; // 85% chance to spawn a block
+	bool condition = Random::getInt(1, 100) <= 15; // 85% chance to spawn a block
 	if (condition) 
 		m_entityFactory->createBlock(pos.row, pos.col);
 
