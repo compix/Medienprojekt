@@ -228,8 +228,23 @@
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\Shaders.h">
+    <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\ShaderManager.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\InventoryComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\InventorySystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,8 +350,14 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\Shaders.cpp">
+    <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

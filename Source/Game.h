@@ -7,7 +7,7 @@
 #include "LayerManager.h"
 #include "SFMLDebugDraw.h"
 #include "Lighting/Light.h"
-#include "Utils/Shaders.h"
+#include "Utils/ShaderManager.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -25,8 +25,6 @@ public:
 	void update(TimeDelta dt);
 
 	inline void setMousePos(sf::Vector2f mousePos) { m_mousePos = mousePos; }
-private:
-	void testExplosions(TimeDelta dt);
 
 private:
 	EventManager &m_events;

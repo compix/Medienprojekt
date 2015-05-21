@@ -18,7 +18,9 @@
 #include "Components/LayerComponent.h"
 #include "Components/LinkComponent.h"
 #include "Components/LightComponent.h"
-#include "Utils/Shaders.h"
+#include "Utils/ShaderManager.h"
+#include "Components/OwnerComponent.h"
+#include "Components/InventoryComponent.h"
 
 EntityFactory::EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager)
 	:m_entities(entities), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager)
@@ -63,10 +65,13 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
 
+	static int playerIndex = 0;
+
 	InputComponent inputComponent;
-	inputComponent.playerIndex = 0;
+	inputComponent.playerIndex = playerIndex++;
 	entity.assign<InputComponent>(inputComponent);
 	entity.assign<LayerComponent>(0);
+	entity.assign<InventoryComponent>();
 
 	m_layerManager->add(entity);
 
@@ -180,7 +185,7 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 	return entity;
 }
 
-Entity EntityFactory::createBomb(int row, int col)
+Entity EntityFactory::createBomb(int row, int col, Entity owner)
 {
 	Entity entity = m_entities.create();
 
@@ -197,6 +202,7 @@ Entity EntityFactory::createBomb(int row, int col)
 	entity.assign<BombComponent>(4, 0.06f);
 	entity.assign<TimerComponent>(2.f);
 	entity.assign<HealthComponent>(1);
+	entity.assign<OwnerComponent>(owner);
 
 	entity.assign<CellComponent>(col, row);
 
@@ -207,7 +213,7 @@ Entity EntityFactory::createBomb(int row, int col)
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible)
+Entity EntityFactory::createExplosion(int row, int col, Direction direction, int range, float spreadTime, bool visible)
 {
 	Entity entity = m_entities.create();
 
@@ -225,16 +231,16 @@ Entity EntityFactory::createExplosion(int row, int col, Common::Direction direct
 
 		switch (direction)
 		{
-		case Common::UP:
+		case Direction::UP:
 			transformComponent.rotation = -90.f;
 			break;
-		case Common::DOWN:
+		case Direction::DOWN:
 			transformComponent.rotation = 90.f;
 			break;
-		case Common::LEFT:
+		case Direction::LEFT:
 			transformComponent.rotation = 180.f;
 			break;
-		case Common::RIGHT:
+		case Direction::RIGHT:
 			break;
 		}
 
@@ -257,7 +263,7 @@ Entity EntityFactory::createExplosion(int row, int col, Common::Direction direct
 		transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
 		transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
 
-		if (direction == Common::UP || direction == Common::DOWN)
+		if (direction == Direction::UP || direction == Direction::DOWN)
 			transformComponent.rotation = 90.f;
 
 		if (visible)
@@ -305,10 +311,10 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 	entity.assign<CellComponent>(col, row);
 	
 	LinkComponent linkComponent;
-	linkComponent.links.push_back(createExplosion(row, col, Common::DOWN, range, spreadTime, false));
-	linkComponent.links.push_back(createExplosion(row, col, Common::UP, range, spreadTime, false));
-	linkComponent.links.push_back(createExplosion(row, col, Common::LEFT, range, spreadTime, false));
-	linkComponent.links.push_back(createExplosion(row, col, Common::RIGHT, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Direction::DOWN, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Direction::UP, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Direction::LEFT, range, spreadTime, false));
+	linkComponent.links.push_back(createExplosion(row, col, Direction::RIGHT, range, spreadTime, false));
 	
 	entity.assign<LightComponent>(sf::Vector2f(transformComponent.x, transformComponent.y), sf::Color(255, 140, 0), 200.f, 360.f, 0.f);
 	auto lightComponent = entity.component<LightComponent>();

@@ -104,9 +104,11 @@
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
+    <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
@@ -114,6 +116,7 @@
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
@@ -150,7 +153,9 @@
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h" />
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
@@ -161,7 +166,7 @@
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
-    <ClInclude Include="..\..\Source\Utils\Shaders.h" />
+    <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
@@ -197,7 +202,9 @@
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
@@ -205,7 +212,7 @@
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
     <ClCompile Include="..\..\Source\Utils\Random.cpp" />
-    <ClCompile Include="..\..\Source\Utils\Shaders.cpp" />
+    <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
     <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
     <ClCompile Include="..\..\Source\debugrender.cpp" />

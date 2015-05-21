@@ -17,7 +17,7 @@ void DestructionSystem::update(entityx::EntityManager& entityManager, entityx::E
 		{
 			auto link = entity.component<LinkComponent>();
 
-			if (link)
+			if (link && link->dependent)
 			{
 				for (auto e : link->links)
 					e.destroy();

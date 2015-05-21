@@ -4,10 +4,10 @@
 
 struct SpreadComponent
 {
-	SpreadComponent(Common::Direction direction, int range, float spreadTime) 
+	SpreadComponent(Direction direction, int range, float spreadTime) 
 		: direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime), stopped(false) {}
 
-	Common::Direction direction;
+	Direction direction;
 	int range; // how far it can spread in cells
 	float spreadTime; // in seconds
 	float timeTillNext; // in seconds

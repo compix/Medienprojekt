@@ -21,5 +21,6 @@ private:
 
 private:
 	EntityFactory* m_entityFactory;
+	entityx::EventManager* m_eventManager;
 };
 

@@ -1,12 +1,9 @@
 #pragma once
 
-namespace Common
+enum class Direction
 {
-	enum Direction
-	{
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT
-	};
-}
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};

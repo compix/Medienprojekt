@@ -23,9 +23,9 @@ public:
 	Entity createBlock(int row, int col);
 	Entity createSolidBlock(int row, int col);
 
-	Entity createBomb(int row, int col);
+	Entity createBomb(int row, int col, Entity owner);
 	
-	Entity createExplosion(int row, int col, Common::Direction direction, int range, float spreadTime, bool visible);
+	Entity createExplosion(int row, int col, Direction direction, int range, float spreadTime, bool visible);
 	Entity createExplosion(int row, int col, int range, float spreadTime);
 
 	Entity createFloor(int row, int col);

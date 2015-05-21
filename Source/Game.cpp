@@ -16,8 +16,10 @@
 #include "Systems/TimerSystem.h"
 #include "Systems/BombSystem.h"
 #include "Lighting/Light.h"
-#include "Utils/Shaders.h"
+#include "Utils/ShaderManager.h"
 #include "Systems/LightSystem.h"
+#include "Systems/InputHandleSystem.h"
+#include "Systems/InventorySystem.h"
 
 
 Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &events, SFMLDebugDraw* debugDraw)
@@ -43,6 +45,7 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 	m_textureLoader->loadAllFromJson("assets/json/textures.json");
 	m_entityFactory = std::make_unique<EntityFactory>(m_entities, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
 
+	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>(m_entityFactory.get());
 	m_systems.add<DamageSystem>(m_layerManager.get());
@@ -52,6 +55,7 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 	m_systems.add<DeathSystem>();
 	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>(inputManager);
+	m_systems.add<InputHandleSystem>(m_entityFactory.get());
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(window, m_layerManager.get());
 	m_systems.add<LightSystem>(window);
@@ -76,8 +80,6 @@ void Game::update(TimeDelta dt)
 	m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
-	testExplosions(dt);
-
 	m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
 	m_light.setShader(m_shaderManager.getLightShader());
 
@@ -89,24 +91,4 @@ void Game::update(TimeDelta dt)
 	m_window->draw(light1);
 	m_window->draw(light2);
 	m_window->draw(m_light);
-}
-
-void Game::testExplosions(TimeDelta dt)
-{
-	m_timer -= (float)dt;
-
-	if (m_timer <= 0.f)
-	{
-		m_timer = 1.f;
-
-		int cellX, cellY;
-
-		do
-		{
-			cellX = Random::getInt(1, 19);
-			cellY = Random::getInt(1, 19);
-		} while (!m_layerManager->isFree(0, cellX, cellY));
-
-		m_entityFactory->createBomb(cellY, cellX);
-	}
 }
