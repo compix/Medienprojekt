@@ -42,7 +42,7 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 	m_layerManager->configure(events);
 
 	m_textureLoader = std::make_unique<TextureLoader>();
-	m_textureLoader->loadAllFromJson("assets/json/textures.json");
+	m_textureLoader->loadAllFromJson("Assets/json/textures.json");
 	m_entityFactory = std::make_unique<EntityFactory>(m_entities, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
 
 	m_systems.add<InventorySystem>();
