@@ -67,6 +67,9 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 	//m_systems.system<RenderSystem>()->setRenderTexture(&m_renderTexture);
 	
 	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
+
+	m_particleEmitter.setTexture(m_textureLoader->get("light"));
+	m_particleEmitter.setPosition(m_window->getSize().x*0.5f, m_window->getSize().y*0.5f);
 }
 
 Game::~Game() { 
@@ -80,6 +83,9 @@ void Game::update(TimeDelta dt)
 	m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
+	m_particleEmitter.update(dt);
+	m_particleEmitter.rotate(dt*10.f);
+
 	m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
 	m_light.setShader(m_shaderManager.getLightShader());
 
@@ -88,7 +94,9 @@ void Game::update(TimeDelta dt)
 	Light light2(sf::Vector2f(150.f, 50.f), sf::Color::Yellow, 30.f, 360.f, 0.f);
 	light2.setShader(m_shaderManager.getLightShader());
 
+	m_window->draw(m_particleEmitter);
 	m_window->draw(light1);
 	m_window->draw(light2);
 	m_window->draw(m_light);
+	
 }

@@ -9,5 +9,6 @@
 	"subExplosion": "subExplosion.png",
 	"exploEnd": "exploEnd.png",
 	"floor": "floor.png",
-	"solidBlockNM": "SolidBlockNM.png"
+	"solidBlockNM": "SolidBlockNM.png",
+	"light": "light.png"
 }

@@ -28,6 +28,9 @@
     <Filter Include="Lighting">
       <UniqueIdentifier>{84bebe23-162a-424f-8319-1aaf1830a11b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{d09a4a98-a3bb-4933-8217-a32dadbf8e99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
@@ -246,6 +249,12 @@
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\Particle.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -358,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

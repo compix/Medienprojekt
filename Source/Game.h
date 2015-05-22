@@ -8,6 +8,7 @@
 #include "SFMLDebugDraw.h"
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
+#include "Graphics/ParticleEmitter.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -43,5 +44,7 @@ private:
 	ShaderManager m_shaderManager;
 
 	sf::Vector2f m_mousePos;
+
+	ParticleEmitter m_particleEmitter;
 };
 
