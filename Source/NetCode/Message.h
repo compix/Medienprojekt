@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <enet/enet.h>
+#include <memory.h>
 #include <assert.h>
 #include <stdint.h>
 #include <functional>
