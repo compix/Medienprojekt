@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "enet", "enet.vcxproj", "{3153967C-1D8A-970D-C676-7D10B28C130F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppformat", "cppformat.vcxproj", "{D1248BFE-3D8F-3F75-86CD-F01AF2761DCA}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "entityx", "entityx.vcxproj", "{7AB67F6B-E695-FE06-EFAD-89DD5B0C6568}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jsoncpp", "jsoncpp.vcxproj", "{42ABB4F7-AE8A-3393-B7A2-BE6923019AF4}"
@@ -23,6 +25,10 @@ Global
 		{3153967C-1D8A-970D-C676-7D10B28C130F}.Debug|Win32.Build.0 = Debug|Win32
 		{3153967C-1D8A-970D-C676-7D10B28C130F}.Release|Win32.ActiveCfg = Release|Win32
 		{3153967C-1D8A-970D-C676-7D10B28C130F}.Release|Win32.Build.0 = Release|Win32
+		{D1248BFE-3D8F-3F75-86CD-F01AF2761DCA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D1248BFE-3D8F-3F75-86CD-F01AF2761DCA}.Debug|Win32.Build.0 = Debug|Win32
+		{D1248BFE-3D8F-3F75-86CD-F01AF2761DCA}.Release|Win32.ActiveCfg = Release|Win32
+		{D1248BFE-3D8F-3F75-86CD-F01AF2761DCA}.Release|Win32.Build.0 = Release|Win32
 		{7AB67F6B-E695-FE06-EFAD-89DD5B0C6568}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7AB67F6B-E695-FE06-EFAD-89DD5B0C6568}.Debug|Win32.Build.0 = Debug|Win32
 		{7AB67F6B-E695-FE06-EFAD-89DD5B0C6568}.Release|Win32.ActiveCfg = Release|Win32

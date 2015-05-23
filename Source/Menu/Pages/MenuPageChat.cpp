@@ -9,6 +9,8 @@ MenuPageChat::MenuPageChat(Menu &menu)
 
 	m_editBox = createEditBox(20, 540, 760, 40);
 	m_editBox->bindCallback(&MenuPageChat::onSubmit, this, tgui::EditBox::ReturnKeyPressed);
+
+	m_onShowFocus = m_editBox.get();
 }
 
 void MenuPageChat::onSubmit()
@@ -21,10 +23,4 @@ void MenuPageChat::onSubmit()
 void MenuPageChat::receive(const ChatEvent &evt)
 {
 	m_chatBox->addLine(evt.name + ": " + evt.message);
-}
-
-void MenuPageChat::show()
-{
-	MenuPage::show();
-	m_editBox->focus();
 }

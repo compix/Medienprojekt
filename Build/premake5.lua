@@ -75,6 +75,7 @@ solution "Game"
 			thirdPartyDir .. "/SFML/include",
 			thirdPartyDir .. "/enet/include",
 			thirdPartyDir .. "/jsoncpp/include",
+			thirdPartyDir .. "/cppformat",
 			thirdPartyDir .. "/entityx"
 		}
 		files {
@@ -105,6 +106,7 @@ solution "Game"
 				"enet-s-d",
 				"jsoncpp-s-d",
 				"entityx-s-d",
+				"cppformat-s-d",
 				"SFML-s-d"
 			}
 		filter { "Release" }
@@ -115,6 +117,7 @@ solution "Game"
 				"enet-s",
 				"jsoncpp-s",
 				"entityx-s",
+				"cppformat-s",
 				"SFML-s"
 			}
 			
@@ -172,6 +175,16 @@ solution "Thirdparty"
 				thirdPartyDir .. "/enet/win32.c"
 			}
 		end
+
+	project "cppformat"
+		kind "StaticLib"
+		language "C++"
+		objdir( objectDir .. "/cppformat" )
+		includedirs { thirdPartyDir .. "/cppformat" }
+		files {
+			thirdPartyDir .. "/cppformat/format.h",
+			thirdPartyDir .. "/cppformat/format.cc"
+		}
 
 	project "entityx"
 		kind "StaticLib"
