@@ -63,13 +63,20 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 
 	LevelGenerator levelGenerator(m_entityFactory.get(), 21, 21);
 	levelGenerator.generateRandomLevel();
-
-	//m_systems.system<RenderSystem>()->setRenderTexture(&m_renderTexture);
 	
 	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
 	m_particleEmitter.setTexture(m_textureLoader->get("light"));
 	m_particleEmitter.setPosition(m_window->getSize().x*0.5f, m_window->getSize().y*0.5f);
+
+	m_particleEmitter.spawnTime(0.003f)
+		.maxParticles(10000)
+		.maxLifetime(5.f)
+		.gravityModifier(5.f)
+		.velocityFunction([](float t) { return sf::Vector2f(t, sinf(t)*100.f); })
+		.angularVelocityFunction([](float t) { return t*t*0.1f; })
+		.sizeFunction([](float t) { return sf::Vector2f(15 - t*t*50.f, 15 - t*t*t*20.f); })
+		.colorFunction([](float t) { return sf::Color(0.f, Math::smootherstep(234, 23, t)*255.f, 255.f - Math::regress(t) * 189, t < 0.1 ? 15.f : 255 - t * 255); });
 }
 
 Game::~Game() { 
@@ -84,7 +91,6 @@ void Game::update(TimeDelta dt)
 	m_layerManager->update();
 
 	m_particleEmitter.update(dt);
-	m_particleEmitter.rotate(dt*10.f);
 
 	m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
 	m_light.setShader(m_shaderManager.getLightShader());

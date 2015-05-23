@@ -13,7 +13,7 @@ void TimerSystem::update(entityx::EntityManager& entityManager, entityx::EventMa
 		
 		if (timer->active)
 		{
-			timer->seconds -= dt;
+			timer->seconds -= (float) dt;
 
 			if (timer->seconds <= 0.f)
 			{

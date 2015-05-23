@@ -11,7 +11,7 @@ void DestructionSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		auto destructionComponent = entity.component<DestructionComponent>();
 
-		destructionComponent->timeRemaining -= dt;
+		destructionComponent->timeRemaining -= (float) dt;
 
 		if (destructionComponent->timeRemaining <= 0.f)
 		{

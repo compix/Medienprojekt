@@ -32,7 +32,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 			if (!spread || !cell)
 				continue;			
 
-			spread->timeTillNext -= dt;
+			spread->timeTillNext -= (float) dt;
 
 			if (spread->timeTillNext <= 0.f)
 			{

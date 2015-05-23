@@ -371,5 +371,8 @@
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Common.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

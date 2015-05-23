@@ -3,7 +3,6 @@
 #include "Box2D/Box2D.h"
 
 const int SUBDIVISIONS = 360;
-const float PI = 3.14159265359f;
 
 class Light : public sf::Drawable, public b2RayCastCallback
 {

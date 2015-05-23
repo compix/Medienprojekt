@@ -1,6 +1,7 @@
 #include "Light.h"
 #include <BodyFactory.h>
 #include <PhysixSystem.h>
+#include <Utils/Common.h>
 
 const float EPSILON = 0.000001f;
 
@@ -59,14 +60,14 @@ void Light::create(sf::Vector2f center, sf::Color color, float radius, float deg
 
 	m_vertices.append(sf::Vertex(center, color));
 
-	float startDegree = rotation - degree / 2.f - PI / 2.f;
-	float stepSize = (PI * 2.f) / SUBDIVISIONS;
+	float startDegree = rotation - degree / 2.f - Math::PI / 2.f;
+	float stepSize = (Math::PI * 2.f) / SUBDIVISIONS;
 
 	b2Vec2 start(PhysixSystem::toBox2D(center.x), PhysixSystem::toBox2D(center.y));
 
 	b2RayCastOutput out;
 
-	for (float angle = 0; angle <= std::min(PI * 2.f, degree); angle += stepSize) 
+	for (float angle = 0; angle <= std::min(Math::PI * 2.f, degree); angle += stepSize) 
 	{
 		m_lowestFraction = 1.f;
 
