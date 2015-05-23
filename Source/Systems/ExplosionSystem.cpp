@@ -32,23 +32,20 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 			if (!spread || !cell)
 				continue;			
 
-			spread->timeTillNext -= dt;
+			spread->timeTillNext -= (float) dt;
 
 			if (spread->timeTillNext <= 0.f)
 			{
 				if (spread->range > 0)
 				{
-					int nextRow = spread->direction == Common::UP ? cell->y - 1 : spread->direction == Common::DOWN ? cell->y + 1 : cell->y;
-					int nextCol = spread->direction == Common::LEFT ? cell->x - 1 : spread->direction == Common::RIGHT ? cell->x + 1 : cell->x;
+					int nextRow = spread->direction == Direction::UP ? cell->y - 1 : spread->direction == Direction::DOWN ? cell->y + 1 : cell->y;
+					int nextCol = spread->direction == Direction::LEFT ? cell->x - 1 : spread->direction == Direction::RIGHT ? cell->x + 1 : cell->x;
 					int nextRange = spread->range - 1;
 
 					for (auto& e : m_layerManager->getEntities(layer->layer, nextCol, nextRow))
 					{
-						if (!e.has_component<ExplosionComponent>())
-						{
-							nextRange = 0;
-							break;
-						}
+						nextRange = 0;
+						break;
 					}
 
 					if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))

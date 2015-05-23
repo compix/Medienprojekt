@@ -6,6 +6,9 @@
 #include "EntityFactory.h"
 #include "LayerManager.h"
 #include "SFMLDebugDraw.h"
+#include "Lighting/Light.h"
+#include "Utils/ShaderManager.h"
+#include "Graphics/ParticleEmitter.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -22,10 +25,8 @@ public:
 
 	void update(TimeDelta dt);
 
-private:
-	void createTestLevel(EntityLayer& layer);
+	inline void setMousePos(sf::Vector2f mousePos) { m_mousePos = mousePos; }
 
-	void testExplosions(TimeDelta dt);
 private:
 	EventManager &m_events;
 	EntityManager m_entities;
@@ -36,6 +37,14 @@ private:
 	PhysixSystem* m_PhysixSystem;
 	SFMLDebugDraw* debug;
 
+	sf::RenderWindow* m_window;
+	Light m_light;
 	float m_timer;
+
+	ShaderManager m_shaderManager;
+
+	sf::Vector2f m_mousePos;
+
+	ParticleEmitter m_particleEmitter;
 };
 

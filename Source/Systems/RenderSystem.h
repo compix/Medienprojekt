@@ -13,17 +13,16 @@ using entityx::TimeDelta;
 class RenderSystem : public System<RenderSystem>
 {
 public:
-	RenderSystem(sf::RenderWindow* pWindow, LayerManager* pLayerManager);
+	RenderSystem(sf::RenderWindow* window, LayerManager* layerManager);
 
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
-
 private:
 	void render(EntityLayer* layer);
 	void showFPS();
 
 private:
-	sf::RenderWindow* m_pWindow;
-	LayerManager* m_pLayerManager;
+	sf::RenderWindow* m_window;
+	LayerManager* m_layerManager;
 	sf::Font m_font;
 	sf::Text m_fpsText;
 	FpsCalculator m_fpsCalculator;

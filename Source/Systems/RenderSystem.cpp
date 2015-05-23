@@ -1,11 +1,12 @@
-﻿#include "RenderSystem.h"
+#include "RenderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
 #include <iostream>
 #include <format.h>
+#include <Components/ShaderComponent.h>
 
-RenderSystem::RenderSystem(sf::RenderWindow* pWindow, LayerManager* pLayerManager)
-	: m_pWindow(pWindow), m_pLayerManager(pLayerManager), m_fpsCalculator(200, 100, 16)
+RenderSystem::RenderSystem(sf::RenderWindow* window, LayerManager* layerManager)
+	: m_window(window), m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
 {
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
@@ -21,7 +22,7 @@ RenderSystem::RenderSystem(sf::RenderWindow* pWindow, LayerManager* pLayerManage
 
 void RenderSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
-	for (auto& layer : m_pLayerManager->getLayers())
+	for (auto& layer : m_layerManager->getLayers())
 	{
 		render(layer.second.get());
 	}
@@ -32,6 +33,8 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 void RenderSystem::render(EntityLayer* layer)
 {
 	EntityGrid grid = layer->getEntityGrid();
+
+	
 
 	for (int y = 0; y < layer->getHeight(); y++)
 	{
@@ -48,11 +51,28 @@ void RenderSystem::render(EntityLayer* layer)
 				if (!transform || !sprite)
 					continue;
 
+				auto shaderComponent = e.component<ShaderComponent>();
+				sf::Shader* shader = nullptr;
+
+				if (shaderComponent)
+				{
+					switch (shaderComponent->type)
+					{
+					case ShaderType::SFML: 
+						break;
+					case ShaderType::LIGHTMAP:
+						// Not sure if it'll be used.
+						break;
+					default: 
+						break;
+					}
+				}
+
 				sprite->sprite.setPosition(transform->x, transform->y);
 				sprite->sprite.setRotation(transform->rotation);
 				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
 
-				m_pWindow->draw(sprite->sprite);
+				m_window->draw(sprite->sprite, shader);
 			}
 		}
 	}
@@ -65,5 +85,5 @@ void RenderSystem::showFPS()
 	float w = m_fpsText.getLocalBounds().width;
 	float x = 790 - w;
 	m_fpsText.setPosition(x, 0);
-	m_pWindow->draw(m_fpsText);
+	m_window->draw(m_fpsText);
 }

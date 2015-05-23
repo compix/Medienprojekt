@@ -59,6 +59,7 @@ int main()
 	}
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	
 	window.setKeyRepeatEnabled(false);
 
 	InputManager inputManager(events);
@@ -92,6 +93,9 @@ int main()
 			{
 				gameView.setSize(event.size.width, event.size.height);
 				menuView.setSize(event.size.width, event.size.height);
+			} else if (event.type == sf::Event::MouseMoved)
+			{
+				game.setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
 			}
 
 			events.emit(event);
