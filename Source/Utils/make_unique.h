@@ -9,4 +9,6 @@ namespace std
 		return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 	}
 }
+#else
+#include <memory>
 #endif

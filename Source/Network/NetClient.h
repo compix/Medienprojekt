@@ -8,13 +8,12 @@
 using NetCode::ClientConnection;
 using NetCode::MessageHandler;
 using NetCode::MessageWriter;
-using entityx::EventManager;
 using entityx::Receiver;
 
 class NetClient : public Receiver<NetClient>
 {
 public:
-	NetClient(EventManager &events);
+	NetClient();
 
 	void update();
 	bool connect();
@@ -23,7 +22,6 @@ public:
 	void receive(const SendChatEvent &evt);
 
 private:
-	EventManager &m_events;
 	ClientConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;

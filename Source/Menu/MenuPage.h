@@ -3,8 +3,6 @@
 #include <TGUI/TGUI.hpp>
 #include <entityx/entityx.h>
 
-using entityx::EventManager;
-
 using std::string;
 class Menu;
 
@@ -28,7 +26,6 @@ protected:
 
 protected:
 	Menu &m_menu;
-	EventManager &m_events;
 	tgui::Gui &m_gui;
 	tgui::Panel::Ptr m_panel;
 	tgui::Widget *m_onShowFocus;

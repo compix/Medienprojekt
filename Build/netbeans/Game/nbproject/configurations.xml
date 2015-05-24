@@ -53,6 +53,7 @@
 			<itemPath>../../../Source/Game.cpp</itemPath>
 			<itemPath>../../../Source/Game.h</itemPath>
 			<itemPath>../../../Source/GameConstants.h</itemPath>
+			<itemPath>../../../Source/GameGlobals.h</itemPath>
 			<logicalFolder name="Graphics" displayName="Graphics" projectFiles="true">
 				<itemPath>../../../Source/Graphics/Particle.h</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEmitter.cpp</itemPath>
@@ -245,6 +246,7 @@
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
@@ -454,6 +456,7 @@
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>

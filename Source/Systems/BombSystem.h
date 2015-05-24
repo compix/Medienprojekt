@@ -8,7 +8,7 @@ struct TimeoutEvent;
 class BombSystem : public entityx::System<BombSystem>, public entityx::Receiver<BombSystem>
 {
 public:
-	BombSystem(EntityFactory* entityFactory);
+	BombSystem();
 
 	void configure(entityx::EventManager& events) override;
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
@@ -18,9 +18,5 @@ public:
 
 private:
 	void detonate(entityx::Entity entity);
-
-private:
-	EntityFactory* m_entityFactory;
-	entityx::EventManager* m_eventManager;
 };
 

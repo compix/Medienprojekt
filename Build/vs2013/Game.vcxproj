@@ -135,6 +135,7 @@
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
+    <ClInclude Include="..\..\Source\GameGlobals.h" />
     <ClInclude Include="..\..\Source\Graphics\Particle.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />

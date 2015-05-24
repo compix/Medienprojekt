@@ -15,12 +15,10 @@ using entityx::EventManager;
 using entityx::SystemManager;
 using std::unique_ptr;
 
-class InputManager;
-
 class Game
 {
 public:
-	Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &events, SFMLDebugDraw* debugDraw);
+	Game();
 	~Game();
 
 	void update(TimeDelta dt);
@@ -28,16 +26,13 @@ public:
 	inline void setMousePos(sf::Vector2f mousePos) { m_mousePos = mousePos; }
 
 private:
-	EventManager &m_events;
 	EntityManager m_entities;
 	SystemManager m_systems;
-	unique_ptr<TextureLoader> m_textureLoader;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
 	PhysixSystem* m_PhysixSystem;
-	SFMLDebugDraw* debug;
+	SFMLDebugDraw m_debugDraw;
 
-	sf::RenderWindow* m_window;
 	Light m_light;
 	float m_timer;
 

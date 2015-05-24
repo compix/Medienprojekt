@@ -12,6 +12,17 @@
 
 using namespace std;
 
+namespace GameGlobals
+{
+	sf::RenderWindow *window = nullptr;
+	InputManager *input = nullptr;
+	EventManager *events = nullptr;
+	EntityManager *entities = nullptr;
+	EntityFactory *entityFactory = nullptr;
+	TextureLoader *textures = nullptr;
+	unique_ptr<Game> game;
+};
+
 void changeToGameDir()
 {
 	string exeDir = SystemUtils::getExecutableDirectory();
@@ -37,10 +48,11 @@ int main()
 	NetCode::init();
 
 	EventManager events;
+	GameGlobals::events = &events;
 
 	bool isServer = false;
-	NetServer server(events);
-	NetClient client(events);
+	NetServer server;
+	NetClient client;
 	if (server.connect())
 	{
 		isServer = true;
@@ -59,21 +71,19 @@ int main()
 	}
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	GameGlobals::window = &window;
 	
 	window.setKeyRepeatEnabled(false);
 
-	InputManager inputManager(events);
+	InputManager inputManager;
+	GameGlobals::input = &inputManager;
 
-	Menu menu(window, events);
+	Menu menu;
+	TextureLoader textureLoader;
+	textureLoader.loadAllFromJson("Assets/json/textures.json");
+	GameGlobals::textures = &textureLoader;
 
-	SFMLDebugDraw debugDraw(window);
-
-	debugDraw.SetFlags(b2Draw::e_shapeBit);
-	//debugDraw.AppendFlags(b2Draw::e_jointBit);
-	//AppendFlags(b2Draw::e_centerOfMassBit);
-	//debugDraw.AppendFlags(b2Draw::e_aabbBit);
-
-	Game game(&window, inputManager, events, &debugDraw);
+	GameGlobals::game = make_unique<Game>();
 
 	ExitListener exitListener;
 	events.subscribe<ExitEvent>(exitListener);
@@ -93,9 +103,10 @@ int main()
 			{
 				gameView.setSize(event.size.width, event.size.height);
 				menuView.setSize(event.size.width, event.size.height);
-			} else if (event.type == sf::Event::MouseMoved)
+			}
+			else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
-				game.setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
+				GameGlobals::game->setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
 			}
 
 			events.emit(event);
@@ -105,7 +116,7 @@ int main()
 
 		window.clear();
 		window.setView(gameView);
-		game.update(deltaTime.asSeconds());
+		GameGlobals::game->update(deltaTime.asSeconds());
 
 		window.setView(menuView);
 		menu.draw();
@@ -116,6 +127,8 @@ int main()
 		else
 			client.update();
 	}
+
+	GameGlobals::game.reset();
 
 	return EXIT_SUCCESS;
 }

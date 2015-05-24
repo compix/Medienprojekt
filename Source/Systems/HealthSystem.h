@@ -10,8 +10,5 @@ public:
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	void receive(const EntityGotHitEvent& entityGotHit);
-
-private:
-	entityx::EventManager* m_eventManager;
 };
 

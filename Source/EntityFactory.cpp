@@ -21,17 +21,18 @@
 #include "Utils/ShaderManager.h"
 #include "Components/OwnerComponent.h"
 #include "Components/InventoryComponent.h"
+#include "GameGlobals.h"
 
-EntityFactory::EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager)
-	:m_entities(entities), m_textureLoader(textureLoader), m_PhysixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager)
+EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager)
+	:m_PhysixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager)
 {
 }
 
 Entity EntityFactory::createTestEntity1(int row, int col)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("char_idle");
+	Texture& tex = GameGlobals::textures->get("char_idle");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 
@@ -81,10 +82,10 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 Entity EntityFactory::createTestEntity2()
 {
 	sf::Sprite sprite;
-	Texture& tex = m_textureLoader->get("char_death");
+	Texture& tex = GameGlobals::textures->get("char_death");
 	sprite.setTexture(tex);
 
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
 	transformComponent.x = 220.f;
@@ -111,9 +112,9 @@ Entity EntityFactory::createTestEntity2()
 
 entityx::Entity EntityFactory::createBlock(int row, int col)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("block");
+	Texture& tex = GameGlobals::textures->get("block");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
@@ -149,9 +150,9 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 
 entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("solid_block");
+	Texture& tex = GameGlobals::textures->get("solid_block");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
@@ -187,9 +188,9 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 
 Entity EntityFactory::createBomb(int row, int col, Entity owner)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("bomb");
+	Texture& tex = GameGlobals::textures->get("bomb");
 	sf::Sprite sprite;
 	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
 	sprite.setTexture(tex);
@@ -215,13 +216,13 @@ Entity EntityFactory::createBomb(int row, int col, Entity owner)
 
 Entity EntityFactory::createExplosion(int row, int col, Direction direction, int range, float spreadTime, bool visible)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
 
 	if (range == 0)
 	{
-		Texture& tex = m_textureLoader->get("exploEnd");
+		Texture& tex = GameGlobals::textures->get("exploEnd");
 		sf::Sprite sprite;
 		sprite.setTexture(tex);
 		sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
@@ -255,7 +256,7 @@ Entity EntityFactory::createExplosion(int row, int col, Direction direction, int
 	}
 	else
 	{
-		Texture& tex = m_textureLoader->get("subExplosion");
+		Texture& tex = GameGlobals::textures->get("subExplosion");
 		sf::Sprite sprite;
 		sprite.setTexture(tex);
 		sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
@@ -293,9 +294,9 @@ Entity EntityFactory::createExplosion(int row, int col, Direction direction, int
 
 Entity EntityFactory::createExplosion(int row, int col, int range, float spreadTime)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("explosion");
+	Texture& tex = GameGlobals::textures->get("explosion");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
@@ -331,9 +332,9 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 
 Entity EntityFactory::createFloor(int row, int col)
 {
-	Entity entity = m_entities.create();
+	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = m_textureLoader->get("floor");
+	Texture& tex = GameGlobals::textures->get("floor");
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);

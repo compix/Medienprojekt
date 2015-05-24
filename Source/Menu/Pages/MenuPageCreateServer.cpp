@@ -1,5 +1,6 @@
 #include "MenuPageCreateServer.h"
 #include "../../Events/CreateServerEvent.h"
+#include "../../GameGlobals.h"
 
 MenuPageCreateServer::MenuPageCreateServer(Menu &menu)
 	:MenuPage(menu)
@@ -46,6 +47,6 @@ void MenuPageCreateServer::onSubmit()
 	int portValue = atoi(port.c_str());
 	int maxPlayers = 4; // fixme: should the user be able to change this ?
 
-	m_events.emit<CreateServerEvent>(host, portValue, maxPlayers, name);
+	GameGlobals::events->emit<CreateServerEvent>(host, portValue, maxPlayers, name);
 	//fixme: push lobby page
 }

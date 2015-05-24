@@ -7,11 +7,7 @@
 #include "../Components/BodyComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/InventoryComponent.h"
-
-InputHandleSystem::InputHandleSystem(EntityFactory* entityFactory)
-	:m_entityFactory(entityFactory)
-{
-}
+#include "../GameGlobals.h"
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -25,7 +21,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		{
 			if (inventory->bombCount > 0)
 			{
-				m_entityFactory->createBomb(cell->y, cell->x, entity);
+				GameGlobals::entityFactory->createBomb(cell->y, cell->x, entity);
 				inventory->bombCount--;
 			}
 			

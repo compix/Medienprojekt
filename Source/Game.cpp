@@ -20,18 +20,24 @@
 #include "Systems/LightSystem.h"
 #include "Systems/InputHandleSystem.h"
 #include "Systems/InventorySystem.h"
+#include "GameGlobals.h"
 
 
-Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &events, SFMLDebugDraw* debugDraw)
-	:m_timer(1.f), m_events(events), m_entities(events), m_systems(m_entities, events)
+Game::Game()
+	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window)
 {
-	m_window = window;
+	GameGlobals::entities = &m_entities;
 
-	m_shaderManager.updateScreenResolution(m_window->getSize());
+	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
+
+	m_debugDraw.SetFlags(b2Draw::e_shapeBit);
+	//m_debugDraw.AppendFlags(b2Draw::e_jointBit);
+	//m_debugDraw.AppendFlags(b2Draw::e_centerOfMassBit);
+	//m_debugDraw.AppendFlags(b2Draw::e_aabbBit);
 
 	/*Setup PhysixSystem*/
 	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
-	m_PhysixSystem->SetDebugDrawer(debugDraw);
+	m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
 
@@ -39,35 +45,34 @@ Game::Game(sf::RenderWindow* window, InputManager &inputManager, EventManager &e
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(21, 21, 0);
 	m_layerManager->createLayer(21, 21, -1);
-	m_layerManager->configure(events);
+	m_layerManager->configure(*GameGlobals::events);
 
-	m_textureLoader = std::make_unique<TextureLoader>();
-	m_textureLoader->loadAllFromJson("Assets/json/textures.json");
-	m_entityFactory = std::make_unique<EntityFactory>(m_entities, m_textureLoader.get(), m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
+	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
+	GameGlobals::entityFactory = m_entityFactory.get();
 
 	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
-	m_systems.add<BombSystem>(m_entityFactory.get());
+	m_systems.add<BombSystem>();
 	m_systems.add<DamageSystem>(m_layerManager.get());
 	m_systems.add<DestructionSystem>();
-	m_systems.add<ExplosionSystem>(m_entityFactory.get(), m_layerManager.get());
+	m_systems.add<ExplosionSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<BodySystem>();
-	m_systems.add<InputSystem>(inputManager);
-	m_systems.add<InputHandleSystem>(m_entityFactory.get());
+	m_systems.add<InputSystem>();
+	m_systems.add<InputHandleSystem>();
 	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(window, m_layerManager.get());
-	m_systems.add<LightSystem>(window);
+	m_systems.add<RenderSystem>(m_layerManager.get());
+	m_systems.add<LightSystem>();
 	m_systems.configure();
 
-	LevelGenerator levelGenerator(m_entityFactory.get(), 21, 21);
+	LevelGenerator levelGenerator(21, 21);
 	levelGenerator.generateRandomLevel();
 	
 	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
-	m_particleEmitter.setTexture(m_textureLoader->get("light"));
-	m_particleEmitter.setPosition(m_window->getSize().x*0.5f, m_window->getSize().y*0.5f);
+	m_particleEmitter.setTexture(GameGlobals::textures->get("light"));
+	m_particleEmitter.setPosition(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f);
 
 	m_particleEmitter.spawnTime(0.003f)
 		.maxParticles(10000)
@@ -100,9 +105,9 @@ void Game::update(TimeDelta dt)
 	Light light2(sf::Vector2f(150.f, 50.f), sf::Color::Yellow, 30.f, 360.f, 0.f);
 	light2.setShader(m_shaderManager.getLightShader());
 
-	m_window->draw(m_particleEmitter);
-	m_window->draw(light1);
-	m_window->draw(light2);
-	m_window->draw(m_light);
+	GameGlobals::window->draw(m_particleEmitter);
+	GameGlobals::window->draw(light1);
+	GameGlobals::window->draw(light2);
+	GameGlobals::window->draw(m_light);
 	
 }

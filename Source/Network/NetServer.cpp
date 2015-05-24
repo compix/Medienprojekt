@@ -2,18 +2,19 @@
 #include <iostream>
 #include "NetConstants.h"
 #include "../Events/ChatEvent.h"
+#include "../GameGlobals.h"
 
 using namespace std;
 using namespace NetCode;
 
-NetServer::NetServer(EventManager &events)
-	: m_messageWriter(1024), m_events(events)
+NetServer::NetServer()
+	: m_messageWriter(1024)
 {
 	m_handler.setCallback(MessageType::CHAT, [this](MessageReader<MessageType> &reader, ENetEvent &event)
 	{
 		string msg = reader.read<string>();
 		string name = (const char *)event.peer->data;
-		m_events.emit<ChatEvent>(msg, name);
+		GameGlobals::events->emit<ChatEvent>(msg, name);
 
 		m_messageWriter.init(MessageType::CHAT);
 		m_messageWriter.write<string>(msg);
@@ -56,5 +57,5 @@ void NetServer::receive(const SendChatEvent& evt)
 	m_messageWriter.write<string>("Server");
 	ENetPacket *packet = m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 	enet_host_broadcast(m_connection.getHost(), (enet_uint8)NetChannel::CHAT, packet);
-	m_events.emit<ChatEvent>(evt.message, "Server");
+	GameGlobals::events->emit<ChatEvent>(evt.message, "Server");
 }

@@ -4,9 +4,10 @@
 #include "../Components/LayerComponent.h"
 #include "../Components/LinkComponent.h"
 #include "../Components/DestructionComponent.h"
+#include "../GameGlobals.h"
 
-ExplosionSystem::ExplosionSystem(EntityFactory* entityFactory, LayerManager* layerManager)
-	:m_entityFactory(entityFactory), m_layerManager(layerManager) {}
+ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
+	:m_layerManager(layerManager) {}
 
 void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
@@ -50,7 +51,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 
 					if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))
 					{
-						scheduled.push_back(m_entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime, true));
+						scheduled.push_back(GameGlobals::entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime, true));
 					}				
 				}
 

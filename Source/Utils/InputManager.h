@@ -8,7 +8,6 @@ namespace sf
 	class Event;
 }
 
-using entityx::EventManager;
 using entityx::Receiver;
 
 const int MAX_PLAYER_INPUTS = 4;
@@ -41,7 +40,7 @@ struct KeycodeMapEntry
 class InputManager : public Receiver<InputManager>
 {
 public:
-	InputManager(EventManager &events);
+	InputManager();
 	~InputManager();
 
 	PlayerInput &getPlayerInput(int id);
@@ -53,7 +52,6 @@ public:
 	void receive(const MenuShowEvent &evt);
 
 private:
-	EventManager &m_events;
 	PlayerInput m_playerInputs[MAX_PLAYER_INPUTS];
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
 	std::map<int, int> m_joystickMap;

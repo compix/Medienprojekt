@@ -7,9 +7,9 @@
 #include "../Events/EntityGotHitEvent.h"
 #include "../Components/TimerComponent.h"
 #include "../Events/BombExplodedEvent.h"
+#include "../GameGlobals.h"
 
-BombSystem::BombSystem(EntityFactory* entityFactory)
-	:m_entityFactory(entityFactory)
+BombSystem::BombSystem()
 {
 }
 
@@ -17,8 +17,6 @@ void BombSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<TimeoutEvent>(*this);
 	events.subscribe<EntityGotHitEvent>(*this);
-
-	m_eventManager = &events;
 }
 
 void BombSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -47,10 +45,10 @@ void BombSystem::detonate(entityx::Entity entity)
 
 		assert(cell);
 
-		m_entityFactory->createExplosion(cell->y, cell->x, bomb->explosionRange, bomb->explosionSpreadTime);
+		GameGlobals::entityFactory->createExplosion(cell->y, cell->x, bomb->explosionRange, bomb->explosionSpreadTime);
 		if (!entity.has_component<DestructionComponent>())
 			entity.assign<DestructionComponent>();
 
-		m_eventManager->emit<BombExplodedEvent>(entity);
+		GameGlobals::events->emit<BombExplodedEvent>(entity);
 	}
 }

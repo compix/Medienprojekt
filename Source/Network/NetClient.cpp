@@ -2,18 +2,19 @@
 #include "NetConstants.h"
 #include "../Events/ChatEvent.h"
 #include <iostream>
+#include "../GameGlobals.h"
 
 using namespace std;
 using namespace NetCode;
 
-NetClient::NetClient(EventManager &events)
-	: m_messageWriter(1024), m_events(events)
+NetClient::NetClient()
+	: m_messageWriter(1024)
 {
-	m_handler.setCallback(MessageType::CHAT, [this](MessageReader<MessageType> &reader, ENetEvent &event)
+	m_handler.setCallback(MessageType::CHAT, [](MessageReader<MessageType> &reader, ENetEvent &event)
 	{
 		string msg = reader.read<string>();
 		string name = reader.read<string>();
-		m_events.emit<ChatEvent>(msg, name);
+		GameGlobals::events->emit<ChatEvent>(msg, name);
 	});
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([](ENetEvent &event)

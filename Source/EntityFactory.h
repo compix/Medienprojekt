@@ -13,7 +13,7 @@ using entityx::EntityManager;
 class EntityFactory
 {
 public:
-	EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager);
+	EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 	
@@ -30,8 +30,6 @@ public:
 
 	Entity createFloor(int row, int col);
 private:
-	EntityManager &m_entities;
-	TextureLoader* m_textureLoader;
 	PhysixSystem* m_PhysixSystem;
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;

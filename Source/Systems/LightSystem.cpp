@@ -1,11 +1,6 @@
 #include "LightSystem.h"
 #include "../Components/LightComponent.h"
-
-LightSystem::LightSystem(sf::RenderWindow* window)
-	:m_window(window)
-{
-
-}
+#include "../GameGlobals.h"
 
 void LightSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -13,6 +8,6 @@ void LightSystem::update(entityx::EntityManager& entityManager, entityx::EventMa
 	{
 		auto lightComponent = entity.component<LightComponent>();
 
-		m_window->draw(lightComponent->light);
+		GameGlobals::window->draw(lightComponent->light);
 	}
 }
