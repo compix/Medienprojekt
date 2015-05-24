@@ -2,6 +2,14 @@
 #include "../Events/BombExplodedEvent.h"
 #include "../Components/OwnerComponent.h"
 #include "../Components/InventoryComponent.h"
+#include "../GameGlobals.h"
+#include "../Events/TimeoutEvent.h"
+
+
+InventorySystem::~InventorySystem()
+{
+	GameGlobals::events->unsubscribe<BombExplodedEvent>(*this);
+}
 
 void InventorySystem::configure(entityx::EventManager& events)
 {

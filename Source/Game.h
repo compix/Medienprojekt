@@ -19,19 +19,28 @@ class Game
 {
 public:
 	Game();
-	~Game();
+	virtual ~Game();
+	virtual void init(uint8_t width, uint8_t height);
 
 	void update(TimeDelta dt);
 
 	inline void setMousePos(sf::Vector2f mousePos) { m_mousePos = mousePos; }
 
-private:
+	uint8_t getWidth() { return m_width; }
+	uint8_t getHeight() { return m_height; }
+protected:
+	virtual void addSystems() = 0;
+
+protected:
+	bool initialized = false;
 	EntityManager m_entities;
 	SystemManager m_systems;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
 	PhysixSystem* m_PhysixSystem;
 	SFMLDebugDraw m_debugDraw;
+	uint8_t m_width;
+	uint8_t m_height;
 
 	Light m_light;
 	float m_timer;
@@ -43,3 +52,21 @@ private:
 	ParticleEmitter m_particleEmitter;
 };
 
+class LocalGame : public Game
+{
+public:
+	void init(uint8_t width, uint8_t height) override;
+
+protected:
+	void addSystems() override;
+};
+
+class ServerGame : public LocalGame
+{
+};
+
+class ClientGame : public Game
+{
+protected:
+	void addSystems() override;
+};

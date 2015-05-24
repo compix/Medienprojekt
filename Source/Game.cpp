@@ -27,6 +27,16 @@ Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window)
 {
 	GameGlobals::entities = &m_entities;
+}
+
+Game::~Game() { 
+	delete m_PhysixSystem;
+}
+
+void Game::init(uint8_t width, uint8_t height)
+{
+	m_width = width;
+	m_height = height;
 
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 
@@ -43,32 +53,16 @@ Game::Game()
 
 
 	m_layerManager = std::make_unique<LayerManager>();
-	m_layerManager->createLayer(21, 21, 0);
-	m_layerManager->createLayer(21, 21, -1);
+	m_layerManager->createLayer(width, height, 0);
+	m_layerManager->createLayer(width, height, -1);
 	m_layerManager->configure(*GameGlobals::events);
 
 	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
 	GameGlobals::entityFactory = m_entityFactory.get();
 
-	m_systems.add<InventorySystem>();
-	m_systems.add<TimerSystem>();
-	m_systems.add<BombSystem>();
-	m_systems.add<DamageSystem>(m_layerManager.get());
-	m_systems.add<DestructionSystem>();
-	m_systems.add<ExplosionSystem>(m_layerManager.get());
-	m_systems.add<HealthSystem>();
-	m_systems.add<DeathSystem>();
-	m_systems.add<BodySystem>();
-	m_systems.add<InputSystem>();
-	m_systems.add<InputHandleSystem>();
-	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(m_layerManager.get());
-	m_systems.add<LightSystem>();
+	addSystems();
 	m_systems.configure();
 
-	LevelGenerator levelGenerator(21, 21);
-	levelGenerator.generateRandomLevel();
-	
 	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
 	m_particleEmitter.setTexture(GameGlobals::textures->get("light"));
@@ -82,14 +76,15 @@ Game::Game()
 		.angularVelocityFunction([](float t) { return t*t*0.1f; })
 		.sizeFunction([](float t) { return sf::Vector2f(15 - t*t*50.f, 15 - t*t*t*20.f); })
 		.colorFunction([](float t) { return sf::Color(0.f, Math::smootherstep(234, 23, t)*255.f, 255.f - Math::regress(t) * 189, t < 0.1 ? 15.f : 255 - t * 255); });
-}
 
-Game::~Game() { 
-	delete m_PhysixSystem;
+	initialized = true;
 }
 
 void Game::update(TimeDelta dt)
 {
+	if (!initialized)
+		return;
+
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	m_PhysixSystem->DrawDebug();
@@ -110,4 +105,48 @@ void Game::update(TimeDelta dt)
 	GameGlobals::window->draw(light2);
 	GameGlobals::window->draw(m_light);
 	
+}
+
+void LocalGame::addSystems()
+{
+	m_systems.add<InventorySystem>();
+	m_systems.add<TimerSystem>();
+	m_systems.add<BombSystem>();
+	m_systems.add<DamageSystem>(m_layerManager.get());
+	m_systems.add<DestructionSystem>();
+	m_systems.add<ExplosionSystem>(m_layerManager.get());
+	m_systems.add<HealthSystem>();
+	m_systems.add<DeathSystem>();
+	m_systems.add<BodySystem>();
+	m_systems.add<InputSystem>();
+	m_systems.add<InputHandleSystem>();
+	m_systems.add<AnimationSystem>();
+	m_systems.add<RenderSystem>(m_layerManager.get());
+	m_systems.add<LightSystem>();
+}
+
+void LocalGame::init(uint8_t width, uint8_t height)
+{
+	Game::init(width, height);
+	LevelGenerator levelGenerator(height, width);
+	levelGenerator.generateRandomLevel();
+}
+
+void ClientGame::addSystems()
+{
+	//fixme: adapt
+	m_systems.add<InventorySystem>();
+	m_systems.add<TimerSystem>();
+	m_systems.add<BombSystem>();
+	m_systems.add<DamageSystem>(m_layerManager.get());
+	m_systems.add<DestructionSystem>();
+	m_systems.add<ExplosionSystem>(m_layerManager.get());
+	m_systems.add<HealthSystem>();
+	m_systems.add<DeathSystem>();
+	m_systems.add<BodySystem>();
+	m_systems.add<InputSystem>();
+	m_systems.add<InputHandleSystem>();
+	m_systems.add<AnimationSystem>();
+	m_systems.add<RenderSystem>(m_layerManager.get());
+	m_systems.add<LightSystem>();
 }

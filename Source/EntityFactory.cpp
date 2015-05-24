@@ -22,6 +22,8 @@
 #include "Components/OwnerComponent.h"
 #include "Components/InventoryComponent.h"
 #include "GameGlobals.h"
+#include "Components/FloorComponent.h"
+#include "Components/BlockComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager)
 	:m_PhysixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager)
@@ -66,10 +68,8 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
 
-	static int playerIndex = 0;
-
 	InputComponent inputComponent;
-	inputComponent.playerIndex = playerIndex++;
+	inputComponent.playerIndex = m_playerIndex++;
 	entity.assign<InputComponent>(inputComponent);
 	entity.assign<LayerComponent>(0);
 	entity.assign<InventoryComponent>();
@@ -142,6 +142,7 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 
 
 	entity.assign<LayerComponent>(0);
+	entity.assign<BlockComponent>();
 
 	m_layerManager->add(entity);
 
@@ -347,6 +348,7 @@ Entity EntityFactory::createFloor(int row, int col)
 
 	entity.assign<CellComponent>(col, row);
 	entity.assign<LayerComponent>(-1);
+	entity.assign<FloorComponent>();
 
 	m_layerManager->add(entity);
 

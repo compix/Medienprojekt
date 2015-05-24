@@ -1,6 +1,7 @@
 #include "MenuPageCreateServer.h"
 #include "../../Events/CreateServerEvent.h"
 #include "../../GameGlobals.h"
+#include "../Menu.h"
 
 MenuPageCreateServer::MenuPageCreateServer(Menu &menu)
 	:MenuPage(menu)
@@ -30,6 +31,16 @@ MenuPageCreateServer::MenuPageCreateServer(Menu &menu)
 	m_port->setText("1234");
 
 	y += stepY;
+	createLabel(x1, y + labelYOffset, "Width: ");
+	m_width = createEditBox(x2, y, width2, height2);
+	m_width->setText("21");
+
+	y += stepY;
+	createLabel(x1, y + labelYOffset, "Height: ");
+	m_height = createEditBox(x2, y, width2, height2);
+	m_height->setText("21");
+
+	y += stepY;
 	tgui::Button::Ptr button = createButton(x2, y, width2, height2, "Create");
 
 	button->bindCallback(&MenuPageCreateServer::onSubmit, this, tgui::Button::LeftMouseClicked);
@@ -42,11 +53,17 @@ void MenuPageCreateServer::onSubmit()
 	std::string name = m_name->getText();
 	std::string host = m_host->getText();
 	std::string port = m_port->getText();
+	std::string width = m_width->getText();
+	std::string height = m_height->getText();
 	// fixme: validate values
 
 	int portValue = atoi(port.c_str());
 	int maxPlayers = 4; // fixme: should the user be able to change this ?
+	int widthValue = atoi(width.c_str());
+	int heightValue = atoi(height.c_str());
 
-	GameGlobals::events->emit<CreateServerEvent>(host, portValue, maxPlayers, name);
+	GameGlobals::events->emit<CreateServerEvent>(widthValue, heightValue, host, portValue, maxPlayers, name);
 	//fixme: push lobby page
+	m_menu.popPage();
+	m_menu.popPage();
 }

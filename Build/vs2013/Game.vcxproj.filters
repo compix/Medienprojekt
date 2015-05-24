@@ -37,6 +37,9 @@
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\BlockComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\BodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -56,6 +59,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\FloorComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\HealthComponent.h">
@@ -160,6 +166,7 @@
     <ClInclude Include="..\..\Source\Lighting\Light.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Main.h" />
     <ClInclude Include="..\..\Source\Menu\Menu.h">
       <Filter>Menu</Filter>
     </ClInclude>
@@ -200,6 +207,9 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Network\NetConstants.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Network\NetPlayerInfo.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Network\NetServer.h">

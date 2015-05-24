@@ -13,6 +13,12 @@ BombSystem::BombSystem()
 {
 }
 
+BombSystem::~BombSystem()
+{
+	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
+	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
+}
+
 void BombSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<TimeoutEvent>(*this);

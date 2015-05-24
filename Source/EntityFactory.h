@@ -33,5 +33,6 @@ private:
 	PhysixSystem* m_PhysixSystem;
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
+	int m_playerIndex = 0;
 };
 

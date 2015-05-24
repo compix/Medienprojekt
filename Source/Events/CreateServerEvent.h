@@ -3,8 +3,10 @@
 
 struct CreateServerEvent
 {
-	explicit CreateServerEvent(std::string host, int port, int maxPlayers, std::string name) : host(host), port(port), maxPlayers(maxPlayers), name(name) {}
+	explicit CreateServerEvent(uint8_t width, uint8_t height, std::string host, int port, int maxPlayers, std::string name) : width(width), height(height), host(host), port(port), maxPlayers(maxPlayers), name(name) {}
 
+	uint8_t width;
+	uint8_t height;
 	std::string host;
 	int port;
 	int maxPlayers;

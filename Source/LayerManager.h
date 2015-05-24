@@ -12,6 +12,7 @@ class LayerManager : public entityx::Receiver<LayerManager>
 {
 public:
 	EntityLayer* createLayer(int width, int height, int layer);
+	~LayerManager();
 
 	inline LayerContainer& getLayers() { return m_layers; }
 

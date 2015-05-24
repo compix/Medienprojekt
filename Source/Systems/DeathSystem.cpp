@@ -2,6 +2,13 @@
 #include "../Events/DeathEvent.h"
 #include "../Components/DestructionDelayComponent.h"
 #include "../Components/DestructionComponent.h"
+#include "../Components/BodyComponent.h"
+#include "../GameGlobals.h"
+
+DeathSystem::~DeathSystem()
+{
+	GameGlobals::events->unsubscribe<DeathEvent>(*this);
+}
 
 void DeathSystem::configure(entityx::EventManager& events)
 {

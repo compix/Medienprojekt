@@ -134,6 +134,13 @@ namespace NetCode
 			m_callbacks[static_cast<uint16_t>(index)] = callback;
 		}
 
+		template <typename T>
+		void setCallback(MT index, void (T::*callback)(MessageReader<MT> &reader, ENetEvent &event), T* const classPtr)
+		{
+			assert(index < MT::COUNT);
+			m_callbacks[static_cast<uint16_t>(index)] = std::bind(callback, classPtr, std::placeholders::_1, std::placeholders::_2);
+		}
+
 		void handleMessage(ENetEvent &event) const
 		{
 			MessageReader<MT> reader(event.packet->data, event.packet->dataLength);

@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
     <ClInclude Include="..\..\Source\Components\BombComponent.h" />
     <ClInclude Include="..\..\Source\Components\CellComponent.h" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
@@ -140,6 +142,7 @@
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Lighting\Light.h" />
+    <ClInclude Include="..\..\Source\Main.h" />
     <ClInclude Include="..\..\Source\Menu\Menu.h" />
     <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="..\..\Source\NetCode\Message.h" />
     <ClInclude Include="..\..\Source\Network\NetClient.h" />
     <ClInclude Include="..\..\Source\Network\NetConstants.h" />
+    <ClInclude Include="..\..\Source\Network\NetPlayerInfo.h" />
     <ClInclude Include="..\..\Source\Network\NetServer.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />

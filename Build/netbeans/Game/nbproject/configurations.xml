@@ -7,6 +7,7 @@
 			<itemPath>../../../Source/BodyFactory.h</itemPath>
 			<logicalFolder name="Components" displayName="Components" projectFiles="true">
 				<itemPath>../../../Source/Components/AnimationComponent.h</itemPath>
+				<itemPath>../../../Source/Components/BlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BodyComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BombComponent.h</itemPath>
 				<itemPath>../../../Source/Components/CellComponent.h</itemPath>
@@ -14,6 +15,7 @@
 				<itemPath>../../../Source/Components/DestructionComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DestructionDelayComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ExplosionComponent.h</itemPath>
+				<itemPath>../../../Source/Components/FloorComponent.h</itemPath>
 				<itemPath>../../../Source/Components/HealthComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InputComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InventoryComponent.h</itemPath>
@@ -66,6 +68,7 @@
 				<itemPath>../../../Source/Lighting/Light.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/Main.cpp</itemPath>
+			<itemPath>../../../Source/Main.h</itemPath>
 			<logicalFolder name="Menu" displayName="Menu" projectFiles="true">
 				<itemPath>../../../Source/Menu/Menu.cpp</itemPath>
 				<itemPath>../../../Source/Menu/Menu.h</itemPath>
@@ -98,6 +101,7 @@
 				<itemPath>../../../Source/Network/NetClient.cpp</itemPath>
 				<itemPath>../../../Source/Network/NetClient.h</itemPath>
 				<itemPath>../../../Source/Network/NetConstants.h</itemPath>
+				<itemPath>../../../Source/Network/NetPlayerInfo.h</itemPath>
 				<itemPath>../../../Source/Network/NetServer.cpp</itemPath>
 				<itemPath>../../../Source/Network/NetServer.h</itemPath>
 			</logicalFolder>
@@ -248,9 +252,11 @@
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -258,6 +264,7 @@
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FloorComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InventoryComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -304,6 +311,7 @@
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetPlayerInfo.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -458,9 +466,11 @@
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -468,6 +478,7 @@
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FloorComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InventoryComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -514,6 +525,7 @@
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetPlayerInfo.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>

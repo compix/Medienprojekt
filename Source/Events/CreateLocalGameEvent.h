@@ -4,7 +4,9 @@
 
 struct CreateLocalGameEvent
 {
-	explicit CreateLocalGameEvent(std::vector<std::string> names) : names(names) {}
+	explicit CreateLocalGameEvent(uint8_t width, uint8_t height, std::vector<std::string> names) : width(width), height(height), names(names) {}
 
+	uint8_t width;
+	uint8_t height;
 	std::vector<std::string> names;
 };

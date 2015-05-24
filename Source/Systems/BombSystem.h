@@ -9,7 +9,7 @@ class BombSystem : public entityx::System<BombSystem>, public entityx::Receiver<
 {
 public:
 	BombSystem();
-
+	~BombSystem();
 	void configure(entityx::EventManager& events) override;
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 

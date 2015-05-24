@@ -1,14 +1,11 @@
-﻿#include <SFML/Graphics.hpp>
-#include <entityx/entityx.h>
-#include <iostream>
+﻿#include "Main.h"
 #include "Game.h"
 #include "Menu/Menu.h"
 #include "Utils/InputManager.h"
-#include "SFMLDebugDraw.h"
 #include "Utils/SystemUtils.h"
-#include "Network/NetServer.h"
-#include "Network/NetClient.h"
-#include "Events/ExitEvent.h"
+#include "Utils/make_unique.h"
+#include "GameGlobals.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -32,16 +29,7 @@ void changeToGameDir()
 #endif
 }
 
-struct ExitListener : public Receiver<ExitListener>
-{
-	bool triggered = false;
-	void receive(const ExitEvent& evt)
-	{
-		triggered = true;
-	}
-};
-
-int main()
+int Main::run()
 {
 	changeToGameDir();
 
@@ -49,26 +37,6 @@ int main()
 
 	EventManager events;
 	GameGlobals::events = &events;
-
-	bool isServer = false;
-	NetServer server;
-	NetClient client;
-	if (server.connect())
-	{
-		isServer = true;
-		cout << "Server created" << endl;
-		events.subscribe<SendChatEvent>(server);
-	}
-	else if (client.connect())
-	{
-		cout << "Client created" << endl;
-		events.subscribe<SendChatEvent>(client);
-	}
-	else
-	{
-		cerr << "Could not create client host" << endl;
-		return EXIT_FAILURE;
-	}
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 	GameGlobals::window = &window;
@@ -79,20 +47,29 @@ int main()
 	GameGlobals::input = &inputManager;
 
 	Menu menu;
+
 	TextureLoader textureLoader;
 	textureLoader.loadAllFromJson("Assets/json/textures.json");
 	GameGlobals::textures = &textureLoader;
 
-	GameGlobals::game = make_unique<Game>();
+	events.subscribe<ExitEvent>(*this);
+	events.subscribe<CreateLocalGameEvent>(*this);
+	events.subscribe<CreateServerEvent>(*this);
+	events.subscribe<JoinServerEvent>(*this);
 
-	ExitListener exitListener;
-	events.subscribe<ExitEvent>(exitListener);
+	// Create dummy local game
+	std::vector<std::string> names;
+	names.push_back("Stan");
+	names.push_back("Kenny");
+	names.push_back("Kyle");
+	names.push_back("Cartman");
+	events.emit<CreateLocalGameEvent>(21, 21, names);
 
 	sf::View gameView(sf::FloatRect(0, 0, 800, 600));
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 
 	sf::Clock clock;
-	while (window.isOpen() && !exitListener.triggered)
+	while (window.isOpen() && m_running)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -103,8 +80,7 @@ int main()
 			{
 				gameView.setSize(event.size.width, event.size.height);
 				menuView.setSize(event.size.width, event.size.height);
-			}
-			else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
+			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
 				GameGlobals::game->setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
 			}
@@ -115,20 +91,78 @@ int main()
 		sf::Time deltaTime = clock.restart();
 
 		window.clear();
-		window.setView(gameView);
-		GameGlobals::game->update(deltaTime.asSeconds());
+		if (GameGlobals::game) {
+			window.setView(gameView);
+			GameGlobals::game->update(deltaTime.asSeconds());
+		}
 
 		window.setView(menuView);
 		menu.draw();
 		window.display();
 
-		if (isServer)
-			server.update();
-		else
-			client.update();
+		if (m_server)
+			m_server->update();
+		else if (m_client)
+			m_client->update();
 	}
-
-	GameGlobals::game.reset();
+	disconnect();
 
 	return EXIT_SUCCESS;
+}
+
+void Main::receive(const CreateLocalGameEvent& evt)
+{
+	disconnect();
+	GameGlobals::game = make_unique<LocalGame>();
+	GameGlobals::game->init(evt.width, evt.height);
+}
+
+void Main::receive(const CreateServerEvent& evt)
+{
+	disconnect();
+	m_server = make_unique<NetServer>();
+	if (m_server->connect())
+	{
+		cout << "Server created" << endl;
+		GameGlobals::game = make_unique<ServerGame>();
+		GameGlobals::game->init(evt.width, evt.height);
+		GameGlobals::events->subscribe<SendChatEvent>(*m_server.get());
+	}
+	else
+	{
+		m_server.reset();
+		cerr << "Could not create client host" << endl;
+		exit(EXIT_FAILURE); //fixme: show error to user
+	}
+}
+
+void Main::receive(const JoinServerEvent& evt)
+{
+	disconnect();
+	m_client = make_unique<NetClient>();
+	if (m_client->connect())
+	{
+		cout << "Client created" << endl;
+		GameGlobals::game = make_unique<ClientGame>();
+		GameGlobals::events->subscribe<SendChatEvent>(*m_client.get());
+	}
+	else
+	{
+		m_client.reset();
+		cerr << "Could not create client host" << endl;
+		exit(EXIT_FAILURE); //fixme: show error to user
+	}
+}
+
+void Main::disconnect()
+{
+	m_server.reset();
+	m_client.reset();
+	GameGlobals::game.reset();
+}
+
+int main()
+{
+	Main instance;
+	return instance.run();
 }

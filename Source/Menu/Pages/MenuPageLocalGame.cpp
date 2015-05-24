@@ -1,6 +1,8 @@
 #include "MenuPageLocalGame.h"
-#include "../../Events/CreateServerEvent.h"
+#include "../../Events/CreateLocalGameEvent.h"
 #include <format.h>
+#include "../../GameGlobals.h"
+#include "../Menu.h"
 
 MenuPageLocalGame::MenuPageLocalGame(Menu &menu)
 	:MenuPage(menu)
@@ -23,6 +25,16 @@ MenuPageLocalGame::MenuPageLocalGame(Menu &menu)
 		m_name[i]->setText(fmt::format("Player {}", i + 1));
 		y += stepY;
 	}
+	createLabel(x1, y + labelYOffset, "Width: ");
+	m_width = createEditBox(x2, y, width2, height2);
+	m_width->setText("21");
+
+	y += stepY;
+	createLabel(x1, y + labelYOffset, "Height: ");
+	m_height = createEditBox(x2, y, width2, height2);
+	m_height->setText("21");
+
+	y += stepY;
 	tgui::Button::Ptr button = createButton(x2, y, width2, height2, "Create");
 
 	button->bindCallback(&MenuPageLocalGame::onSubmit, this, tgui::Button::LeftMouseClicked);
@@ -32,14 +44,22 @@ MenuPageLocalGame::MenuPageLocalGame(Menu &menu)
 
 void MenuPageLocalGame::onSubmit()
 {
-//	std::string name = m_name->getText();
-//	std::string host = m_host->getText();
-//	std::string port = m_port->getText();
+	std::vector<std::string> names;
+	for (int i = 0; i < 4; i++)
+	{
+		std::string name = m_name[i]->getText();
+		if (!name.empty())
+			names.push_back(name);
+	}
+	std::string width = m_width->getText();
+	std::string height = m_height->getText();
 //	// fixme: validate values
+
+	int widthValue = atoi(width.c_str());
+	int heightValue = atoi(height.c_str());
 //
-//	int portValue = atoi(port.c_str());
-//	int maxPlayers = 4; // fixme: should the user be able to change this ?
-//
-//	m_events.emit<CreateServerEvent>(host, portValue, maxPlayers, name);
+	GameGlobals::events->emit<CreateLocalGameEvent>(widthValue, heightValue, names);
 	//fixme: push lobby page
+	m_menu.popPage();
+	m_menu.popPage();
 }

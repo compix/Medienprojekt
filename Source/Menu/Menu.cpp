@@ -7,6 +7,7 @@ Menu::Menu()
 	: m_gui(*GameGlobals::window), m_rootPage(*this), m_chatPage(*this)
 {
 	GameGlobals::events->subscribe<sf::Event>(*this);
+//	pushPage(&m_rootPage);
 }
 
 void Menu::draw()

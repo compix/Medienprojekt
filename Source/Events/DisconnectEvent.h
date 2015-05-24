@@ -3,7 +3,8 @@
 
 struct DisconnectEvent
 {
-	explicit DisconnectEvent(std::string reason) : reason(reason) {}
+	explicit DisconnectEvent(std::string reason, NetPlayerInfo *playerInfo) : reason(reason), playerInfo(playerInfo) {}
 
 	std::string reason;
+	NetPlayerInfo *playerInfo;
 };

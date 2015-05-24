@@ -5,6 +5,11 @@
 #include <iostream>
 #include "../GameGlobals.h"
 
+HealthSystem::~HealthSystem()
+{
+	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
+}
+
 void HealthSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<EntityGotHitEvent>(*this);
