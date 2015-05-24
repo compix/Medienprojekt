@@ -1,6 +1,7 @@
 #pragma once
 #include "../MenuPage.h"
 #include "../../Events/ChatEvent.h"
+#include "../../Events/PlayerJoinEvent.h"
 
 using entityx::Receiver;
 
@@ -10,6 +11,7 @@ public:
 	MenuPageChat(Menu &menu);
 
 	void receive(const ChatEvent& evt);
+	void receive(const PlayerJoinEvent& evt);
 
 protected:
 	void onSubmit();

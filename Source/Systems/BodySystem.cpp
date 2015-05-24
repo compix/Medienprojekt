@@ -1,10 +1,17 @@
 #include "BodySystem.h"
 #include "../Components/BodyComponent.h"
 #include "../Components/TransformComponent.h"
-#include <PhysixSystem.h>
-#include <Components/SpriteComponent.h>
+#include "../PhysixSystem.h"
+#include "../Components/SpriteComponent.h"
+#include "../GameGlobals.h"
 
 using namespace entityx;
+
+BodySystem::~BodySystem()
+{
+	GameGlobals::events->unsubscribe<ComponentAddedEvent<BodyComponent>>(*this);
+	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
+}
 
 void BodySystem::configure(entityx::EventManager& event_manager)
 {

@@ -2,9 +2,10 @@
 #include <functional>
 #include <vector>
 #include "Random.h"
+#include "../GameGlobals.h"
 
-LevelGenerator::LevelGenerator(EntityFactory* entityFactory, int rowCount, int colCount)
-	: m_entityFactory(entityFactory), m_rowCount(rowCount), m_colCount(colCount)
+LevelGenerator::LevelGenerator(int rowCount, int colCount)
+	: m_rowCount(rowCount), m_colCount(colCount)
 {
 	m_characterPositions.push_back(LevelPosition(1, 1)); // top left corner
 	m_characterPositions.push_back(LevelPosition(1, m_colCount - 2)); // top right corner
@@ -28,7 +29,7 @@ void LevelGenerator::generateRandomLevel()
 	{
 		for (int col = 0; col < m_colCount; col++)
 		{
-			m_entityFactory->createFloor(row, col);
+			GameGlobals::entityFactory->createFloor(row, col);
 			for (auto rule : rules)
 				if ((this->*rule)(LevelPosition(row, col)))
 					break;
@@ -44,7 +45,7 @@ bool LevelGenerator::characterRule(LevelPosition pos)
 		condition = pos == m_characterPositions[i];
 
 	if (condition)
-		m_entityFactory->createTestEntity1(pos.row, pos.col);
+		GameGlobals::entityFactory->createTestEntity1(pos.row, pos.col);
 
 	return condition;
 }
@@ -68,7 +69,7 @@ bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 		 !((pos.row % 2) | (pos.col % 2)); // even
 
 	if (condition)
-		m_entityFactory->createSolidBlock(pos.row, pos.col);
+		GameGlobals::entityFactory->createSolidBlock(pos.row, pos.col);
 
 	return condition;
 }
@@ -77,7 +78,7 @@ bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
 	bool condition = Random::getInt(1, 100) <= 15; // 85% chance to spawn a block
 	if (condition) 
-		m_entityFactory->createBlock(pos.row, pos.col);
+		GameGlobals::entityFactory->createBlock(pos.row, pos.col);
 
 	return condition;
 }

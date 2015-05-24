@@ -8,8 +8,8 @@
 
 struct CellComponent
 {
-	CellComponent(int x = 0, int y = 0)
+	CellComponent(uint8_t x = 0, uint8_t y = 0)
 		: x(x), y(y) {}
 
-	int x, y;
+	uint8_t x, y;
 };

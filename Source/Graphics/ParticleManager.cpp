@@ -1,7 +1,7 @@
 #include "ParticleManager.h"
-#include <Utils/Math.h>
+#include "../Utils/Math.h"
 #include "ParticleEmitter.h"
-#include "Utils/Colors.h"
+#include "../Utils/Colors.h"
 #include <iostream>
 
 ParticleManager::ParticleManager() : ParticleManager(50000)

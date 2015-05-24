@@ -3,11 +3,12 @@
 #include "../Components/SpriteComponent.h"
 #include <iostream>
 #include <format.h>
-#include <Components/ShaderComponent.h>
-#include <Components/ParticleComponent.h>
+#include "../Components/ParticleComponent.h"
+#include "../Components/ShaderComponent.h"
+#include "../GameGlobals.h"
 
-RenderSystem::RenderSystem(sf::RenderWindow* window, LayerManager* layerManager)
-	: m_window(window), m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
+RenderSystem::RenderSystem(LayerManager* layerManager)
+	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
 {
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
@@ -76,7 +77,7 @@ void RenderSystem::render(EntityLayer* layer)
 				sprite->sprite.setRotation(transform->rotation);
 				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
 
-				m_window->draw(sprite->sprite, shader);
+				GameGlobals::window->draw(sprite->sprite, shader);
 			}
 		}
 	}
@@ -89,5 +90,5 @@ void RenderSystem::showFPS()
 	float w = m_fpsText.getLocalBounds().width;
 	float x = 790 - w;
 	m_fpsText.setPosition(x, 0);
-	m_window->draw(m_fpsText);
+	GameGlobals::window->draw(m_fpsText);
 }

@@ -1,5 +1,7 @@
 #include "MenuPageJoinServer.h"
 #include "../../Events/JoinServerEvent.h"
+#include "../../GameGlobals.h"
+#include "../Menu.h"
 
 MenuPageJoinServer::MenuPageJoinServer(Menu &menu)
 	:MenuPage(menu)
@@ -46,6 +48,8 @@ void MenuPageJoinServer::onSubmit()
 
 	int portValue = atoi(port.c_str());
 
-	m_events.emit<JoinServerEvent>(host, portValue, name);
+	GameGlobals::events->emit<JoinServerEvent>(host, portValue, name);
 	//fixme: push lobby page
+	m_menu.popPage();
+	m_menu.popPage();
 }

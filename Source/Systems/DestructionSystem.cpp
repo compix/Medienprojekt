@@ -1,6 +1,6 @@
 #include "DestructionSystem.h"
-#include <Components/DestructionComponent.h>
-#include <Components/LinkComponent.h>
+#include "../Components/DestructionComponent.h"
+#include "../Components/LinkComponent.h"
 
 void DestructionSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {

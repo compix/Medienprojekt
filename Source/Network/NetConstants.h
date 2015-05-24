@@ -3,13 +3,20 @@
 
 enum class MessageType : uint16_t
 {
+	HANDSHAKE,
 	CHAT,
+	PLAYER_JOINED,
+	CREATE_BLOCK,
+	CREATE_SOLID_BLOCK,
+	CREATE_FLOOR,
+	START_GAME,
 
 	COUNT
 };
 
 enum class NetChannel : uint8_t
 {
+	HANDSHAKE,
 	CHAT,
 	STATUS,
 	WORLD,

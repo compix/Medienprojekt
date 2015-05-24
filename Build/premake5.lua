@@ -69,7 +69,6 @@ solution "Game"
 		objdir( objectDir .. "/Game" )
 		defines { "SFML_STATIC", "GLEW_STATIC" }
 		includedirs {
-			sourceDir,
 			thirdPartyDir .. "/Box2D/Box2D",
 			thirdPartyDir .. "/TGUI/include",
 			thirdPartyDir .. "/SFML/include",

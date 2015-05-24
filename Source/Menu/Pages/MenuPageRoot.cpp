@@ -1,6 +1,7 @@
 #include "MenuPageRoot.h"
 #include "../../Events/ExitEvent.h"
 #include "../Menu.h"
+#include "../../GameGlobals.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
 	:MenuPage(menu), m_localGamePage(menu), m_createServerPage(menu), m_joinServerPage(menu), m_settingsPage(menu), m_creditsPage(menu)
@@ -64,5 +65,5 @@ void MenuPageRoot::onCredits()
 
 void MenuPageRoot::onExit()
 {
-	m_events.emit<ExitEvent>();
+	GameGlobals::events->emit<ExitEvent>();
 }

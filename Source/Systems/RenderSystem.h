@@ -1,8 +1,8 @@
 #pragma once
 #include <entityx/entityx.h>
 #include <SFML/Graphics.hpp>
-#include "EntityLayer.h"
-#include "LayerManager.h"
+#include "../EntityLayer.h"
+#include "../LayerManager.h"
 #include "../Utils/FpsCalculator.h"
 
 using entityx::System;
@@ -13,7 +13,7 @@ using entityx::TimeDelta;
 class RenderSystem : public System<RenderSystem>
 {
 public:
-	RenderSystem(sf::RenderWindow* window, LayerManager* layerManager);
+	RenderSystem(LayerManager* layerManager);
 
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 private:
@@ -21,7 +21,6 @@ private:
 	void showFPS();
 
 private:
-	sf::RenderWindow* m_window;
 	LayerManager* m_layerManager;
 	sf::Font m_font;
 	sf::Text m_fpsText;

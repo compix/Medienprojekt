@@ -3,14 +3,14 @@
 #include <assert.h>
 #include <iostream>
 #include <string.h>
+#include "../GameGlobals.h"
 
 using namespace std;
 
-InputManager::InputManager(EventManager &events)
-	:m_events(events)
+InputManager::InputManager()
 {
-	m_events.subscribe<MenuShowEvent>(*this);
-	m_events.subscribe<sf::Event>(*this);
+	GameGlobals::events->subscribe<MenuShowEvent>(*this);
+	GameGlobals::events->subscribe<sf::Event>(*this);
 
 	for (int i = 0; i < MAX_PLAYER_INPUTS; i++)
 	{
@@ -75,9 +75,9 @@ void InputManager::receive(const sf::Event& evt)
 void InputManager::receive(const MenuShowEvent &evt)
 {
 	if (evt.visible)
-		m_events.unsubscribe<sf::Event>(*this);
+		GameGlobals::events->unsubscribe<sf::Event>(*this);
 	else
-		m_events.subscribe<sf::Event>(*this);
+		GameGlobals::events->subscribe<sf::Event>(*this);
 }
 
 void InputManager::onKeyPressed(int code)

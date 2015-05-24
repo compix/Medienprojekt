@@ -1,11 +1,13 @@
 #include "Menu.h"
 #include "MenuPage.h"
 #include "../Events/MenuShowEvent.h"
+#include "../GameGlobals.h"
 
-Menu::Menu(sf::RenderWindow &window, EventManager &events)
-	: m_gui(window), m_events(events), m_rootPage(*this), m_chatPage(*this)
+Menu::Menu()
+	: m_gui(*GameGlobals::window), m_rootPage(*this), m_chatPage(*this)
 {
-	events.subscribe<sf::Event>(*this);
+	GameGlobals::events->subscribe<sf::Event>(*this);
+//	pushPage(&m_rootPage);
 }
 
 void Menu::draw()
@@ -41,7 +43,7 @@ void Menu::pushPage(MenuPage *page)
 	page->show();
 
 	if (m_pageStack.size() == 1)
-		m_events.emit<MenuShowEvent>(true);
+		GameGlobals::events->emit<MenuShowEvent>(true);
 }
 
 void Menu::popPage()
@@ -54,6 +56,6 @@ void Menu::popPage()
 		if (!m_pageStack.empty())
 			m_pageStack.top()->show();
 		else
-			m_events.emit<MenuShowEvent>(false);
+			GameGlobals::events->emit<MenuShowEvent>(false);
 	}
 }

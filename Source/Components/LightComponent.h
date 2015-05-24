@@ -1,5 +1,5 @@
 #pragma once
-#include <Lighting/Light.h>
+#include "../Lighting/Light.h"
 
 struct LightComponent
 {

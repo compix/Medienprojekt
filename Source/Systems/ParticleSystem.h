@@ -1,14 +1,13 @@
 #pragma once
 #include <entityx/System.h>
-#include <Graphics/ParticleManager.h>
-#include <Utils/TextureLoader.h>
+#include "../Graphics/ParticleManager.h"
 
 struct DeathEvent;
 
 class ParticleSystem : public entityx::System<ParticleSystem>, public entityx::Receiver<ParticleSystem>
 {
 public:
-	ParticleSystem(TextureLoader* textureLoader, sf::RenderTarget* renderTarget);
+	ParticleSystem();
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	ParticleManager* getManager(const std::string& textureName);
@@ -21,9 +20,6 @@ private:
 	void createManager(const std::string& textureName);
 
 private:
-	TextureLoader* m_textureLoader;
-	sf::RenderTarget* m_renderTarget;
-
 	std::unordered_map<std::string, ParticleManager> m_particleManagers;
 };
 

@@ -1,10 +1,12 @@
 #include "MenuPageChat.h"
 #include "../../Events/SendChatEvent.h"
+#include "../../GameGlobals.h"
 
 MenuPageChat::MenuPageChat(Menu &menu)
 	:MenuPage(menu)
 {
-	m_events.subscribe<ChatEvent>(*this);
+	GameGlobals::events->subscribe<ChatEvent>(*this);
+	GameGlobals::events->subscribe<PlayerJoinEvent>(*this);
 	m_chatBox = createChatBox(20, 20, 760, 500);
 
 	m_editBox = createEditBox(20, 540, 760, 40);
@@ -16,11 +18,16 @@ MenuPageChat::MenuPageChat(Menu &menu)
 void MenuPageChat::onSubmit()
 {
 	sf::String message = m_editBox->getText();
-	m_events.emit<SendChatEvent>(message);
+	GameGlobals::events->emit<SendChatEvent>(message);
 	m_editBox->setText("");
 }
 
 void MenuPageChat::receive(const ChatEvent &evt)
 {
 	m_chatBox->addLine(evt.name + ": " + evt.message);
+}
+
+void MenuPageChat::receive(const PlayerJoinEvent &evt)
+{
+	m_chatBox->addLine(">" + evt.name + " joined the game");
 }

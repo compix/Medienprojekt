@@ -2,7 +2,7 @@
 #include "Menu.h"
 
 MenuPage::MenuPage(Menu &menu)
-	:m_menu(menu), m_gui(menu.m_gui), m_events(menu.m_events), m_panel(m_gui), m_onShowFocus(nullptr)
+	:m_menu(menu), m_gui(menu.m_gui), m_panel(m_gui), m_onShowFocus(nullptr)
 {
 	m_panel->setSize(800, 600);// fixme: replace by constants?
 	m_panel->setBackgroundColor(sf::Color::Transparent);

@@ -3,7 +3,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <functional>
-#include <Utils/Math.h>
+#include "../Utils/Math.h"
 
 struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
@@ -12,6 +12,8 @@ typedef std::function < float(float) > MathFunction; // returns f(time)
 typedef std::function < sf::Vector2f(float) > Vec2Function; // returns 2d vector f(time)
 typedef std::function < sf::Vector3f(float) > Vec3Function; // returns 3d vector f(time)
 typedef std::function < RGB(float) > ColorFunction; // returns RGB f(time)
+
+class ParticleManager;
 
 /**
  * @brief	Functions are used to manipulate particles: Input is the time (lifetime of a particle) in range ~[0, 1]. Output depends on the function.

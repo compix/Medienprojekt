@@ -1,17 +1,13 @@
 #include "InputHandleSystem.h"
-#include <Components/TimerComponent.h>
-#include <Events/TimeoutEvent.h>
-#include <Components/InputComponent.h>
-#include <GameConstants.h>
+#include "../Components/TimerComponent.h"
+#include "../Events/TimeoutEvent.h"
+#include "../Components/InputComponent.h"
+#include "../GameConstants.h"
 #include <Box2D/Common/b2Math.h>
-#include <Components/BodyComponent.h>
-#include <Components/CellComponent.h>
-#include <Components/InventoryComponent.h>
-
-InputHandleSystem::InputHandleSystem(EntityFactory* entityFactory)
-	:m_entityFactory(entityFactory)
-{
-}
+#include "../Components/BodyComponent.h"
+#include "../Components/CellComponent.h"
+#include "../Components/InventoryComponent.h"
+#include "../GameGlobals.h"
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -25,7 +21,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		{
 			if (inventory->bombCount > 0)
 			{
-				m_entityFactory->createBomb(cell->y, cell->x, entity);
+				GameGlobals::entityFactory->createBomb(cell->y, cell->x, entity);
 				inventory->bombCount--;
 			}
 			

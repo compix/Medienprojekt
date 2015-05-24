@@ -3,11 +3,10 @@
 #include "../Components/InputComponent.h"
 #include <iostream>
 #include "../Components/BodyComponent.h"
-#include <GameConstants.h>
+#include "../GameConstants.h"
+#include "../GameGlobals.h"
 
 using namespace std;
-
-InputSystem::InputSystem(InputManager &inputManager) : inputManager(inputManager) { }
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
@@ -16,7 +15,7 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 	{
 		auto input = entity.component<InputComponent>();
 
-		auto &playerInput = inputManager.getPlayerInput(input->playerIndex);
+		auto &playerInput = GameGlobals::input->getPlayerInput(input->playerIndex);
 		if (playerInput.buttonPressed[PlayerButton::BOMB])
 		{
 			input->bombButtonPressed = true;

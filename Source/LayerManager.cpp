@@ -5,12 +5,18 @@
 #include "GameConstants.h"
 #include "Components/SolidBlockComponent.h"
 #include "Components/LayerComponent.h"
+#include "GameGlobals.h"
 
 EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 {
 	m_layers[layer] = std::make_shared<EntityLayer>(width, height, layer);
 
 	return m_layers[layer].get();
+}
+
+LayerManager::~LayerManager()
+{
+	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
 }
 
 void LayerManager::configure(entityx::EventManager& events)

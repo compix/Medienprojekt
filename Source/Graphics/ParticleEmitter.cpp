@@ -1,7 +1,7 @@
 #include "ParticleEmitter.h"
-#include <Utils/Random.h>
-#include "Utils/Colors.h"
-#include <Utils/Math.h>
+#include "../Utils/Random.h"
+#include "../Utils/Colors.h"
+#include "../Utils/Math.h"
 #include "ParticleManager.h"
 #include <iostream>
 

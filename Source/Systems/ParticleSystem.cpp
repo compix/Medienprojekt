@@ -1,9 +1,10 @@
 #include "ParticleSystem.h"
-#include <Components/ParticleComponent.h>
-#include <Components/TransformComponent.h>
+#include "../Components/ParticleComponent.h"
+#include "../Components/TransformComponent.h"
+#include "../Utils/TextureLoader.h"
+#include "../GameGlobals.h"
 
-ParticleSystem::ParticleSystem(TextureLoader* textureLoader, sf::RenderTarget* renderTarget)
-	: m_textureLoader(textureLoader), m_renderTarget(renderTarget)
+ParticleSystem::ParticleSystem()
 {
 	createManager("light");
 }
@@ -26,7 +27,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 
 void ParticleSystem::createManager(const std::string& textureName)
 {
-	m_particleManagers.insert({ textureName, ParticleManager(50000, m_textureLoader->get(textureName)) });
+	m_particleManagers.insert({ textureName, ParticleManager(50000, GameGlobals::textures->get(textureName)) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -42,7 +43,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 
 	for (auto& m : m_particleManagers)
 	{
-		m.second.update(*m_renderTarget, (float)dt);
+		m.second.update(*GameGlobals::window, (float)dt);
 	}
 }
 

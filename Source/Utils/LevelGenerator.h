@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityFactory.h"
+#include "../EntityFactory.h"
 
 /*
 The level is represented as a matrix. The position is given by the row and column (indexing starts at 0).
@@ -27,7 +27,7 @@ class LevelGenerator
 
 	typedef bool (LevelGenerator::*Rule)(LevelPosition); // Rules have the position in question as input and return true if the condition applies.
 public:
-	LevelGenerator(EntityFactory* entityFactory, int rowCount, int colCount);
+	LevelGenerator(int rowCount, int colCount);
 
 	void generateRandomLevel();
 
@@ -39,8 +39,6 @@ private:
 
 	bool neighbors(LevelPosition pos1, LevelPosition pos2);
 private:
-	EntityFactory* m_entityFactory;
-
 	std::vector<LevelPosition> m_characterPositions;
 
 	int m_rowCount;

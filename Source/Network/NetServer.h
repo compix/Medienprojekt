@@ -8,22 +8,29 @@
 using NetCode::ServerConnection;
 using NetCode::MessageHandler;
 using NetCode::MessageWriter;
-using entityx::EventManager;
+using NetCode::MessageReader;
 using entityx::Receiver;
+using entityx::EntityManager;
 
 class NetServer : public Receiver<NetServer>
 {
 public:
-	NetServer(EventManager &events);
+	NetServer();
+	~NetServer();
 
 	void update();
 	bool connect();
 	void disconnect();
 
 	void receive(const SendChatEvent &evt);
+	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
+	void onChatMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 
 private:
-	EventManager &m_events;
+	template <class T>
+	void sendBlockEntities(ENetPeer* peer, MessageType type);
+
+private:
 	ServerConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;

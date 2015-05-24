@@ -1,12 +1,17 @@
 #include "HealthSystem.h"
-#include <Events/EntityGotHitEvent.h>
-#include <Components/HealthComponent.h>
-#include <Events/DeathEvent.h>
+#include "../Events/EntityGotHitEvent.h"
+#include "../Components/HealthComponent.h"
+#include "../Events/DeathEvent.h"
 #include <iostream>
+#include "../GameGlobals.h"
+
+HealthSystem::~HealthSystem()
+{
+	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
+}
 
 void HealthSystem::configure(entityx::EventManager& events)
 {
-	m_eventManager = &events;
 	events.subscribe<EntityGotHitEvent>(*this);
 }
 
@@ -29,7 +34,7 @@ void HealthSystem::receive(const EntityGotHitEvent& entityGotHit)
 
 		if (health->value <= 0)
 		{
-			m_eventManager->emit<DeathEvent>(damagedEntity); // Entity died
+			GameGlobals::events->emit<DeathEvent>(damagedEntity); // Entity died
 			damagedEntity.remove<HealthComponent>();
 		}		
 	}
