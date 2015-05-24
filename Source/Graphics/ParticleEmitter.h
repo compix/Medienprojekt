@@ -13,6 +13,8 @@ typedef std::function < sf::Vector2f(float) > Vec2Function; // returns 2d vector
 typedef std::function < sf::Vector3f(float) > Vec3Function; // returns 3d vector f(time)
 typedef std::function < RGB(float) > ColorFunction; // returns RGB f(time)
 
+class ParticleManager;
+
 /**
  * @brief	Functions are used to manipulate particles: Input is the time (lifetime of a particle) in range ~[0, 1]. Output depends on the function.
  * 			If t = 0 then the particle just spawned and if t = 1 then it is dead.
