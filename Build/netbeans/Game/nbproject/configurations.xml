@@ -29,11 +29,20 @@
 			<itemPath>../../../Source/EntityLayer.h</itemPath>
 			<logicalFolder name="Events" displayName="Events" projectFiles="true">
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CreateLocalGameEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CreateServerEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
+				<itemPath>../../../Source/Events/DisconnectEvent.h</itemPath>
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
+				<itemPath>../../../Source/Events/JoinServerEvent.h</itemPath>
 				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PlayerJoinEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
+				<itemPath>../../../Source/Events/StartGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/Game.cpp</itemPath>
@@ -152,6 +161,7 @@
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -171,6 +181,7 @@
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -192,6 +203,7 @@
 						<linkerLibLibItem>enet-s-d</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s-d</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s-d</linkerLibLibItem>
+						<linkerLibLibItem>cppformat-s-d</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s-d</linkerLibLibItem>
 						<linkerLibLibItem>sndfile</linkerLibLibItem>
 						<linkerLibLibItem>GLEW</linkerLibLibItem>
@@ -232,11 +244,20 @@
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JoinServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
@@ -331,6 +352,7 @@
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -351,6 +373,7 @@
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -372,6 +395,7 @@
 						<linkerLibLibItem>enet-s</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s</linkerLibLibItem>
+						<linkerLibLibItem>cppformat-s</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s</linkerLibLibItem>
 						<linkerLibLibItem>sndfile</linkerLibLibItem>
 						<linkerLibLibItem>GLEW</linkerLibLibItem>
@@ -412,11 +436,20 @@
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JoinServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>

@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
@@ -68,7 +68,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <OptimizeReferences>
@@ -82,7 +82,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -94,7 +94,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -126,11 +126,20 @@
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreateServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
+    <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
+    <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
