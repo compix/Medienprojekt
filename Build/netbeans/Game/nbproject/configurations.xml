@@ -23,6 +23,7 @@
 				<itemPath>../../../Source/Components/LightComponent.h</itemPath>
 				<itemPath>../../../Source/Components/LinkComponent.h</itemPath>
 				<itemPath>../../../Source/Components/OwnerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ParticleComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ShaderComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SolidBlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SpriteComponent.h</itemPath>
@@ -60,6 +61,8 @@
 				<itemPath>../../../Source/Graphics/Particle.h</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEmitter.cpp</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEmitter.h</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleManager.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleManager.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/LayerManager.cpp</itemPath>
 			<itemPath>../../../Source/LayerManager.h</itemPath>
@@ -134,6 +137,8 @@
 				<itemPath>../../../Source/Systems/InventorySystem.h</itemPath>
 				<itemPath>../../../Source/Systems/LightSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/LightSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ParticleSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ParticleSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/TimerSystem.cpp</itemPath>
@@ -141,15 +146,21 @@
 			</logicalFolder>
 			<logicalFolder name="Utils" displayName="Utils" projectFiles="true">
 				<itemPath>../../../Source/Utils/AssetLoader.h</itemPath>
+				<itemPath>../../../Source/Utils/Colors.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Colors.h</itemPath>
 				<itemPath>../../../Source/Utils/Common.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Common.h</itemPath>
 				<itemPath>../../../Source/Utils/Exceptions.h</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.h</itemPath>
+				<itemPath>../../../Source/Utils/Functions.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Functions.h</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.cpp</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.h</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.h</itemPath>
+				<itemPath>../../../Source/Utils/Math.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Math.h</itemPath>
 				<itemPath>../../../Source/Utils/Random.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
 				<itemPath>../../../Source/Utils/ShaderManager.cpp</itemPath>
@@ -272,6 +283,7 @@
 			<item path="../../../Source/Components/LightComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -296,6 +308,7 @@
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
@@ -325,15 +338,19 @@
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
@@ -348,6 +365,7 @@
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -373,12 +391,16 @@
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -486,6 +508,7 @@
 			<item path="../../../Source/Components/LightComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -510,6 +533,7 @@
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
@@ -539,15 +563,19 @@
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
@@ -562,6 +590,7 @@
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -587,12 +616,16 @@
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>

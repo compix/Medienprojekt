@@ -85,6 +85,9 @@
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ParticleComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -160,6 +163,9 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleManager.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LayerManager.h" />
@@ -253,6 +259,9 @@
     <ClInclude Include="..\..\Source\Systems\LightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ParticleSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -260,6 +269,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\AssetLoader.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Colors.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Common.h">
@@ -271,10 +283,16 @@
     <ClInclude Include="..\..\Source\Utils\FpsCalculator.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Functions.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\InputManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Math.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Random.h">
@@ -300,6 +318,9 @@
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
@@ -381,11 +402,17 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Colors.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\Common.cpp">
       <Filter>Utils</Filter>
@@ -393,10 +420,16 @@
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Functions.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Math.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\Random.cpp">

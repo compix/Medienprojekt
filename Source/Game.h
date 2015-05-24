@@ -8,12 +8,13 @@
 #include "SFMLDebugDraw.h"
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
-#include "Graphics/ParticleEmitter.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
 using entityx::SystemManager;
 using std::unique_ptr;
+
+class ParticleEmitter;
 
 class Game
 {
@@ -49,7 +50,7 @@ protected:
 
 	sf::Vector2f m_mousePos;
 
-	ParticleEmitter m_particleEmitter;
+	ParticleEmitter* m_particleEmitter;
 };
 
 class LocalGame : public Game

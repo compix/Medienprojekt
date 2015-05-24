@@ -2,6 +2,7 @@
 #include "../BodyFactory.h"
 #include "../PhysixSystem.h"
 #include "../Utils/Common.h"
+#include "../Utils/Math.h"
 
 const float EPSILON = 0.000001f;
 

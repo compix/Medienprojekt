@@ -1,4 +1,4 @@
-﻿#include "Game.h"
+#include "Game.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/InputSystem.h"
 #include "Systems/BodySystem.h"
@@ -21,6 +21,10 @@
 #include "Systems/InputHandleSystem.h"
 #include "Systems/InventorySystem.h"
 #include "GameGlobals.h"
+#include "Utils/Functions.h"
+#include "Utils/Math.h"
+#include "Systems/ParticleSystem.h"
+#include "Graphics/ParticleEmitter.h"
 
 
 Game::Game()
@@ -57,7 +61,7 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager->createLayer(width, height, -1);
 	m_layerManager->configure(*GameGlobals::events);
 
-	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager);
+	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
 
 	addSystems();
@@ -65,17 +69,19 @@ void Game::init(uint8_t width, uint8_t height)
 
 	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
-	m_particleEmitter.setTexture(GameGlobals::textures->get("light"));
-	m_particleEmitter.setPosition(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f);
+	auto particleSystem = m_systems.system<ParticleSystem>();
+	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter();
 
-	m_particleEmitter.spawnTime(0.003f)
-		.maxParticles(10000)
+	// This Particle Emitter is just for tests.
+	m_particleEmitter->spawnTime(0.003f)
+		.position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
 		.maxLifetime(5.f)
 		.gravityModifier(5.f)
-		.velocityFunction([](float t) { return sf::Vector2f(t, sinf(t)*100.f); })
-		.angularVelocityFunction([](float t) { return t*t*0.1f; })
-		.sizeFunction([](float t) { return sf::Vector2f(15 - t*t*50.f, 15 - t*t*t*20.f); })
-		.colorFunction([](float t) { return sf::Color(0.f, Math::smootherstep(234, 23, t)*255.f, 255.f - Math::regress(t) * 189, t < 0.1 ? 15.f : 255 - t * 255); });
+		.velocityFunction([](float t) { t = t * 2 - 1; return sf::Vector2f(t, sinf(t)*100.f); })
+		.angularVelocityFunction([](float t) { t = t * 2 - 1; return t*t*0.1f; })
+		.sizeFunction([](float t) { t = t * 2 - 1; return sf::Vector2f(15 - t*t*50.f, 15 - t*t*t*20.f); })
+		.transparencyFunction([](float t) { return t < 0.1 ? 15.f : 255 - t * 255; })
+		.colorFunction([](float t) { return RGB(0.f, Math::smootherstep(234, 23, t), Math::regress(255, 66, t)); });
 
 	initialized = true;
 }
@@ -90,21 +96,10 @@ void Game::update(TimeDelta dt)
 	m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
-	m_particleEmitter.update(dt);
-
 	m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
 	m_light.setShader(m_shaderManager.getLightShader());
 
-	Light light1(sf::Vector2f(35.f, 35.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
-	light1.setShader(m_shaderManager.getLightShader());
-	Light light2(sf::Vector2f(150.f, 50.f), sf::Color::Yellow, 30.f, 360.f, 0.f);
-	light2.setShader(m_shaderManager.getLightShader());
-
-	GameGlobals::window->draw(m_particleEmitter);
-	GameGlobals::window->draw(light1);
-	GameGlobals::window->draw(light2);
 	GameGlobals::window->draw(m_light);
-	
 }
 
 void LocalGame::addSystems()
@@ -122,6 +117,7 @@ void LocalGame::addSystems()
 	m_systems.add<InputHandleSystem>();
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
+	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
 }
 

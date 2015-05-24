@@ -51,7 +51,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 
 					if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))
 					{
-						scheduled.push_back(GameGlobals::entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime, true));
+						scheduled.push_back(GameGlobals::entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime));
 					}				
 				}
 
@@ -63,7 +63,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 		if (allStopped)
 		{
 			if (!entity.has_component<DestructionComponent>())
-				entity.assign<DestructionComponent>(0.1f);
+				entity.assign<DestructionComponent>(1.5f);
 		}
 		else
 			for (auto e : scheduled)
