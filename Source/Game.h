@@ -45,6 +45,6 @@ private:
 
 	sf::Vector2f m_mousePos;
 
-	ParticleEmitter m_particleEmitter;
+	ParticleEmitter* m_particleEmitter;
 };
 

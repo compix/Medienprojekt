@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <Components/ShaderComponent.h>
+#include <Components/ParticleComponent.h>
 
 RenderSystem::RenderSystem(sf::RenderWindow* window, LayerManager* layerManager)
 	: m_window(window), m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
@@ -45,8 +46,11 @@ void RenderSystem::render(EntityLayer* layer)
 
 			for (auto& e : collection)
 			{
-				ComponentHandle<TransformComponent> transform = e.component<TransformComponent>();
-				ComponentHandle<SpriteComponent> sprite = e.component<SpriteComponent>();
+				if (!e.valid())
+					continue;
+
+				auto transform = e.component<TransformComponent>();
+				auto sprite = e.component<SpriteComponent>();
 
 				if (!transform || !sprite)
 					continue;

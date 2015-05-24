@@ -13,7 +13,8 @@ using entityx::EntityManager;
 class EntityFactory
 {
 public:
-	EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager);
+	EntityFactory(EntityManager &entities, TextureLoader* textureLoader, PhysixSystem* physixSystem, 
+		LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 	
@@ -25,7 +26,7 @@ public:
 
 	Entity createBomb(int row, int col, Entity owner);
 	
-	Entity createExplosion(int row, int col, Direction direction, int range, float spreadTime, bool visible);
+	Entity createExplosion(int row, int col, Direction direction, int range, float spreadTime);
 	Entity createExplosion(int row, int col, int range, float spreadTime);
 
 	Entity createFloor(int row, int col);
@@ -35,5 +36,6 @@ private:
 	PhysixSystem* m_PhysixSystem;
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
+	entityx::SystemManager* m_systemManager;
 };
 
