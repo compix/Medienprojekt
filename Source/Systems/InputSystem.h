@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/entityx.h>
-#include "EntityLayer.h"
+#include "../EntityLayer.h"
 
 using entityx::System;
 using entityx::EntityManager;

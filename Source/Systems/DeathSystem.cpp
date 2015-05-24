@@ -1,7 +1,7 @@
 #include "DeathSystem.h"
-#include "Events/DeathEvent.h"
-#include "Components/DestructionDelayComponent.h"
-#include <Components/DestructionComponent.h>
+#include "../Events/DeathEvent.h"
+#include "../Components/DestructionDelayComponent.h"
+#include "../Components/DestructionComponent.h"
 
 void DeathSystem::configure(entityx::EventManager& events)
 {

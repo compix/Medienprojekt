@@ -1,8 +1,8 @@
 #include "BodySystem.h"
 #include "../Components/BodyComponent.h"
 #include "../Components/TransformComponent.h"
-#include <PhysixSystem.h>
-#include <Components/SpriteComponent.h>
+#include "../PhysixSystem.h"
+#include "../Components/SpriteComponent.h"
 
 using namespace entityx;
 

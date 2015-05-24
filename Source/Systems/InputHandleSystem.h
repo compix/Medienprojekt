@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/System.h>
-#include <EntityFactory.h>
+#include "../EntityFactory.h"
 
 class InputHandleSystem : public entityx::System<InputHandleSystem>
 {

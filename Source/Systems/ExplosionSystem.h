@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/System.h>
-#include <EntityFactory.h>
+#include "../EntityFactory.h"
 
 class ExplosionSystem : public entityx::System<ExplosionSystem>
 {

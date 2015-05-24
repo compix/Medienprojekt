@@ -1,7 +1,7 @@
 #include "InventorySystem.h"
-#include "Events/BombExplodedEvent.h"
-#include <Components/OwnerComponent.h>
-#include <Components/InventoryComponent.h>
+#include "../Events/BombExplodedEvent.h"
+#include "../Components/OwnerComponent.h"
+#include "../Components/InventoryComponent.h"
 
 void InventorySystem::configure(entityx::EventManager& events)
 {

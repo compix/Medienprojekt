@@ -1,9 +1,9 @@
 #include "DamageSystem.h"
-#include <Components/DamageDealerComponent.h>
-#include <Components/CellComponent.h>
-#include <Components/LayerComponent.h>
-#include <Components/HealthComponent.h>
-#include <Events/EntityGotHitEvent.h>
+#include "../Components/DamageDealerComponent.h"
+#include "../Components/CellComponent.h"
+#include "../Components/LayerComponent.h"
+#include "../Components/HealthComponent.h"
+#include "../Events/EntityGotHitEvent.h"
 
 DamageSystem::DamageSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager)

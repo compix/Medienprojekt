@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityFactory.h"
+#include "../EntityFactory.h"
 
 /*
 The level is represented as a matrix. The position is given by the row and column (indexing starts at 0).

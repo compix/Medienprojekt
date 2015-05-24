@@ -3,7 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include <iostream>
 #include <format.h>
-#include <Components/ShaderComponent.h>
+#include "../Components/ShaderComponent.h"
 
 RenderSystem::RenderSystem(sf::RenderWindow* window, LayerManager* layerManager)
 	: m_window(window), m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)

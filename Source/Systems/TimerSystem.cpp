@@ -1,6 +1,6 @@
 #include "TimerSystem.h"
-#include <Components/TimerComponent.h>
-#include <Events/TimeoutEvent.h>
+#include "../Components/TimerComponent.h"
+#include "../Events/TimeoutEvent.h"
 
 void TimerSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {

@@ -1,5 +1,5 @@
 #include "LightSystem.h"
-#include <Components/LightComponent.h>
+#include "../Components/LightComponent.h"
 
 LightSystem::LightSystem(sf::RenderWindow* window)
 	:m_window(window)

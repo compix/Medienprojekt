@@ -1,8 +1,8 @@
 #pragma once
 #include <entityx/entityx.h>
 #include <SFML/Graphics.hpp>
-#include "EntityLayer.h"
-#include "LayerManager.h"
+#include "../EntityLayer.h"
+#include "../LayerManager.h"
 #include "../Utils/FpsCalculator.h"
 
 using entityx::System;

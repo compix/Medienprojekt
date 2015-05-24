@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -6,6 +6,12 @@
     </Filter>
     <Filter Include="Events">
       <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lighting">
+      <UniqueIdentifier>{5B1EC029-47EB-1A35-7004-09DD5C3050C3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Menu">
       <UniqueIdentifier>{FA04897C-E63B-8A0D-8F28-70107B3E060F}</UniqueIdentifier>
@@ -24,12 +30,6 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lighting">
-      <UniqueIdentifier>{84bebe23-162a-424f-8319-1aaf1830a11b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{d09a4a98-a3bb-4933-8217-a32dadbf8e99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,10 +64,22 @@
     <ClInclude Include="..\..\Source\Components\InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\InventoryComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\LayerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LightComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\LinkComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ShaderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
@@ -84,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ChatEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -134,7 +149,16 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
+    <ClInclude Include="..\..\Source\Graphics\Particle.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\LayerManager.h" />
+    <ClInclude Include="..\..\Source\Lighting\Light.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Menu.h">
       <Filter>Menu</Filter>
     </ClInclude>
@@ -206,7 +230,16 @@
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\InputSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\InventorySystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\LightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
@@ -236,6 +269,9 @@
     <ClInclude Include="..\..\Source\Utils\Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\ShaderManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -246,49 +282,19 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="..\..\Source\Lighting\Light.h">
-      <Filter>Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\LightComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\LightSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\ShaderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\ShaderManager.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\InventoryComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\InventorySystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Graphics\Particle.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
+    <ClCompile Include="..\..\Source\Lighting\Light.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Menu\Menu.cpp">
       <Filter>Menu</Filter>
@@ -352,7 +358,16 @@
     <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
@@ -360,6 +375,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Common.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp">
       <Filter>Utils</Filter>
@@ -373,6 +391,9 @@
     <ClCompile Include="..\..\Source\Utils\Random.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -380,26 +401,5 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
-    <ClCompile Include="..\..\Source\Lighting\Light.cpp">
-      <Filter>Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\Common.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

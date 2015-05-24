@@ -3,7 +3,7 @@
 #include "../Components/InputComponent.h"
 #include <iostream>
 #include "../Components/BodyComponent.h"
-#include <GameConstants.h>
+#include "../GameConstants.h"
 
 using namespace std;
 

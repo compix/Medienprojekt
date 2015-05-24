@@ -1,5 +1,5 @@
 #pragma once
-#include <Graphics/ParticleEmitter.h>
+#include "../Graphics/ParticleEmitter.h"
 
 enum class Direction
 {

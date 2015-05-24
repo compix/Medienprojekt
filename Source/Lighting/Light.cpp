@@ -1,7 +1,7 @@
 #include "Light.h"
-#include <BodyFactory.h>
-#include <PhysixSystem.h>
-#include <Utils/Common.h>
+#include "../BodyFactory.h"
+#include "../PhysixSystem.h"
+#include "../Utils/Common.h"
 
 const float EPSILON = 0.000001f;
 

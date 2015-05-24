@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Source;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>

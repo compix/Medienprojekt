@@ -1,7 +1,7 @@
 #include "ParticleEmitter.h"
 #include <iostream>
-#include <Utils/Random.h>
-#include <Utils/Common.h>
+#include "../Utils/Random.h"
+#include "../Utils/Common.h"
 
 ParticleEmitter::ParticleEmitter()
 	:ParticleEmitter(100, sf::Vector2f(0.f, 0.f))

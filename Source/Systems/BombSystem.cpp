@@ -1,12 +1,12 @@
 #include "BombSystem.h"
-#include <Events/TimeoutEvent.h>
-#include <Components/BombComponent.h>
-#include "EntityFactory.h"
-#include <Components/CellComponent.h>
-#include <Components/DestructionComponent.h>
-#include <Events/EntityGotHitEvent.h>
-#include <Components/TimerComponent.h>
-#include <Events/BombExplodedEvent.h>
+#include "../Events/TimeoutEvent.h"
+#include "../Components/BombComponent.h"
+#include "../EntityFactory.h"
+#include "../Components/CellComponent.h"
+#include "../Components/DestructionComponent.h"
+#include "../Events/EntityGotHitEvent.h"
+#include "../Components/TimerComponent.h"
+#include "../Events/BombExplodedEvent.h"
 
 BombSystem::BombSystem(EntityFactory* entityFactory)
 	:m_entityFactory(entityFactory)

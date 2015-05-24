@@ -1,9 +1,9 @@
 #include "ExplosionSystem.h"
-#include <Components/ExplosionComponent.h>
-#include <Components/CellComponent.h>
-#include <Components/LayerComponent.h>
-#include <Components/LinkComponent.h>
-#include <Components/DestructionComponent.h>
+#include "../Components/ExplosionComponent.h"
+#include "../Components/CellComponent.h"
+#include "../Components/LayerComponent.h"
+#include "../Components/LinkComponent.h"
+#include "../Components/DestructionComponent.h"
 
 ExplosionSystem::ExplosionSystem(EntityFactory* entityFactory, LayerManager* layerManager)
 	:m_entityFactory(entityFactory), m_layerManager(layerManager) {}

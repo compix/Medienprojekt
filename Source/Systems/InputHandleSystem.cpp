@@ -1,12 +1,12 @@
 #include "InputHandleSystem.h"
-#include <Components/TimerComponent.h>
-#include <Events/TimeoutEvent.h>
-#include <Components/InputComponent.h>
-#include <GameConstants.h>
+#include "../Components/TimerComponent.h"
+#include "../Events/TimeoutEvent.h"
+#include "../Components/InputComponent.h"
+#include "../GameConstants.h"
 #include <Box2D/Common/b2Math.h>
-#include <Components/BodyComponent.h>
-#include <Components/CellComponent.h>
-#include <Components/InventoryComponent.h>
+#include "../Components/BodyComponent.h"
+#include "../Components/CellComponent.h"
+#include "../Components/InventoryComponent.h"
 
 InputHandleSystem::InputHandleSystem(EntityFactory* entityFactory)
 	:m_entityFactory(entityFactory)
