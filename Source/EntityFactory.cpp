@@ -44,8 +44,8 @@ Entity EntityFactory::createPlayer(float x, float y)
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 
-	uint8_t col = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
-	uint8_t row = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
+	uint8_t col = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
+	uint8_t row = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
 	TransformComponent transformComponent;
 	transformComponent.x = x;
 	transformComponent.y = y;
@@ -75,7 +75,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	entity.assign<BodyComponent>(bodyComponent);
 
 	InputComponent inputComponent;
-	inputComponent.playerIndex = m_playerIndex++;
+	inputComponent.playerIndex = -1;
 	entity.assign<InputComponent>(inputComponent);
 	entity.assign<LayerComponent>(0);
 	entity.assign<InventoryComponent>();
@@ -83,11 +83,6 @@ Entity EntityFactory::createPlayer(float x, float y)
 	m_layerManager->add(entity);
 
 	return entity;
-}
-
-Entity EntityFactory::createTestEntity1(int row, int col)
-{
-	return createPlayer((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * row);
 }
 
 Entity EntityFactory::createTestEntity2()

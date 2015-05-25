@@ -28,6 +28,9 @@ public:
 	void receive(const BombCreatedEvent &evt);
 	void receive(const EntityDestroyedEvent &evt);
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
+	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onInputBombActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onInputSkillActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onChatMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 
 private:

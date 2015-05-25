@@ -6,6 +6,7 @@
 #include "Utils/make_unique.h"
 #include "GameGlobals.h"
 #include <SFML/Graphics.hpp>
+#include "Components/InputComponent.h"
 
 using namespace std;
 
@@ -115,6 +116,20 @@ void Main::receive(const CreateLocalGameEvent& evt)
 	disconnect();
 	GameGlobals::game = make_unique<LocalGame>();
 	GameGlobals::game->init(evt.width, evt.height);
+
+	using GameGlobals::entities;
+	int i = 0;
+	ComponentHandle<InputComponent> input;
+	for (Entity entity : entities->entities_with_components(input))
+	{
+		if (i == evt.names.size())
+			entity.destroy();
+		else
+		{
+//			player->name = evt.names[i]; // fixme
+			input->playerIndex = i++;
+		}
+	}
 }
 
 void Main::receive(const CreateServerEvent& evt)
@@ -126,6 +141,14 @@ void Main::receive(const CreateServerEvent& evt)
 		cout << "Server created" << endl;
 		GameGlobals::game = make_unique<ServerGame>();
 		GameGlobals::game->init(evt.width, evt.height);
+
+		using GameGlobals::entities;
+		ComponentHandle<InputComponent> input;
+		for (Entity entity : entities->entities_with_components(input))
+		{
+			input->playerIndex = 0;
+			break;
+		}
 	}
 	else
 	{

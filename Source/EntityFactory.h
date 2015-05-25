@@ -18,7 +18,6 @@ public:
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 
 	Entity createPlayer(float x, float y);
-	Entity createTestEntity1(int row, int col);
 	Entity createTestEntity2();
 
 	Entity createBlock(int row, int col);
@@ -34,7 +33,6 @@ private:
 	PhysixSystem* m_physixSystem;
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
-	int m_playerIndex = 0;
 	entityx::SystemManager* m_systemManager;
 };
 

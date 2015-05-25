@@ -5,6 +5,7 @@
 #include "../GameGlobals.h"
 #include "../Events/PlayerJoinEvent.h"
 #include "../Game.h"
+#include "../Components/InputComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -14,6 +15,7 @@ NetClient::NetClient()
 {
 	GameGlobals::events->subscribe<SendChatEvent>(*this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
+	m_handler.setCallback(MessageType::PLAYER_ID, &NetClient::onPlayerIdMessage, this);
 	m_handler.setCallback(MessageType::CHAT, &NetClient::onChatMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_JOINED, &NetClient::onPlayerJoinedMessage, this);
 	m_handler.setCallback(MessageType::CREATE_SOLID_BLOCK, &NetClient::onCreateSolidBlockMessage, this);
@@ -32,8 +34,7 @@ NetClient::NetClient()
 
 		m_messageWriter.init(MessageType::HANDSHAKE);
 		m_messageWriter.write<string>("Santo");
-		ENetPacket *packet = m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
-		enet_peer_send(m_connection.getPeer(), (enet_uint8)NetChannel::HANDSHAKE, packet);
+		send(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 	});
 	m_connection.setDisconnectCallback([](ENetEvent &event)
 	{
@@ -50,7 +51,32 @@ NetClient::~NetClient()
 
 void NetClient::update()
 {
+	if (m_playerEntity.valid())
+	{
+		auto input = m_playerEntity.component<InputComponent>();
+		if (input->bombButtonPressed)
+		{
+			sendInputEventMessage(MessageType::INPUT_BOMB_ACTIVATED);
+			input->bombButtonPressed = false;
+		}
+		if (input->skillButtonPressed)
+		{
+			sendInputEventMessage(MessageType::INPUT_SKILL_ACTIVATED);
+			input->skillButtonPressed = false;
+		}
+
+		m_messageWriter.init(MessageType::INPUT_DIRECTION);
+		m_messageWriter.write<float>(input->moveX);
+		m_messageWriter.write<float>(input->moveY);
+		send(NetChannel::INPUT_UNRELIABLE, m_messageWriter.createPacket(0));
+	}
 	m_connection.update();
+}
+
+void NetClient::sendInputEventMessage(MessageType type)
+{
+	m_messageWriter.init(type);
+	send(NetChannel::INPUT_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 bool NetClient::connect()
@@ -67,8 +93,7 @@ void NetClient::receive(const SendChatEvent& evt)
 {
 	m_messageWriter.init(MessageType::CHAT);
 	m_messageWriter.write<string>(evt.message);
-	ENetPacket *packet = m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
-	enet_peer_send(m_connection.getPeer(), (enet_uint8)NetChannel::CHAT, packet);
+	send(NetChannel::CHAT, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -76,6 +101,13 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	uint8_t width = reader.read<uint8_t>();
 	uint8_t height = reader.read<uint8_t>();
 	GameGlobals::game->init(width, height);
+}
+
+void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	m_playerEntity = getEntity(id);
+	m_playerEntity.component<InputComponent>()->playerIndex = 0;
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -176,6 +208,11 @@ Entity NetClient::getEntity(uint64_t id)
 		return Entity();
 	}
 	return it->second;
+}
+
+void NetClient::send(NetChannel channel, ENetPacket* packet)
+{
+	enet_peer_send(m_connection.getPeer(), (enet_uint8)channel, packet);
 }
 
 void NetClient::mapEntity(uint64_t id, Entity entity)

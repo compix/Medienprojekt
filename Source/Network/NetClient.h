@@ -21,11 +21,13 @@ public:
 	~NetClient();
 
 	void update();
+	void sendInputEventMessage(MessageType type);
 	bool connect();
 	void disconnect();
 
 	void receive(const SendChatEvent &evt);
 	void onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onChatMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onPlayerJoinedMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onCreateSolidBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -39,10 +41,12 @@ public:
 private:
 	void mapEntity(uint64_t id, Entity entity);
 	Entity getEntity(uint64_t id);
+	void send(NetChannel channel, ENetPacket *packet);
 
 private:
 	ClientConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;
 	std::map<uint64_t, Entity> entityMap;
+	Entity m_playerEntity;
 };

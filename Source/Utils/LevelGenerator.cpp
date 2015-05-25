@@ -45,7 +45,11 @@ bool LevelGenerator::characterRule(LevelPosition pos)
 		condition = pos == m_characterPositions[i];
 
 	if (condition)
-		GameGlobals::entityFactory->createTestEntity1(pos.row, pos.col);
+	{
+		float x = (float)GameConstants::CELL_WIDTH * pos.col + GameConstants::CELL_WIDTH*0.5f;
+		float y = (float)GameConstants::CELL_HEIGHT * pos.row;
+		GameGlobals::entityFactory->createPlayer(x, y);
+	}
 
 	return condition;
 }
