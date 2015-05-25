@@ -126,7 +126,6 @@ void Main::receive(const CreateServerEvent& evt)
 		cout << "Server created" << endl;
 		GameGlobals::game = make_unique<ServerGame>();
 		GameGlobals::game->init(evt.width, evt.height);
-		GameGlobals::events->subscribe<SendChatEvent>(*m_server.get());
 	}
 	else
 	{
@@ -144,7 +143,6 @@ void Main::receive(const JoinServerEvent& evt)
 	{
 		cout << "Client created" << endl;
 		GameGlobals::game = make_unique<ClientGame>();
-		GameGlobals::events->subscribe<SendChatEvent>(*m_client.get());
 	}
 	else
 	{

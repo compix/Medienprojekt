@@ -16,7 +16,8 @@ public:
 	EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
-	
+
+	Entity createPlayer(float x, float y);
 	Entity createTestEntity1(int row, int col);
 	Entity createTestEntity2();
 
