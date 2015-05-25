@@ -6,6 +6,7 @@
 #include "../Events/PlayerJoinEvent.h"
 #include "../Game.h"
 #include "../Components/InputComponent.h"
+#include "../Events/ExitEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -70,7 +71,9 @@ void NetClient::update()
 		m_messageWriter.write<float>(input->moveY);
 		send(NetChannel::INPUT_UNRELIABLE, m_messageWriter.createPacket(0));
 	}
-	m_connection.update();
+
+	if (!m_connection.update())
+		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 }
 
 void NetClient::sendInputEventMessage(MessageType type)
@@ -224,7 +227,7 @@ void NetClient::mapEntity(uint64_t id, Entity entity)
 	{
 		// Fixme: Id already exists, show error, disconnect
 		cerr << "Error: Id already exists" << endl;
-		exit(EXIT_FAILURE);
+		GameGlobals::events->emit<ExitEvent>();
 		return;
 	}
 	entityMap[id] = entity;

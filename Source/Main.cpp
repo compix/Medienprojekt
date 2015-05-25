@@ -36,8 +36,7 @@ int Main::run()
 
 	NetCode::init();
 
-	EventManager events;
-	GameGlobals::events = &events;
+	GameGlobals::events = &m_events;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 	GameGlobals::window = &window;
@@ -53,10 +52,10 @@ int Main::run()
 	textureLoader.loadAllFromJson("Assets/json/textures.json");
 	GameGlobals::textures = &textureLoader;
 
-	events.subscribe<ExitEvent>(*this);
-	events.subscribe<CreateLocalGameEvent>(*this);
-	events.subscribe<CreateServerEvent>(*this);
-	events.subscribe<JoinServerEvent>(*this);
+	m_events.subscribe<ExitEvent>(*this);
+	m_events.subscribe<CreateLocalGameEvent>(*this);
+	m_events.subscribe<CreateServerEvent>(*this);
+	m_events.subscribe<JoinServerEvent>(*this);
 
 	// Create dummy local game
 	std::vector<std::string> names;
@@ -64,7 +63,7 @@ int Main::run()
 	names.push_back("Kenny");
 	names.push_back("Kyle");
 	names.push_back("Cartman");
-	events.emit<CreateLocalGameEvent>(21, 21, names);
+	m_events.emit<CreateLocalGameEvent>(21, 21, names);
 
 	sf::View gameView(sf::FloatRect(0, 0, 800, 600));
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
@@ -86,7 +85,7 @@ int Main::run()
 				GameGlobals::game->setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
 			}
 
-			events.emit(event);
+			m_events.emit(event);
 		}
 
 		sf::Time deltaTime = clock.restart();
@@ -106,7 +105,6 @@ int Main::run()
 		else if (m_client)
 			m_client->update();
 	}
-	disconnect();
 
 	return EXIT_SUCCESS;
 }
@@ -154,7 +152,7 @@ void Main::receive(const CreateServerEvent& evt)
 	{
 		m_server.reset();
 		cerr << "Could not create client host" << endl;
-		exit(EXIT_FAILURE); //fixme: show error to user
+		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
 	}
 }
 
@@ -171,7 +169,7 @@ void Main::receive(const JoinServerEvent& evt)
 	{
 		m_client.reset();
 		cerr << "Could not create client host" << endl;
-		exit(EXIT_FAILURE); //fixme: show error to user
+		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
 	}
 }
 

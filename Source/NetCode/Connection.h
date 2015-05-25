@@ -70,7 +70,7 @@ namespace NetCode
 		ENetHost* getHost() { return m_host; }
 		virtual void setHandler(MessageHandler<T> *handler) { m_handler = handler; }
 
-		virtual void update()
+		virtual bool update()
 		{
 			if (m_state != ConnectionState::DISCONNECTED)
 			{
@@ -88,11 +88,9 @@ namespace NetCode
 				}
 
 				if (serviceResult < 0)
-				{
-					cerr << "Error during host service" << endl;
-					exit(EXIT_FAILURE);
-				}
+					return false;
 			}
+			return true;
 		}
 
 
@@ -215,14 +213,15 @@ namespace NetCode
 			m_peer = nullptr;
 		}
 
-		void update() override
+		bool update() override
 		{
-			Connection<T>::update();
+			bool result = Connection<T>::update();
 			if (this->m_state == ConnectionState::CONNECTING && (getTime() - m_connectionTime) > 5000)
 			{
 				this->disconnectNow();
 				//fixme: notify listeners if not done automaticly.
 			}
+			return result;
 		}
 
 	protected:

@@ -79,7 +79,8 @@ NetServer::~NetServer()
 void NetServer::update()
 {
 	broadcastPlayerUpdates();
-	m_connection.update();
+	if (!m_connection.update())
+		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 }
 
 bool NetServer::connect(const std::string &hostname, int port)
