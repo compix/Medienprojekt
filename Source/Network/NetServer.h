@@ -35,6 +35,8 @@ private:
 	void sendBlockEntities(ENetPeer* peer, MessageType type);
 	void sendPlayerEntities(ENetPeer* peer);
 	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y);
+	void broadcastPlayerUpdates();
+	ENetPacket* createPlayerUpdatePacket(entityx::Entity entity, float x, float y);
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner);
 	void broadcast(NetChannel channel, ENetPacket *packet);

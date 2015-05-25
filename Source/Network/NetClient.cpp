@@ -23,6 +23,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::CREATE_BOMB, &NetClient::onCreateBombMessage, this);
 	m_handler.setCallback(MessageType::CREATE_EXPLOSION, &NetClient::onCreateExplosionMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
+	m_handler.setCallback(MessageType::UPDATE_PLAYER, &NetClient::onUpdatePlayerMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -148,6 +149,19 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 	if (entity.valid()) {
 		entity.destroy();
 		entityMap.erase(id);
+	}
+}
+
+void NetClient::onUpdatePlayerMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	float x = reader.read<float>();
+	float y = reader.read<float>();
+	Entity entity = getEntity(id);
+	if (entity.valid()) {
+		auto transform = entity.component<TransformComponent>();
+		transform->x = x;
+		transform->y = y;
 	}
 }
 

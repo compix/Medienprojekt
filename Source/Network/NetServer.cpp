@@ -71,6 +71,7 @@ NetServer::~NetServer()
 
 void NetServer::update()
 {
+	broadcastPlayerUpdates();
 	m_connection.update();
 }
 
@@ -180,6 +181,25 @@ ENetPacket *NetServer::createPlayerPacket(Entity entity, float x, float y)
 	m_messageWriter.write<float>(x);
 	m_messageWriter.write<float>(y);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+void NetServer::broadcastPlayerUpdates()
+{
+	ComponentHandle<InputComponent> input;
+	ComponentHandle<TransformComponent> transform;
+	ComponentHandle<CellComponent> cell;
+	using GameGlobals::entities;
+	for (Entity entity : entities->entities_with_components(input, transform, cell))
+		broadcast(NetChannel::MOVEMENT, createPlayerUpdatePacket(entity, transform->x, transform->y));
+}
+
+ENetPacket *NetServer::createPlayerUpdatePacket(Entity entity, float x, float y)
+{
+	m_messageWriter.init(MessageType::UPDATE_PLAYER);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<float>(x);
+	m_messageWriter.write<float>(y);
+	return m_messageWriter.createPacket(0);
 }
 
 void NetServer::sendBombEntities(ENetPeer *peer)
