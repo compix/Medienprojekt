@@ -33,7 +33,7 @@ MenuPageCreateServer::MenuPageCreateServer(Menu &menu)
 	y += stepY;
 	createLabel(x1, y + labelYOffset, "Width: ");
 	m_width = createEditBox(x2, y, width2, height2);
-	m_width->setText("21");
+	m_width->setText("9");//21
 
 	y += stepY;
 	createLabel(x1, y + labelYOffset, "Height: ");
