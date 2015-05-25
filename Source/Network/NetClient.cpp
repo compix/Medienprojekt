@@ -171,7 +171,10 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-//	GameGlobals::entityFactory->createExplosion(y, x);
+	Direction direction = reader.read<Direction>();
+	uint8_t range = reader.read<uint8_t>();
+	float spreadTime = reader.read<float>();
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(y, x, direction, range, spreadTime));
 }
 
 void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

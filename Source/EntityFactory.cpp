@@ -30,6 +30,7 @@
 #include "Components/ParticleComponent.h"
 #include "Systems/ParticleSystem.h"
 #include "Events/BombCreatedEvent.h"
+#include "Events/ExplosionCreatedEvent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -116,7 +117,7 @@ Entity EntityFactory::createTestEntity2()
 	return entity;
 }
 
-entityx::Entity EntityFactory::createBlock(int row, int col)
+entityx::Entity EntityFactory::createBlock(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -155,7 +156,7 @@ entityx::Entity EntityFactory::createBlock(int row, int col)
 	return entity;
 }
 
-entityx::Entity EntityFactory::createSolidBlock(int row, int col)
+entityx::Entity EntityFactory::createSolidBlock(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -193,7 +194,7 @@ entityx::Entity EntityFactory::createSolidBlock(int row, int col)
 	return entity;
 }
 
-Entity EntityFactory::createBomb(int row, int col, Entity owner)
+Entity EntityFactory::createBomb(uint8_t row, uint8_t col, Entity owner)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -222,7 +223,7 @@ Entity EntityFactory::createBomb(int row, int col, Entity owner)
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(int row, int col, Direction direction, int range, float spreadTime)
+Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, Direction direction, uint8_t range, float spreadTime)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -285,10 +286,11 @@ Entity EntityFactory::createExplosion(int row, int col, Direction direction, int
 		
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, col, row, direction, range, spreadTime);
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(int row, int col, int range, float spreadTime)
+Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, uint8_t range, float spreadTime)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -315,7 +317,7 @@ Entity EntityFactory::createExplosion(int row, int col, int range, float spreadT
 	return entity;
 }
 
-Entity EntityFactory::createFloor(int row, int col)
+Entity EntityFactory::createFloor(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 

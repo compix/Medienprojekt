@@ -20,15 +20,15 @@ public:
 	Entity createPlayer(float x, float y);
 	Entity createTestEntity2();
 
-	Entity createBlock(int row, int col);
-	Entity createSolidBlock(int row, int col);
+	Entity createBlock(uint8_t row, uint8_t col);
+	Entity createSolidBlock(uint8_t row, uint8_t col);
 
-	Entity createBomb(int row, int col, Entity owner);
+	Entity createBomb(uint8_t row, uint8_t col, Entity owner);
 	
-	Entity createExplosion(int row, int col, Direction direction, int range, float spreadTime);
-	Entity createExplosion(int row, int col, int range, float spreadTime);
+	Entity createExplosion(uint8_t row, uint8_t col, Direction direction, uint8_t range, float spreadTime);
+	Entity createExplosion(uint8_t row, uint8_t col, uint8_t range, float spreadTime);
 
-	Entity createFloor(int row, int col);
+	Entity createFloor(uint8_t row, uint8_t col);
 private:
 	PhysixSystem* m_physixSystem;
 	LayerManager* m_layerManager;

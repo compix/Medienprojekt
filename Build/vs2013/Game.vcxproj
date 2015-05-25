@@ -129,6 +129,7 @@
     <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />

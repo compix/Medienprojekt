@@ -135,6 +135,9 @@
     <ClInclude Include="..\..\Source\Events\ExitEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h">
       <Filter>Events</Filter>
     </ClInclude>

@@ -17,6 +17,7 @@
 #include "../Components/BombComponent.h"
 #include "../Components/OwnerComponent.h"
 #include "../Components/InputComponent.h"
+#include "../Events/ExplosionCreatedEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -26,6 +27,7 @@ NetServer::NetServer()
 {
 	GameGlobals::events->subscribe<SendChatEvent>(*this);
 	GameGlobals::events->subscribe<BombCreatedEvent>(*this);
+	GameGlobals::events->subscribe<ExplosionCreatedEvent>(*this);
 	GameGlobals::events->subscribe<EntityDestroyedEvent>(*this);
 	m_handler.setCallback(MessageType::CHAT, &NetServer::onChatMessage, this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
@@ -55,7 +57,9 @@ NetServer::NetServer()
 NetServer::~NetServer()
 {
 	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
-	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
+	GameGlobals::events->unsubscribe<BombCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<ExplosionCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
 
 	// Delete all playerinfos
 	auto host = m_connection.getHost();
@@ -100,6 +104,11 @@ void NetServer::receive(const SendChatEvent& evt)
 void NetServer::receive(const BombCreatedEvent& evt)
 {
 	broadcast(NetChannel::WORLD_RELIABLE, createBombPacket(evt.entity, evt.x, evt.y, evt.owner));
+}
+
+void NetServer::receive(const ExplosionCreatedEvent& evt)
+{
+	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime));
 }
 
 void NetServer::receive(const EntityDestroyedEvent& evt)
@@ -276,6 +285,18 @@ ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Ent
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<uint64_t>(owner.id().id());
+	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
+{
+	m_messageWriter.init(MessageType::CREATE_EXPLOSION);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint8_t>(x);
+	m_messageWriter.write<uint8_t>(y);
+	m_messageWriter.write<Direction>(direction);
+	m_messageWriter.write<uint8_t>(range);
+	m_messageWriter.write<float>(spreadTime);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
