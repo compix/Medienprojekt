@@ -12,12 +12,17 @@ using namespace NetCode;
 NetClient::NetClient()
 	: m_messageWriter(1024)
 {
+	GameGlobals::events->subscribe<SendChatEvent>(*this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::CHAT, &NetClient::onChatMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_JOINED, &NetClient::onPlayerJoinedMessage, this);
 	m_handler.setCallback(MessageType::CREATE_SOLID_BLOCK, &NetClient::onCreateSolidBlockMessage, this);
 	m_handler.setCallback(MessageType::CREATE_BLOCK, &NetClient::onCreateBlockMessage, this);
 	m_handler.setCallback(MessageType::CREATE_FLOOR, &NetClient::onCreateFloorMessage, this);
+	m_handler.setCallback(MessageType::CREATE_PLAYER, &NetClient::onCreatePlayerMessage, this);
+	m_handler.setCallback(MessageType::CREATE_BOMB, &NetClient::onCreateBombMessage, this);
+	m_handler.setCallback(MessageType::CREATE_EXPLOSION, &NetClient::onCreateExplosionMessage, this);
+	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -37,6 +42,7 @@ NetClient::NetClient()
 
 NetClient::~NetClient()
 {
+	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
 	m_connection.disconnectNow();
 	cout << "Connection closed" << endl;
 }
@@ -86,21 +92,86 @@ void NetClient::onPlayerJoinedMessage(MessageReader<MessageType>& reader, ENetEv
 
 void NetClient::onCreateSolidBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
+	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	GameGlobals::entityFactory->createSolidBlock(y, x);
+	mapEntity(id, GameGlobals::entityFactory->createSolidBlock(y, x));
 }
 
 void NetClient::onCreateBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
+	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	GameGlobals::entityFactory->createBlock(y, x);
+	mapEntity(id, GameGlobals::entityFactory->createBlock(y, x));
 }
 
 void NetClient::onCreateFloorMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
+	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	GameGlobals::entityFactory->createFloor(y, x);
+	mapEntity(id, GameGlobals::entityFactory->createFloor(y, x));
+}
+
+void NetClient::onCreatePlayerMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	float x = reader.read<float>();
+	float y = reader.read<float>();
+	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y));
+}
+
+void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	uint8_t x = reader.read<uint8_t>();
+	uint8_t y = reader.read<uint8_t>();
+	uint64_t ownerId = reader.read<uint64_t>();
+	Entity owner = getEntity(ownerId);
+	if (owner.valid())
+		mapEntity(id, GameGlobals::entityFactory->createBomb(y, x, owner));
+}
+
+void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	uint8_t x = reader.read<uint8_t>();
+	uint8_t y = reader.read<uint8_t>();
+//	GameGlobals::entityFactory->createExplosion(y, x);
+}
+
+void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	Entity entity = getEntity(id);
+	if (entity.valid()) {
+		entity.destroy();
+		entityMap.erase(id);
+	}
+}
+
+Entity NetClient::getEntity(uint64_t id)
+{
+	auto it = entityMap.find(id);
+	if (it == entityMap.end())
+	{
+		// Fixme: Id does not exist, show error, disconnect
+		cerr << "Error: Id does not exist" << endl;
+//		exit(EXIT_FAILURE);
+		return Entity();
+	}
+	return it->second;
+}
+
+void NetClient::mapEntity(uint64_t id, Entity entity)
+{
+	if (entityMap.count(id) != 0)
+	{
+		// Fixme: Id already exists, show error, disconnect
+		cerr << "Error: Id already exists" << endl;
+		exit(EXIT_FAILURE);
+		return;
+	}
+	entityMap[id] = entity;
 }

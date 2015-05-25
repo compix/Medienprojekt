@@ -29,13 +29,14 @@
 #include "Graphics/ParticleEmitter.h"
 #include "Components/ParticleComponent.h"
 #include "Systems/ParticleSystem.h"
+#include "Events/BombCreatedEvent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
 {
 }
 
-Entity EntityFactory::createTestEntity1(int row, int col)
+Entity EntityFactory::createPlayer(float x, float y)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -43,9 +44,11 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	sf::Sprite sprite;
 	sprite.setTexture(tex);
 
+	uint8_t col = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
+	uint8_t row = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
 	TransformComponent transformComponent;
-	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row;
+	transformComponent.x = x;
+	transformComponent.y = y;
 	transformComponent.scaleX = 0.2f;
 	transformComponent.scaleY = 0.2f;
 
@@ -63,12 +66,10 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	entity.assign<CellComponent>(col, row);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateCircle((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
-												(float)GameConstants::CELL_HEIGHT * row,
-												10.f,
-												b2_dynamicBody, 
-												BodyFactory::CollsionCategory::PLAYER, 
-												BodyFactory::CollsionCategory::SOLID_BLOCK);
+	bodyComponent.body = BodyFactory::CreateCircle(x, y, 10.f,
+		b2_dynamicBody,
+		BodyFactory::CollsionCategory::PLAYER,
+		BodyFactory::CollsionCategory::SOLID_BLOCK);
 
 	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
@@ -82,6 +83,11 @@ Entity EntityFactory::createTestEntity1(int row, int col)
 	m_layerManager->add(entity);
 
 	return entity;
+}
+
+Entity EntityFactory::createTestEntity1(int row, int col)
+{
+	return createPlayer((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * row);
 }
 
 Entity EntityFactory::createTestEntity2()
@@ -217,6 +223,7 @@ Entity EntityFactory::createBomb(int row, int col, Entity owner)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<BombCreatedEvent>(entity, col, row, owner);
 	return entity;
 }
 

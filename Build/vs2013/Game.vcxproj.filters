@@ -105,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
