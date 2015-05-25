@@ -28,13 +28,14 @@
 
 
 Game::Game()
-	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window)
+	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
 	GameGlobals::entities = &m_entities;
 }
 
 Game::~Game() { 
-	delete m_PhysixSystem;
+	if (m_PhysixSystem)
+		delete m_PhysixSystem;
 }
 
 void Game::init(uint8_t width, uint8_t height)

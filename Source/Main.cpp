@@ -177,9 +177,12 @@ void Main::receive(const JoinServerEvent& evt)
 
 void Main::disconnect()
 {
-	m_server.reset();
-	m_client.reset();
-	GameGlobals::game.reset();
+	if (m_server)
+		m_server.reset();
+	if (m_client)
+		m_client.reset();
+	if (GameGlobals::game)
+		GameGlobals::game.reset();
 }
 
 int main()
