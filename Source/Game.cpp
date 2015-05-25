@@ -130,19 +130,10 @@ void LocalGame::init(uint8_t width, uint8_t height)
 
 void ClientGame::addSystems()
 {
-	//fixme: adapt
-	m_systems.add<InventorySystem>();
-	m_systems.add<TimerSystem>();
-	m_systems.add<BombSystem>();
-	m_systems.add<DamageSystem>(m_layerManager.get());
-	m_systems.add<DestructionSystem>();
-	m_systems.add<ExplosionSystem>(m_layerManager.get());
-	m_systems.add<HealthSystem>();
-	m_systems.add<DeathSystem>();
-	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>();
-	m_systems.add<InputHandleSystem>();
+//	m_systems.add<ClientInputHandleSystem>(); // fixme
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
+	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
 }
