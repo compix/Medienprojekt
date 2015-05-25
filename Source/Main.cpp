@@ -136,7 +136,7 @@ void Main::receive(const CreateServerEvent& evt)
 {
 	disconnect();
 	m_server = make_unique<NetServer>();
-	if (m_server->connect())
+	if (m_server->connect(evt.host, evt.port))
 	{
 		cout << "Server created" << endl;
 		GameGlobals::game = make_unique<ServerGame>();
@@ -162,7 +162,7 @@ void Main::receive(const JoinServerEvent& evt)
 {
 	disconnect();
 	m_client = make_unique<NetClient>();
-	if (m_client->connect())
+	if (m_client->connect(evt.host, evt.port))
 	{
 		cout << "Client created" << endl;
 		GameGlobals::game = make_unique<ClientGame>();

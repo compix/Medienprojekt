@@ -79,9 +79,9 @@ void NetClient::sendInputEventMessage(MessageType type)
 	send(NetChannel::INPUT_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
-bool NetClient::connect()
+bool NetClient::connect(const std::string &hostname, int port)
 {
-	return m_connection.connect("localhost", NetConstants::DEFAULT_PORT, (int)NetChannel::COUNT);
+	return m_connection.connect(hostname, port, (int)NetChannel::COUNT);
 }
 
 void NetClient::disconnect()

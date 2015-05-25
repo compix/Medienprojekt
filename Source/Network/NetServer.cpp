@@ -82,9 +82,9 @@ void NetServer::update()
 	m_connection.update();
 }
 
-bool NetServer::connect()
+bool NetServer::connect(const std::string &hostname, int port)
 {
-	return m_connection.connect(nullptr, NetConstants::DEFAULT_PORT, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
+	return m_connection.connect(hostname, port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
 }
 
 void NetServer::disconnect()

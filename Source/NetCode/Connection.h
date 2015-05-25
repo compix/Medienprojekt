@@ -155,16 +155,16 @@ namespace NetCode
 	class ServerConnection : public Connection<T>
 	{
 	public:
-		bool connect(const char *hostname, int port, int clients, int channels)
+		bool connect(const std::string &hostname, int port, int clients, int channels)
 		{
 			if (this->m_state != ConnectionState::DISCONNECTED)
 				this->disconnectNow();
 
 			ENetAddress address;
-			if (!hostname)
+			if (hostname.empty())
 				address.host = ENET_HOST_ANY;
 			else
-				enet_address_set_host(&address, hostname);
+				enet_address_set_host(&address, hostname.c_str());
 			address.port = port;
 
 			this->m_host = enet_host_create(&address, clients, channels, 0, 0);
@@ -184,7 +184,7 @@ namespace NetCode
 
 		ENetPeer *getPeer() { return m_peer; }
 
-		bool connect(const char *hostname, int port, int channels)
+		bool connect(const std::string &hostname, int port, int channels)
 		{
 			if (this->m_state != ConnectionState::DISCONNECTED)
 				this->disconnectNow();
@@ -194,7 +194,7 @@ namespace NetCode
 				return false;
 
 			ENetAddress address;
-			enet_address_set_host(&address, hostname);
+			enet_address_set_host(&address, hostname.c_str());
 			address.port = port;
 
 			m_peer = enet_host_connect(this->m_host, &address, channels, 0);

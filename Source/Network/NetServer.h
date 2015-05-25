@@ -22,7 +22,7 @@ public:
 	~NetServer();
 
 	void update();
-	bool connect();
+	bool connect(const std::string &hostname, int port);
 	void disconnect();
 
 	void receive(const SendChatEvent &evt);

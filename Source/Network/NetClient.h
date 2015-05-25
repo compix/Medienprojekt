@@ -22,7 +22,7 @@ public:
 
 	void update();
 	void sendInputEventMessage(MessageType type);
-	bool connect();
+	bool connect(const std::string &hostname, int port);
 	void disconnect();
 
 	void receive(const SendChatEvent &evt);
