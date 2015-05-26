@@ -7,7 +7,6 @@
 ParticleSystem::ParticleSystem()
 {
 	createManager("light");
-	createManager("snow");
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)
