@@ -7,6 +7,7 @@
 ParticleSystem::ParticleSystem()
 {
 	createManager("light");
+	createManager("snow");
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)
@@ -27,7 +28,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 
 void ParticleSystem::createManager(const std::string& textureName)
 {
-	m_particleManagers.insert({ textureName, ParticleManager(50000, GameGlobals::assetManager->getTexture(textureName)) });
+	m_particleManagers.insert({ textureName, ParticleManager(500, GameGlobals::assetManager->getTexture(textureName), 500) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -43,7 +44,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 
 	for (auto& m : m_particleManagers)
 	{
-		m.second.update(*GameGlobals::window, (float)dt);
+		m.second.update((float)dt);
 	}
 }
 

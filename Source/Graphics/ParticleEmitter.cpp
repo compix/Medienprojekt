@@ -6,17 +6,32 @@
 #include <iostream>
 
 ParticleEmitter::ParticleEmitter()
-	:ParticleEmitter(sf::Vector2f(0.f, 0.f))
+	:ParticleEmitter(500)
 {
 }
 
-ParticleEmitter::ParticleEmitter(sf::Vector2f pos)
-	: m_pos(pos), m_gravityModifier(1.f), m_speedModifier(1.f), m_scheduledForRemoval(false), m_spawnWidth(0.f), m_spawnHeight(0.f), m_rotation(0.f)
+ParticleEmitter::ParticleEmitter(uint32_t maxParticles)
 {
-	spawnTime(0.1f);
-	burstTime(1.f);
+	m_particles.resize(maxParticles);
+	m_vertices.resize(maxParticles * 4);
+
+	refresh();
+}
+
+void ParticleEmitter::refresh()
+{
+	m_numActive = 0;
+	m_scheduledForRemoval = false;
 
 	burstParticleNumber(0);
+	position(0.f, 0.f);
+	gravityModifier(1.f);
+	speedModifier(1.f);
+	spawnWidth(0.f);
+	spawnHeight(0.f);
+	rotation(0.f);
+	spawnTime(0.1f);
+	burstTime(1.f);
 
 	m_startSize = sf::Vector2f(24.f, 24.f);
 
@@ -52,6 +67,29 @@ void ParticleEmitter::update(float deltaTime)
 
 		m_burstTimeRemaining = m_burstTime;
 	}
+
+	// Update particles
+	sf::Color color;
+	sf::Vector2f size;
+	int i = 0;
+	while (i < m_numActive)
+	{
+		Particle& p = m_particles[i];
+
+		p.lifetime -= deltaTime;
+		if (p.lifetime <= 0.f || p.emitter->m_scheduledForRemoval)
+		{
+			m_numActive--;
+
+			m_particles[i] = m_particles[m_numActive]; // Place the last active particle at the position of the dead particle
+			continue;
+		}
+
+		p.emitter->update(p, deltaTime, color, size);
+		updateQuad(i * 4, p, color, size);
+
+		i++;
+	}
 }
 
 void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut)
@@ -79,7 +117,7 @@ void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, 
 
 ParticleEmitter& ParticleEmitter::spawnTime(float spawnTime)
 {
-	m_spawnTime = spawnTime;
+  	m_spawnTime = spawnTime;
 	m_spawnTimeRemaining = spawnTime;
 	return *this;
 }
@@ -97,21 +135,84 @@ ParticleEmitter& ParticleEmitter::burstParticleNumber(int num)
 	return *this;
 }
 
+void ParticleEmitter::setTexture(Assets::Texture* texture)
+{
+	m_texture = texture;
+
+	auto& rect = texture->getRect();
+	for (int i = 0; i < m_vertices.size(); i += 4)
+	{
+		m_vertices[i + 0].texCoords = sf::Vector2f(rect.left, rect.top);
+		m_vertices[i + 1].texCoords = sf::Vector2f(rect.left + rect.width, rect.top);
+		m_vertices[i + 2].texCoords = sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
+		m_vertices[i + 3].texCoords = sf::Vector2f(rect.left, rect.top + rect.height);
+	}
+}
+
 void ParticleEmitter::spawnParticle()
 {
-	if (m_particleManager->hasSpace())
+	if (m_numActive < m_particles.size())
 	{
 		// Init
-		Particle* particle = m_particleManager->spawnParticle();
+		Particle& particle = m_particles[m_numActive++];
 		float angle = Random::getFloat(0.f, Math::PI*2.f);
-		particle->rotation = 0.f;
-		particle->lifetime = m_maxLifetime;
+		particle.rotation = 0.f;
+		particle.lifetime = m_maxLifetime;
 
 		float x = Random::getFloat(-m_spawnWidth*0.5f, m_spawnWidth*0.5f);
 		float y = Random::getFloat(-m_spawnHeight*0.5f, m_spawnHeight*0.5f);
 
-		particle->pos = sf::Vector2f(x, y);
-		particle->angle = angle;
-		particle->emitter = this;
+		particle.pos = sf::Vector2f(x, y);
+		particle.angle = angle;
+		particle.emitter = this;
 	}
+}
+
+/**
+* @brief	Optimized quad update Considering:
+* 			- The position of the particle and emitter
+* 			- The rotation of the particle and emitter
+* 			- Color and Size
+*/
+void ParticleEmitter::updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size)
+{
+	float hw = size.x*0.5f;
+	float hh = size.y*0.5f;
+
+	float c = cosf(p.rotation);
+	float s = sinf(p.rotation);
+
+	float hwc = hw*c;
+	float hws = hw*s;
+	float hhc = hh*c;
+	float hhs = hh*s;
+
+	sf::Vertex& v0 = m_vertices[vertexStart];
+	sf::Vertex& v1 = m_vertices[vertexStart + 1];
+	sf::Vertex& v2 = m_vertices[vertexStart + 2];
+	sf::Vertex& v3 = m_vertices[vertexStart + 3];
+
+	float x = p.pos.x;
+	float y = p.pos.y;
+
+	c = cosf(p.emitter->m_rotation);
+	s = sinf(p.emitter->m_rotation);
+
+	v0.position = sf::Vector2f((-hwc + hhs + x)*c - (-hhc - hws + y)*s + p.emitter->m_pos.x, (-hhc - hws + y)*c + (-hwc + hhs + x)*s + p.emitter->m_pos.y);
+	v1.position = sf::Vector2f((hwc + hhs + x) *c - (-hhc + hws + y)*s + p.emitter->m_pos.x, (-hhc + hws + y)*c + (hwc + hhs + x) *s + p.emitter->m_pos.y);
+	v2.position = sf::Vector2f((hwc - hhs + x) *c - (hhc + hws + y) *s + p.emitter->m_pos.x, (hhc + hws + y) *c + (hwc - hhs + x) *s + p.emitter->m_pos.y);
+	v3.position = sf::Vector2f((-hwc - hhs + x)*c - (hhc - hws + y) *s + p.emitter->m_pos.x, (hhc - hws + y) *c + (-hwc - hhs + x)*s + p.emitter->m_pos.y);
+
+	v0.color = v1.color = v2.color = v3.color = color;
+}
+
+void ParticleEmitter::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	states.shader = nullptr;
+	states.blendMode = sf::BlendAdd;
+
+	states.texture = m_texture->get();
+
+	if (m_numActive > 0)
+		target.draw(&m_vertices[0], m_numActive * 4, sf::Quads, states);
 }

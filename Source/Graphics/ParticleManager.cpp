@@ -4,25 +4,25 @@
 #include "../Utils/Colors.h"
 #include <iostream>
 
-ParticleManager::ParticleManager() : ParticleManager(50000)
+ParticleManager::ParticleManager() : ParticleManager(10000, 50)
 {
 
 }
 
-ParticleManager::ParticleManager(uint32_t maxParticles)
-	: m_maxParticles(maxParticles), m_numActive(0), m_timeTillUpdate(PARTICLE_UPDATE_FREQUENCY)
+ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters)
+	: m_defaultParticlesPerEmitter(defaultParticlesPerEmitter), m_timeTillUpdate(PARTICLE_UPDATE_FREQUENCY), m_texture(nullptr)
 {
-	m_particles.resize(m_maxParticles);
-	m_vertices.resize(m_maxParticles * 4);
+	createEmitters(defaultParticlesPerEmitter, maxEmitters);
 }
 
-ParticleManager::ParticleManager(uint32_t maxParticles, Assets::Texture* texture)
-	: ParticleManager(maxParticles)
+ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters)
+	: ParticleManager(defaultParticlesPerEmitter, maxEmitters)
 {
-	setTexture(texture);
+	m_texture = texture;
+	setTexture(defaultParticlesPerEmitter);
 }
 
-void ParticleManager::update(sf::RenderTarget& target, float deltaTime)
+void ParticleManager::update(float deltaTime)
 {
 	m_timeTillUpdate -= deltaTime;
 
@@ -30,130 +30,84 @@ void ParticleManager::update(sf::RenderTarget& target, float deltaTime)
 	{
 		float updateTime = deltaTime < PARTICLE_UPDATE_FREQUENCY ? PARTICLE_UPDATE_FREQUENCY : deltaTime;
 
-		// Update emitters
-		for (auto e : m_emitters)
-			if (!e->m_scheduledForRemoval)
-				e->update(updateTime);
-
-		sf::Color color;
-		sf::Vector2f size;
-
-		// Update particles
-		int i = 0;
-		while (i < m_numActive)
+		// Update emitters		
+		for (auto& pair : m_emitterContainerMap)
 		{
-			Particle& p = m_particles[i];
-
-			p.lifetime -= updateTime;
-			if (p.lifetime <= 0.f || p.emitter->m_scheduledForRemoval)
+			auto& emitters = pair.second;
+			auto& activeEmitters = m_activeMap[pair.first];
+			uint16_t i = 0;
+			while (i < activeEmitters)
 			{
-				m_numActive--;
-
-				m_particles[i] = m_particles[m_numActive]; // Place the last active particle at the position of the dead particle
-				continue;
+				auto e = emitters[i];
+				if (!e->m_scheduledForRemoval)
+				{
+					e->update(updateTime);
+					++i;
+				}
+				else
+					std::swap(emitters[i], emitters[--activeEmitters]);
 			}
-
-
-			p.emitter->update(p, updateTime, color, size);
-			updateQuad(i * 4, p, color, size);
-
-			i++;
 		}
 
-		// Remove emitters if necessary
-		auto it = m_emitters.begin();
-		while (it != m_emitters.end())
-			if ((*it)->m_scheduledForRemoval)
-				it = m_emitters.erase(it);
-			else
-				++it;
+
 
 		m_timeTillUpdate += PARTICLE_UPDATE_FREQUENCY;
 	}
-
-	target.draw(*this);
 }
 
-void ParticleManager::setTexture(Assets::Texture* texture)
+void ParticleManager::setTexture(uint32_t maxParticles)
 {
-	m_texture = texture;
+	auto& emitters = m_emitterContainerMap[maxParticles];
 
-	//float texWidth = (float)texture.getSize().x;
-	//float texHeight = (float)texture.getSize().y;
-
-	auto& rect = texture->getRect();
-	for (int i = 0; i < m_vertices.size(); i+=4)
-	{
-		m_vertices[i + 0].texCoords = sf::Vector2f(rect.left, rect.top);
-		m_vertices[i + 1].texCoords = sf::Vector2f(rect.left + rect.width, rect.top);
-		m_vertices[i + 2].texCoords = sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
-		m_vertices[i + 3].texCoords = sf::Vector2f(rect.left, rect.top + rect.height);
-	}
+	for (auto& e : emitters)
+		e->setTexture(m_texture);
 }
 
 ParticleEmitter* ParticleManager::spawnEmitter()
 {
-	m_emitters.push_back(std::make_shared<ParticleEmitter>());
+	return spawnEmitter(m_defaultParticlesPerEmitter);
+}
 
-	auto e = m_emitters[m_emitters.size() - 1];
-	e->setParticleManager(this);
+/**
+ * @brief	Don't use this dynamically if the given number of particles wasn't created at startup.
+ * 			Use createEmitters() in the ParticleSystem with the max number of particles.
+ */
+ParticleEmitter* ParticleManager::spawnEmitter(uint32_t maxParticles)
+{
+	if (m_emitterContainerMap.count(maxParticles) == 0)
+	{
+		std::cout << "WARNING: spawnEmitter(" << maxParticles << ") was called without emitters being initialized for the given number of particles.\n"
+			<< " Use createEmitters() in the ParticleSystem.\n" << "CREATING 10 EMITTERS FOR " << maxParticles << " PARTICLES...\n";
+
+		createEmitters(maxParticles, 10);
+	}
+
+	auto& emitters = m_emitterContainerMap[maxParticles];
+	auto& activeEmitters = m_activeMap[maxParticles];
+
+	if (activeEmitters >= emitters.size())
+		return nullptr;
+
+	auto e = emitters[activeEmitters++];
+	e->refresh();
 
 	return e.get();
 }
 
-void ParticleManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ParticleManager::createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters)
 {
-	states.shader = nullptr;
-	states.blendMode = sf::BlendAdd;
-	
-	states.texture = m_texture->get();
-	
-	if (m_numActive > 0)
-		target.draw(&m_vertices[0], m_numActive * 4, sf::Quads, states);
-}
+	if (m_emitterContainerMap.count(maxParticlesPerEmitter) > 0)
+	{
+		std::cout << "WARNING: Attempted to create emitters for " << maxParticlesPerEmitter << " particles a second time." << std::endl;
+		return;
+	}
 
-Particle* ParticleManager::spawnParticle()
-{
-	if (hasSpace())
-		return &m_particles[m_numActive++];
+	m_emitterContainerMap[maxParticlesPerEmitter].resize(maxEmitters);
+	m_activeMap[maxParticlesPerEmitter] = 0;
 
-	return nullptr;
-}
+	for (uint16_t i = 0; i < maxEmitters; ++i)
+		m_emitterContainerMap[maxParticlesPerEmitter][i] = std::make_shared<ParticleEmitter>(maxParticlesPerEmitter);
 
-/**
- * @brief	Optimized quad update Considering: 
- * 			- The position of the particle and emitter
- * 			- The rotation of the particle and emitter
- * 			- Color and Size
- */
-void ParticleManager::updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size)
-{
-	float hw = size.x*0.5f;
-	float hh = size.y*0.5f;
-
-	float c = cosf(p.rotation);
-	float s = sinf(p.rotation);
-
-	float hwc = hw*c;
-	float hws = hw*s;
-	float hhc = hh*c;
-	float hhs = hh*s;
-
-	sf::Vertex& v0 = m_vertices[vertexStart];
-	sf::Vertex& v1 = m_vertices[vertexStart + 1];
-	sf::Vertex& v2 = m_vertices[vertexStart + 2];
-	sf::Vertex& v3 = m_vertices[vertexStart + 3];
-
-	float x = p.pos.x;
-	float y = p.pos.y;
-
-	c = cosf(p.emitter->m_rotation);
-	s = sinf(p.emitter->m_rotation);
-
-	v0.position = sf::Vector2f((-hwc + hhs + x)*c - (-hhc - hws + y)*s + p.emitter->m_pos.x, (-hhc - hws + y)*c + (-hwc + hhs + x)*s + p.emitter->m_pos.y);
-	v1.position = sf::Vector2f((hwc + hhs + x) *c - (-hhc + hws + y)*s + p.emitter->m_pos.x, (-hhc + hws + y)*c + (hwc + hhs + x) *s + p.emitter->m_pos.y);
-	v2.position = sf::Vector2f((hwc - hhs + x) *c - (hhc + hws + y) *s + p.emitter->m_pos.x, (hhc + hws + y) *c + (hwc - hhs + x) *s + p.emitter->m_pos.y);
-	v3.position = sf::Vector2f((-hwc - hhs + x)*c - (hhc - hws + y) *s + p.emitter->m_pos.x, (hhc - hws + y) *c + (-hwc - hhs + x)*s + p.emitter->m_pos.y);
-
-	v0.color = v1.color = v2.color = v3.color = color;
+	if (m_texture)
+		setTexture(maxParticlesPerEmitter);
 }

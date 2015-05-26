@@ -9,35 +9,29 @@ class ParticleEmitter;
 
 const float PARTICLE_UPDATE_FREQUENCY = 1.f/60.f;
 
-class ParticleManager : public sf::Drawable
+class ParticleManager 
 {
+	typedef std::vector<std::shared_ptr<ParticleEmitter>> EmitterContainer;
 	friend class ParticleEmitter;
 public:
 	ParticleManager();
-	ParticleManager(uint32_t maxParticles);
-	ParticleManager(uint32_t maxParticles, Assets::Texture* texture);
-	void update(sf::RenderTarget& target, float deltaTime);
+	ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters);
+	ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters);
+	void update(float deltaTime);
 
-	bool hasSpace() { return m_numActive < m_maxParticles; }
-
-	void setTexture(Assets::Texture* texture);
+	void setTexture(uint32_t maxParticles);
 	ParticleEmitter* spawnEmitter();
-
-protected:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-private:
-	Particle* spawnParticle();
-	void updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size);
+	ParticleEmitter* spawnEmitter(uint32_t maxParticles);
+	void createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters);
 
 private:
 	Assets::Texture* m_texture;
 
-	uint32_t m_maxParticles;
-	uint32_t m_numActive;
-	std::vector<std::shared_ptr<ParticleEmitter>> m_emitters;
-	std::vector<Particle> m_particles;
-	std::vector<sf::Vertex> m_vertices;
+	uint32_t m_defaultParticlesPerEmitter;
+
+	std::unordered_map<uint32_t, uint16_t> m_activeMap;
+	std::unordered_map<uint32_t, EmitterContainer> m_emitterContainerMap;
+
 
 	float m_timeTillUpdate;
 };

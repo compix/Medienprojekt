@@ -104,7 +104,9 @@ entityx::Entity EntityFactory::createBlock(uint8_t row, uint8_t col)
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(createSprite("block"));
+	sf::Sprite sprite = createSprite("block");
+	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
+	entity.assign<SpriteComponent>(sprite);
 	
 	entity.assign<CellComponent>(col, row);
 	entity.assign<HealthComponent>(1);
@@ -138,7 +140,9 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t row, uint8_t col)
 	transformComponent.x = (float) GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float) GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(createSprite("solid_block"));
+	sf::Sprite sprite = createSprite("solid_block");
+	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
+	entity.assign<SpriteComponent>(sprite);
 	entity.assign<SolidBlockComponent>();
 
 	entity.assign<CellComponent>(col, row);
@@ -220,24 +224,28 @@ Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, Direction direct
 	lightComponent->light.setShader(m_shaderManager->getLightShader());
 	lightComponent->light.setAttenuation(sf::Vector3f(200.f, 10.f, 0.2f));
 	*/
-	entity.assign<ParticleComponent>();
+	
 
 	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
-
 	auto emitter = manager->spawnEmitter();
-	entity.component<ParticleComponent>()->emitter = emitter;
 
-	emitter->spawnTime(0.0025f)
-		.maxLifetime(0.3f)
-		.gravityModifier(1.f)
-		.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
-		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(10, 10), sf::Vector2f(20, 10)))
-		.burstParticleNumber(10)
-		.burstTime(0.5f)
-		.spawnWidth(width)
-		.spawnHeight(height)
-		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
+	if (emitter)
+	{
+		entity.assign<ParticleComponent>();
+		entity.component<ParticleComponent>()->emitter = emitter;
+
+		emitter->spawnTime(0.0025f)
+			.maxLifetime(0.3f)
+			.gravityModifier(1.f)
+			.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
+			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(10, 10), sf::Vector2f(20, 10)))
+			.burstParticleNumber(10)
+			.burstTime(0.5f)
+			.spawnWidth(width-5)
+			.spawnHeight(height)
+			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
+	}
 
 	entity.assign<SpreadComponent>(direction, range, spreadTime);
 	entity.assign<ExplosionComponent>();

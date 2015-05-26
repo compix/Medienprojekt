@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include "../Utils/Math.h"
+#include <cinttypes>
+#include "../Utils/AssetManagement/TexturePacker.h"
 
 struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
@@ -19,12 +21,12 @@ class ParticleManager;
  * @brief	Functions are used to manipulate particles: Input is the time (lifetime of a particle) in range ~[0, 1]. Output depends on the function.
  * 			If t = 0 then the particle just spawned and if t = 1 then it is dead.
  */
-class ParticleEmitter
+class ParticleEmitter : public sf::Drawable
 {
 	friend class ParticleManager;
 public:
 	ParticleEmitter();
-	ParticleEmitter(sf::Vector2f pos);
+	ParticleEmitter(uint32_t maxParticles);
 
 	void update(float deltaTime);
 	void update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut);
@@ -47,15 +49,25 @@ public:
 	inline ParticleEmitter& spawnWidth(float width) { m_spawnWidth = width; return *this; }
 	inline ParticleEmitter& spawnHeight(float height) { m_spawnHeight = height; return *this; }
 
-	inline void setParticleManager(ParticleManager* particleManager) { m_particleManager = particleManager; }
 	inline void remove() { m_scheduledForRemoval = true; }
+	inline bool alive() { return !m_scheduledForRemoval; }
+	void refresh();
+
+	void setTexture(Assets::Texture* texture);
 private:
 	void spawnParticle();
 
+	void updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size);
+protected:
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
+	Assets::Texture* m_texture;
+	uint32_t m_numActive;
+
 	sf::Vector2f m_pos;
 	float m_rotation;
-	ParticleManager* m_particleManager;
+	std::vector<Particle> m_particles;
+	std::vector<sf::Vertex> m_vertices;
 
 	float m_spawnTime; // in seconds: A new particle will spawn after that time if there is a free slot for it
 	float m_spawnTimeRemaining;

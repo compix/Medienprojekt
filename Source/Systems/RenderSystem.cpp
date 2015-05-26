@@ -53,8 +53,9 @@ void RenderSystem::render(EntityLayer* layer)
 
 				auto transform = e.component<TransformComponent>();
 				auto sprite = e.component<SpriteComponent>();
+				auto particleComponent = e.component<ParticleComponent>();
 
-				if (!transform || !sprite)
+				if (!transform)
 					continue;
 
 				auto shaderComponent = e.component<ShaderComponent>();
@@ -74,10 +75,16 @@ void RenderSystem::render(EntityLayer* layer)
 					}
 				}
 
-				sprite->sprite.setPosition(transform->x, transform->y);
-				sprite->sprite.setRotation(transform->rotation);
-				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
-				GameGlobals::window->draw(sprite->sprite, shader);
+				if (sprite)
+				{
+					sprite->sprite.setPosition(transform->x, transform->y);
+					sprite->sprite.setRotation(transform->rotation);
+					sprite->sprite.setScale(transform->scaleX, transform->scaleY);
+					GameGlobals::window->draw(sprite->sprite, shader);
+				}
+
+				if (particleComponent && particleComponent->emitter->alive())
+					GameGlobals::window->draw(*particleComponent->emitter);
 			}
 		}
 	}
