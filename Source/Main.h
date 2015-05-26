@@ -14,6 +14,7 @@ using std::unique_ptr;
 class Main : public Receiver<Main>
 {
 public:
+	~Main() { disconnect(); }
 	int run();
 
 	void receive(const ExitEvent& evt)
@@ -29,4 +30,5 @@ private:
 	bool m_running = true;
 	unique_ptr<NetClient> m_client;
 	unique_ptr<NetServer> m_server;
+	EventManager m_events;
 };

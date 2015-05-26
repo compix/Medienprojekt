@@ -6,6 +6,7 @@
 #include "../Components/ParticleComponent.h"
 #include "../Components/ShaderComponent.h"
 #include "../GameGlobals.h"
+#include "../Events/ExitEvent.h"
 
 RenderSystem::RenderSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
@@ -13,7 +14,7 @@ RenderSystem::RenderSystem(LayerManager* layerManager)
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
 		std::cout << "Failed to load font Assets/fonts/DejaVuSans.ttf" << std::endl;
-		exit(EXIT_FAILURE);
+		GameGlobals::events->emit<ExitEvent>();
 	}
 
 	m_fpsText.setFont(m_font);
