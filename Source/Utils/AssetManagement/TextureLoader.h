@@ -1,6 +1,6 @@
 #pragma once
-#include "AssetLoader.h"
 #include <SFML/Graphics/Texture.hpp>
+#include "AssetLoader.h"
 
 using sf::Texture;
 
@@ -11,4 +11,6 @@ public:
 	TextureLoader(string basePath);
 
 	virtual Texture& load(const string& filename, const string& name) override;
+
+	inline AssetMap getTextureMap() { return m_assets; }
 };

@@ -2,7 +2,7 @@
 #include "entityx/entityx.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "Utils/TextureLoader.h"
+#include "Utils/AssetManagement/TextureLoader.h"
 #include "EntityFactory.h"
 #include "LayerManager.h"
 #include "SFMLDebugDraw.h"

@@ -14,6 +14,7 @@ struct AnimationComponent
 {
 	AnimationComponent() : stateTime(0.f), playMode(PlayMode::NORMAL) {}
 
+	sf::IntRect baseRect;
 	int colCount;
 	int rowCount;
 	int frameCount;

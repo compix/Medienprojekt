@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -180,7 +180,11 @@
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
-    <ClInclude Include="..\..\Source\Utils\AssetLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h" />
     <ClInclude Include="..\..\Source\Utils\Colors.h" />
     <ClInclude Include="..\..\Source\Utils\Common.h" />
     <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
@@ -192,7 +196,6 @@
     <ClInclude Include="..\..\Source\Utils\Random.h" />
     <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
-    <ClInclude Include="..\..\Source\Utils\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
     <ClInclude Include="..\..\Source\debugrender.h" />
   </ItemGroup>
@@ -235,6 +238,9 @@
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp" />
     <ClCompile Include="..\..\Source\Utils\Colors.cpp" />
     <ClCompile Include="..\..\Source\Utils\Common.cpp" />
     <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
@@ -245,7 +251,6 @@
     <ClCompile Include="..\..\Source\Utils\Random.cpp" />
     <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
-    <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp" />
     <ClCompile Include="..\..\Source\debugrender.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

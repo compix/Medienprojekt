@@ -4,7 +4,7 @@
 #include "json/json.h"
 #include <fstream>
 #include <iostream>
-#include "Exceptions.h"
+#include "../Exceptions.h"
 
 using std::unordered_map;
 using std::ifstream;
@@ -16,8 +16,8 @@ using std::string;
 template<class T>
 class AssetLoader
 {
-	typedef unordered_map<string, T> AssetMap;
 public:
+	typedef unordered_map<string, T> AssetMap;
 
 	virtual ~AssetLoader() { };
 

@@ -12,8 +12,8 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 
 	for (Entity entity : entityManager.entities_with_components(animation, sprite))
 	{
-		int frameWidth = sprite->sprite.getTexture()->getSize().x / animation->colCount;
-		int frameHeight = sprite->sprite.getTexture()->getSize().y / animation->rowCount;
+		int frameWidth = animation->baseRect.width / animation->colCount;
+		int frameHeight = animation->baseRect.height / animation->rowCount;
 
 		float animationDuration = animation->frameCount * animation->frameDuration;
 
@@ -66,7 +66,8 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 		int rectStartX = col*frameWidth;
 		int rectStartY = row*frameHeight;
 
-		sprite->sprite.setTextureRect(sf::IntRect(rectStartX, rectStartY, frameWidth, frameHeight));
+		auto& baseRect = animation->baseRect;
+		sprite->sprite.setTextureRect(sf::IntRect(baseRect.left+rectStartX, baseRect.top+rectStartY, frameWidth, frameHeight));
 		sprite->sprite.setOrigin(frameWidth * 0.5f, frameHeight * 0.5f);
 	}
 }

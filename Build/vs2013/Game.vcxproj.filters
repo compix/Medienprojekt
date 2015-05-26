@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Components">
@@ -30,6 +30,9 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\AssetManagement">
+      <UniqueIdentifier>{9bef84d4-a7c7-4e1f-81d5-216830f54c2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -274,9 +277,6 @@
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetLoader.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Colors.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -310,13 +310,25 @@
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\TextureLoader.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -447,9 +459,15 @@
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\TextureLoader.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

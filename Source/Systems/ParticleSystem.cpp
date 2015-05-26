@@ -1,7 +1,7 @@
 #include "ParticleSystem.h"
 #include "../Components/ParticleComponent.h"
 #include "../Components/TransformComponent.h"
-#include "../Utils/TextureLoader.h"
+#include "../Utils/AssetManagement/AssetManager.h"
 #include "../GameGlobals.h"
 
 ParticleSystem::ParticleSystem()
@@ -27,7 +27,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 
 void ParticleSystem::createManager(const std::string& textureName)
 {
-	m_particleManagers.insert({ textureName, ParticleManager(50000, GameGlobals::textures->get(textureName)) });
+	m_particleManagers.insert({ textureName, ParticleManager(50000, GameGlobals::assetManager->getTexture(textureName)) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)

@@ -1,7 +1,7 @@
 #pragma once
 #include <entityx/entityx.h>
 #include<Box2D/Box2D.h>
-#include "Utils/TextureLoader.h"
+#include "Utils/AssetManagement/TextureLoader.h"
 #include "PhysixSystem.h"
 #include "LayerManager.h"
 #include "Utils/Common.h"
@@ -29,6 +29,9 @@ public:
 	Entity createExplosion(uint8_t row, uint8_t col, uint8_t range, float spreadTime);
 
 	Entity createFloor(uint8_t row, uint8_t col);
+
+private:
+	sf::Sprite createSprite(const std::string& textureName);
 private:
 	PhysixSystem* m_physixSystem;
 	LayerManager* m_layerManager;

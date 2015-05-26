@@ -7,6 +7,9 @@
 #include "GameGlobals.h"
 #include <SFML/Graphics.hpp>
 #include "Components/InputComponent.h"
+#include "Utils/AssetManagement/TextureLoader.h"
+#include "Utils/AssetManagement/TexturePacker.h"
+#include "Utils/AssetManagement/AssetManager.h"
 
 using namespace std;
 
@@ -18,6 +21,7 @@ namespace GameGlobals
 	EntityManager *entities = nullptr;
 	EntityFactory *entityFactory = nullptr;
 	TextureLoader *textures = nullptr;
+	AssetManager *assetManager = nullptr;
 	unique_ptr<Game> game;
 };
 
@@ -49,9 +53,20 @@ int Main::run()
 
 	Menu menu;
 
+	/*
 	TextureLoader textureLoader;
+	TexturePacker texturePacker;
 	textureLoader.loadAllFromJson("Assets/json/textures.json");
-	GameGlobals::textures = &textureLoader;
+
+	for (auto t : textureLoader.getTextureMap())
+	{
+		texturePacker.addTexture(t.second, t.first);
+	}
+
+	texturePacker.pack();*/
+	AssetManager assetManager;
+	GameGlobals::assetManager = &assetManager;
+	//GameGlobals::textures = &textureLoader;
 
 	events.subscribe<ExitEvent>(*this);
 	events.subscribe<CreateLocalGameEvent>(*this);
@@ -97,8 +112,10 @@ int Main::run()
 			GameGlobals::game->update(deltaTime.asSeconds());
 		}
 
+		//texturePacker.render(window);
 		window.setView(menuView);
 		menu.draw();
+		
 		window.display();
 
 		if (m_server)

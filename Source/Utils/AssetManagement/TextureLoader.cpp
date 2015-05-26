@@ -1,12 +1,11 @@
 #include "TextureLoader.h"
-#include "Exceptions.h"
 
 TextureLoader::TextureLoader()
 {
 	m_basePath = "Assets/textures/";
 }
 
-TextureLoader::TextureLoader(string basePath)
+TextureLoader::TextureLoader(std::string basePath)
 {
 	m_basePath = basePath;
 }

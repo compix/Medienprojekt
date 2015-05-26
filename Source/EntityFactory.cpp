@@ -31,6 +31,8 @@
 #include "Systems/ParticleSystem.h"
 #include "Events/BombCreatedEvent.h"
 #include "Events/ExplosionCreatedEvent.h"
+#include "Utils/AssetManagement/TexturePacker.h"
+#include "Utils/AssetManagement/AssetManager.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -41,10 +43,6 @@ Entity EntityFactory::createPlayer(float x, float y)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = GameGlobals::textures->get("char_idle");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-
 	uint8_t col = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
 	uint8_t row = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
 	TransformComponent transformComponent;
@@ -54,6 +52,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	transformComponent.scaleY = 0.2f;
 
 	entity.assign<TransformComponent>(transformComponent);
+	sf::Sprite sprite = createSprite("char_idle");
 	entity.assign<SpriteComponent>(sprite);
 
 	AnimationComponent animationComponent;
@@ -62,6 +61,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	animationComponent.frameCount = 20;
 	animationComponent.frameDuration = 0.025f;
 	animationComponent.playMode = PlayMode::LOOP;
+	animationComponent.baseRect = sprite.getTextureRect();
 	entity.assign<AnimationComponent>(animationComponent);
 
 	entity.assign<CellComponent>(col, row);
@@ -88,31 +88,10 @@ Entity EntityFactory::createPlayer(float x, float y)
 
 Entity EntityFactory::createTestEntity2()
 {
-	sf::Sprite sprite;
-	Texture& tex = GameGlobals::textures->get("char_death");
-	sprite.setTexture(tex);
 
 	Entity entity = GameGlobals::entities->create();
 
-	TransformComponent transformComponent;
-	transformComponent.x = 220.f;
-	transformComponent.y = 180.f;
-	transformComponent.scaleX = 0.2f;
-	transformComponent.scaleY = 0.2f;
-	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
 
-	AnimationComponent animationComponent;
-	animationComponent.colCount = 8;
-	animationComponent.rowCount = 5;
-	animationComponent.frameCount = 40;
-	animationComponent.frameDuration = 0.05f;
-	animationComponent.playMode = PlayMode::LOOP_PING_PONG;
-	entity.assign<AnimationComponent>(animationComponent);
-
-	entity.assign<LayerComponent>(0);
-
-	m_layerManager->add(entity);
 
 	return entity;
 }
@@ -121,16 +100,11 @@ entityx::Entity EntityFactory::createBlock(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = GameGlobals::textures->get("block");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
-
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
+	entity.assign<SpriteComponent>(createSprite("block"));
 	
 	entity.assign<CellComponent>(col, row);
 	entity.assign<HealthComponent>(1);
@@ -160,16 +134,11 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = GameGlobals::textures->get("solid_block");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
-
 	TransformComponent transformComponent;
 	transformComponent.x = (float) GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float) GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
+	entity.assign<SpriteComponent>(createSprite("solid_block"));
 	entity.assign<SolidBlockComponent>();
 
 	entity.assign<CellComponent>(col, row);
@@ -198,16 +167,11 @@ Entity EntityFactory::createBomb(uint8_t row, uint8_t col, Entity owner)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = GameGlobals::textures->get("bomb");
-	sf::Sprite sprite;
-	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().y*0.5f);
-	sprite.setTexture(tex);
-
 	TransformComponent transformComponent;
-	transformComponent.x = (float)tex.getSize().x * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)tex.getSize().y * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
+	entity.assign<SpriteComponent>(createSprite("bomb"));
 	entity.assign<BombComponent>(7, 0.06f);
 	entity.assign<TimerComponent>(2.f);
 	entity.assign<HealthComponent>(1);
@@ -321,16 +285,11 @@ Entity EntityFactory::createFloor(uint8_t row, uint8_t col)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	Texture& tex = GameGlobals::textures->get("floor");
-	sf::Sprite sprite;
-	sprite.setTexture(tex);
-	sprite.setOrigin(tex.getSize().x*0.5f, tex.getSize().x*0.5f);
-
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f + 5.f;
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(sprite);
+	entity.assign<SpriteComponent>(createSprite("floor"));
 
 	entity.assign<CellComponent>(col, row);
 	entity.assign<LayerComponent>(-1);
@@ -339,4 +298,14 @@ Entity EntityFactory::createFloor(uint8_t row, uint8_t col)
 	m_layerManager->add(entity);
 
 	return entity;
+}
+
+sf::Sprite EntityFactory::createSprite(const std::string& textureName)
+{
+	auto texture = GameGlobals::assetManager->getTexture(textureName);
+	sf::Sprite sprite(*texture->get());
+	sprite.setOrigin(texture->getRect().width*0.5f, texture->getRect().height*0.5f);
+	sprite.setTextureRect(texture->getRect());
+
+	return sprite;
 }

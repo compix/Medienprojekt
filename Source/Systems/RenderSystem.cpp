@@ -76,7 +76,6 @@ void RenderSystem::render(EntityLayer* layer)
 				sprite->sprite.setPosition(transform->x, transform->y);
 				sprite->sprite.setRotation(transform->rotation);
 				sprite->sprite.setScale(transform->scaleX, transform->scaleY);
-
 				GameGlobals::window->draw(sprite->sprite, shader);
 			}
 		}

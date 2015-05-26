@@ -17,6 +17,7 @@ class TextureLoader;
 class EntityFactory;
 class Game;
 class Menu;
+class AssetManager;
 
 using std::unique_ptr;
 
@@ -27,7 +28,8 @@ namespace GameGlobals
 	extern entityx::EventManager *events;
 	extern entityx::EntityManager *entities;
 	extern EntityFactory *entityFactory;
-	extern TextureLoader *textures;
+	//extern TextureLoader *textures;
+	extern AssetManager *assetManager;
 	extern unique_ptr<Game> game;
 };
 

@@ -16,7 +16,7 @@ ParticleManager::ParticleManager(uint32_t maxParticles)
 	m_vertices.resize(m_maxParticles * 4);
 }
 
-ParticleManager::ParticleManager(uint32_t maxParticles, const sf::Texture texture)
+ParticleManager::ParticleManager(uint32_t maxParticles, Assets::Texture* texture)
 	: ParticleManager(maxParticles)
 {
 	setTexture(texture);
@@ -74,19 +74,20 @@ void ParticleManager::update(sf::RenderTarget& target, float deltaTime)
 	target.draw(*this);
 }
 
-void ParticleManager::setTexture(sf::Texture texture)
+void ParticleManager::setTexture(Assets::Texture* texture)
 {
 	m_texture = texture;
 
-	float texWidth = (float)texture.getSize().x;
-	float texHeight = (float)texture.getSize().y;
+	//float texWidth = (float)texture.getSize().x;
+	//float texHeight = (float)texture.getSize().y;
 
+	auto& rect = texture->getRect();
 	for (int i = 0; i < m_vertices.size(); i+=4)
 	{
-		m_vertices[i + 0].texCoords = sf::Vector2f(0.f, 0.f);
-		m_vertices[i + 1].texCoords = sf::Vector2f(texWidth, 0.f);
-		m_vertices[i + 2].texCoords = sf::Vector2f(texWidth, texHeight);
-		m_vertices[i + 3].texCoords = sf::Vector2f(0.f, texHeight);
+		m_vertices[i + 0].texCoords = sf::Vector2f(rect.left, rect.top);
+		m_vertices[i + 1].texCoords = sf::Vector2f(rect.left + rect.width, rect.top);
+		m_vertices[i + 2].texCoords = sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
+		m_vertices[i + 3].texCoords = sf::Vector2f(rect.left, rect.top + rect.height);
 	}
 }
 
@@ -105,7 +106,7 @@ void ParticleManager::draw(sf::RenderTarget& target, sf::RenderStates states) co
 	states.shader = nullptr;
 	states.blendMode = sf::BlendAdd;
 	
-	states.texture = &m_texture;
+	states.texture = m_texture->get();
 	
 	if (m_numActive > 0)
 		target.draw(&m_vertices[0], m_numActive * 4, sf::Quads, states);
