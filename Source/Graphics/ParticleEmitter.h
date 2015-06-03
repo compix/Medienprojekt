@@ -48,6 +48,8 @@ public:
 	inline ParticleEmitter& rotation(float rotation) { m_rotation = Math::toRadians(rotation); return *this; }
 	inline ParticleEmitter& spawnWidth(float width) { m_spawnWidth = width; return *this; }
 	inline ParticleEmitter& spawnHeight(float height) { m_spawnHeight = height; return *this; }
+	// -1 = infinity
+	inline ParticleEmitter& burstNumber(int burstNumber) { m_burstNumber = burstNumber; return *this; }
 
 	inline void remove() { m_scheduledForRemoval = true; }
 	inline bool alive() { return !m_scheduledForRemoval; }
@@ -75,6 +77,7 @@ private:
 	float m_burstTime;
 	float m_burstTimeRemaining;
 	int m_burstParticleNumber;
+	int m_burstNumber;
 
 	sf::Vector2f m_startSize;
 

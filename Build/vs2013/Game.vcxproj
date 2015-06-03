@@ -93,6 +93,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Animation\AnimationState.h" />
+    <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
+    <ClInclude Include="..\..\Source\Animation\Animator.h" />
+    <ClInclude Include="..\..\Source\Animation\AnimatorManager.h" />
+    <ClInclude Include="..\..\Source\Animation\IdleState.h" />
+    <ClInclude Include="..\..\Source\Animation\WalkingState.h" />
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BlockComponent.h" />
@@ -102,6 +108,7 @@
     <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DirectionComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
@@ -113,6 +120,7 @@
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SmokeComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
@@ -144,6 +152,7 @@
     <ClInclude Include="..\..\Source\Graphics\Particle.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleManager.h" />
+    <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Lighting\Light.h" />
     <ClInclude Include="..\..\Source\Main.h" />
@@ -180,6 +189,7 @@
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h" />
@@ -200,12 +210,17 @@
     <ClInclude Include="..\..\Source\debugrender.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
+    <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
+    <ClCompile Include="..\..\Source\Animation\IdleState.cpp" />
+    <ClCompile Include="..\..\Source\Animation\WalkingState.cpp" />
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp" />
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Lighting\Light.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
@@ -238,6 +253,7 @@
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp" />

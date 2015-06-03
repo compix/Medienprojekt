@@ -32,6 +32,7 @@ void ParticleEmitter::refresh()
 	rotation(0.f);
 	spawnTime(0.1f);
 	burstTime(1.f);
+	burstNumber(-1);
 
 	m_startSize = sf::Vector2f(24.f, 24.f);
 
@@ -60,12 +61,13 @@ void ParticleEmitter::update(float deltaTime)
 		m_spawnTimeRemaining = m_spawnTime;
 	}
 
-	if (m_burstTimeRemaining <= 0.f)
+	if ((m_burstNumber == -1 || m_burstNumber > 0) && m_burstTimeRemaining <= 0.f)
 	{
 		for (int i = 0; i < m_burstParticleNumber; i++)
 			spawnParticle();
 
 		m_burstTimeRemaining = m_burstTime;
+		m_burstNumber = m_burstNumber == -1 ? -1 : m_burstNumber - 1;
 	}
 
 	// Update particles

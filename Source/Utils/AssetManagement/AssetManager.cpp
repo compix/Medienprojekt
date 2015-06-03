@@ -3,6 +3,7 @@
 AssetManager::AssetManager()
 {
 	m_textureLoader.loadAllFromJson("Assets/json/textures.json");
+	m_animationLoader.loadAllFromJson("Assets/json/animations.json");
 
 	for (auto t : m_textureLoader.getTextureMap())
 	{
@@ -17,4 +18,9 @@ Assets::Texture* AssetManager::getTexture(const std::string& name)
 {
 	assert(m_textures.count(name) > 0);
 	return &m_textures[name];
+}
+
+Assets::Animation* AssetManager::getAnimation(const std::string& name)
+{
+	return &m_animationLoader.get(name);
 }

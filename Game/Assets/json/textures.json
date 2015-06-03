@@ -1,5 +1,4 @@
 {
-    "dest_block": "destructable_block.png",
     "char_idle": "char_idle_1024.png",
     "char_death": "char_death_2048.png",
     "block": "Block.png",
@@ -10,5 +9,7 @@
 	"exploEnd": "exploEnd.png",
 	"floor": "floor.png",
 	"solidBlockNM": "SolidBlockNM.png",
-	"light": "light.png"
+	"light": "light.png",
+	"goku": "goku.png",
+	"smoke": "smoke.png"
 }

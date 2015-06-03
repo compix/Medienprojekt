@@ -8,6 +8,7 @@
 #include "../Components/CellComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
+#include "../Components/DirectionComponent.h"
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -31,5 +32,18 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		auto body = entity.component<BodyComponent>();
 		if (body)
 			body->body->SetLinearVelocity(b2Vec2(input->moveX * GameConstants::PLAYER_SPEED, input->moveY * GameConstants::PLAYER_SPEED));
+
+		auto directionComponent = entity.component<DirectionComponent>();
+		if (directionComponent)
+		{
+			if (input->moveX > 0)
+				directionComponent->direction = Direction::RIGHT;
+			else if (input->moveX < 0)
+				directionComponent->direction = Direction::LEFT;
+			else if (input->moveY > 0)
+				directionComponent->direction = Direction::DOWN;
+			else if (input->moveY < 0)
+				directionComponent->direction = Direction::UP;
+		}
 	}
 }

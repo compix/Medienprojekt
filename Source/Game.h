@@ -8,6 +8,7 @@
 #include "SFMLDebugDraw.h"
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
+#include "GameGlobals.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -25,14 +26,21 @@ public:
 
 	void update(TimeDelta dt);
 
-	inline void setMousePos(sf::Vector2f mousePos) { m_mousePos = mousePos; }
+	inline void setMousePos(sf::Vector2i mousePos)
+	{
+		m_mousePos = sf::Vector2f(GameGlobals::window->mapPixelToCoords(sf::Mouse::getPosition(*GameGlobals::window)));
+	}
 
 	uint8_t getWidth() { return m_width; }
 	uint8_t getHeight() { return m_height; }
+
+	void refreshView();
+	inline const sf::View& getView() const { return m_view; }
 protected:
 	virtual void addSystems() = 0;
 
 protected:
+	sf::View m_view;
 	bool initialized = false;
 	EntityManager m_entities;
 	SystemManager m_systems;

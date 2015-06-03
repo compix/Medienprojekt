@@ -3,13 +3,12 @@
 #include "../PhysixSystem.h"
 #include "../Utils/Common.h"
 #include "../Utils/Math.h"
-
-const float EPSILON = 0.000001f;
+#include "../GameGlobals.h"
 
 float32 Light::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 {
 	// ignore fractions close to 0
-	if ((fraction) <= EPSILON)
+	if ((fraction) <= Math::EPSILON)
 		return fraction;
 
 	if ((fraction) < m_lowestFraction)
@@ -37,7 +36,7 @@ void Light::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	if (m_shader)
 	{
 		m_shader->setParameter("lightColor", m_color);
-		m_shader->setParameter("lightPos", m_center);
+		m_shader->setParameter("lightPos", sf::Vector2f(GameGlobals::window->mapCoordsToPixel(m_center)));
 		m_shader->setParameter("radius", m_radius);
 		m_shader->setParameter("attenuation", m_attenuation);
 

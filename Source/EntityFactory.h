@@ -18,7 +18,6 @@ public:
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 
 	Entity createPlayer(float x, float y);
-	Entity createTestEntity2();
 
 	Entity createBlock(uint8_t row, uint8_t col);
 	Entity createSolidBlock(uint8_t row, uint8_t col);
@@ -30,6 +29,7 @@ public:
 
 	Entity createFloor(uint8_t row, uint8_t col);
 
+	Entity createSmoke(uint8_t row, uint8_t col);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:

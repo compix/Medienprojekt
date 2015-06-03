@@ -24,6 +24,7 @@ public:
 	virtual bool loadAllFromJson(const string& path);
 	virtual T& load(const string& filename);
 	virtual T& load(const string& filename, const string& name) = 0;
+	virtual T& load(const string& name, const Json::Value& jsonValue) = 0;
 	virtual T& get(const string& name);
 
 	void setBasePath(const string& path);
@@ -50,9 +51,9 @@ bool AssetLoader<T>::loadAllFromJson(const string& path)
 		return false;
 	}
 
-	for (auto it = root.begin(); it != root.end(); it++)
+	for (auto it = root.begin(); it != root.end(); ++it)
 	{
-		load(it->asString(), it.key().asString());
+		load(it.key().asString(), *it);
 	}
 
 	return true;

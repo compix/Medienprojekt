@@ -134,15 +134,6 @@ EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)
 	return m_layers[layer]->get(cellX, cellY);
 }
 
-bool LayerManager::hasSolidBlock(int layer, int cellX, int cellY)
-{
-	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<SolidBlockComponent>())
-			return true;
-
-	return false;
-}
-
 bool LayerManager::isFree(int layer, int cellX, int cellY)
 {
 	return getEntities(layer, cellX, cellY).size() == 0;

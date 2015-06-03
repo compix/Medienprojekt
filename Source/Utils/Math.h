@@ -8,6 +8,7 @@ struct RGB;
 namespace Math
 {
 	const float PI = 3.14159265359f;
+	const float EPSILON = 0.0000001f;
 
 	void rotate(sf::Vector2f& p, const float&  angle);
 	inline float lerp(float start, float end, float t) { return (1 - t)*start + t*end; }
@@ -34,4 +35,6 @@ namespace Math
 
 	inline float toRadians(float degree) { return degree * PI / 180.f; }
 	inline float toDegrees(float radians) { return radians * 180.f / PI; }
+
+	inline bool nearEq(float n1, float n2) { return abs(n1 - n2) <= EPSILON; }
 }

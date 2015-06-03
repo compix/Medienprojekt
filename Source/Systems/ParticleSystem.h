@@ -17,7 +17,7 @@ public:
 	void receive(const entityx::EntityDestroyedEvent& e);
 
 private:
-	void createManager(const std::string& textureName);
+	void createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters);
 
 private:
 	std::unordered_map<std::string, ParticleManager> m_particleManagers;

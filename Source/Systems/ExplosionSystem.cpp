@@ -5,6 +5,9 @@
 #include "../Components/LinkComponent.h"
 #include "../Components/DestructionComponent.h"
 #include "../GameGlobals.h"
+#include "../Components/SolidBlockComponent.h"
+#include "../Components/SmokeComponent.h"
+#include "../Components/InventoryComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
@@ -45,11 +48,14 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 
 					for (auto& e : m_layerManager->getEntities(layer->layer, nextCol, nextRow))
 					{
+						if (e.has_component<ExplosionComponent>() || e.has_component<SmokeComponent>() || e.has_component<InventoryComponent>())
+							continue;
+
 						nextRange = 0;
 						break;
 					}
 
-					if (!m_layerManager->hasSolidBlock(layer->layer, nextCol, nextRow))
+					if (!m_layerManager->has<SolidBlockComponent>(layer->layer, nextCol, nextRow))
 					{
 						scheduled.push_back(GameGlobals::entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime));
 					}				
@@ -63,7 +69,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 		if (allStopped)
 		{
 			if (!entity.has_component<DestructionComponent>())
-				entity.assign<DestructionComponent>(1.5f);
+				entity.assign<DestructionComponent>(0.5f);
 		}
 		else
 			for (auto e : scheduled)

@@ -6,7 +6,9 @@
 
 ParticleSystem::ParticleSystem()
 {
-	createManager("light");
+	createManager("light", 500, 500);
+	createManager("block", 500, 500);
+	createManager("smoke", 500, 500);
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)
@@ -25,9 +27,9 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 	}
 }
 
-void ParticleSystem::createManager(const std::string& textureName)
+void ParticleSystem::createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters)
 {
-	m_particleManagers.insert({ textureName, ParticleManager(500, GameGlobals::assetManager->getTexture(textureName), 500) });
+	m_particleManagers.insert({ textureName, ParticleManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)

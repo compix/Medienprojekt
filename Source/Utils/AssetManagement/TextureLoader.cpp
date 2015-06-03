@@ -21,3 +21,7 @@ Texture& TextureLoader::load(const string& filename, const string& name)
 	return m_assets[name];
 }
 
+Texture& TextureLoader::load(const string& name, const Json::Value& jsonValue)
+{
+	return load(jsonValue.asString(), name);
+}

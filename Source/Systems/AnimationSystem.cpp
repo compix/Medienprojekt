@@ -4,6 +4,7 @@
 #include "../Components/SpriteComponent.h"
 #include <math.h>
 #include <algorithm>
+#include "../Animation/Animator.h"
 
 void AnimationSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
@@ -12,56 +13,62 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 
 	for (Entity entity : entityManager.entities_with_components(animation, sprite))
 	{
+		animation->animator->update(entity, (float)dt);
+
 		int frameWidth = animation->baseRect.width / animation->colCount;
 		int frameHeight = animation->baseRect.height / animation->rowCount;
 
-		float animationDuration = animation->frameCount * animation->frameDuration;
+		bool newFrame = false;
+		animation->timeTillNextFrame -= (float) dt;
+		int frameSkip = 0;
 
-		int frame = (int) (animation->stateTime / animationDuration * animation->frameCount);
+		assert(animation->frameDuration > 0.f);
 
-		animation->stateTime += (float) dt;
+		while (animation->timeTillNextFrame <= 0.f)
+		{
+			animation->timeTillNextFrame += animation->frameDuration;
+			newFrame = true;
+			++frameSkip;
+		}
 
 		switch (animation->playMode)
 		{
 		case NORMAL:
-			frame = std::min(animation->frameCount - 1, frame);
-			break;
-		case LOOP:
-			if (animation->stateTime >= animationDuration)
-				animation->stateTime -= animationDuration;
-			break;
-		case REVERSED:
-			frame = (int) ((animationDuration - animation->stateTime) / animationDuration * animation->frameCount);
-			frame = std::max(frame, 0);
-			break;
-		case LOOP_REVERSED:
-			if (animation->stateTime >= animationDuration)
-				animation->stateTime -= animationDuration;
-
-			frame = (int) ((animationDuration - animation->stateTime) / animationDuration * animation->frameCount);
-			frame = std::max(frame, 0);
-			break;
-		case PING_PONG:
-			if (animation->stateTime >= animationDuration)
+			if (newFrame)
 			{
-				float stateTime = animation->stateTime - animationDuration;
-				frame = (int) ((animationDuration - stateTime) / animationDuration * animation->frameCount);
-				frame = std::max(frame, 0);
+				animation->currentFrame += frameSkip;
+				if (animation->currentFrame > animation->startFrame + animation->frameCount - 1)
+					animation->currentFrame = animation->startFrame + animation->frameCount - 1;
 			}
 			break;
-		case LOOP_PING_PONG:
-			if (animation->stateTime >= animationDuration)
+		case LOOP:
+			if (newFrame)
 			{
-				float stateTime = animation->stateTime - animationDuration;
-				frame = (int) ((animationDuration - stateTime) / animationDuration * animation->frameCount);
-				if (animation->stateTime >= animationDuration * 2.f)
-					animation->stateTime -= animationDuration * 2.f;
+				animation->currentFrame += frameSkip;
+				if (animation->currentFrame > animation->startFrame + animation->frameCount - 1)
+					animation->currentFrame = animation->startFrame;
+			}
+			break;
+		case REVERSED:
+			if (newFrame)
+			{
+				animation->currentFrame -= frameSkip;
+				if (animation->currentFrame < animation->startFrame)
+					animation->currentFrame = animation->startFrame;
+			}
+			break;
+		case LOOP_REVERSED:
+			if (newFrame)
+			{
+				animation->currentFrame -= frameSkip;
+				if (animation->currentFrame < animation->startFrame)
+					animation->currentFrame = animation->startFrame + animation->frameCount - 1;
 			}
 			break;
 		}
 
-		int row = frame / animation->colCount;
-		int col = frame % animation->colCount;
+		int row = animation->currentFrame / animation->colCount;
+		int col = animation->currentFrame % animation->colCount;
 
 		int rectStartX = col*frameWidth;
 		int rectStartY = row*frameHeight;

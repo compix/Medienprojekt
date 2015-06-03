@@ -10,6 +10,7 @@
 #include "Utils/AssetManagement/TextureLoader.h"
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
+#include "Animation/AnimatorManager.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ int Main::run()
 	GameGlobals::events = &m_events;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+
 	GameGlobals::window = &window;
 	
 	window.setKeyRepeatEnabled(false);
@@ -53,6 +55,8 @@ int Main::run()
 
 	AssetManager assetManager;
 	GameGlobals::assetManager = &assetManager;
+
+	AnimatorManager::init();
 
 	m_events.subscribe<ExitEvent>(*this);
 	m_events.subscribe<CreateLocalGameEvent>(*this);
@@ -67,7 +71,6 @@ int Main::run()
 	names.push_back("Cartman");
 	m_events.emit<CreateLocalGameEvent>(21, 21, names);
 
-	sf::View gameView(sf::FloatRect(0, 0, 800, 600));
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 
 	sf::Clock clock;
@@ -80,11 +83,11 @@ int Main::run()
 				window.close();
 			else if (event.type == sf::Event::Resized)
 			{
-				gameView.setSize(event.size.width, event.size.height);
+				GameGlobals::game->refreshView();
 				menuView.setSize(event.size.width, event.size.height);
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
-				GameGlobals::game->setMousePos(sf::Vector2f((float)event.mouseMove.x, (float)event.mouseMove.y));
+				GameGlobals::game->setMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 			}
 
 			m_events.emit(event);
@@ -94,7 +97,7 @@ int Main::run()
 
 		window.clear();
 		if (GameGlobals::game) {
-			window.setView(gameView);
+			window.setView(GameGlobals::game->getView());
 			GameGlobals::game->update(deltaTime.asSeconds());
 		}
 

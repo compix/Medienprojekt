@@ -24,9 +24,21 @@ public:
 	void update();
 
 	EntityCollection getEntities(int layer, int cellX, int cellY);
-	bool hasSolidBlock(int layer, int cellX, int cellY);
+
+	template<class T>
+	bool has(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
 
 private:
 	LayerContainer m_layers;
 };
+
+template <class T>
+bool LayerManager::has(int layer, int cellX, int cellY)
+{
+	for (auto& e : getEntities(layer, cellX, cellY))
+		if (e.has_component<T>())
+			return true;
+
+	return false;
+}

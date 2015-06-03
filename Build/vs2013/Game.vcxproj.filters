@@ -34,6 +34,9 @@
     <Filter Include="Utils\AssetManagement">
       <UniqueIdentifier>{9bef84d4-a7c7-4e1f-81d5-216830f54c2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{f4f15903-67aa-4914-a5c9-c71f480bd7ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
@@ -329,6 +332,36 @@
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h">
       <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\AnimationState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\Animator.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\IdleState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\WalkingState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DirectionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\AnimatorManager.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\AnimationType.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\SmokeComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -468,6 +501,24 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp">
       <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\Animator.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\IdleState.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\WalkingState.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

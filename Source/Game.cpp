@@ -25,6 +25,8 @@
 #include "Utils/Math.h"
 #include "Systems/ParticleSystem.h"
 #include "Graphics/ParticleEmitter.h"
+#include "Animation/AnimatorManager.h"
+#include "Graphics/ParticleSpawnSystem.h"
 
 
 Game::Game()
@@ -40,10 +42,11 @@ Game::~Game() {
 
 void Game::init(uint8_t width, uint8_t height)
 {
+	
 	m_width = width;
 	m_height = height;
 
-	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
+	refreshView();
 
 	m_debugDraw.SetFlags(b2Draw::e_shapeBit);
 	//m_debugDraw.AppendFlags(b2Draw::e_jointBit);
@@ -68,7 +71,7 @@ void Game::init(uint8_t width, uint8_t height)
 	addSystems();
 	m_systems.configure();
 
-	m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
+	//m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
 	auto particleSystem = m_systems.system<ParticleSystem>();
 	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter(10000);
@@ -99,11 +102,21 @@ void Game::update(TimeDelta dt)
 	m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
-	m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
-	m_light.setShader(m_shaderManager.getLightShader());
+	//m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
+	//m_light.setShader(m_shaderManager.getLightShader());
 
 	GameGlobals::window->draw(m_light);
 	GameGlobals::window->draw(*m_particleEmitter);
+}
+
+void Game::refreshView()
+{
+	float min = std::min(GameGlobals::window->getSize().x, GameGlobals::window->getSize().y);
+	float levelLength = std::min(getWidth()*GameConstants::CELL_WIDTH, getHeight()*GameConstants::CELL_HEIGHT);
+	float scaleFactor = std::max(1.f, levelLength / min);
+	m_view.reset(sf::FloatRect(0, 0, GameGlobals::window->getSize().x * scaleFactor, GameGlobals::window->getSize().y * scaleFactor));
+	m_view.setCenter(GameGlobals::game->getWidth()*GameConstants::CELL_WIDTH*0.5f, GameGlobals::game->getHeight()*GameConstants::CELL_HEIGHT*0.5f);
+	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
 void LocalGame::addSystems()
@@ -123,6 +136,7 @@ void LocalGame::addSystems()
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
+	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)
