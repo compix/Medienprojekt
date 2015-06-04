@@ -19,17 +19,17 @@ public:
 
 	Entity createPlayer(float x, float y);
 
-	Entity createBlock(uint8_t row, uint8_t col);
-	Entity createSolidBlock(uint8_t row, uint8_t col);
+	Entity createBlock(uint8_t cellX, uint8_t cellY);
+	Entity createSolidBlock(uint8_t cellX, uint8_t cellY);
 
-	Entity createBomb(uint8_t row, uint8_t col, Entity owner);
+	Entity createBomb(uint8_t cellX, uint8_t cellY, Entity owner);
 	
-	Entity createExplosion(uint8_t row, uint8_t col, Direction direction, uint8_t range, float spreadTime);
-	Entity createExplosion(uint8_t row, uint8_t col, uint8_t range, float spreadTime);
+	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
+	Entity createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime);
 
-	Entity createFloor(uint8_t row, uint8_t col);
+	Entity createFloor(uint8_t cellX, uint8_t cellY);
 
-	Entity createSmoke(uint8_t row, uint8_t col);
+	Entity createSmoke(uint8_t cellX, uint8_t cellY);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:

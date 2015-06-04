@@ -74,20 +74,23 @@ void Game::init(uint8_t width, uint8_t height)
 	//m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
 	auto particleSystem = m_systems.system<ParticleSystem>();
-	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter(10000);
+	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter();
 
 	// This Particle Emitter is just for tests.
-	m_particleEmitter->spawnTime(0.001f)
-		.position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
-		.spawnWidth(20.f)
-		.spawnHeight(20.f)
-		.maxLifetime(1.f)
-		.gravityModifier(0.f)
-		.velocityFunction([](float t) { t = t * 2 - 1; return sf::Vector2f(t, sinf(t)*100.f); })
-		.angularVelocityFunction([](float t) { t = t * 2 - 1; return t*t*0.1f; })
-		.sizeFunction([](float t) { t = t * 2 - 1; return sf::Vector2f(15 - t*t*50.f, 15 - t*t*t*20.f); })
-		.transparencyFunction([](float t) { return t < 0.01f ? 5 : 50 - t * 50; })
-		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(25, 106, 14), RGB(29, 239, 1)));
+	m_particleEmitter->
+		position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
+		.spawnTime(0.0015f)
+		.maxLifetime(0.25f)
+		.gravityModifier(1.f)
+		.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
+		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
+		.burstParticleNumber(10)
+		.burstTime(0.5f)
+		.spawnWidth(50 - 5)
+		.spawnHeight(50)
+		.spawnDuration(0.3)
+		.colorFunction(Gradient3<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0), RGB(50, 50, 50)));
 
 	initialized = true;
 }

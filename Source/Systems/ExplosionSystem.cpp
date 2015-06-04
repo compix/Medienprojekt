@@ -14,65 +14,43 @@ ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 
 void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
-	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent, LinkComponent>())
+	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent>())
 	{
 		auto layer = entity.component<LayerComponent>();
-		auto link = entity.component<LinkComponent>();
+		auto spread = entity.component<SpreadComponent>();
+		auto cell = entity.component<CellComponent>();
 
-		vector<Entity> scheduled;
+		if (!spread || !cell || spread->stopped)
+			continue;
 
-		bool allStopped = true;
+		spread->timeTillNext -= (float) dt;
 
-		for (auto fire : link->links)
+		if (spread->timeTillNext <= 0.f)
 		{
-			auto spread = fire.component<SpreadComponent>();
-			auto cell = fire.component<CellComponent>();
-
-			if (!spread->stopped)
-				allStopped = false;
-			else
-				continue;
-
-			if (!spread || !cell)
-				continue;			
-
-			spread->timeTillNext -= (float) dt;
-
-			if (spread->timeTillNext <= 0.f)
+			if (spread->range > 0)
 			{
-				if (spread->range > 0)
+				int nextCellX = spread->direction == Direction::LEFT ? cell->x - 1 : spread->direction == Direction::RIGHT ? cell->x + 1 : cell->x;
+				int nextCellY = spread->direction == Direction::UP ? cell->y - 1 : spread->direction == Direction::DOWN ? cell->y + 1 : cell->y;
+				
+				int nextRange = spread->range - 1;
+
+				for (auto& e : m_layerManager->getEntities(layer->layer, nextCellX, nextCellY))
 				{
-					int nextRow = spread->direction == Direction::UP ? cell->y - 1 : spread->direction == Direction::DOWN ? cell->y + 1 : cell->y;
-					int nextCol = spread->direction == Direction::LEFT ? cell->x - 1 : spread->direction == Direction::RIGHT ? cell->x + 1 : cell->x;
-					int nextRange = spread->range - 1;
+					if (e.has_component<ExplosionComponent>() || e.has_component<SmokeComponent>() || e.has_component<InventoryComponent>())
+						continue;
 
-					for (auto& e : m_layerManager->getEntities(layer->layer, nextCol, nextRow))
-					{
-						if (e.has_component<ExplosionComponent>() || e.has_component<SmokeComponent>() || e.has_component<InventoryComponent>())
-							continue;
-
-						nextRange = 0;
-						break;
-					}
-
-					if (!m_layerManager->has<SolidBlockComponent>(layer->layer, nextCol, nextRow))
-					{
-						scheduled.push_back(GameGlobals::entityFactory->createExplosion(nextRow, nextCol, spread->direction, nextRange, spread->spreadTime));
-					}				
+					nextRange = 0;
+					break;
 				}
 
-				spread->stopped = true;
+				if (!m_layerManager->has<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
+				{
+					GameGlobals::entityFactory->createExplosion(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime);
+				}				
 			}
-		}
 
-
-		if (allStopped)
-		{
-			if (!entity.has_component<DestructionComponent>())
-				entity.assign<DestructionComponent>(0.5f);
+			spread->stopped = true;
 		}
-		else
-			for (auto e : scheduled)
-				link->links.push_back(e);
+		
 	}
 }

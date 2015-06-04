@@ -2,11 +2,11 @@
 #include "../EntityFactory.h"
 
 /*
-The level is represented as a matrix. The position is given by the row and column (indexing starts at 0).
-The total number of rows and columns is odd.
+The level is represented as a grid. The position is given by the cellX and cellY (indexing starts at 0).
+The total number of cells in x axis (width) and cells in y axis (height) is odd.
 
 The level is defined by rules:
-- Indestructible blocks at the borders and if the row and column are even.
+- Indestructible blocks at the borders and if the cellX and cellY are even.
 - Character (Player/Enemy) positions are predefined: Currently 4 characters at the corners.
 - The horizontal and vertical neighbor tiles of the characters are empty.
 - Destructible blocks at the remaining positions (spawned at a defined probability).
@@ -17,17 +17,17 @@ class LevelGenerator
 {
 	struct LevelPosition
 	{
-		LevelPosition(int row, int col) : row(row), col(col) {}
+		LevelPosition(int cellX, int cellY) : cellX(cellX), cellY(cellY) {}
 		LevelPosition() {};
 
-		bool operator==(const LevelPosition& other) { return row == other.row && col == other.col; }
-		int row;
-		int col;
+		bool operator==(const LevelPosition& other) { return cellX == other.cellX && cellY == other.cellY; }
+		int cellX;
+		int cellY;
 	};
 
 	typedef bool (LevelGenerator::*Rule)(LevelPosition); // Rules have the position in question as input and return true if the condition applies.
 public:
-	LevelGenerator(int rowCount, int colCount);
+	LevelGenerator(int width, int height);
 
 	void generateRandomLevel();
 
@@ -41,7 +41,7 @@ private:
 private:
 	std::vector<LevelPosition> m_characterPositions;
 
-	int m_rowCount;
-	int m_colCount;
+	int m_width;
+	int m_height;
 };
 

@@ -48,8 +48,11 @@ public:
 	inline ParticleEmitter& rotation(float rotation) { m_rotation = Math::toRadians(rotation); return *this; }
 	inline ParticleEmitter& spawnWidth(float width) { m_spawnWidth = width; return *this; }
 	inline ParticleEmitter& spawnHeight(float height) { m_spawnHeight = height; return *this; }
-	// -1 = infinity
+	// negative = infinity
 	inline ParticleEmitter& burstNumber(int burstNumber) { m_burstNumber = burstNumber; return *this; }
+	inline ParticleEmitter& blendMode(const sf::BlendMode& blendMode) { m_blendMode = blendMode; return *this; }
+	// default: FLT_MAX
+	inline ParticleEmitter& spawnDuration(float spawnDuration) { m_spawnDuration = spawnDuration; return *this; }
 
 	inline void remove() { m_scheduledForRemoval = true; }
 	inline bool alive() { return !m_scheduledForRemoval; }
@@ -88,6 +91,9 @@ private:
 
 	float m_spawnWidth;
 	float m_spawnHeight;
+
+	float m_spawnDuration;
+	sf::BlendMode m_blendMode;
 
 	MathFunction m_angularVelocityFunction;
 	Vec2Function m_velocityFunction; 

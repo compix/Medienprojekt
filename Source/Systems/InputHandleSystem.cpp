@@ -22,7 +22,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		{
 			if (inventory->bombCount > 0)
 			{
-				GameGlobals::entityFactory->createBomb(cell->y, cell->x, entity);
+				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
 				inventory->bombCount--;
 			}
 			

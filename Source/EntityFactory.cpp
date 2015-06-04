@@ -47,8 +47,8 @@ Entity EntityFactory::createPlayer(float x, float y)
 {
 	Entity entity = GameGlobals::entities->create();
 
-	uint8_t col = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
-	uint8_t row = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
+	uint8_t cellX = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
+	uint8_t cellY = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
 	TransformComponent transformComponent;
 	transformComponent.x = x;
 	transformComponent.y = y;
@@ -64,7 +64,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	AnimatorManager::assignCharacterAnimator(entity);
 
 	entity.assign<DirectionComponent>();
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 
 	BodyComponent bodyComponent;
 	bodyComponent.body = BodyFactory::CreateCircle(x, y, 10.f,
@@ -86,25 +86,25 @@ Entity EntityFactory::createPlayer(float x, float y)
 	return entity;
 }
 
-entityx::Entity EntityFactory::createBlock(uint8_t row, uint8_t col)
+entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
 	sf::Sprite sprite = createSprite("block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<DestructionDelayComponent>(1);
 
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<HealthComponent>(1);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
-												(float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH / 2.f,
 												(float)GameConstants::CELL_HEIGHT / 2.f,
 												b2_staticBody,
@@ -122,25 +122,25 @@ entityx::Entity EntityFactory::createBlock(uint8_t row, uint8_t col)
 	return entity;
 }
 
-entityx::Entity EntityFactory::createSolidBlock(uint8_t row, uint8_t col)
+entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float) GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float) GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
 	sf::Sprite sprite = createSprite("solid_block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<SolidBlockComponent>();
 
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f,
-												(float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH/2.f,
 												(float)GameConstants::CELL_HEIGHT/2.f,
 												b2_staticBody,
@@ -157,13 +157,13 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t row, uint8_t col)
 	return entity;
 }
 
-Entity EntityFactory::createBomb(uint8_t row, uint8_t col, Entity owner)
+Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 	transformComponent.scaleX = 1.5f;
 	transformComponent.scaleY = 1.5f;
 
@@ -174,17 +174,17 @@ Entity EntityFactory::createBomb(uint8_t row, uint8_t col, Entity owner)
 	entity.assign<HealthComponent>(1);
 	entity.assign<OwnerComponent>(owner);
 
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 
 	entity.assign<LayerComponent>(0);
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<BombCreatedEvent>(entity, col, row, owner);
+	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, Direction direction, uint8_t range, float spreadTime)
+Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -193,8 +193,8 @@ Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, Direction direct
 	float width = GameConstants::CELL_WIDTH;
 	float height = GameConstants::CELL_HEIGHT;
 
-	transformComponent.x = GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 
 	switch (direction)
 	{
@@ -227,72 +227,73 @@ Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, Direction direct
 		entity.component<ParticleComponent>()->emitter = emitter;
 
 		emitter->spawnTime(0.0015f)
-			.maxLifetime(0.3f)
+			.maxLifetime(0.25f)
 			.gravityModifier(1.f)
 			.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
 			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
 			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
 			.burstParticleNumber(10)
 			.burstTime(0.5f)
-			.spawnWidth(width-5)
-			.spawnHeight(height)
+			.spawnWidth(50 - 5)
+			.spawnHeight(50)
+			.spawnDuration(0.3)
 			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
 	}
 
 	entity.assign<SpreadComponent>(direction, range, spreadTime);
 	entity.assign<ExplosionComponent>();
 	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<DestructionComponent>(0.55f);
 
 	entity.assign<DamageDealerComponent>(1);
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 
 	entity.assign<LayerComponent>(0);
 		
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, col, row, direction, range, spreadTime);
+	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime);
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(uint8_t row, uint8_t col, uint8_t range, float spreadTime)
+Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<DamageDealerComponent>(1);
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 	
-	LinkComponent linkComponent;
-	linkComponent.links.push_back(createExplosion(row, col, Direction::DOWN,  range, spreadTime));
-	linkComponent.links.push_back(createExplosion(row, col, Direction::UP,    range, spreadTime));
-	linkComponent.links.push_back(createExplosion(row, col, Direction::LEFT,  range, spreadTime));
-	linkComponent.links.push_back(createExplosion(row, col, Direction::RIGHT, range, spreadTime));
+	createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime);
+	createExplosion(cellX, cellY, Direction::UP, range, spreadTime);
+	createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime);
+	createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
 
 	entity.assign<ExplosionComponent>();
-	entity.assign<LinkComponent>(linkComponent);
 	entity.assign<LayerComponent>(0);
+	entity.assign<DestructionComponent>(0.55f);
 
 	m_layerManager->add(entity);
 
 	return entity;
 }
 
-Entity EntityFactory::createFloor(uint8_t row, uint8_t col)
+Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f + 7;
-	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f + 5.f + 10;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f + 7;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 5.f + 10;
 	entity.assign<TransformComponent>(transformComponent);
 	auto sprite = createSprite("floor");
 	entity.assign<SpriteComponent>(sprite);
 
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(-1);
 	entity.assign<FloorComponent>();
 
@@ -301,16 +302,16 @@ Entity EntityFactory::createFloor(uint8_t row, uint8_t col)
 	return entity;
 }
 
-Entity EntityFactory::createSmoke(uint8_t row, uint8_t col)
+Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 {
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-	transformComponent.x = (float)GameConstants::CELL_WIDTH * col + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = (float)GameConstants::CELL_HEIGHT * row + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 	entity.assign<TransformComponent>(transformComponent);
 
-	entity.assign<CellComponent>(col, row);
+	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(0);
 	entity.assign<DestructionComponent>(3.f);
 	entity.assign<SmokeComponent>();
@@ -323,17 +324,19 @@ Entity EntityFactory::createSmoke(uint8_t row, uint8_t col)
 		entity.assign<ParticleComponent>();
 		entity.component<ParticleComponent>()->emitter = emitter;
 
-		emitter->spawnTime(10.0f)
+		emitter->spawnTime(15.1f)
+			.position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
 			.maxLifetime(1.f)
-			.speedModifier(0.5f)
-			.velocityFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(26, 26), sf::Vector2f(0, 0)))
+			.speedModifier(5.5f)
+			.velocityFunction([](float t){ return t < 0.5f ? sf::Vector2f(cosf(t), sinf(t)) : sf::Vector2f(sinf(t)*5.f, sinf(t)*5.f); })
 			.spawnHeight(30)
 			.spawnWidth(30)
-			.burstParticleNumber(7)
+			.burstParticleNumber(10)
 			.burstTime(0.25f)
 			.burstNumber(5)
-			.sizeFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(3, 3), sf::Vector2f(25, 25)))
-			.colorFunction(Gradient<RGB>(GradientType::SMOOTH, RGB(46, 40, 35), RGB(100, 100, 100)));
+			.blendMode(sf::BlendAlpha)
+			.transparencyFunction([](float t) { return t < 0.5f ? 200.f*t : 200 - t * 200; })
+			.sizeFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(0, 0), sf::Vector2f(50, 50)));
 	}
 
 	m_layerManager->add(entity);

@@ -33,6 +33,8 @@ void ParticleEmitter::refresh()
 	spawnTime(0.1f);
 	burstTime(1.f);
 	burstNumber(-1);
+	blendMode(sf::BlendAdd);
+	spawnDuration(FLT_MAX);
 
 	m_startSize = sf::Vector2f(24.f, 24.f);
 
@@ -48,26 +50,32 @@ void ParticleEmitter::update(float deltaTime)
 {
 	m_spawnTimeRemaining -= deltaTime;
 	m_burstTimeRemaining -= deltaTime;
+	m_spawnDuration -= deltaTime;
 
-	// If the spawn Time is negative then more than one Particle CAN be spawned
-	if (m_spawnTimeRemaining <= 0.f)
+	
+	// Spawn particles
+	if (m_spawnDuration > 0.f)
 	{
-		do
+		// If the spawn Time is negative then more than one Particle CAN be spawned
+		if (m_spawnTimeRemaining <= 0.f)
 		{
-			spawnParticle();
-			m_spawnTimeRemaining += m_spawnTime;
-		} while (m_spawnTimeRemaining <= 0.f);	
+			do
+			{
+				spawnParticle();
+				m_spawnTimeRemaining += m_spawnTime;
+			} while (m_spawnTimeRemaining <= 0.f);
 
-		m_spawnTimeRemaining = m_spawnTime;
-	}
+			m_spawnTimeRemaining = m_spawnTime;
+		}
 
-	if ((m_burstNumber == -1 || m_burstNumber > 0) && m_burstTimeRemaining <= 0.f)
-	{
-		for (int i = 0; i < m_burstParticleNumber; i++)
-			spawnParticle();
+		if ((m_burstNumber < 0 || m_burstNumber > 0) && m_burstTimeRemaining <= 0.f)
+		{
+			for (int i = 0; i < m_burstParticleNumber; i++)
+				spawnParticle();
 
-		m_burstTimeRemaining = m_burstTime;
-		m_burstNumber = m_burstNumber == -1 ? -1 : m_burstNumber - 1;
+			m_burstTimeRemaining = m_burstTime;
+			m_burstNumber = m_burstNumber < 0 ? -1 : m_burstNumber - 1;
+		}
 	}
 
 	// Update particles
@@ -211,7 +219,7 @@ void ParticleEmitter::updateQuad(int vertexStart, Particle& p, const sf::Color& 
 void ParticleEmitter::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.shader = nullptr;
-	states.blendMode = sf::BlendAdd;
+	states.blendMode = m_blendMode;
 
 	states.texture = m_texture->get();
 

@@ -51,7 +51,7 @@ void BombSystem::detonate(entityx::Entity entity)
 
 		assert(cell);
 
-		GameGlobals::entityFactory->createExplosion(cell->y, cell->x, bomb->explosionRange, bomb->explosionSpreadTime);
+		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime);
 		if (!entity.has_component<DestructionComponent>())
 			entity.assign<DestructionComponent>();
 

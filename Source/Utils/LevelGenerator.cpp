@@ -4,13 +4,13 @@
 #include "Random.h"
 #include "../GameGlobals.h"
 
-LevelGenerator::LevelGenerator(int rowCount, int colCount)
-	: m_rowCount(rowCount), m_colCount(colCount)
+LevelGenerator::LevelGenerator(int width, int height)
+	: m_width(width), m_height(height)
 {
 	m_characterPositions.push_back(LevelPosition(1, 1)); // top left corner
-	m_characterPositions.push_back(LevelPosition(1, m_colCount - 2)); // top right corner
-	m_characterPositions.push_back(LevelPosition(m_rowCount - 2, 1)); // bottom left corner
-	m_characterPositions.push_back(LevelPosition(m_rowCount - 2, m_colCount - 2)); // bottom right corner
+	m_characterPositions.push_back(LevelPosition(width - 2, 1)); // top right corner
+	m_characterPositions.push_back(LevelPosition(1, height - 2)); // bottom left corner
+	m_characterPositions.push_back(LevelPosition(width - 2, height - 2)); // bottom right corner
 }
 
 void LevelGenerator::generateRandomLevel()
@@ -25,13 +25,13 @@ void LevelGenerator::generateRandomLevel()
 	
 	rules.push_back(&LevelGenerator::destructibleBlockRule);
 
-	for (int row = 0; row < m_rowCount; row++)
+	for (int cellY = 0; cellY < m_height; cellY++)
 	{
-		for (int col = 0; col < m_colCount; col++)
+		for (int cellX = 0; cellX < m_width; cellX++)
 		{
-			GameGlobals::entityFactory->createFloor(row, col);
+			GameGlobals::entityFactory->createFloor(cellX, cellY);
 			for (auto rule : rules)
-				if ((this->*rule)(LevelPosition(row, col)))
+				if ((this->*rule)(LevelPosition(cellX, cellY)))
 					break;
 		}
 	}
@@ -46,8 +46,8 @@ bool LevelGenerator::characterRule(LevelPosition pos)
 
 	if (condition)
 	{
-		float x = (float)GameConstants::CELL_WIDTH * pos.col + GameConstants::CELL_WIDTH*0.5f;
-		float y = (float)GameConstants::CELL_HEIGHT * pos.row;
+		float x = (float)GameConstants::CELL_WIDTH * pos.cellX + GameConstants::CELL_WIDTH*0.5f;
+		float y = (float)GameConstants::CELL_HEIGHT * pos.cellY;
 		GameGlobals::entityFactory->createPlayer(x, y);
 	}
 
@@ -66,14 +66,14 @@ bool LevelGenerator::emptyRule(LevelPosition pos)
 
 bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 {
-	bool condition = pos.row == 0 || 
-		 pos.row == m_rowCount - 1 || 
-		 pos.col == 0 || 
-		 pos.col == m_colCount - 1 || 
-		 !((pos.row % 2) | (pos.col % 2)); // even
+	bool condition = pos.cellY == 0 || 
+		 pos.cellY == m_height - 1 || 
+		 pos.cellX == 0 || 
+		 pos.cellX == m_width - 1 ||
+		 !((pos.cellY % 2) | (pos.cellX % 2)); // even
 
 	if (condition)
-		GameGlobals::entityFactory->createSolidBlock(pos.row, pos.col);
+		GameGlobals::entityFactory->createSolidBlock(pos.cellX, pos.cellY);
 
 	return condition;
 }
@@ -82,15 +82,15 @@ bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
 	bool condition = Random::getInt(1, 100) <= 85; // 85% chance to spawn a block
 	if (condition) 
-		GameGlobals::entityFactory->createBlock(pos.row, pos.col);
+		GameGlobals::entityFactory->createBlock(pos.cellX, pos.cellY);
 
 	return condition;
 }
 
 bool LevelGenerator::neighbors(LevelPosition pos1, LevelPosition pos2)
 {
-	return ((pos1.col == pos2.col) && ((pos1.row == pos2.row + 1) || (pos1.row == pos2.row - 1))) ||
-		   ((pos1.row == pos2.row) && ((pos1.col == pos2.col + 1) || (pos1.col == pos2.col - 1)));
+	return ((pos1.cellX == pos2.cellX) && ((pos1.cellY == pos2.cellY + 1) || (pos1.cellY == pos2.cellY - 1))) ||
+		   ((pos1.cellY == pos2.cellY) && ((pos1.cellX == pos2.cellX + 1) || (pos1.cellX == pos2.cellX - 1)));
 }
 
 

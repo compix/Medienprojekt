@@ -71,6 +71,6 @@ void ParticleSpawnSystem::receive(const ExplosionCreatedEvent& e)
 		auto layerComponent = entity.component<LayerComponent>();
 		auto cellComponent = entity.component<CellComponent>();
 		if (!m_layerManager->has<SmokeComponent>(layerComponent->layer, cellComponent->x, cellComponent->y))
-			GameGlobals::entityFactory->createSmoke(cellComponent->y, cellComponent->x);
+			GameGlobals::entityFactory->createSmoke(cellComponent->x, cellComponent->y);
 	}
 }
