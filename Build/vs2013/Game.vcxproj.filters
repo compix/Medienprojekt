@@ -359,7 +359,16 @@
     <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\SmokeComponent.h">
+    <ClInclude Include="..\..\Source\Components\ItemComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ItemSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\EffectComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -519,6 +528,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

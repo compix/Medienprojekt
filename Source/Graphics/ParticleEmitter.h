@@ -6,6 +6,7 @@
 #include "../Utils/Math.h"
 #include <cinttypes>
 #include "../Utils/AssetManagement/TexturePacker.h"
+#include <../entityx/entityx/entityx.h>
 
 struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
@@ -24,12 +25,12 @@ class ParticleManager;
 class ParticleEmitter : public sf::Drawable
 {
 	friend class ParticleManager;
+	friend class ParticleSystem;
 public:
 	ParticleEmitter();
 	ParticleEmitter(uint32_t maxParticles);
 
 	void update(float deltaTime);
-	void update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut);
 
 	inline ParticleEmitter& velocityFunction(Vec2Function func) { m_velocityFunction = func; return *this; }
 	//ParticleEmitter& maxParticles(int maxParticles);
@@ -53,6 +54,11 @@ public:
 	inline ParticleEmitter& blendMode(const sf::BlendMode& blendMode) { m_blendMode = blendMode; return *this; }
 	// default: FLT_MAX
 	inline ParticleEmitter& spawnDuration(float spawnDuration) { m_spawnDuration = spawnDuration; return *this; }
+	ParticleEmitter& follow(entityx::Entity entity);
+	inline void stopFollowing() { m_following = false; }
+	inline ParticleEmitter& goalRadius(float goalRadius) { m_goalRadius = goalRadius; return *this; }
+	inline bool isFollowing() { return m_following; }
+	inline ParticleEmitter& followSpeed(float followSpeed) { m_followSpeed = followSpeed; return *this; }
 
 	inline void remove() { m_scheduledForRemoval = true; }
 	inline bool alive() { return !m_scheduledForRemoval; }
@@ -61,6 +67,7 @@ public:
 	void setTexture(Assets::Texture* texture);
 private:
 	void spawnParticle();
+	void update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut);
 
 	void updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size);
 protected:
@@ -70,6 +77,7 @@ private:
 	uint32_t m_numActive;
 
 	sf::Vector2f m_pos;
+	sf::Vector2f m_lastPos;
 	float m_rotation;
 	std::vector<Particle> m_particles;
 	std::vector<sf::Vertex> m_vertices;
@@ -81,6 +89,11 @@ private:
 	float m_burstTimeRemaining;
 	int m_burstParticleNumber;
 	int m_burstNumber;
+
+	entityx::Entity m_target;
+	bool m_following;
+	float m_goalRadius;
+	float m_followSpeed;
 
 	sf::Vector2f m_startSize;
 

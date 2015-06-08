@@ -1,7 +1,7 @@
 #pragma once
 
 // flag
-struct SmokeComponent
+struct EffectComponent
 {
 	
 };

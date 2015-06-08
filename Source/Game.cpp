@@ -27,6 +27,7 @@
 #include "Graphics/ParticleEmitter.h"
 #include "Animation/AnimatorManager.h"
 #include "Graphics/ParticleSpawnSystem.h"
+#include "Systems/ItemSystem.h"
 
 
 Game::Game()
@@ -79,18 +80,16 @@ void Game::init(uint8_t width, uint8_t height)
 	// This Particle Emitter is just for tests.
 	m_particleEmitter->
 		position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
-		.spawnTime(0.0015f)
-		.maxLifetime(0.25f)
-		.gravityModifier(1.f)
-		.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
+		.spawnTime(0.008f)
+		.maxLifetime(0.5f)
+		.speedModifier(10.f)
+		.gravityModifier(-7.f)
+		.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
 		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
-		.burstParticleNumber(10)
-		.burstTime(0.5f)
-		.spawnWidth(50 - 5)
+		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(5, 5), sf::Vector2f(10, 10)))
+		.spawnWidth(15)
 		.spawnHeight(50)
-		.spawnDuration(0.3)
-		.colorFunction(Gradient3<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0), RGB(50, 50, 50)));
+		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
 }
@@ -139,13 +138,14 @@ void LocalGame::addSystems()
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
+	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)
 {
 	Game::init(width, height);
-	LevelGenerator levelGenerator(height, width);
+	LevelGenerator levelGenerator(width, height);
 	levelGenerator.generateRandomLevel();
 }
 

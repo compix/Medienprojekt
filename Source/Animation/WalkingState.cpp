@@ -35,5 +35,6 @@ void WalkingState::update(Animator* animator, entityx::Entity& entity, float del
 	case Direction::RIGHT:
 		animator->updateAnimation(AnimationType::WALK_RIGHT, entity);
 		break;
+	default: break;
 	}
 }

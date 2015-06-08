@@ -9,6 +9,5 @@ struct Particle
 	float lifetime; // in seconds
 	float rotation; // in radians
 	float angle; // (direction angle) in radians
-
-	ParticleEmitter* emitter;
+	bool goalReached;
 };

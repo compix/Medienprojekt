@@ -35,5 +35,6 @@ void IdleState::update(Animator* animator, entityx::Entity& entity, float deltaT
 	case Direction::RIGHT:
 		animator->updateAnimation(AnimationType::IDLE_RIGHT, entity);
 		break;
+	default: break;
 	}
 }

@@ -4,6 +4,7 @@
 #include "../Utils/Math.h"
 #include "ParticleManager.h"
 #include <iostream>
+#include "../Components/TransformComponent.h"
 
 ParticleEmitter::ParticleEmitter()
 	:ParticleEmitter(500)
@@ -23,6 +24,12 @@ void ParticleEmitter::refresh()
 	m_numActive = 0;
 	m_scheduledForRemoval = false;
 
+	m_lastPos.x = 0.f;
+	m_lastPos.y = 0.f;
+
+	m_following = false;
+	m_followSpeed = 15.f;
+	goalRadius(100.f);
 	burstParticleNumber(0);
 	position(0.f, 0.f);
 	gravityModifier(1.f);
@@ -35,7 +42,7 @@ void ParticleEmitter::refresh()
 	burstNumber(-1);
 	blendMode(sf::BlendAdd);
 	spawnDuration(FLT_MAX);
-
+	
 	m_startSize = sf::Vector2f(24.f, 24.f);
 
 	m_maxLifetime = 5.f;
@@ -44,6 +51,18 @@ void ParticleEmitter::refresh()
 	m_sizeFunction = [](float t) { return sf::Vector2f(24.f, 24.f); };
 	m_colorFunction = [](float t) { return RGB(255, 255, 255); };
 	m_transparencyFunction = [](float t) { return 255 - t * 255; };
+}
+
+ParticleEmitter& ParticleEmitter::follow(entityx::Entity entity)
+{
+	m_target = entity;
+	assert(m_target.valid() && m_target.has_component<TransformComponent>());
+	auto transform = m_target.component<TransformComponent>();
+	m_following = true;
+	m_pos.x = transform->x;
+	m_pos.y = transform->y;
+	m_lastPos = m_pos;
+	return *this;
 }
 
 void ParticleEmitter::update(float deltaTime)
@@ -87,7 +106,7 @@ void ParticleEmitter::update(float deltaTime)
 		Particle& p = m_particles[i];
 
 		p.lifetime -= deltaTime;
-		if (p.lifetime <= 0.f || p.emitter->m_scheduledForRemoval)
+		if (p.lifetime <= 0.f || m_scheduledForRemoval)
 		{
 			m_numActive--;
 
@@ -95,22 +114,45 @@ void ParticleEmitter::update(float deltaTime)
 			continue;
 		}
 
-		p.emitter->update(p, deltaTime, color, size);
+		update(p, deltaTime, color, size);
 		updateQuad(i * 4, p, color, size);
 
 		i++;
 	}
+
+	m_lastPos = m_pos;
 }
 
 void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut)
 {
 	float t = (m_maxLifetime - p.lifetime) / m_maxLifetime; // normalized time: [0, 1]
-	sf::Vector2f velocity = m_velocityFunction(t);
-
-	Math::rotate(velocity, p.angle);
 
 	p.rotation += m_angularVelocityFunction(t);
+	sf::Vector2f velocity = m_velocityFunction(t);
+	Math::rotate(velocity, p.angle);
 
+	if (m_following && m_target.valid() && m_target.has_component<TransformComponent>())
+	{
+		auto transform = m_target.component<TransformComponent>();
+		float dx = transform->x - (p.pos.x + m_pos.x);
+		float dy = transform->y - (p.pos.y + m_pos.y);
+
+		if (dx*dx + dy*dy > m_goalRadius*m_goalRadius)
+		{
+			p.goalReached = false;
+		}
+		else if (dx*dx + dy*dy <= 25.f)
+			p.goalReached = true;
+
+		if (!p.goalReached)
+		{
+			velocity.x += dx*deltaTime*m_followSpeed;
+			velocity.y += dy*deltaTime*m_followSpeed;
+
+			p.pos -= m_pos - m_lastPos;
+		}
+	}
+	
 	velocity *= m_speedModifier;
 	velocity.y += PARTICLE_GRAVITY * m_gravityModifier;
 
@@ -174,7 +216,7 @@ void ParticleEmitter::spawnParticle()
 
 		particle.pos = sf::Vector2f(x, y);
 		particle.angle = angle;
-		particle.emitter = this;
+		particle.goalReached = false;
 	}
 }
 
@@ -205,13 +247,13 @@ void ParticleEmitter::updateQuad(int vertexStart, Particle& p, const sf::Color& 
 	float x = p.pos.x;
 	float y = p.pos.y;
 
-	c = cosf(p.emitter->m_rotation);
-	s = sinf(p.emitter->m_rotation);
+	c = cosf(m_rotation);
+	s = sinf(m_rotation);
 
-	v0.position = sf::Vector2f((-hwc + hhs + x)*c - (-hhc - hws + y)*s + p.emitter->m_pos.x, (-hhc - hws + y)*c + (-hwc + hhs + x)*s + p.emitter->m_pos.y);
-	v1.position = sf::Vector2f((hwc + hhs + x) *c - (-hhc + hws + y)*s + p.emitter->m_pos.x, (-hhc + hws + y)*c + (hwc + hhs + x) *s + p.emitter->m_pos.y);
-	v2.position = sf::Vector2f((hwc - hhs + x) *c - (hhc + hws + y) *s + p.emitter->m_pos.x, (hhc + hws + y) *c + (hwc - hhs + x) *s + p.emitter->m_pos.y);
-	v3.position = sf::Vector2f((-hwc - hhs + x)*c - (hhc - hws + y) *s + p.emitter->m_pos.x, (hhc - hws + y) *c + (-hwc - hhs + x)*s + p.emitter->m_pos.y);
+	v0.position = sf::Vector2f((-hwc + hhs + x)*c - (-hhc - hws + y)*s + m_pos.x, (-hhc - hws + y)*c + (-hwc + hhs + x)*s + m_pos.y);
+	v1.position = sf::Vector2f((hwc + hhs + x) *c - (-hhc + hws + y)*s + m_pos.x, (-hhc + hws + y)*c + (hwc + hhs + x) *s + m_pos.y);
+	v2.position = sf::Vector2f((hwc - hhs + x) *c - (hhc + hws + y) *s + m_pos.x, (hhc + hws + y) *c + (hwc - hhs + x) *s + m_pos.y);
+	v3.position = sf::Vector2f((-hwc - hhs + x)*c - (hhc - hws + y) *s + m_pos.x, (hhc - hws + y) *c + (-hwc - hhs + x)*s + m_pos.y);
 
 	v0.color = v1.color = v2.color = v3.color = color;
 }

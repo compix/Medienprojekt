@@ -114,13 +114,14 @@
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ItemComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
-    <ClInclude Include="..\..\Source\Components\SmokeComponent.h" />
+    <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ItemSystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
@@ -249,6 +252,7 @@
     <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />

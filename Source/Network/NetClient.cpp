@@ -131,7 +131,7 @@ void NetClient::onCreateSolidBlockMessage(MessageReader<MessageType>& reader, EN
 	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	mapEntity(id, GameGlobals::entityFactory->createSolidBlock(y, x));
+	mapEntity(id, GameGlobals::entityFactory->createSolidBlock(x, y));
 }
 
 void NetClient::onCreateBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -139,7 +139,7 @@ void NetClient::onCreateBlockMessage(MessageReader<MessageType>& reader, ENetEve
 	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	mapEntity(id, GameGlobals::entityFactory->createBlock(y, x));
+	mapEntity(id, GameGlobals::entityFactory->createBlock(x, y));
 }
 
 void NetClient::onCreateFloorMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -147,7 +147,7 @@ void NetClient::onCreateFloorMessage(MessageReader<MessageType>& reader, ENetEve
 	uint64_t id = reader.read<uint64_t>();
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
-	mapEntity(id, GameGlobals::entityFactory->createFloor(y, x));
+	mapEntity(id, GameGlobals::entityFactory->createFloor(x, y));
 }
 
 void NetClient::onCreatePlayerMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -166,7 +166,7 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
-		mapEntity(id, GameGlobals::entityFactory->createBomb(y, x, owner));
+		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner));
 }
 
 void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -177,7 +177,7 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	Direction direction = reader.read<Direction>();
 	uint8_t range = reader.read<uint8_t>();
 	float spreadTime = reader.read<float>();
-	mapEntity(id, GameGlobals::entityFactory->createExplosion(y, x, direction, range, spreadTime));
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime));
 }
 
 void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

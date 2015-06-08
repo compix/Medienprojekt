@@ -3,6 +3,7 @@
 #include "../Components/TransformComponent.h"
 #include "../Utils/AssetManagement/AssetManager.h"
 #include "../GameGlobals.h"
+#include "../Components/EffectComponent.h"
 
 ParticleSystem::ParticleSystem()
 {
@@ -39,8 +40,19 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		auto particleComponent = e.component<ParticleComponent>();
 		auto transform = e.component<TransformComponent>();
 
-		particleComponent->emitter->position(transform->x, transform->y);
+		if (particleComponent->emitter->isFollowing())
+		{
+			auto target = particleComponent->emitter->m_target;
+			auto targetTransform = target.component<TransformComponent>();
+			if (targetTransform && e.has_component<EffectComponent>())
+			{
+				transform->x = targetTransform->x;
+				transform->y = targetTransform->y + 1.f; // + 1.f = little hack to force drawing the particle effect on top of the target
+			}
+		}
+
 		particleComponent->emitter->rotation(transform->rotation);
+		particleComponent->emitter->position(transform->x, transform->y);
 	}
 
 	for (auto& m : m_particleManagers)

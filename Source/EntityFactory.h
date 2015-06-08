@@ -6,6 +6,7 @@
 #include "LayerManager.h"
 #include "Utils/Common.h"
 #include "Components/ExplosionComponent.h"
+#include "Components/ItemComponent.h"
 
 class ShaderManager;
 using entityx::EntityManager;
@@ -30,6 +31,10 @@ public:
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 
 	Entity createSmoke(uint8_t cellX, uint8_t cellY);
+
+	Entity createBoostEffect(uint8_t cellX, uint8_t cellY, Entity target);
+
+	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:

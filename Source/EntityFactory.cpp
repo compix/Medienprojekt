@@ -36,7 +36,7 @@
 #include "Animation/AnimatorManager.h"
 #include "Components/DirectionComponent.h"
 #include "Components/DestructionDelayComponent.h"
-#include "Components/SmokeComponent.h"
+#include "Components/EffectComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -314,7 +314,7 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(0);
 	entity.assign<DestructionComponent>(3.f);
-	entity.assign<SmokeComponent>();
+	entity.assign<EffectComponent>();
 
 	auto manager = m_systemManager->system<ParticleSystem>()->getManager("smoke");
 	auto emitter = manager->spawnEmitter();
@@ -337,6 +337,76 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 			.blendMode(sf::BlendAlpha)
 			.transparencyFunction([](float t) { return t < 0.5f ? 200.f*t : 200 - t * 200; })
 			.sizeFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(0, 0), sf::Vector2f(50, 50)));
+	}
+
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
+Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity target)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
+	entity.assign<TransformComponent>(transformComponent);
+
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(0);
+	entity.assign<DestructionComponent>(1.5f);
+	entity.assign<EffectComponent>();
+
+	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
+	auto emitter = manager->spawnEmitter();
+
+	if (emitter)
+	{
+		entity.assign<ParticleComponent>();
+		entity.component<ParticleComponent>()->emitter = emitter;
+
+		emitter->spawnTime(0.008f)
+			.maxLifetime(0.9f)
+			.speedModifier(5.f)
+			.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
+			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(5, 5)))
+			.spawnWidth(15)
+			.spawnHeight(50)
+			.spawnDuration(0.6f)
+			.transparencyFunction(Gradient<float>(GradientType::REGRESS, 255, 0))
+			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)))
+			.follow(target);
+	}
+
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
+Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f + 7.f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 15.f;
+	transformComponent.scaleX = 0.70f;
+	transformComponent.scaleY = 0.70f;
+	entity.assign<TransformComponent>(transformComponent);
+
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(0);
+	entity.assign<ItemComponent>(type);
+	entity.assign<HealthComponent>(1);
+
+	switch (type)
+	{
+	case ItemType::BOMB_CAP_BOOST: 
+		entity.assign<SpriteComponent>(createSprite("bombCapBoost"));
+		break;
+	default: break;
 	}
 
 	m_layerManager->add(entity);

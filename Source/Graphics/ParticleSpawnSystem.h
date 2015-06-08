@@ -1,6 +1,7 @@
 #pragma once
 #include <entityx/entityx.h>
 
+struct ItemPickedUpEvent;
 class LayerManager;
 struct ExplosionCreatedEvent;
 class ParticleSystem;
@@ -14,8 +15,8 @@ public:
 	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
 	void configure(entityx::EventManager& events) override;
 	void receive(const DeathEvent& deathEvent);
-	void receive(const ExplosionCreatedEvent &e);
-
+	void receive(const ExplosionCreatedEvent& e);
+	void receive(const ItemPickedUpEvent& e);
 private:
 	ParticleSystem* m_particleSystem;
 	LayerManager* m_layerManager;

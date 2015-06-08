@@ -10,8 +10,9 @@
 #include "../EntityFactory.h"
 #include "../Components/CellComponent.h"
 #include "../Events/ExplosionCreatedEvent.h"
-#include "../Components/SmokeComponent.h"
+#include "../Components/EffectComponent.h"
 #include "../Components/LayerComponent.h"
+#include "../Events/ItemPickedUpEvent.h"
 
 ParticleSpawnSystem::ParticleSpawnSystem(ParticleSystem* particleSystem, LayerManager* layerManager)
 	:m_particleSystem(particleSystem), m_layerManager(layerManager)
@@ -26,6 +27,7 @@ void ParticleSpawnSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<DeathEvent>(*this);
 	events.subscribe<ExplosionCreatedEvent>(*this);
+	events.subscribe<ItemPickedUpEvent>(*this);
 }
 
 void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
@@ -70,7 +72,15 @@ void ParticleSpawnSystem::receive(const ExplosionCreatedEvent& e)
 	{
 		auto layerComponent = entity.component<LayerComponent>();
 		auto cellComponent = entity.component<CellComponent>();
-		if (!m_layerManager->has<SmokeComponent>(layerComponent->layer, cellComponent->x, cellComponent->y))
+		if (!m_layerManager->hasEntityWithComponent<EffectComponent>(layerComponent->layer, cellComponent->x, cellComponent->y))
 			GameGlobals::entityFactory->createSmoke(cellComponent->x, cellComponent->y);
 	}
+}
+
+void ParticleSpawnSystem::receive(const ItemPickedUpEvent& e)
+{
+	auto entity = e.itemReceiver;
+	auto cell = entity.component<CellComponent>();
+	assert(cell);
+	GameGlobals::entityFactory->createBoostEffect(cell->x, cell->y, entity);
 }

@@ -26,7 +26,11 @@ public:
 	EntityCollection getEntities(int layer, int cellX, int cellY);
 
 	template<class T>
-	bool has(int layer, int cellX, int cellY);
+	bool hasEntityWithComponent(int layer, int cellX, int cellY);
+
+	// An invalid entity will be returned if there is no such entity
+	template<class T>
+	Entity getEntityWithComponent(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
 
 private:
@@ -34,11 +38,21 @@ private:
 };
 
 template <class T>
-bool LayerManager::has(int layer, int cellX, int cellY)
+bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 {
 	for (auto& e : getEntities(layer, cellX, cellY))
 		if (e.has_component<T>())
 			return true;
 
 	return false;
+}
+
+template <class T>
+Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
+{
+	for (auto& e : getEntities(layer, cellX, cellY))
+		if (e.has_component<T>())
+			return e;
+
+	return Entity();
 }

@@ -4,5 +4,7 @@
 struct ParticleComponent
 {
 	ParticleComponent() {}
+	ParticleComponent(ParticleEmitter* emitter) : emitter(emitter) {}
+
 	ParticleEmitter* emitter;
 };
