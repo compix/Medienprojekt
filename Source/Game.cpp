@@ -101,7 +101,7 @@ void Game::update(TimeDelta dt)
 
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
-	m_PhysixSystem->DrawDebug();
+	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
 	//m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
