@@ -1,6 +1,6 @@
 #pragma once
 
-enum class AnimationType
+enum class AnimationType : uint8_t
 {
 	NONE,
 	WALK_UP,

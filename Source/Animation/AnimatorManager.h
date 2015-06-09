@@ -16,5 +16,5 @@ public:
 private:
 	static void initCharacterAnimator();
 private:
-	static std::unordered_map<AnimatorType, std::unique_ptr<Animator>> m_animators;
+	static std::unordered_map<AnimatorType, std::unique_ptr<Animator>, EnumClassHash> m_animators;
 };
