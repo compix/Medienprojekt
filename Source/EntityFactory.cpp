@@ -16,8 +16,6 @@
 #include "Components/BombComponent.h"
 #include "Components/TimerComponent.h"
 #include "Components/LayerComponent.h"
-#include "Components/LinkComponent.h"
-#include "Components/LightComponent.h"
 #include "Utils/ShaderManager.h"
 #include "Components/OwnerComponent.h"
 #include "Components/InventoryComponent.h"
@@ -48,6 +46,9 @@ Entity EntityFactory::createPlayer(float x, float y)
 {
 	Entity entity = GameGlobals::entities->create();
 
+	static int playerId = 0;
+	++playerId;
+
 	uint8_t cellX = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
 	uint8_t cellY = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
 	TransformComponent transformComponent;
@@ -67,11 +68,31 @@ Entity EntityFactory::createPlayer(float x, float y)
 	entity.assign<DirectionComponent>();
 	entity.assign<CellComponent>(cellX, cellY);
 
+	uint16 isA = BodyFactory::PLAYER_1;
+	switch (playerId)
+	{
+	case 0:
+		isA = BodyFactory::PLAYER_1;
+		break;
+	case 1:
+		isA = BodyFactory::PLAYER_2;
+		break;
+	case 2:
+		isA = BodyFactory::PLAYER_3;
+		break;
+	case 3:
+		isA = BodyFactory::PLAYER_4;
+		break;
+	default:
+		isA = BodyFactory::PLAYER_1;
+		break;
+	}
+	
 	BodyComponent bodyComponent;
 	bodyComponent.body = BodyFactory::CreateCircle(x, y, 10.f,
-		b2_dynamicBody,
-		BodyFactory::CollsionCategory::PLAYER,
-		BodyFactory::CollsionCategory::SOLID_BLOCK);
+						 b2_dynamicBody,
+						 isA,
+						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4);
 
 	bodyComponent.body->SetFixedRotation(true);
 	entity.assign<BodyComponent>(bodyComponent);
@@ -170,7 +191,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	transformComponent.scaleY = 1.5f;
 
 	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<SpriteComponent>(createSprite("bomb"));
+	auto texture = createSprite("bomb");
+	entity.assign<SpriteComponent>(texture);
 	entity.assign<BombComponent>(7, 0.06f);
 	entity.assign<TimerComponent>(2.f);
 	entity.assign<HealthComponent>(1);
@@ -180,6 +202,31 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
+
+	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
+
+	BodyComponent bodyComponent;
+	bodyComponent.body = BodyFactory::CreateBox(transformComponent.x,
+												transformComponent.y,
+												texture.getLocalBounds().width-2,
+												texture.getLocalBounds().height-2,
+												b2_dynamicBody,
+												BodyFactory::BOMB,
+												~fixture->GetFilterData().categoryBits);
+
+	bodyComponent.body->SetFixedRotation(true);
+
+	/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
+	b2FixtureDef fixtureDef;
+	fixtureDef.isSensor = true;
+	fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
+	fixtureDef.filter.maskBits = BodyFactory::PLAYER_1 | BodyFactory::PLAYER_2 | BodyFactory::PLAYER_3 | BodyFactory::PLAYER_4;
+	fixtureDef.shape = &dynamicBox;
+	bodyComponent.body->CreateFixture(&fixtureDef);
+
+	entity.assign<BodyComponent>(bodyComponent);
 
 	m_layerManager->add(entity);
 

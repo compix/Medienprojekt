@@ -386,6 +386,7 @@
     <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h">
       <Filter>Utils\PathFinding</Filter>
     </ClInclude>
+    <ClInclude Include="ContactListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -553,5 +554,6 @@
     <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp">
       <Filter>Utils\PathFinding</Filter>
     </ClCompile>
+    <ClCompile Include="ContactListener.cpp" />
   </ItemGroup>
 </Project>
