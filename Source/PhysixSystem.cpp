@@ -48,7 +48,7 @@ void PhysixSystem::Update(entityx::TimeDelta dt)
 
 void PhysixSystem::DrawDebug()
 {
-	//m_World.DrawDebugData();
+	m_World.DrawDebugData();
 }
 
 b2Vec2 PhysixSystem::GetGravity()
@@ -59,6 +59,11 @@ b2Vec2 PhysixSystem::GetGravity()
 float PhysixSystem::GetScale()
 {
 	return PhysixSystem::m_Scale;
+}
+
+void PhysixSystem::setContactListener(b2ContactListener* listener)
+{
+	m_World.SetContactListener(listener);
 }
 
 float PhysixSystem::toBox2D(float pixel)

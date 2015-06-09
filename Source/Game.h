@@ -9,6 +9,7 @@
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
 #include "GameGlobals.h"
+#include "../Build/vs2013/ContactListener.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -48,6 +49,7 @@ protected:
 	unique_ptr<LayerManager> m_layerManager;
 	PhysixSystem* m_PhysixSystem;
 	SFMLDebugDraw m_debugDraw;
+	ContactListener listener;
 	uint8_t m_width;
 	uint8_t m_height;
 

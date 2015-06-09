@@ -215,6 +215,7 @@
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
     <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="ContactListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
@@ -278,6 +279,7 @@
     <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
     <ClCompile Include="..\..\Source\debugrender.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

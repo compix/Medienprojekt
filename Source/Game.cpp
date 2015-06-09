@@ -43,7 +43,6 @@ Game::~Game() {
 
 void Game::init(uint8_t width, uint8_t height)
 {
-	
 	m_width = width;
 	m_height = height;
 
@@ -56,6 +55,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	/*Setup PhysixSystem*/
 	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+	m_PhysixSystem->setContactListener(&listener);
 	m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
