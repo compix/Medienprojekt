@@ -40,8 +40,8 @@ private:
 	void sendBlockEntities(ENetPeer* peer, MessageType type);
 	void sendPlayerEntities(ENetPeer* peer);
 	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y);
-	void broadcastPlayerUpdates();
-	ENetPacket* createPlayerUpdatePacket(entityx::Entity entity, float x, float y);
+	void broadcastDynamicUpdates();
+	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y);
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner);
 	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime);

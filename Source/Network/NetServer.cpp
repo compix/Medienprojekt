@@ -17,6 +17,7 @@
 #include "../Components/BombComponent.h"
 #include "../Components/OwnerComponent.h"
 #include "../Components/InputComponent.h"
+#include "../Components/DynamicComponent.h"
 #include "../Events/ExplosionCreatedEvent.h"
 
 using namespace std;
@@ -78,7 +79,7 @@ NetServer::~NetServer()
 
 void NetServer::update()
 {
-	broadcastPlayerUpdates();
+	broadcastDynamicUpdates();
 	if (!m_connection.update())
 		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 }
@@ -250,22 +251,28 @@ ENetPacket *NetServer::createPlayerPacket(Entity entity, float x, float y)
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
-void NetServer::broadcastPlayerUpdates()
+void NetServer::broadcastDynamicUpdates()
 {
-	ComponentHandle<InputComponent> input;
+	ComponentHandle<DynamicComponent> input;
 	ComponentHandle<TransformComponent> transform;
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(input, transform, cell))
-		broadcast(NetChannel::WORLD_UNRELIABLE, createPlayerUpdatePacket(entity, transform->x, transform->y));
+		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y));
 }
 
-ENetPacket *NetServer::createPlayerUpdatePacket(Entity entity, float x, float y)
+ENetPacket *NetServer::createUpdateDynamicPacket(Entity entity, float x, float y)
 {
-	m_messageWriter.init(MessageType::UPDATE_PLAYER);
+	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
 	m_messageWriter.write<uint64_t>(entity.id().id());
 	m_messageWriter.write<float>(x);
 	m_messageWriter.write<float>(y);
+	auto input = entity.component<InputComponent>();
+	if(input.valid())
+	{
+		m_messageWriter.write<float>(input->moveX);
+		m_messageWriter.write<float>(input->moveY);
+	}
 	return m_messageWriter.createPacket(0);
 }
 

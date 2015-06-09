@@ -8,7 +8,7 @@
 #include <typeindex>
 #include "../Utils/AssetManagement/Assets.h"
 
-enum class AnimationType;
+enum class AnimationType : uint8_t;
 class AnimationState;
 
 struct EnumClassHash

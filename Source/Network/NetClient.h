@@ -37,7 +37,7 @@ public:
 	void onCreateBombMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
-	void onUpdatePlayerMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 private:
 	void mapEntity(uint64_t id, Entity entity);
 	Entity getEntity(uint64_t id);
