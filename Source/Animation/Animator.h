@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
+#include "../Utils/make_unique.h"
 #include <assert.h>
 #include "entityx/entityx.h"
 #include <typeinfo>
@@ -9,6 +10,15 @@
 
 enum class AnimationType;
 class AnimationState;
+
+struct EnumClassHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return static_cast<std::size_t>(t);
+    }
+};
 
 class AnimationInfo
 {
@@ -25,7 +35,7 @@ class Animator
 {
 	friend class AnimatorManager;
 public:
-	void updateAnimation(const AnimationType& animationType, entityx::Entity& entity);
+	void updateAnimation(AnimationType animationType, entityx::Entity& entity);
 
 	template<class T>
 	void changeTo(entityx::Entity& entity);
@@ -33,14 +43,14 @@ public:
 	void update(entityx::Entity& entity, float deltaTime);
 
 private:
-	void add(const AnimationType& animationType, const std::string& animationName, const std::string& textureName);
-	const AnimationInfo& get(const AnimationType& animationType);	
+	void add(AnimationType animationType, const std::string& animationName, const std::string& textureName);
+	const AnimationInfo& get(AnimationType animationType);	
 
 	template<class T>
 	AnimationState* add();
 private:
 	std::unordered_map<std::type_index, std::unique_ptr<AnimationState>> m_states;
-	std::unordered_map<AnimationType, AnimationInfo> m_animations;
+	std::unordered_map<AnimationType, AnimationInfo, EnumClassHash> m_animations;
 };
 
 template <class T>

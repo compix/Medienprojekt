@@ -5,7 +5,7 @@
 #include "../Components/SpriteComponent.h"
 #include "../Utils/AssetManagement/AnimationLoader.h"
 
-void Animator::add(const AnimationType& animationType, const std::string& animationName, const std::string& textureName)
+void Animator::add(AnimationType animationType, const std::string& animationName, const std::string& textureName)
 {
 	auto animation = GameGlobals::assetManager->getAnimation(animationName);
 	auto texture = GameGlobals::assetManager->getTexture(textureName);
@@ -13,13 +13,13 @@ void Animator::add(const AnimationType& animationType, const std::string& animat
 	m_animations[animationType] = AnimationInfo(animation, texture);
 }
 
-const AnimationInfo& Animator::get(const AnimationType& animationType)
+const AnimationInfo& Animator::get(AnimationType animationType)
 {
 	assert(m_animations.count(animationType) > 0);
 	return m_animations[animationType];
 }
 
-void Animator::updateAnimation(const AnimationType& animationType, entityx::Entity& entity)
+void Animator::updateAnimation(AnimationType animationType, entityx::Entity& entity)
 {
 	auto animationComponent = entity.component<AnimationComponent>();
 	auto spriteComponent = entity.component<SpriteComponent>();

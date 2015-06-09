@@ -2,7 +2,7 @@
 #include "WalkingState.h"
 #include "IdleState.h"
 
-std::unordered_map<AnimatorType, std::unique_ptr<Animator>> AnimatorManager::m_animators;
+std::unordered_map<AnimatorType, std::unique_ptr<Animator>, EnumClassHash> AnimatorManager::m_animators;
 
 void AnimatorManager::init()
 {

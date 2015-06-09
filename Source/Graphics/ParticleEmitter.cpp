@@ -4,6 +4,7 @@
 #include "../Utils/Math.h"
 #include "ParticleManager.h"
 #include <iostream>
+#include <float.h>
 #include "../Components/TransformComponent.h"
 
 ParticleEmitter::ParticleEmitter()
