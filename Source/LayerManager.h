@@ -15,6 +15,7 @@ public:
 	~LayerManager();
 
 	inline LayerContainer& getLayers() { return m_layers; }
+	inline EntityLayer* getLayer(int layer) { assert(m_layers.count(layer) > 0); return m_layers[layer].get(); }
 
 	void configure(entityx::EventManager& events);
 	void receive(const entityx::EntityDestroyedEvent& e);

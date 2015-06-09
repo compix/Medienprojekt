@@ -30,7 +30,7 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 		render(layer.second.get());
 	}
 
-	showFPS();
+	updateAndShowFrameStats((float)dt);
 }
 
 void RenderSystem::render(EntityLayer* layer)
@@ -44,7 +44,7 @@ void RenderSystem::render(EntityLayer* layer)
 		for (int x = 0; x < layer->getWidth(); x++)
 		{
 			layer->sort(DepthComparator(), x, y);
-			EntityCollection collection = grid[x][y];
+			EntityCollection& collection = grid[x][y];
 
 			for (auto& e : collection)
 			{
@@ -90,12 +90,37 @@ void RenderSystem::render(EntityLayer* layer)
 	}
 }
 
-void RenderSystem::showFPS()
+void RenderSystem::updateAndShowFrameStats(float deltaTime)
 {
+	/*
 	m_fpsCalculator.addFrame();
 	m_fpsText.setString(fmt::format("{:.1f} FPS", m_fpsCalculator.getFps()));
 	float w = m_fpsText.getLocalBounds().width;
 	float x = 790 - w;
 	m_fpsText.setPosition(x, 0);
 	GameGlobals::window->draw(m_fpsText);
+	*/
+
+	static float timeElapsed = 0.0f;
+	static uint16_t frameCount = 0;
+
+	timeElapsed += deltaTime;
+	++frameCount;
+
+	if (timeElapsed >= 1.f)
+	{
+		std::wostringstream outs;
+		outs.precision(6);
+
+		uint16_t fps = static_cast<uint16_t>(frameCount / timeElapsed);
+		float mspf = 1000.0f / fps; // ms per frame
+
+		outs << L"FPS: " << fps << L"    "
+			 << L"Frame Time: " << mspf << L" ms";
+
+		GameGlobals::window->setTitle(outs.str());
+		timeElapsed = 0.f;
+		frameCount = 0;
+	}
+	
 }

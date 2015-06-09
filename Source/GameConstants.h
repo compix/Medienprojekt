@@ -8,4 +8,7 @@ namespace GameConstants
 	const float PLAYER_SPEED = 4.f;
 
 	const int BOMB_CAP = 8;
+
+	const int FLOOR_LAYER = -1;
+	const int MAIN_LAYER = 0;
 }

@@ -62,8 +62,8 @@ void Game::init(uint8_t width, uint8_t height)
 
 
 	m_layerManager = std::make_unique<LayerManager>();
-	m_layerManager->createLayer(width, height, 0);
-	m_layerManager->createLayer(width, height, -1);
+	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
+	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
 
 	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);

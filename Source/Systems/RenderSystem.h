@@ -18,7 +18,7 @@ public:
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 private:
 	void render(EntityLayer* layer);
-	void showFPS();
+	void updateAndShowFrameStats(float deltaTime);
 
 private:
 	LayerManager* m_layerManager;

@@ -37,6 +37,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{f4f15903-67aa-4914-a5c9-c71f480bd7ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\PathFinding">
+      <UniqueIdentifier>{9f47df11-0633-458c-9a6c-d50e6ced84f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
@@ -371,6 +374,18 @@
     <ClInclude Include="..\..\Source\Components\EffectComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\PathEngine.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\GraphNode.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DynamicComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -531,6 +546,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\PathFinding\PathEngine.cpp">
+      <Filter>Utils\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp">
+      <Filter>Utils\PathFinding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

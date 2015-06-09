@@ -6,6 +6,7 @@
 #include "Components/SolidBlockComponent.h"
 #include "Components/LayerComponent.h"
 #include "GameGlobals.h"
+#include "Components/DynamicComponent.h"
 
 EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 {
@@ -89,6 +90,34 @@ void LayerManager::remove(Entity entity)
  */
 void LayerManager::update()
 {
+	
+	for (auto& entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
+	{
+		auto layerComponent = entity.component<LayerComponent>();
+		auto cell = entity.component<CellComponent>();
+		auto transform = entity.component<TransformComponent>();
+
+		assert(layerComponent && cell && transform);
+
+		if (cell && transform)
+		{
+			int cellX = static_cast<int>(transform->x / GameConstants::CELL_WIDTH);
+			int cellY = static_cast<int>(transform->y / GameConstants::CELL_HEIGHT);
+
+			// If the cell changed then refresh the cell and grid
+			if (cellX != cell->x || cellY != cell->y)
+			{
+				m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+
+				cell->x = cellX;
+				cell->y = cellY;
+
+				m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+			}
+		}
+	}
+
+	/*
 	for (auto& l : m_layers)
 	{
 		EntityLayerPtr layer = l.second;
@@ -124,13 +153,13 @@ void LayerManager::update()
 				}
 			}
 		}
-	}
+	}*/
+	
 }
 
 EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)
 {
 	assert(m_layers.count(layer));
-
 	return m_layers[layer]->get(cellX, cellY);
 }
 

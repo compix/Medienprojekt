@@ -37,6 +37,7 @@
 #include "Components/DirectionComponent.h"
 #include "Components/DestructionDelayComponent.h"
 #include "Components/EffectComponent.h"
+#include "Components/DynamicComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -78,8 +79,9 @@ Entity EntityFactory::createPlayer(float x, float y)
 	InputComponent inputComponent;
 	inputComponent.playerIndex = -1;
 	entity.assign<InputComponent>(inputComponent);
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<InventoryComponent>();
+	entity.assign<DynamicComponent>();
 
 	m_layerManager->add(entity);
 
@@ -114,7 +116,7 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	entity.assign<BodyComponent>(bodyComponent);
 
 
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<BlockComponent>();
 
 	m_layerManager->add(entity);
@@ -150,7 +152,7 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 
 	entity.assign<BodyComponent>(bodyComponent);
 
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 
 	m_layerManager->add(entity);
 
@@ -176,7 +178,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	entity.assign<CellComponent>(cellX, cellY);
 
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<DynamicComponent>();
 
 	m_layerManager->add(entity);
 
@@ -248,8 +251,9 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(cellX, cellY);
 
-	entity.assign<LayerComponent>(0);
-		
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<DynamicComponent>();
+
 	m_layerManager->add(entity);
 
 	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime);
@@ -274,8 +278,9 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t rang
 	createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
 
 	entity.assign<ExplosionComponent>();
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(0.55f);
+	entity.assign<DynamicComponent>();
 
 	m_layerManager->add(entity);
 
@@ -294,7 +299,7 @@ Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)
 	entity.assign<SpriteComponent>(sprite);
 
 	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<LayerComponent>(-1);
+	entity.assign<LayerComponent>(GameConstants::FLOOR_LAYER);
 	entity.assign<FloorComponent>();
 
 	m_layerManager->add(entity);
@@ -312,7 +317,7 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 	entity.assign<TransformComponent>(transformComponent);
 
 	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(3.f);
 	entity.assign<EffectComponent>();
 
@@ -354,9 +359,10 @@ Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity tar
 	entity.assign<TransformComponent>(transformComponent);
 
 	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(1.5f);
 	entity.assign<EffectComponent>();
+	entity.assign<DynamicComponent>();
 
 	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
 	auto emitter = manager->spawnEmitter();
@@ -397,7 +403,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	entity.assign<TransformComponent>(transformComponent);
 
 	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<LayerComponent>(0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<ItemComponent>(type);
 	entity.assign<HealthComponent>(1);
 
