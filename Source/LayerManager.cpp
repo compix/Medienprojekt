@@ -94,7 +94,7 @@ void LayerManager::remove(Entity entity)
 void LayerManager::update()
 {
 	
-	for (auto& entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
+	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
 	{
 		auto layerComponent = entity.component<LayerComponent>();
 		auto cell = entity.component<CellComponent>();

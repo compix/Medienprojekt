@@ -2,6 +2,8 @@
 #include "RenderSystem.h"
 #include "../Components/AnimationComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/InputComponent.h"
+#include "../Components/DirectionComponent.h"
 #include <math.h>
 #include <algorithm>
 #include "../Animation/Animator.h"
@@ -11,6 +13,23 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 	ComponentHandle<AnimationComponent> animation;
 	ComponentHandle<SpriteComponent> sprite;
 
+	for (auto entity : entityManager.entities_with_components<InputComponent, DirectionComponent>())
+	{
+		auto input = entity.component<InputComponent>();
+		auto directionComponent = entity.component<DirectionComponent>();
+		if (directionComponent)
+		{
+			if (input->moveX > 0)
+				directionComponent->direction = Direction::RIGHT;
+			else if (input->moveX < 0)
+				directionComponent->direction = Direction::LEFT;
+			else if (input->moveY > 0)
+				directionComponent->direction = Direction::DOWN;
+			else if (input->moveY < 0)
+				directionComponent->direction = Direction::UP;
+		}
+	}
+	
 	for (Entity entity : entityManager.entities_with_components(animation, sprite))
 	{
 		animation->animator->update(entity, (float)dt);

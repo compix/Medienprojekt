@@ -24,6 +24,8 @@ public:
 	b2World* GetWorld();
 	float GetScale();
 
+	void setContactListener(b2ContactListener* listener);
+
 	static float toBox2D(float pixel);
 	static float toWorld(float meters);
 	

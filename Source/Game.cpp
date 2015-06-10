@@ -46,7 +46,6 @@ Game::~Game() {
 
 void Game::init(uint8_t width, uint8_t height)
 {
-	
 	m_width = width;
 	m_height = height;
 
@@ -59,6 +58,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	/*Setup PhysixSystem*/
 	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+	m_PhysixSystem->setContactListener(&listener);
 	m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
@@ -107,7 +107,7 @@ void Game::update(TimeDelta dt)
 
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
-	m_PhysixSystem->DrawDebug();
+	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
 	//m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
