@@ -15,7 +15,7 @@ LevelGenerator::LevelGenerator(int width, int height)
 
 void LevelGenerator::generateRandomLevel()
 {
-	Random::randomize();
+	//Random::randomize();
 
 	// Rules because lots of if then else statements are ugly, hard to read and harder to change.
 	std::vector<Rule> rules;
@@ -80,7 +80,7 @@ bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 
 bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
-	bool condition = Random::getInt(1, 100) <= 85; // 85% chance to spawn a block
+	bool condition = Random::getInt(1, 100) <= 10; // 85% chance to spawn a block
 	if (condition) 
 		GameGlobals::entityFactory->createBlock(pos.cellX, pos.cellY);
 

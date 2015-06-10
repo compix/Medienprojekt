@@ -9,6 +9,7 @@
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
 #include "GameGlobals.h"
+#include "Utils/PathFinding/PathEngine.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
@@ -59,6 +60,9 @@ protected:
 	sf::Vector2f m_mousePos;
 
 	ParticleEmitter* m_particleEmitter;
+
+	std::unique_ptr<PathEngine> m_pathEngine;
+	Path m_path;
 };
 
 class LocalGame : public Game
