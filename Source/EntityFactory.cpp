@@ -36,6 +36,7 @@
 #include "Components/DestructionDelayComponent.h"
 #include "Components/EffectComponent.h"
 #include "Components/DynamicComponent.h"
+#include "Components/SoundComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -203,6 +204,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 
+	//Physix
 	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
 
 	BodyComponent bodyComponent;
@@ -227,6 +229,9 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	bodyComponent.body->CreateFixture(&fixtureDef);
 
 	entity.assign<BodyComponent>(bodyComponent);
+	//Physix_END
+
+	entity.assign<SoundComponent>("Game\Assets\sounds\explosion.wav");
 
 	m_layerManager->add(entity);
 

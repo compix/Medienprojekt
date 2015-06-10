@@ -1,6 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{859E00A2-F108-B518-3A47-66BEA6F0926D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{6B7DD516-5735-1764-C03C-F0BFAC13B254}</UniqueIdentifier>
     </Filter>
@@ -32,16 +35,31 @@
       <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\AssetManagement">
-      <UniqueIdentifier>{9bef84d4-a7c7-4e1f-81d5-216830f54c2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Animation">
-      <UniqueIdentifier>{f4f15903-67aa-4914-a5c9-c71f480bd7ad}</UniqueIdentifier>
+      <UniqueIdentifier>{A226E174-0E93-9C6F-D786-34CD43B2BED7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\PathFinding">
-      <UniqueIdentifier>{9f47df11-0633-458c-9a6c-d50e6ced84f8}</UniqueIdentifier>
+      <UniqueIdentifier>{D114E15E-3D2B-DFF4-86A2-6A16F2F7AF7C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Animation\AnimationState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\AnimationType.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\Animator.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\AnimatorManager.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\IdleState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Animation\WalkingState.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h">
       <Filter>Components</Filter>
@@ -67,6 +85,15 @@
     <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DirectionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\DynamicComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\EffectComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -80,6 +107,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ItemComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\LayerComponent.h">
@@ -103,6 +133,9 @@
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\SoundComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -112,6 +145,7 @@
     <ClInclude Include="..\..\Source\Components\TransformComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ContactListener.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h">
@@ -145,6 +179,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h">
@@ -181,6 +218,9 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Graphics\ParticleManager.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LayerManager.h" />
@@ -271,6 +311,9 @@
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ItemSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\LightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -282,6 +325,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h">
+      <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Colors.h">
       <Filter>Utils</Filter>
@@ -307,6 +368,15 @@
     <ClInclude Include="..\..\Source\Utils\Math.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\GraphNode.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\PathFinding\PathEngine.h">
+      <Filter>Utils\PathFinding</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -320,76 +390,22 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\AnimationState.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\Animator.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\IdleState.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\WalkingState.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\DirectionComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\AnimatorManager.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Animation\AnimationType.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\ItemComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\ItemSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\EffectComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\PathFinding\PathEngine.h">
-      <Filter>Utils\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\PathFinding\GraphNode.h">
-      <Filter>Utils\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\DynamicComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h">
-      <Filter>Utils\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="ContactListener.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Animation\Animator.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\IdleState.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Animation\WalkingState.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\ContactListener.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
@@ -397,6 +413,9 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
@@ -475,6 +494,9 @@
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -486,6 +508,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp">
+      <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\Colors.cpp">
       <Filter>Utils</Filter>
@@ -508,6 +542,12 @@
     <ClCompile Include="..\..\Source\Utils\Math.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp">
+      <Filter>Utils\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\PathFinding\PathEngine.cpp">
+      <Filter>Utils\PathFinding</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\Random.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -518,42 +558,5 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Animation\Animator.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Animation\IdleState.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Animation\WalkingState.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\PathFinding\PathEngine.cpp">
-      <Filter>Utils\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp">
-      <Filter>Utils\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="ContactListener.cpp" />
   </ItemGroup>
 </Project>

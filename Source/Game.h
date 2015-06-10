@@ -9,7 +9,7 @@
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
 #include "GameGlobals.h"
-#include "../Build/vs2013/ContactListener.h"
+#include "ContactListener.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
