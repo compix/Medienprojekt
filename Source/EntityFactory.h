@@ -8,6 +8,10 @@
 #include "Components/ExplosionComponent.h"
 #include "Components/ItemComponent.h"
 
+namespace sf{
+	class SoundBuffer;
+}
+
 class ShaderManager;
 using entityx::EntityManager;
 
@@ -34,7 +38,9 @@ public:
 	Wird nach abspielen selbstständig zerstört.
 	@param file Pfad zur Sound-Datei.
 	*/
-	Entity createSound(const char* file);
+	Entity createSound(sf::SoundBuffer* file);
+
+	Entity EntityFactory::createMusic(string file);
 
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 

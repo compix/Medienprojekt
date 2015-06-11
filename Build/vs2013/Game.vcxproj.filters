@@ -323,6 +323,9 @@
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\SoundSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -336,6 +339,12 @@
       <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\MusicLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\SoundLoader.h">
       <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h">
@@ -390,12 +399,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="..\..\Source\Systems\SoundSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\AudioLoader.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -512,6 +515,9 @@
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -519,6 +525,12 @@
       <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\MusicLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\SoundLoader.cpp">
       <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp">
@@ -564,11 +576,5 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
-    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\AudioLoader.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

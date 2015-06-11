@@ -343,11 +343,11 @@ Sounds können nur von existierenden Entitys erzeugt werden.
 Wird nach abspielen selbstständig zerstört.
 @param file Pfad zur Sound-Datei.
 */
-Entity EntityFactory::createSound(const char* file)
+Entity EntityFactory::createSound(SoundBuffer* buffer)
 {
 
 	Entity entity = GameGlobals::entities->create();
-	entity.assign<SoundComponent>(file, true);
+	entity.assign<SoundComponent>(buffer, true);
 
 	return entity;
 }

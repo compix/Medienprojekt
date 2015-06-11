@@ -3,16 +3,10 @@
 
 struct SoundComponent
 {
-	SoundComponent(const char* file, bool destroyEntityAtEnd = false) :buffer(), sound(), destroyEntityAtEnd(destroyEntityAtEnd)
+	SoundComponent(sf::SoundBuffer* buffer, bool destroyEntityAtEnd = false) :sound(), destroyEntityAtEnd(destroyEntityAtEnd)
 	{
-		if(!buffer.loadFromFile(file)){
-			std::cout << "SOUND_ERROR" << std::endl;
-		}
-
-		sound.setBuffer(buffer);
+		sound.setBuffer(*buffer);
 	}
-
-	sf::SoundBuffer buffer;
 	sf::Sound sound;
 	bool wasPlayedOnce = false, destroyEntityAtEnd = false;
 };

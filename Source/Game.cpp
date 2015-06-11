@@ -30,8 +30,9 @@
 #include "Systems/ItemSystem.h"
 #include <SFML/Audio/Music.hpp>
 #include "Systems/SoundSystem.h"
+#include "Utils/AssetManagement/AssetManager.h"
 
-sf::Music music;
+
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
@@ -62,11 +63,6 @@ void Game::init(uint8_t width, uint8_t height)
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
 
-	
-
-	assert(music.openFromFile("../Game/Assets/music/A_Journey_Awaits.ogg"));
-	music.setLoop(true);
-	music.play();
 	
 
 	m_layerManager = std::make_unique<LayerManager>();
@@ -100,6 +96,11 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
+
+
+	GameGlobals::music->openFromFile(GameGlobals::assetManager->getMusic("Title_Theme"));
+	GameGlobals::music->setLoop(true);
+	GameGlobals::music->play();
 }
 
 void Game::update(TimeDelta dt)
