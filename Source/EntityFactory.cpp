@@ -347,15 +347,7 @@ Entity EntityFactory::createSound(const char* file)
 {
 
 	Entity entity = GameGlobals::entities->create();
-
-	entity.assign<TransformComponent>();
-
 	entity.assign<SoundComponent>(file, true);
-
-	entity.assign<CellComponent>(0, 0);
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-
-	m_layerManager->add(entity);
 
 	return entity;
 }
