@@ -200,6 +200,7 @@
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AudioLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h" />
     <ClInclude Include="..\..\Source\Utils\Colors.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AudioLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp" />
     <ClCompile Include="..\..\Source\Utils\Colors.cpp" />

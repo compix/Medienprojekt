@@ -393,6 +393,9 @@
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AudioLoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -563,6 +566,9 @@
     <ClCompile Include="..\..\Source\debugrender.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AudioLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

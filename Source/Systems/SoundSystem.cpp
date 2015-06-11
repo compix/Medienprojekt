@@ -1,6 +1,5 @@
 #include "SoundSystem.h"
 #include "../Components/SoundComponent.h"
-#include "../Components/TransformComponent.h"
 
 using namespace entityx;
 
@@ -16,7 +15,7 @@ void SoundSystem::update(EntityManager& entityManager, EventManager& eventManage
 	{
 		if (sound->destroyEntityAtEnd)
 		{
-			if (sound->sound.getStatus() == sf::Sound::Playing)
+			if (sound->sound.getStatus() == sf::Sound::Playing && !sound->wasPlayedOnce)
 			{
 				sound->wasPlayedOnce = true;
 			}
