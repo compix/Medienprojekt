@@ -194,6 +194,7 @@
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />

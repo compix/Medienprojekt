@@ -8,6 +8,7 @@
 #include "../Components/TimerComponent.h"
 #include "../Events/BombExplodedEvent.h"
 #include "../GameGlobals.h"
+#include "../Components/SoundComponent.h"
 
 BombSystem::BombSystem()
 {
@@ -48,6 +49,8 @@ void BombSystem::detonate(entityx::Entity entity)
 	{
 		auto cell = entity.component<CellComponent>();
 		auto bomb = entity.component<BombComponent>();
+
+		GameGlobals::entityFactory->createSound("../Game/Assets/sounds/explosion_2.wav").component<SoundComponent>()->sound.play();
 
 		assert(cell);
 

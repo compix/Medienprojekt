@@ -28,8 +28,10 @@
 #include "Animation/AnimatorManager.h"
 #include "Graphics/ParticleSpawnSystem.h"
 #include "Systems/ItemSystem.h"
+#include <SFML/Audio/Music.hpp>
+#include "Systems/SoundSystem.h"
 
-
+sf::Music music;
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
@@ -60,6 +62,12 @@ void Game::init(uint8_t width, uint8_t height)
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
 
+	
+
+	assert(music.openFromFile("../Game/Assets/music/A_Journey_Awaits.ogg"));
+	music.setLoop(true);
+	music.play();
+	
 
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
@@ -123,6 +131,7 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
+	m_systems.add<SoundSystem>();
 	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>();

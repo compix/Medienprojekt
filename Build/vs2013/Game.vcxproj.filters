@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Animation">
@@ -390,6 +390,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="..\..\Source\Systems\SoundSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -558,5 +561,8 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
+    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

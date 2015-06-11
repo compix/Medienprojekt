@@ -231,8 +231,6 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<BodyComponent>(bodyComponent);
 	//Physix_END
 
-	entity.assign<SoundComponent>("Game\Assets\sounds\explosion.wav");
-
 	m_layerManager->add(entity);
 
 	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
@@ -333,6 +331,29 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t rang
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(0.55f);
 	entity.assign<DynamicComponent>();
+
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
+/**
+Dies wird genutzt, um z.B. einen Sound zu erzeugen, der von einer nicht vorhandener Entity angestossen wird.
+Sounds können nur von existierenden Entitys erzeugt werden.
+Wird nach abspielen selbstständig zerstört.
+@param file Pfad zur Sound-Datei.
+*/
+Entity EntityFactory::createSound(const char* file)
+{
+
+	Entity entity = GameGlobals::entities->create();
+
+	entity.assign<TransformComponent>();
+
+	entity.assign<SoundComponent>(file, true);
+
+	entity.assign<CellComponent>(0, 0);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 
 	m_layerManager->add(entity);
 

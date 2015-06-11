@@ -28,6 +28,14 @@ public:
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime);
 
+	/**
+	Dies wird genutzt, um z.B. einen Sound zu erzeugen, der von einer nicht vorhandener Entity angestossen wird.
+	Sounds können nur von existierenden Entitys erzeugt werden.
+	Wird nach abspielen selbstständig zerstört.
+	@param file Pfad zur Sound-Datei.
+	*/
+	Entity createSound(const char* file);
+
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 
 	Entity createSmoke(uint8_t cellX, uint8_t cellY);
