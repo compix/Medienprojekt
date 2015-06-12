@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Animation">
@@ -133,9 +133,6 @@
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\SoundComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -190,6 +187,9 @@
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\MusicEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -200,6 +200,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\SoundEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h">
@@ -317,6 +320,9 @@
     <ClInclude Include="..\..\Source\Systems\LightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\MusicSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -398,8 +404,6 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -510,6 +514,9 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -576,7 +583,5 @@
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\debugrender.cpp" />
-    <ClCompile Include="..\..\Source\MusicSystem.cpp" />
   </ItemGroup>
 </Project>

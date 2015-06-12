@@ -1,9 +1,11 @@
 #pragma once
 #include <entityx/Event.h>
 #include <entityx/System.h>
+#include "../Events/MusicEvent.h"
 #include <SFML/Audio/Music.hpp>
 
 
+struct MusicEvent;
 struct StartGameEvent;
 using entityx::System;
 using entityx::Receiver;
@@ -16,6 +18,7 @@ public:
 
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const StartGameEvent& event);
+	void receive(const MusicEvent& event);
 	MusicSystem();
 	~MusicSystem();
 

@@ -6,7 +6,7 @@
 void ContactListener::BeginContact(b2Contact* contact)
 {
 	#ifdef _DEBUG 
-		std::cout << "CONTACT" << std::endl;
+		//std::cout << "CONTACT" << std::endl;
 	#endif
 	
 
@@ -16,7 +16,7 @@ void ContactListener::BeginContact(b2Contact* contact)
 void ContactListener::EndContact(b2Contact* contact)
 {
 	#ifdef _DEBUG 
-	 std::cout << "END_CONTACT" << std::endl;
+	 //std::cout << "END_CONTACT" << std::endl;
 	#endif
 
 	b2Fixture* fixtureA = contact->GetFixtureA();

@@ -124,7 +124,6 @@
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
-    <ClInclude Include="..\..\Source\Components\SoundComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
@@ -145,10 +144,12 @@
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
+    <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
@@ -220,7 +221,6 @@
     <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
-    <ClInclude Include="..\..\Source\debugrender.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
@@ -248,7 +248,6 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
-    <ClCompile Include="..\..\Source\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Network\NetClient.cpp" />
     <ClCompile Include="..\..\Source\Network\NetServer.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
@@ -266,6 +265,7 @@
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
@@ -288,7 +288,6 @@
     <ClCompile Include="..\..\Source\Utils\Random.cpp" />
     <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
-    <ClCompile Include="..\..\Source\debugrender.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
