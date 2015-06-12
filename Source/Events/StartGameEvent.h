@@ -2,5 +2,4 @@
 
 struct StartGameEvent
 {
-	explicit StartGameEvent() {}
 };

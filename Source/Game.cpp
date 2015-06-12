@@ -31,7 +31,8 @@
 #include <SFML/Audio/Music.hpp>
 #include "Systems/SoundSystem.h"
 #include "Utils/AssetManagement/AssetManager.h"
-
+#include "Systems/MusicSystem.h"
+#include "Events/StartGameEvent.h"
 
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
@@ -96,11 +97,7 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
-
-
-	GameGlobals::music->openFromFile(GameGlobals::assetManager->getMusic("Title_Theme"));
-	GameGlobals::music->setLoop(true);
-	GameGlobals::music->play();
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void Game::update(TimeDelta dt)
@@ -132,7 +129,13 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
-	m_systems.add<SoundSystem>();
+	//m_systems.add<MusicSystem>(); \
+	//								 \
+	//									Funktioniert zusammen nicht, daran zu sehen, dass explosionen von einer Bombe keine explosion bei einer anderen Bombe auslöst.
+	//								 /
+	//m_systems.add<SoundSystem>(); /
+	
+	
 	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>();
@@ -150,6 +153,9 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	m_systems.add<MusicSystem>(); // Funktioniert
+	m_systems.add<SoundSystem>(); //
+
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)

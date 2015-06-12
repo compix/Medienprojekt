@@ -399,6 +399,7 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\debugrender.h" />
+    <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -576,5 +577,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\debugrender.cpp" />
+    <ClCompile Include="..\..\Source\MusicSystem.cpp" />
   </ItemGroup>
 </Project>

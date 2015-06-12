@@ -3,7 +3,7 @@
 
 SoundLoader::SoundLoader()
 {
-	m_basePath = "Assets/audio/";
+	m_basePath = "Assets/sound/";
 }
 
 SoundLoader::SoundLoader(std::string basePath)

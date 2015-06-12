@@ -15,7 +15,7 @@ public:
 	Assets::Texture* getTexture(const std::string& name);
 	Assets::Animation* getAnimation(const std::string& name);
 	SoundBuffer* getSound(const std::string& name);
-	string getMusic(const std::string& name);
+	Music* getMusic(const std::string& name);
 private:
 	TextureLoader m_textureLoader;
 	TexturePacker m_texturePacker;

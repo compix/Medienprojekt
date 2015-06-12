@@ -4,17 +4,17 @@
 #include "AssetLoader.h"
 #include <sys/stat.h>
 
-using sf::SoundBuffer;
+using sf::Music;
 using std::string;
 
-class MusicLoader : public AssetLoader<string>
+class MusicLoader : public AssetLoader<Music>
 {
 public:
 	MusicLoader();
 	MusicLoader(std::string basePath);
 
-	virtual string& load(const string& filename, const string& name) override;
-	string& load(const string& name, const Json::Value& jsonValue) override;
+	virtual Music& load(const string& filename, const string& name) override;
+	Music& load(const string& name, const Json::Value& jsonValue) override;
 	inline bool file_exists(const std::string& name);
 
 };

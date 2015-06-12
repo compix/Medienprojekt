@@ -4,8 +4,8 @@ AssetManager::AssetManager()
 {
 	m_textureLoader.loadAllFromJson("Assets/json/textures.json");
 	m_animationLoader.loadAllFromJson("Assets/json/animations.json");
-	m_soundLoader.loadAllFromJson("Assets/json/audio.json");
-	m_musicLoader.loadAllFromJson("Assets/json/audio.json");
+	m_soundLoader.loadAllFromJson("Assets/json/sound.json");
+	m_musicLoader.loadAllFromJson("Assets/json/music.json");
 
 	for (auto t : m_textureLoader.getTextureMap())
 	{
@@ -32,7 +32,7 @@ SoundBuffer* AssetManager::getSound(const std::string& name)
 	return &m_soundLoader.get(name);
 }
 
-string AssetManager::getMusic(const std::string& name)
+Music* AssetManager::getMusic(const std::string& name)
 {
-	return m_musicLoader.get(name);
+	return &m_musicLoader.get(name);
 }

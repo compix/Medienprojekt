@@ -192,6 +192,7 @@
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
     <ClInclude Include="..\..\Source\Systems\ItemSystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
+    <ClCompile Include="..\..\Source\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Network\NetClient.cpp" />
     <ClCompile Include="..\..\Source\Network\NetServer.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />

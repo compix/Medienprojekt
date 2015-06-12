@@ -9,6 +9,7 @@ SoundSystem::SoundSystem()
 
 void SoundSystem::update(EntityManager& entityManager, EventManager& eventManager, TimeDelta dt)
 {
+	
 	ComponentHandle<SoundComponent> sound;
 
 	for (Entity entity : entityManager.entities_with_components(sound))

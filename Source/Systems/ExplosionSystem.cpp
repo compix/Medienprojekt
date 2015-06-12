@@ -8,6 +8,7 @@
 #include "../Components/SolidBlockComponent.h"
 #include "../Components/EffectComponent.h"
 #include "../Components/InventoryComponent.h"
+#include "../Components/SoundComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
@@ -36,7 +37,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 
 				for (auto& e : m_layerManager->getEntities(layer->layer, nextCellX, nextCellY))
 				{
-					if (e.has_component<ExplosionComponent>() || e.has_component<EffectComponent>() || e.has_component<InventoryComponent>())
+					if (e.has_component<ExplosionComponent>() || e.has_component<EffectComponent>() || e.has_component<InventoryComponent>() || e.has_component<SoundComponent>())
 						continue;
 
 					nextRange = 0;

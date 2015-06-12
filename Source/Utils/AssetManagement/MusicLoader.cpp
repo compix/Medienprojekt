@@ -2,7 +2,7 @@
 
 MusicLoader::MusicLoader()
 {
-	m_basePath = "Assets/audio/";
+	m_basePath = "Assets/music/";
 }
 
 MusicLoader::MusicLoader(std::string basePath)
@@ -10,20 +10,21 @@ MusicLoader::MusicLoader(std::string basePath)
 	m_basePath = basePath;
 }
 
-string& MusicLoader::load(const string& filename, const string& name)
+Music& MusicLoader::load(const string& filename, const string& name)
 {
 	string pathToMusic;
 	string path = m_basePath + filename;
 
-	
-	if (!file_exists(path))
-		throw file_not_found(path);
+	m_assets[name];
 
-	m_assets[name] = path;
+	auto& music = m_assets[name];
+	if (!music.openFromFile(path))
+		throw file_not_found(path);
+	
 	return m_assets[name];
 }
 
-string& MusicLoader::load(const string& name, const Json::Value& jsonValue)
+Music& MusicLoader::load(const string& name, const Json::Value& jsonValue)
 {
 	return load(jsonValue.asString(), name);
 }
