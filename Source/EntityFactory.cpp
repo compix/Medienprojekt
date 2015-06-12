@@ -49,8 +49,9 @@ Entity EntityFactory::createPlayer(float x, float y)
 	static int playerId = 0;
 	++playerId;
 
-	uint8_t cellX = (x - GameConstants::CELL_WIDTH*0.5f) / GameConstants::CELL_WIDTH;
-	uint8_t cellY = (y - GameConstants::CELL_HEIGHT*0.5f) / GameConstants::CELL_HEIGHT;
+	uint8_t cellX = x / GameConstants::CELL_WIDTH;
+	uint8_t cellY = y / GameConstants::CELL_HEIGHT;
+
 	TransformComponent transformComponent;
 	transformComponent.x = x;
 	transformComponent.y = y;

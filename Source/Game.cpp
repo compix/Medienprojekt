@@ -28,11 +28,10 @@
 #include "Animation/AnimatorManager.h"
 #include "Graphics/ParticleSpawnSystem.h"
 #include "Systems/ItemSystem.h"
-#include <SFML/Audio/Music.hpp>
-#include "Systems/SoundSystem.h"
-#include "Utils/AssetManagement/AssetManager.h"
-#include "Systems/MusicSystem.h"
-#include "Events/StartGameEvent.h"
+#include "Utils/PathFinding/PathEngine.h"
+#include "Components/InventoryComponent.h"
+#include "Components/CellComponent.h"
+
 
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
@@ -64,12 +63,14 @@ void Game::init(uint8_t width, uint8_t height)
 	BodyFactory::m_World = m_PhysixSystem->GetWorld();
 	/*Setup PhysixSystem End*/
 
-	
 
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
+
+	m_pathEngine = std::make_unique<PathEngine>(m_layerManager.get());
+	m_layerManager->setGraph(m_pathEngine->getGraph());
 
 	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
@@ -97,9 +98,6 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
-
-	GameGlobals::events->emit<StartGameEvent>();
-	
 }
 
 void Game::update(TimeDelta dt)
@@ -117,6 +115,14 @@ void Game::update(TimeDelta dt)
 
 	GameGlobals::window->draw(m_light);
 	GameGlobals::window->draw(*m_particleEmitter);
+
+	auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
+	auto cell = player.component<CellComponent>();
+
+	m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
+
+	m_pathEngine->visualize();
+	m_pathEngine->visualize(m_path);
 }
 
 void Game::refreshView()
@@ -148,8 +154,6 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	m_systems.add<MusicSystem>();
-	m_systems.add<SoundSystem>();
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)
@@ -157,6 +161,8 @@ void LocalGame::init(uint8_t width, uint8_t height)
 	Game::init(width, height);
 	LevelGenerator levelGenerator(width, height);
 	levelGenerator.generateRandomLevel();
+
+	m_pathEngine->getGraph()->init();
 }
 
 void ClientGame::addSystems()

@@ -7,6 +7,7 @@
 #include "Components/LayerComponent.h"
 #include "GameGlobals.h"
 #include "Components/DynamicComponent.h"
+#include "Utils/PathFinding/Graph.h"
 
 EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 {
@@ -57,6 +58,7 @@ void LayerManager::add(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+		m_graph->onEntityAdded(entity);
 	}
 }
 
@@ -81,6 +83,7 @@ void LayerManager::remove(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+		m_graph->onEntityRemoved(entity);
 	}
 		
 }
@@ -116,45 +119,6 @@ void LayerManager::update()
 			}
 		}
 	}
-
-	/*
-	for (auto& l : m_layers)
-	{
-		EntityLayerPtr layer = l.second;
-		EntityGrid grid = layer->getEntityGrid();
-
-		for (int x = 0; x < layer->getWidth(); x++)
-		{
-			for (int y = 0; y < layer->getHeight(); y++)
-			{
-				EntityCollection collection = grid[x][y];
-
-				for (auto& entity : collection)
-				{
-					auto cell = entity.component<CellComponent>();
-					auto transform = entity.component<TransformComponent>();
-
-					if (cell && transform)
-					{
-						int cellX = static_cast<int>(transform->x / GameConstants::CELL_WIDTH);
-						int cellY = static_cast<int>(transform->y / GameConstants::CELL_HEIGHT);
-
-						// If the cell changed then refresh the cell and grid
-						if (cellX != cell->x || cellY != cell->y)
-						{
-							layer->remove(entity, cell->x, cell->y);
-
-							cell->x = cellX;
-							cell->y = cellY;
-
-							layer->add(entity, cell->x, cell->y);
-						}
-					}
-				}
-			}
-		}
-	}*/
-	
 }
 
 EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)

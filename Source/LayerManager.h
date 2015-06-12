@@ -5,6 +5,8 @@
 
 using std::vector;
 
+class Graph;
+
 typedef std::shared_ptr<EntityLayer> EntityLayerPtr;
 typedef std::map<int, EntityLayerPtr> LayerContainer;
 
@@ -34,8 +36,10 @@ public:
 	Entity getEntityWithComponent(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
 
+	inline void setGraph(Graph* graph) { m_graph = graph; }
 private:
 	LayerContainer m_layers;
+	Graph* m_graph;
 };
 
 template <class T>
