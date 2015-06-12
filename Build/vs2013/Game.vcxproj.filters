@@ -387,6 +387,12 @@
       <Filter>Utils\PathFinding</Filter>
     </ClInclude>
     <ClInclude Include="ContactListener.h" />
+    <ClInclude Include="..\..\Source\Components\AIComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\AISystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
@@ -555,5 +561,8 @@
       <Filter>Utils\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="ContactListener.cpp" />
+    <ClCompile Include="..\..\Source\Systems\AISystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

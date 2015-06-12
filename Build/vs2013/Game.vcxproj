@@ -100,6 +100,7 @@
     <ClInclude Include="..\..\Source\Animation\IdleState.h" />
     <ClInclude Include="..\..\Source\Animation\WalkingState.h" />
     <ClInclude Include="..\..\Source\BodyFactory.h" />
+    <ClInclude Include="..\..\Source\Components\AIComponent.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
     <ClInclude Include="..\..\Source\Components\BlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\..\Source\Network\NetServer.h" />
     <ClInclude Include="..\..\Source\PhysixSystem.h" />
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
+    <ClInclude Include="..\..\Source\Systems\AISystem.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
@@ -246,6 +248,7 @@
     <ClCompile Include="..\..\Source\Network\NetServer.cpp" />
     <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
+    <ClCompile Include="..\..\Source\Systems\AISystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />

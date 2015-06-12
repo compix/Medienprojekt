@@ -5,21 +5,25 @@
 #include <stdint.h>
 #include <assert.h>
 #include <entityx/entityx.h>
+#include "../../EntityLayer.h"
+#include "../Common.h"
 
 class LayerManager;
 
-class Graph
+class Graph : public EntityLayer::IOnChangeListener
 {
 	friend class PathEngine;
 public:
 	Graph(LayerManager* layerManager);
 	~Graph();
 
+	void update();
+
 	void addNode(uint8_t x, uint8_t y);
 	void removeNode(uint8_t x, uint8_t y);
 
-	void onEntityAdded(entityx::Entity entity);
-	void onEntityRemoved(entityx::Entity entity);
+	void onEntityAdded(entityx::Entity& entity) override;
+	void onEntityRemoved(entityx::Entity& entity) override;
 
 	void resetPathInfo();
 
@@ -29,8 +33,12 @@ public:
 
 	void visualize();
 
-	GraphNode* getNeighbor(GraphNode* node, const GraphNode::Neighbor& neighbor);
-	bool hasNeighbor(GraphNode* node, GraphNode::Neighbor neighbor);
+	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
+	bool hasNeighbor(const GraphNode* node, Direction neighbor);
+
+	uint32_t estimateDangerCost(float remainingTimeTillExplosion);
+private:
+	void resetCosts();
 private:
 	uint8_t m_width, m_height;
 	GraphNode** m_nodeGrid;

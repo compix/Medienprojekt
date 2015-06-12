@@ -12,11 +12,9 @@ PathEngine::PathEngine(LayerManager* layerManager)
 	m_startDummy.prev = nullptr;
 	m_endDummy.next = nullptr;
 }
-
 void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, Path& pathOut)
 {
 	auto goal = m_graph->getNode(endX, endY);
-	uint16_t infoCount = 0;
 
 	GraphNode* start = m_graph->getNode(startX, startY);
 	start->costSoFar = 0;
@@ -24,6 +22,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 	start->prevOnPath = nullptr;
 	start->next = &m_endDummy;
 	start->prev = &m_startDummy;
+	m_startDummy.next = start;
 
 	m_graph->resetPathInfo();
 
@@ -34,6 +33,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 	{
 		// close this node
 		minNode->state = GraphNode::CLOSED;
+
 		
 		if (minNode == goal)
 		{
@@ -44,7 +44,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 		// Go through all neighbors
 		for (uint8_t i = 0; i < 4; ++i)
 		{
-			auto neighbor = m_graph->getNeighbor(minNode, static_cast<GraphNode::Neighbor>(i));
+			auto neighbor = m_graph->getNeighbor(minNode, static_cast<Direction>(i));
 
 			if (!neighbor->valid)
 				continue;
@@ -75,10 +75,10 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 			default: break;
 			}
 		}
-
+	
+		remove(minNode);
 		// Get the next min
-		minNode = minNode->next;
-		minNode->prev = &m_startDummy;
+		minNode = m_startDummy.next;
 	}
 
 	pathOut.nodeCount = 0;
@@ -110,9 +110,14 @@ void PathEngine::visualize(Path& path)
 	}
 }
 
+void PathEngine::update()
+{
+	m_graph->update();
+}
+
 uint32_t PathEngine::estimate(GraphNode* node, GraphNode* goal)
 {
-	return abs(node->x - goal->x) + abs(node->y - goal->y);
+	return (abs(node->x - goal->x) + abs(node->y - goal->y)) * NodeCost::NORMAL;
 }
 
 void PathEngine::insert(GraphNode* newNode, GraphNode* at)
@@ -140,22 +145,30 @@ GraphNode* PathEngine::remove(GraphNode* node)
 {
 	assert(node);
 	node->prev->next = node->next;
+	node->next->prev = node->prev;
 	return node->prev;
 }
 
 void PathEngine::makePath(Path& pathOut, GraphNode* goal)
 {
-	auto next = goal;
+	auto cur = goal;
 
 	pathOut.nodeCount = 0;
 	pathOut.cost = goal->costSoFar;
 
-	uint16_t i = 0;
-
-	while (next)
+	// count path nodes to get the correct order
+	uint16_t num = 0;
+	while (cur)
 	{
-		pathOut.nodes[i++] = next;
+		++num;
+		cur = cur->prevOnPath;
+	}
+
+	cur = goal;
+	while (cur)
+	{
+		pathOut.nodes[--num] = cur;
 		++pathOut.nodeCount;
-		next = next->prevOnPath;
+		cur = cur->prevOnPath;
 	}
 }

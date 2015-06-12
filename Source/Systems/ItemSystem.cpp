@@ -58,6 +58,9 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 
 void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 {
+	if (!e.entity.valid())
+		return;
+
 	if (e.entity.has_component<BlockComponent>())
 	{
 		auto entity = e.entity;
@@ -77,5 +80,9 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 void ItemSystem::receive(const ItemPickedUpEvent& e)
 {
 	auto item = e.item;
+
+	if (!item.valid())
+		return;
+
 	item.assign<DestructionComponent>(0.f);
 }

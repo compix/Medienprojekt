@@ -31,6 +31,7 @@
 #include "Utils/PathFinding/PathEngine.h"
 #include "Components/InventoryComponent.h"
 #include "Components/CellComponent.h"
+#include "Systems/AISystem.h"
 
 
 Game::Game()
@@ -70,7 +71,6 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager->configure(*GameGlobals::events);
 
 	m_pathEngine = std::make_unique<PathEngine>(m_layerManager.get());
-	m_layerManager->setGraph(m_pathEngine->getGraph());
 
 	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
@@ -116,13 +116,14 @@ void Game::update(TimeDelta dt)
 	GameGlobals::window->draw(m_light);
 	GameGlobals::window->draw(*m_particleEmitter);
 
-	auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
-	auto cell = player.component<CellComponent>();
+	//auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
+	//auto cell = player.component<CellComponent>();
 
-	m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
-
-	m_pathEngine->visualize();
-	m_pathEngine->visualize(m_path);
+	m_pathEngine->update();
+	//m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
+	
+	//m_pathEngine->visualize();
+	//m_pathEngine->visualize(m_path);
 }
 
 void Game::refreshView()
@@ -147,6 +148,7 @@ void LocalGame::addSystems()
 	m_systems.add<DeathSystem>();
 	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>();
+	m_systems.add<AISystem>(m_pathEngine.get());
 	m_systems.add<InputHandleSystem>();
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());

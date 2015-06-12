@@ -8,6 +8,7 @@
 #include "../../Components/BombComponent.h"
 #include "../../Components/LayerComponent.h"
 #include "../../Components/FloorComponent.h"
+#include "../../Components/TimerComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -19,6 +20,8 @@ Graph::Graph(LayerManager* layerManager)
 	m_nodeGrid = new GraphNode*[m_width];
 	for (int i = 0; i < m_width; i++)
 		m_nodeGrid[i] = new GraphNode[m_height];
+
+	mainLayer->listen(this);
 }
 
 Graph::~Graph()
@@ -27,6 +30,80 @@ Graph::~Graph()
 		delete[] m_nodeGrid[i];
 
 	delete[] m_nodeGrid;
+}
+
+void Graph::update()
+{
+	resetCosts();
+
+	// Go through all bombs and mark danger zones. Note: For correct danger estimations the AI should be considered and every AI should have an own graph like this.
+	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	{
+		auto bombComponent = bomb.component<BombComponent>();
+		auto timerComponent = bomb.component<TimerComponent>();
+		auto cell = bomb.component<CellComponent>();
+
+		auto correspondingNode = getNode(cell->x, cell->y);
+
+		// Simulate the explosion:
+		for (int i = 0; i < 4; ++i) // Go in all directions
+		{
+			Direction currentNeighbor = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
+			auto currentNode = correspondingNode;
+			currentNode->cost = estimateDangerCost(timerComponent->seconds);
+
+			for (int j = 0; j < bombComponent->explosionRange; ++j)
+			{
+				currentNode = getNeighbor(currentNode, currentNeighbor);
+
+				if (currentNode->valid)
+					currentNode->cost = estimateDangerCost(timerComponent->seconds);
+				else
+					break;			
+			}
+		}
+	}
+
+	// Go through all explosion components and simulate the explosion.
+	for (auto& explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
+	{
+		auto cell = explosion.component<CellComponent>();
+		auto spread = explosion.component<SpreadComponent>();
+
+		auto currentNode = getNode(cell->x, cell->y);
+		currentNode->cost = NodeCost::DANGER_HIGH;
+
+		for (int j = 0; j < spread->range; ++j)
+		{
+			currentNode = getNeighbor(currentNode, spread->direction);
+
+			if (currentNode->valid)
+				currentNode->cost = NodeCost::DANGER_HIGH;
+			else
+				break;
+		}
+	}
+}
+
+uint32_t Graph::estimateDangerCost(float remainingTimeTillExplosion)
+{
+	if (remainingTimeTillExplosion >= 2.f)
+		return NodeCost::DANGER_LOW;
+	else if (remainingTimeTillExplosion >= 1.f)
+		return NodeCost::DANGER_NORMAL;
+	else
+		return NodeCost::DANGER_HIGH;
+}
+
+void Graph::resetCosts()
+{
+	for (auto x = 0; x < m_width; ++x)
+	{
+		for (auto y = 0; y < m_height; ++y)
+		{
+			m_nodeGrid[x][y].cost = NodeCost::NORMAL;
+		}
+	}
 }
 
 void Graph::addNode(uint8_t x, uint8_t y)
@@ -38,7 +115,6 @@ void Graph::addNode(uint8_t x, uint8_t y)
 	node.valid = true;
 	node.x = x;
 	node.y = y;
-	node.cost = 1;
 }
 
 void Graph::removeNode(uint8_t x, uint8_t y)
@@ -49,32 +125,24 @@ void Graph::removeNode(uint8_t x, uint8_t y)
 	m_nodeGrid[x][y].valid = false;
 }
 
-void Graph::onEntityAdded(entityx::Entity entity)
+void Graph::onEntityAdded(entityx::Entity& entity)
 {
-	assert(entity.has_component<CellComponent>() && entity.has_component<LayerComponent>());
-
-	if (entity.component<LayerComponent>()->layer != GameConstants::MAIN_LAYER)
-		return;
+	assert(entity.has_component<CellComponent>());
 
 	if (entity.has_component<BombComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
-
 		removeNode(cell->x, cell->y);
 	}
 }
 
-void Graph::onEntityRemoved(entityx::Entity entity)
+void Graph::onEntityRemoved(entityx::Entity& entity)
 {
-	assert(entity.has_component<CellComponent>() && entity.has_component<LayerComponent>());
-
-	if (entity.component<LayerComponent>()->layer != GameConstants::MAIN_LAYER)
-		return;
+	assert(entity.has_component<CellComponent>());
 
 	if (entity.has_component<BlockComponent>() || entity.has_component<BombComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
-
 		addNode(cell->x, cell->y);
 	}
 }
@@ -100,6 +168,9 @@ void Graph::init()
 		{
 			auto& entities = mainLayer->get(x, y);
 			bool free = true;
+			m_nodeGrid[x][y].valid = false;
+			m_nodeGrid[x][y].x = x;
+			m_nodeGrid[x][y].y = y;
 
 			for (auto& e : entities)
 				if (e.component<BlockComponent>() || e.component<SolidBlockComponent>())
@@ -145,25 +216,25 @@ void Graph::visualize()
 			circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 5.f);
 			rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 13.f);
 
-			if (hasNeighbor(&node, GraphNode::LEFT))
+			if (hasNeighbor(&node, Direction::LEFT))
 			{
 				rect.setRotation(90);
 				GameGlobals::window->draw(rect);
 			}
 
-			if (hasNeighbor(&node, GraphNode::RIGHT))
+			if (hasNeighbor(&node, Direction::RIGHT))
 			{
 				rect.setRotation(-90);
 				GameGlobals::window->draw(rect);
 			}
 
-			if (hasNeighbor(&node, GraphNode::TOP))
+			if (hasNeighbor(&node, Direction::UP))
 			{
 				rect.setRotation(180);
 				GameGlobals::window->draw(rect);
 			}
 
-			if (hasNeighbor(&node, GraphNode::BOT))
+			if (hasNeighbor(&node, Direction::DOWN))
 			{
 				rect.setRotation(0);
 				GameGlobals::window->draw(rect);
@@ -174,22 +245,22 @@ void Graph::visualize()
 	}
 }
 
-GraphNode* Graph::getNeighbor(GraphNode* node, const GraphNode::Neighbor& neighbor)
+GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
 	assert(node->x > 0 && node->x < m_width - 1 && node->y > 0 && node->y < m_height - 1);
 
 	switch (neighbor)
 	{
-	case GraphNode::LEFT: 
+	case Direction::LEFT:
 		return &m_nodeGrid[node->x - 1][node->y];
 		break;
-	case GraphNode::RIGHT:
+	case Direction::RIGHT:
 		return &m_nodeGrid[node->x + 1][node->y];
 		break;
-	case GraphNode::TOP:
+	case Direction::UP:
 		return &m_nodeGrid[node->x][node->y - 1];
 		break;
-	case GraphNode::BOT:
+	case Direction::DOWN:
 		return &m_nodeGrid[node->x][node->y + 1];
 		break;
 	default: 
@@ -198,7 +269,7 @@ GraphNode* Graph::getNeighbor(GraphNode* node, const GraphNode::Neighbor& neighb
 	}
 }
 
-bool Graph::hasNeighbor(GraphNode* node, GraphNode::Neighbor neighbor)
+bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 {
 	return getNeighbor(node, neighbor)->valid;
 }

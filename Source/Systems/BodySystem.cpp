@@ -29,9 +29,13 @@ void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& even
 
 void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
 {
-	
 	auto entity = event.entity;
-	if (entity.has_component<BodyComponent>()){
+
+	if (!entity.valid())
+		return;
+
+	if (entity.has_component<BodyComponent>())
+	{
 		auto body = entity.component<BodyComponent>()->body;
 		body->GetWorld()->DestroyBody(body);
 	}

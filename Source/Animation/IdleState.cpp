@@ -14,6 +14,7 @@ void IdleState::update(Animator* animator, entityx::Entity& entity, float deltaT
 		if (!Math::nearEq(inputComponent->moveX, 0.f) || !Math::nearEq(inputComponent->moveY, 0.f))
 		{
 			animator->changeTo<WalkingState>(entity);
+			animator->update(entity, deltaTime);
 			return;
 		}		
 	}

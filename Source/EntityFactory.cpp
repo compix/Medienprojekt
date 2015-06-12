@@ -36,6 +36,7 @@
 #include "Components/DestructionDelayComponent.h"
 #include "Components/EffectComponent.h"
 #include "Components/DynamicComponent.h"
+#include "Components/AIComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -80,6 +81,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 		break;
 	case 2:
 		isA = BodyFactory::PLAYER_3;
+		entity.assign<AIComponent>();
 		break;
 	case 3:
 		isA = BodyFactory::PLAYER_4;
@@ -104,6 +106,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<InventoryComponent>();
 	entity.assign<DynamicComponent>();
+	entity.assign<HealthComponent>(1);
 
 	m_layerManager->add(entity);
 

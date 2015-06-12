@@ -58,7 +58,6 @@ void LayerManager::add(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
-		m_graph->onEntityAdded(entity);
 	}
 }
 
@@ -83,7 +82,6 @@ void LayerManager::remove(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
-		m_graph->onEntityRemoved(entity);
 	}
 		
 }

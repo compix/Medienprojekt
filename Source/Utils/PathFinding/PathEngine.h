@@ -8,7 +8,6 @@ struct Path
 {
 	Path() : nodeCount(0), cost(0) {}
 
-	// Nodes from End to Start: End = 0 | Start = pathLength - 1
 	GraphNode* nodes[MAX_PATH_LENGTH];
 	uint16_t nodeCount;
 	uint16_t cost;
@@ -25,7 +24,13 @@ public:
 	void visualize();
 	void visualize(Path& path);
 
+	void update();
+
 	inline Graph* getGraph() const { return m_graph.get(); }
+
+	inline bool validNode(uint8_t x, uint8_t y) { return m_graph->getNode(x, y)->valid; }
+	inline const GraphNode* getNode(uint8_t x, uint8_t y) { return m_graph->getNode(x, y); }
+	inline const GraphNode* getNeighbor(const GraphNode* node, Direction neighbor) { return m_graph->getNeighbor(node, neighbor); }
 private:
 	uint32_t estimate(GraphNode* node, GraphNode* goal);
 

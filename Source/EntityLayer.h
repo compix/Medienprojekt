@@ -15,6 +15,14 @@ typedef EntityCollection** EntityGrid;
 class EntityLayer
 {
 public:
+	class IOnChangeListener
+	{
+	public:
+		virtual ~IOnChangeListener() {};
+		virtual void onEntityAdded(entityx::Entity& entity) = 0;
+		virtual void onEntityRemoved(entityx::Entity& entity) = 0;
+	};
+public:
 	/**
      * @param int value Value of the layer for a correct drawing order.
      */
@@ -35,11 +43,17 @@ public:
 	inline int getHeight() const { return m_height; }
 
 	inline EntityCollection& get(int cellX, int cellY) { return m_grid[cellX][cellY]; };
+
+	inline void listen(IOnChangeListener* listener) { m_changeListeners.push_back(listener); }
+
+	void stopListening(IOnChangeListener* listener);
 private:
 	EntityGrid m_grid;
 
 	int m_width, m_height;
 	int m_value; // The value of the layer for a correct drawing order.
+
+	std::vector<IOnChangeListener*> m_changeListeners;
 };
 
 template <class T>

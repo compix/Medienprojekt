@@ -68,6 +68,10 @@ void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
 void ParticleSpawnSystem::receive(const ExplosionCreatedEvent& e)
 {
 	auto entity = e.entity;
+
+	if (!entity.valid())
+		return;
+
 	if (entity.has_component<ExplosionComponent>() && entity.has_component<CellComponent>() && entity.has_component<LayerComponent>())
 	{
 		auto layerComponent = entity.component<LayerComponent>();
@@ -80,6 +84,10 @@ void ParticleSpawnSystem::receive(const ExplosionCreatedEvent& e)
 void ParticleSpawnSystem::receive(const ItemPickedUpEvent& e)
 {
 	auto entity = e.itemReceiver;
+
+	if (!entity.valid())
+		return;
+
 	auto cell = entity.component<CellComponent>();
 	assert(cell);
 	GameGlobals::entityFactory->createBoostEffect(cell->x, cell->y, entity);

@@ -2,7 +2,7 @@
 
 struct InventoryComponent
 {
-	InventoryComponent() : bombCount(1) {}
+	InventoryComponent() : bombCount(8) {}
 
 	int bombCount;
 };

@@ -35,11 +35,8 @@ public:
 	template<class T>
 	Entity getEntityWithComponent(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
-
-	inline void setGraph(Graph* graph) { m_graph = graph; }
 private:
 	LayerContainer m_layers;
-	Graph* m_graph;
 };
 
 template <class T>

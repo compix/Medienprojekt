@@ -23,7 +23,10 @@ void InventorySystem::update(entityx::EntityManager& entityManager, entityx::Eve
 
 void InventorySystem::receive(const BombExplodedEvent& e)
 {
-	entityx::Entity bomb = e.bomb;
+	auto bomb = e.bomb;
+
+	if (!bomb.valid())
+		return;
 
 	auto ownerComponent = bomb.component<OwnerComponent>();
 	

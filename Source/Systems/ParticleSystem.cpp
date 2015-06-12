@@ -20,6 +20,10 @@ void ParticleSystem::configure(entityx::EventManager& events)
 void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 {
 	auto entity = e.entity;
+
+	if (!entity.valid())
+		return;
+
 	auto particleComponent = entity.component<ParticleComponent>();
 	if (particleComponent)
 	{
@@ -43,9 +47,10 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		if (particleComponent->emitter->isFollowing())
 		{
 			auto target = particleComponent->emitter->m_target;
-			auto targetTransform = target.component<TransformComponent>();
-			if (targetTransform && e.has_component<EffectComponent>())
+			
+			if (target.valid() && target.has_component<TransformComponent>() && e.has_component<EffectComponent>())
 			{
+				auto targetTransform = target.component<TransformComponent>();
 				transform->x = targetTransform->x;
 				transform->y = targetTransform->y + 1.f; // + 1.f = little hack to force drawing the particle effect on top of the target
 			}
