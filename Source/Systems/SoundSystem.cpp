@@ -68,7 +68,7 @@ void SoundSystem::newSound(string name)
 	#ifdef _DEBUG
 		cout << "NEW SOUND"<< endl;
 	#endif
-	m_soundsPool[name].insert(m_soundsPool[name].begin(), *new Sound(*GameGlobals::assetManager->getSound(name)));
+	m_soundsPool[name].insert(m_soundsPool[name].begin(), Sound(*GameGlobals::assetManager->getSound(name)));
 	m_soundsPlaying[name].insert(m_soundsPlaying[name].begin(), false);
 
 	m_soundsPool[name].at(0).play();
