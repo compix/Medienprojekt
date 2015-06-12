@@ -207,6 +207,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 
+	//Physix
 	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
 
 	BodyComponent bodyComponent;
@@ -231,6 +232,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	bodyComponent.body->CreateFixture(&fixtureDef);
 
 	entity.assign<BodyComponent>(bodyComponent);
+	//Physix_END
 
 	m_layerManager->add(entity);
 

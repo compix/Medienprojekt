@@ -5,6 +5,7 @@ b2World* BodyFactory::m_World(new b2World(b2Vec2()));
 
 BodyFactory::BodyFactory(b2World b2_world)
 {
+	m_World = &b2_world;
 }
 
 

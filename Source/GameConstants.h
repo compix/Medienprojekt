@@ -11,4 +11,7 @@ namespace GameConstants
 
 	const int FLOOR_LAYER = -1;
 	const int MAIN_LAYER = 0;
+
+	const bool SOUND = true;
+	const bool MUSIC = true;
 }

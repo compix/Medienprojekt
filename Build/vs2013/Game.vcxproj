@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -84,10 +84,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -111,6 +111,7 @@
     <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />
     <ClInclude Include="..\..\Source\Components\DirectionComponent.h" />
     <ClInclude Include="..\..\Source\Components\DynamicComponent.h" />
+    <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
@@ -123,11 +124,11 @@
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
-    <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
+    <ClInclude Include="..\..\Source\ContactListener.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h" />
@@ -144,10 +145,12 @@
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
+    <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
@@ -192,13 +195,17 @@
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
     <ClInclude Include="..\..\Source\Systems\ItemSystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\MusicLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\SoundLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h" />
     <ClInclude Include="..\..\Source\Utils\Colors.h" />
@@ -216,8 +223,6 @@
     <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
-    <ClInclude Include="..\..\Source\debugrender.h" />
-    <ClInclude Include="ContactListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
@@ -225,6 +230,7 @@
     <ClCompile Include="..\..\Source\Animation\IdleState.cpp" />
     <ClCompile Include="..\..\Source\Animation\WalkingState.cpp" />
     <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\ContactListener.cpp" />
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
@@ -262,11 +268,15 @@
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\MusicLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\SoundLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp" />
     <ClCompile Include="..\..\Source\Utils\Colors.cpp" />
@@ -281,8 +291,6 @@
     <ClCompile Include="..\..\Source\Utils\Random.cpp" />
     <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
-    <ClCompile Include="..\..\Source\debugrender.cpp" />
-    <ClCompile Include="ContactListener.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
