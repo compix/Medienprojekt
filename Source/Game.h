@@ -10,7 +10,7 @@
 #include "Utils/ShaderManager.h"
 #include "GameGlobals.h"
 #include "Utils/PathFinding/PathEngine.h"
-#include "../Build/vs2013/ContactListener.h"
+#include "ContactListener.h"
 
 using entityx::TimeDelta;
 using entityx::EventManager;
