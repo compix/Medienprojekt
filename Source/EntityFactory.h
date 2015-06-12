@@ -8,6 +8,10 @@
 #include "Components/ExplosionComponent.h"
 #include "Components/ItemComponent.h"
 
+namespace sf{
+	class SoundBuffer;
+}
+
 class ShaderManager;
 using entityx::EntityManager;
 

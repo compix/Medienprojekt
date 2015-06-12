@@ -31,6 +31,9 @@
 #include "Utils/PathFinding/PathEngine.h"
 #include "Components/InventoryComponent.h"
 #include "Components/CellComponent.h"
+#include "Systems/SoundSystem.h"
+#include "Systems/MusicSystem.h"
+#include "Events/StartGameEvent.h"
 
 
 Game::Game()
@@ -98,6 +101,7 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void Game::update(TimeDelta dt)
@@ -154,6 +158,8 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	m_systems.add<SoundSystem>();
+	m_systems.add<MusicSystem>();
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)

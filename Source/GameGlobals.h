@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Utils/make_unique.h"
+#include <SFML/Audio/Music.hpp>
 
 namespace entityx
 {
