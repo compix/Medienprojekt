@@ -11,6 +11,7 @@ class MusicLoader : public AssetLoader<Music>
 {
 public:
 	MusicLoader();
+	~MusicLoader();
 	MusicLoader(std::string basePath);
 
 	virtual Music& load(const string& filename, const string& name) override;

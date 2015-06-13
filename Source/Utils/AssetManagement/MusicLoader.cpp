@@ -5,6 +5,12 @@ MusicLoader::MusicLoader()
 	m_basePath = "Assets/music/";
 }
 
+MusicLoader::~MusicLoader()
+{
+	for (auto& m : m_assets)
+		m.second.stop();
+}
+
 MusicLoader::MusicLoader(std::string basePath)
 {
 	m_basePath = basePath;
