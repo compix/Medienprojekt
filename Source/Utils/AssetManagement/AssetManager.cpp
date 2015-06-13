@@ -15,6 +15,11 @@ AssetManager::AssetManager()
 	m_texturePacker.pack(m_uniqueTextures, m_textures);
 }
 
+AssetManager::~AssetManager()
+{
+	for (auto& s : m_sounds)
+		s.resetBuffer();
+}
 
 Assets::Texture* AssetManager::getTexture(const std::string& name)
 {
@@ -27,9 +32,20 @@ Assets::Animation* AssetManager::getAnimation(const std::string& name)
 	return &m_animationLoader.get(name);
 }
 
-SoundBuffer* AssetManager::getSound(const std::string& name)
+sf::Sound* AssetManager::getSound(const std::string& name)
 {
-	return &m_soundLoader.get(name);
+	for (auto i = 0; i < MAX_SOUNDS; ++i)
+	{
+		if (m_sounds[i].getStatus() == sf::SoundSource::Stopped)
+		{
+			m_sounds[i] = sf::Sound(m_soundLoader.get(name));
+			return &m_sounds[i];
+		}
+	}
+
+	// Too many sounds
+	assert(false);
+	return nullptr;
 }
 
 Music* AssetManager::getMusic(const std::string& name)

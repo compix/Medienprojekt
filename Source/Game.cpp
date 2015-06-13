@@ -142,6 +142,8 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
+	m_systems.add<SoundSystem>();
+	m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>();
@@ -160,8 +162,7 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	m_systems.add<SoundSystem>();
-	m_systems.add<MusicSystem>();
+
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)

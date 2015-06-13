@@ -7,14 +7,17 @@
 #include <SFML/Audio.hpp>
 #include "MusicLoader.h"
 
+const uint8_t MAX_SOUNDS = 254;
+
 class AssetManager
 {
 public:
 	AssetManager();
+	~AssetManager();
 
 	Assets::Texture* getTexture(const std::string& name);
 	Assets::Animation* getAnimation(const std::string& name);
-	SoundBuffer* getSound(const std::string& name);
+	sf::Sound* getSound(const std::string& name);
 	Music* getMusic(const std::string& name);
 private:
 	TextureLoader m_textureLoader;
@@ -25,4 +28,6 @@ private:
 
 	std::unordered_map<std::string, Assets::Texture> m_textures;
 	std::vector<std::shared_ptr<sf::Texture>> m_uniqueTextures;
+
+	sf::Sound m_sounds[MAX_SOUNDS];
 };

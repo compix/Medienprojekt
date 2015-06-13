@@ -8,6 +8,9 @@
 #include "../Components/SolidBlockComponent.h"
 #include "../Components/EffectComponent.h"
 #include "../Components/InventoryComponent.h"
+#include "../Components/BombComponent.h"
+#include "../Components/FloorComponent.h"
+#include "../Components/HealthComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}

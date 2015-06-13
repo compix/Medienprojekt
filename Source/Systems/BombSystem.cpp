@@ -43,7 +43,7 @@ void BombSystem::receive(const EntityGotHitEvent& entityGotHitEvent)
 
 void BombSystem::detonate(entityx::Entity entity)
 {
-	if (!entity.valid() || entity.has_component<DestructionComponent>())
+	if (!entity.valid())
 		return;
 
 	if (entity.has_component<BombComponent>())
@@ -51,14 +51,14 @@ void BombSystem::detonate(entityx::Entity entity)
 		auto cell = entity.component<CellComponent>();
 		auto bomb = entity.component<BombComponent>();
 
-		//GameGlobals::entityFactory->createSound(GameGlobals::assetManager->getSound("explosion")).component<SoundComponent>()->sound.play();
+		if (bomb->exploded)
+			return;
+
 		GameGlobals::events->emit<SoundEvent>("explosion");
 		assert(cell);
 
 		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime);
-		if (!entity.has_component<DestructionComponent>())
-			entity.assign<DestructionComponent>();
-
 		GameGlobals::events->emit<BombExplodedEvent>(entity);
+		bomb->exploded = true;
 	}
 }
