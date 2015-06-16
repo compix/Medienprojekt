@@ -123,6 +123,7 @@ solution "Game"
 		-- no filter
 		filter {}
 			links {
+				"openal32",
 				"sndfile",
 				"GLEW",
 				"freetype",

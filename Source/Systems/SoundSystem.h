@@ -24,6 +24,6 @@ private:
 public:
 	void configure(EventManager& events) override;
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
-	void SoundSystem::receive(const SoundEvent& event);
+	void receive(const SoundEvent& event);
 };
 

@@ -14,7 +14,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 {
 	entityx::Entity player;
 
-	for (auto& p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
+	for (auto p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
 		if (!p.has_component<AIComponent>())
 		{
@@ -28,7 +28,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 	auto playerCell = player.component<CellComponent>();
 
-	for (auto& e : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
+	for (auto e : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
 		auto inputComponent = e.component<InputComponent>();
 		auto cell = e.component<CellComponent>();
