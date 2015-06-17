@@ -215,7 +215,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 												transformComponent.y,
 												texture.getLocalBounds().width-2,
 												texture.getLocalBounds().height-2,
-												b2_dynamicBody,
+												b2_kinematicBody,
 												BodyFactory::BOMB,
 												~fixture->GetFilterData().categoryBits);
 
@@ -464,6 +464,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	{
 	case ItemType::BOMB_CAP_BOOST: 
 		entity.assign<SpriteComponent>(createSprite("bombCapBoost"));
+		break;
+	case ItemType::BOMB_KICK_SKILL:
+		entity.assign<SpriteComponent>(createSprite("bomb_kick_skill"));
 		break;
 	default: break;
 	}

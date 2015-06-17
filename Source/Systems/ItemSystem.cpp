@@ -68,11 +68,15 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 		auto cell = entity.component<CellComponent>();
 		assert(cell);
 
-		if (Random::getInt(1, 100) <= 70) // 70% Chance to spawn an item
+		if (Random::getInt(1, 100) <= 50) // 50% Chance to spawn an item
 		{
 			// TODO: Create random items taking rarity and minimum spawn number into consideration, 
 			// assigning ItemComponents with blocks during Level creation might be a good idea
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_CAP_BOOST);
+		} 
+		else if (Random::getInt(1, 100) <= 50)
+		{
+			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_KICK_SKILL);
 		}
 	}
 }

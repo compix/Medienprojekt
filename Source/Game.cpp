@@ -128,6 +128,7 @@ void Game::update(TimeDelta dt)
 	
 	//m_pathEngine->visualize();
 	//m_pathEngine->visualize(m_path);
+	
 }
 
 void Game::refreshView()
@@ -142,6 +143,7 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
+	m_systems.add<BodySystem>();
 	m_systems.add<SoundSystem>();
 	m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
@@ -152,7 +154,6 @@ void LocalGame::addSystems()
 	m_systems.add<ExplosionSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
-	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>();
 	m_systems.add<AISystem>(m_pathEngine.get());
 	m_systems.add<InputHandleSystem>();
@@ -162,6 +163,7 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	
 
 }
 

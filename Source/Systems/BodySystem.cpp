@@ -21,10 +21,11 @@ void BodySystem::configure(entityx::EventManager& event_manager)
 
 void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& event)
 {
-	auto body = event.component;
-	auto entity = event.entity;
+	const BodyComponent* body = event.component.get();
+	Entity entity = event.entity;
 
-	body->body->SetUserData(&entity);
+	body->body->SetUserData(static_cast<void*>(&entity));
+	std::cout << entity.id() << std::endl;
 }
 
 void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
@@ -51,7 +52,6 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 
 	for (Entity entity : entityManager.entities_with_components(body, transform, sprite))
 	{
-
 		transform->x = (body->body->GetPosition().x*scale);
 		transform->y = (body->body->GetPosition().y*scale);
 
