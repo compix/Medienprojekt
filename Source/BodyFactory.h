@@ -25,6 +25,9 @@ public:
 
 	static b2Body* CreateBox(float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
 	static b2Body* CreateCircle(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
+	static b2BodyDef* CreateBodyDef(float posX, float posY, b2BodyType type);
+	static b2PolygonShape* CreateShape(float width, float height);
+	static b2FixtureDef* CreateFixture(b2PolygonShape* shape, uint16 isA, uint16 collideWith, bool isSensor = false);
 	//static b2Body* BodyFactory::CreateBoxSensor(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith);
 };
 

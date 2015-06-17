@@ -13,27 +13,17 @@ BodyFactory::~BodyFactory()
 {
 }
 
-b2Body* BodyFactory::CreateBox(float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
+b2Body* BodyFactory::CreateBox(float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor=false)
 {
-	b2BodyDef bodyDef;
-	bodyDef.type = type;
-	bodyDef.position.Set(PhysixSystem::toBox2D(posX), PhysixSystem::toBox2D(posY));
-	b2Body* body = m_World->CreateBody(&bodyDef);
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(PhysixSystem::toBox2D(width), PhysixSystem::toBox2D(height));
-	b2FixtureDef fixtureDef;
-	fixtureDef.isSensor = isSensor;
-	fixtureDef.filter.categoryBits = isA;
-	fixtureDef.filter.maskBits = collideWith;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.f;
+	b2Body* body = m_World->CreateBody(CreateBodyDef(posX, posY, type));
+	
+	
 	body->CreateFixture(&fixtureDef);
 
 	return body;
 }
 
-b2Body* BodyFactory::CreateCircle(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
+b2Body* BodyFactory::CreateCircle(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor=false)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = type;
@@ -51,5 +41,32 @@ b2Body* BodyFactory::CreateCircle(float posX, float posY, float radius, b2BodyTy
 	body->CreateFixture(&fixtureDef);
 
 	return body;
+}
+
+b2BodyDef* BodyFactory::CreateBodyDef(float posX, float posY, b2BodyType type)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = type;
+	bodyDef.position.Set(PhysixSystem::toBox2D(posX), PhysixSystem::toBox2D(posY));
+	return &bodyDef;
+}
+
+b2PolygonShape* BodyFactory::CreateShape(float width, float height)
+{
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(PhysixSystem::toBox2D(width), PhysixSystem::toBox2D(height));
+	return &dynamicBox;
+}
+
+b2FixtureDef* BodyFactory::CreateFixture(b2PolygonShape* shape, uint16 isA, uint16 collideWith, bool isSensor = false)
+{
+	b2FixtureDef fixtureDef;
+	fixtureDef.isSensor = isSensor;
+	fixtureDef.filter.categoryBits = isA;
+	fixtureDef.filter.maskBits = collideWith;
+	fixtureDef.shape = shape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.f;
+	return &fixtureDef;
 }
 
