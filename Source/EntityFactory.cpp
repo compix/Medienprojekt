@@ -92,7 +92,8 @@ Entity EntityFactory::createPlayer(float x, float y)
 	}
 	
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateCircle(x, y, 10.f,
+	bodyComponent.body = BodyFactory::CreateCircle(&entity, 
+						 x, y, 10.f,
 						 b2_dynamicBody,
 						 isA,
 						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4);
@@ -130,7 +131,8 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	entity.assign<HealthComponent>(1);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox(&entity, 
+												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH / 2.f,
 												(float)GameConstants::CELL_HEIGHT / 2.f,
@@ -166,7 +168,8 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox(&entity, 
+												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH/2.f,
 												(float)GameConstants::CELL_HEIGHT/2.f,
@@ -211,7 +214,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(transformComponent.x,
+	bodyComponent.body = BodyFactory::CreateBox(&entity, 
+												transformComponent.x,
 												transformComponent.y,
 												texture.getLocalBounds().width-2,
 												texture.getLocalBounds().height-2,

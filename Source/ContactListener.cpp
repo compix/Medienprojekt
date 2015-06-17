@@ -106,7 +106,7 @@ void ContactListener::kickBomb(b2Body* sensor, b2Body* notSensor)
 		if (entity != nullptr)
 		{
 			std::cout << entity->id() << std::endl;
-			entity->component<ItemComponent>();
+			//entity->component<ItemComponent>();
 		}
 	}
 	

@@ -1,5 +1,8 @@
 #pragma once
 #include <Box2D/Box2D.h>
+#include <entityx/Entity.h>
+
+using entityx::Entity;
 
 class BodyFactory
 {
@@ -23,11 +26,13 @@ public:
 	BodyFactory(b2World b2_world);
 	~BodyFactory();
 
-	static b2Body* CreateBox(float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
-	static b2Body* CreateCircle(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
-	static b2BodyDef* CreateBodyDef(float posX, float posY, b2BodyType type);
-	static b2PolygonShape* CreateShape(float width, float height);
-	static b2FixtureDef* CreateFixture(b2PolygonShape* shape, uint16 isA, uint16 collideWith, bool isSensor = false);
+	static b2Body* CreateBox(Entity* entity, float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
+	static b2Body* CreateCircle(Entity* entity, float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);
+	static b2BodyDef* CreateBodyDef(b2BodyDef* bodyDef, float posX, float posY, b2BodyType type);
+	static b2PolygonShape* CreateBoxShape(b2PolygonShape* shape, float width, float height);
+	static b2CircleShape* CreateCircleShape(b2CircleShape* shape, float radius);
+	static b2FixtureDef* CreateFixtureDef(b2FixtureDef* fixtureDef, b2Shape* shape, uint16 isA, uint16 collideWith, bool isSensor = false);
+	static b2Body* CreateBody(b2BodyDef* bodyDef, b2FixtureDef* fixtureDef);
 	//static b2Body* BodyFactory::CreateBoxSensor(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith);
 };
 
