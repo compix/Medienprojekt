@@ -101,11 +101,11 @@ void ContactListener::kickBomb(b2Body* sensor, b2Body* notSensor)
 
 	if (canKick)
 	{
-		entityx::Entity* entity = static_cast<entityx::Entity*>(notSensor->GetUserData());
+		Entity* entity = static_cast<Entity*>(notSensor->GetUserData());
 
 		if (entity != nullptr)
 		{
-			std::cout << entity->id() << std::endl;
+			std::cout << "CONTACT: "<<entity->id() << std::endl;
 			//entity->component<ItemComponent>();
 		}
 	}

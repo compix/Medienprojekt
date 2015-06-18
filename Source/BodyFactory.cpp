@@ -24,7 +24,7 @@ b2Body* BodyFactory::CreateBox(Entity* entity, float posX, float posY, float wid
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type), 
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	body->SetUserData(static_cast<void*>(entity));
+	body->SetUserData(entity);
 	return body;
 }
 
@@ -37,7 +37,7 @@ b2Body* BodyFactory::CreateCircle(Entity* entity, float posX, float posY, float 
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type),
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	body->SetUserData(static_cast<void*>(entity));
+	body->SetUserData(entity);
 	return body;
 }
 
