@@ -16,12 +16,14 @@ public:
 		PLAYER_2	= 0x0002,
 		PLAYER_3	= 0x0004,
 		PLAYER_4	= 0x0008,
-		SOLID_BLOCK = 0x0010,
-		DESTR_BLOCK = 0x0020,
-		BOMB		= 0x0040,
-		IS_ON_BOMB	= 0x0080,
-		BOMB_RADAR  = 0x0100
+		PLAYER		= 0x0010,
+		SOLID_BLOCK = 0x0020,
+		DESTR_BLOCK = 0x0040,
+		BOMB		= 0x0080,
+		IS_ON_BOMB	= 0x0100,
+		BOMB_RADAR  = 0x0200
 	};
+
 
 	BodyFactory(b2World b2_world);
 	~BodyFactory();

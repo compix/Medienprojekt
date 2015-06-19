@@ -37,6 +37,7 @@
 #include "Components/EffectComponent.h"
 #include "Components/DynamicComponent.h"
 #include "Components/AIComponent.h"
+#include <sstream>
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -87,7 +88,6 @@ Entity EntityFactory::createPlayer(float x, float y)
 		isA = BodyFactory::PLAYER_4;
 		break;
 	default:
-		isA = BodyFactory::PLAYER_1;
 		break;
 	}
 	
@@ -95,7 +95,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	bodyComponent.body = BodyFactory::CreateCircle(entity, 
 						 x, y, 10.f,
 						 b2_dynamicBody,
-						 isA,
+						 isA | BodyFactory::PLAYER,
 						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4);
 
 	bodyComponent.body->SetFixedRotation(true);
@@ -219,7 +219,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 												transformComponent.y,
 												texture.getLocalBounds().width-2,
 												texture.getLocalBounds().height-2,
-												b2_kinematicBody,
+												b2_dynamicBody,
 												BodyFactory::BOMB,
 												~fixture->GetFilterData().categoryBits);
 
@@ -231,7 +231,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	b2FixtureDef fixtureDef;
 	fixtureDef.isSensor = true;
 	fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
-	fixtureDef.filter.maskBits = BodyFactory::PLAYER_1 | BodyFactory::PLAYER_2 | BodyFactory::PLAYER_3 | BodyFactory::PLAYER_4;
+	fixtureDef.filter.maskBits = fixture->GetFilterData().categoryBits;
 	fixtureDef.shape = &dynamicBox;
 	bodyComponent.body->CreateFixture(&fixtureDef);
 
@@ -240,7 +240,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	m_layerManager->add(*entity);
 
-	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
+	GameGlobals::events->emit<BombCreatedEvent>(*entity, cellX, cellY, owner);
 	return *entity;
 }
 
@@ -483,8 +483,10 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 Entity* EntityFactory::createEntity()
 {
 	Entity entity = GameGlobals::entities->create();
-	m_entityMap.insert(entity.id().id(), entity);
-	return &m_entityMap[entity];
+
+	m_entityMap[entity.id()] = entity;
+
+	return &m_entityMap[entity.id()];
 }
 
 sf::Sprite EntityFactory::createSprite(const std::string& textureName)

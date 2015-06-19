@@ -48,6 +48,6 @@ private:
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
 	entityx::SystemManager* m_systemManager;
-	unordered_map<std::uint64_t,Entity> m_entityMap;
+	std::map<Entity::Id, Entity> m_entityMap;
 };
 

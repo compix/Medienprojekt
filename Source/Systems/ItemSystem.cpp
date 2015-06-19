@@ -48,6 +48,10 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 				if (inventory->bombCount < GameConstants::BOMB_CAP)
 					++inventory->bombCount;
 				break;
+			case ItemType::BOMB_KICK_SKILL:
+				if (inventory->bombKick == false)
+					inventory->bombKick = true;
+				break;
 			default: break;
 			}
 

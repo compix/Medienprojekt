@@ -24,7 +24,7 @@ void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& even
 	const BodyComponent* body = event.component.get();
 	Entity entity = event.entity;
 
-	std::cout << "EVENT_BEFORE_SET: " << reinterpret_cast<Entity::Id*>(body->body->GetUserData())->id() << std::endl;
+	std::cout << "EVENT_BEFORE_SET: " << static_cast<Entity*>(body->body->GetUserData())->id() << std::endl;
 	//body->body->SetUserData(static_cast<void*>(&entity));
 	std::cout << "EVENT_AFTER_SET: " << entity.id() << std::endl;
 }
