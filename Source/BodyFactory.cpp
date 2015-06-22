@@ -66,7 +66,12 @@ b2FixtureDef* BodyFactory::CreateFixtureDef(b2FixtureDef* fixtureDef, b2Shape* s
 	fixtureDef->filter.categoryBits = isA;
 	fixtureDef->filter.maskBits = collideWith;
 	fixtureDef->shape = shape;
+	
 	fixtureDef->density = 1.0f;
+	if (isA == BodyFactory::BOMB)
+	{
+		fixtureDef->density = 1.0f;
+	}
 	fixtureDef->friction = 0.f;
 	return fixtureDef;
 }
@@ -76,5 +81,26 @@ b2Body* BodyFactory::CreateBody(b2BodyDef* bodyDef, b2FixtureDef* fixtureDef)
 	b2Body* body = m_World->CreateBody(bodyDef);
 	body->CreateFixture(fixtureDef);
 	return body;
+}
+
+
+bool BodyFactory::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB)
+{
+	return ((fixtureA->GetFilterData().categoryBits & fixtureB->GetFilterData().maskBits) != 0);
+}
+
+bool BodyFactory::isA(b2Fixture* fixture, uint16 category)
+{
+	return ((fixture->GetFilterData().categoryBits & category) != 0);
+}
+
+bool BodyFactory::contactBetween(b2Contact* contact, uint16 categoryA, uint16 categoryB){
+	b2Fixture* fixtureA = contact->GetFixtureA();
+	b2Fixture* fixtureB = contact->GetFixtureB();
+	if ((isA(fixtureA, categoryA) || isA(fixtureA, categoryB)) && (isA(fixtureB, categoryA) || isA(fixtureB, categoryB)))
+	{
+		return true;
+	}
+	return false;
 }
 

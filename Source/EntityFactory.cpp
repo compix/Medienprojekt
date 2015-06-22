@@ -46,7 +46,7 @@ EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerMana
 
 Entity EntityFactory::createPlayer(float x, float y)
 {
-	Entity* entity = createEntity();
+	Entity* entity = createEntity(); // createEntity() für Entities mit Body benutzen. Ist nicht schlimm, wenn das auch für welche ohne gemacht wrid.
 
 	static int playerId = 0;
 	++playerId;
@@ -96,7 +96,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 						 x, y, 10.f,
 						 b2_dynamicBody,
 						 isA | BodyFactory::PLAYER,
-						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4);
+						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4 & ~BodyFactory::PLAYER);
 
 	bodyComponent.body->SetFixedRotation(true);
 	entity->assign<BodyComponent>(bodyComponent);
@@ -219,12 +219,11 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 												transformComponent.y,
 												texture.getLocalBounds().width-2,
 												texture.getLocalBounds().height-2,
-												b2_dynamicBody,
+												b2_kinematicBody,
 												BodyFactory::BOMB,
 												~fixture->GetFilterData().categoryBits);
 
 	bodyComponent.body->SetFixedRotation(true);
-
 	/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
@@ -239,6 +238,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	//Physix_END
 
 	m_layerManager->add(*entity);
+
+	sf::Sprite sprite = entity->component<SpriteComponent>()->sprite;
 
 	GameGlobals::events->emit<BombCreatedEvent>(*entity, cellX, cellY, owner);
 	return *entity;
@@ -487,6 +488,13 @@ Entity* EntityFactory::createEntity()
 	m_entityMap[entity.id()] = entity;
 
 	return &m_entityMap[entity.id()];
+}
+
+void EntityFactory::destroyEntity(Entity entity)
+{
+	if (m_entityMap.count(entity.id())){
+		m_entityMap.erase(entity.id());
+	}
 }
 
 sf::Sprite EntityFactory::createSprite(const std::string& textureName)

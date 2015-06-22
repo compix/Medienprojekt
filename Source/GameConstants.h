@@ -8,6 +8,7 @@ namespace GameConstants
 	const float PLAYER_SPEED = 4.f;
 
 	const int BOMB_CAP = 8;
+	const float KICK_FORCE = 10.f;
 
 	const int FLOOR_LAYER = -1;
 	const int MAIN_LAYER = 0;

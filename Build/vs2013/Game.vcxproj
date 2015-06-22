@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -184,6 +184,7 @@
     <ClInclude Include="..\..\Source\Systems\AISystem.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BombKickSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="..\..\Source\Systems\AISystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BombKickSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />

@@ -35,6 +35,7 @@
 #include "Systems/SoundSystem.h"
 #include "Systems/MusicSystem.h"
 #include "Events/StartGameEvent.h"
+#include "Systems/BombKickSystem.h"
 
 
 Game::Game()
@@ -152,6 +153,7 @@ void LocalGame::addSystems()
 	m_systems.add<DamageSystem>(m_layerManager.get());
 	m_systems.add<DestructionSystem>();
 	m_systems.add<ExplosionSystem>(m_layerManager.get());
+	m_systems.add<BombKickSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();

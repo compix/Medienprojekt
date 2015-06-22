@@ -35,6 +35,10 @@ public:
 	static b2CircleShape* CreateCircleShape(b2CircleShape* shape, float radius);
 	static b2FixtureDef* CreateFixtureDef(b2FixtureDef* fixtureDef, b2Shape* shape, uint16 isA, uint16 collideWith, bool isSensor = false);
 	static b2Body* CreateBody(b2BodyDef* bodyDef, b2FixtureDef* fixtureDef);
+
+	static bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
+	static bool isA(b2Fixture* fixture, uint16 category);
+	static bool contactBetween(b2Contact* contact, uint16 categoryA, uint16 categoryB);
 	//static b2Body* BodyFactory::CreateBoxSensor(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith);
 };
 

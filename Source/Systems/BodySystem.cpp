@@ -4,6 +4,7 @@
 #include "../PhysixSystem.h"
 #include "../Components/SpriteComponent.h"
 #include "../GameGlobals.h"
+#include "../EntityFactory.h"
 
 using namespace entityx;
 
@@ -21,12 +22,7 @@ void BodySystem::configure(entityx::EventManager& event_manager)
 
 void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& event)
 {
-	const BodyComponent* body = event.component.get();
-	Entity entity = event.entity;
 
-	std::cout << "EVENT_BEFORE_SET: " << static_cast<Entity*>(body->body->GetUserData())->id() << std::endl;
-	//body->body->SetUserData(static_cast<void*>(&entity));
-	std::cout << "EVENT_AFTER_SET: " << entity.id() << std::endl;
 }
 
 void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
@@ -41,6 +37,8 @@ void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
 		auto body = entity.component<BodyComponent>()->body;
 		body->GetWorld()->DestroyBody(body);
 	}
+
+	GameGlobals::entityFactory->destroyEntity(entity);
 }
 
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
@@ -53,8 +51,7 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 
 	for (Entity entity : entityManager.entities_with_components(body, transform, sprite))
 	{
-		transform->x = (body->body->GetPosition().x*scale);
-		transform->y = (body->body->GetPosition().y*scale);
-
+		transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
+		transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));
 	}
 }
