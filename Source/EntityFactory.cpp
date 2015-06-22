@@ -37,6 +37,7 @@
 #include "Components/EffectComponent.h"
 #include "Components/DynamicComponent.h"
 #include "Components/AIComponent.h"
+#include <sstream>
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -45,7 +46,7 @@ EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerMana
 
 Entity EntityFactory::createPlayer(float x, float y)
 {
-	Entity entity = GameGlobals::entities->create();
+	Entity* entity = createEntity(); // createEntity() für Entities mit Body benutzen. Ist nicht schlimm, wenn das auch für welche ohne gemacht wrid.
 
 	static int playerId = 0;
 	++playerId;
@@ -59,16 +60,16 @@ Entity EntityFactory::createPlayer(float x, float y)
 	transformComponent.scaleX = 2.f;
 	transformComponent.scaleY = 2.f;
 
-	entity.assign<TransformComponent>(transformComponent);
+	entity->assign<TransformComponent>(transformComponent);
 	sf::Sprite sprite = createSprite("char_idle");
-	entity.assign<SpriteComponent>(sprite);
+	entity->assign<SpriteComponent>(sprite);
 
 	AnimationComponent animationComponent;
-	entity.assign<AnimationComponent>(animationComponent);
-	AnimatorManager::assignCharacterAnimator(entity);
+	entity->assign<AnimationComponent>(animationComponent);
+	AnimatorManager::assignCharacterAnimator(*entity);
 
-	entity.assign<DirectionComponent>();
-	entity.assign<CellComponent>(cellX, cellY);
+	entity->assign<DirectionComponent>();
+	entity->assign<CellComponent>(cellX, cellY);
 
 	uint16 isA = BodyFactory::PLAYER_1;
 	switch (playerId)
@@ -81,56 +82,57 @@ Entity EntityFactory::createPlayer(float x, float y)
 		break;
 	case 2:
 		isA = BodyFactory::PLAYER_3;
-		entity.assign<AIComponent>();
+		entity->assign<AIComponent>();
 		break;
 	case 3:
 		isA = BodyFactory::PLAYER_4;
 		break;
 	default:
-		isA = BodyFactory::PLAYER_1;
 		break;
 	}
 	
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateCircle(x, y, 10.f,
+	bodyComponent.body = BodyFactory::CreateCircle(entity, 
+						 x, y, 10.f,
 						 b2_dynamicBody,
-						 isA,
-						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4);
+						 isA | BodyFactory::PLAYER,
+						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4 & ~BodyFactory::PLAYER);
 
 	bodyComponent.body->SetFixedRotation(true);
-	entity.assign<BodyComponent>(bodyComponent);
+	entity->assign<BodyComponent>(bodyComponent);
 
 	InputComponent inputComponent;
 	inputComponent.playerIndex = -1;
-	entity.assign<InputComponent>(inputComponent);
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity.assign<InventoryComponent>();
-	entity.assign<DynamicComponent>();
-	entity.assign<HealthComponent>(1);
+	entity->assign<InputComponent>(inputComponent);
+	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity->assign<InventoryComponent>();
+	entity->assign<DynamicComponent>();
+	entity->assign<HealthComponent>(1);
 
-	m_layerManager->add(entity);
+	m_layerManager->add(*entity);
 
-	return entity;
+	return *entity;
 }
 
 entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 {
-	Entity entity = GameGlobals::entities->create();
+	Entity* entity = createEntity();
 
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
-	entity.assign<TransformComponent>(transformComponent);
+	entity->assign<TransformComponent>(transformComponent);
 	sf::Sprite sprite = createSprite("block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
-	entity.assign<SpriteComponent>(sprite);
-	entity.assign<DestructionDelayComponent>(1);
+	entity->assign<SpriteComponent>(sprite);
+	entity->assign<DestructionDelayComponent>(1);
 
-	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<HealthComponent>(1);
+	entity->assign<CellComponent>(cellX, cellY);
+	entity->assign<HealthComponent>(1);
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox(entity, 
+												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH / 2.f,
 												(float)GameConstants::CELL_HEIGHT / 2.f,
@@ -138,35 +140,36 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 												BodyFactory::CollsionCategory::SOLID_BLOCK,
 												~BodyFactory::CollsionCategory::NOTHING);
 
-	entity.assign<BodyComponent>(bodyComponent);
+	entity->assign<BodyComponent>(bodyComponent);
 
 
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity.assign<BlockComponent>();
+	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity->assign<BlockComponent>();
 
-	m_layerManager->add(entity);
+	m_layerManager->add(*entity);
 
-	return entity;
+	return *entity;
 }
 
 entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 {
-	Entity entity = GameGlobals::entities->create();
+	Entity* entity = createEntity();
 
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
-	entity.assign<TransformComponent>(transformComponent);
+	entity->assign<TransformComponent>(transformComponent);
 	sf::Sprite sprite = createSprite("solid_block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
-	entity.assign<SpriteComponent>(sprite);
-	entity.assign<SolidBlockComponent>();
+	entity->assign<SpriteComponent>(sprite);
+	entity->assign<SolidBlockComponent>();
 
-	entity.assign<CellComponent>(cellX, cellY);
+	entity->assign<CellComponent>(cellX, cellY);
 
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+	bodyComponent.body = BodyFactory::CreateBox(entity, 
+												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
 												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
 												(float)GameConstants::CELL_WIDTH/2.f,
 												(float)GameConstants::CELL_HEIGHT/2.f,
@@ -175,18 +178,18 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 												~BodyFactory::CollsionCategory::NOTHING);
 
 
-	entity.assign<BodyComponent>(bodyComponent);
+	entity->assign<BodyComponent>(bodyComponent);
 
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 
-	m_layerManager->add(entity);
+	m_layerManager->add(*entity);
 
-	return entity;
+	return *entity;
 }
 
 Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 {
-	Entity entity = GameGlobals::entities->create();
+	Entity* entity = createEntity();
 
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
@@ -194,50 +197,52 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	transformComponent.scaleX = 1.5f;
 	transformComponent.scaleY = 1.5f;
 
-	entity.assign<TransformComponent>(transformComponent);
+	entity->assign<TransformComponent>(transformComponent);
 	auto texture = createSprite("bomb");
-	entity.assign<SpriteComponent>(texture);
-	entity.assign<BombComponent>(7, 0.06f);
-	entity.assign<TimerComponent>(2.f);
-	entity.assign<HealthComponent>(1);
-	entity.assign<OwnerComponent>(owner);
+	entity->assign<SpriteComponent>(texture);
+	entity->assign<BombComponent>(7, 0.06f);
+	entity->assign<TimerComponent>(2.f);
+	entity->assign<HealthComponent>(1);
+	entity->assign<OwnerComponent>(owner);
 
-	entity.assign<CellComponent>(cellX, cellY);
+	entity->assign<CellComponent>(cellX, cellY);
 
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity.assign<DynamicComponent>();
+	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity->assign<DynamicComponent>();
 
 	//Physix
 	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
 
 	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(transformComponent.x,
+	bodyComponent.body = BodyFactory::CreateBox(entity, 
+												transformComponent.x,
 												transformComponent.y,
 												texture.getLocalBounds().width-2,
 												texture.getLocalBounds().height-2,
-												b2_dynamicBody,
+												b2_kinematicBody,
 												BodyFactory::BOMB,
 												~fixture->GetFilterData().categoryBits);
 
 	bodyComponent.body->SetFixedRotation(true);
-
 	/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
 	b2FixtureDef fixtureDef;
 	fixtureDef.isSensor = true;
 	fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
-	fixtureDef.filter.maskBits = BodyFactory::PLAYER_1 | BodyFactory::PLAYER_2 | BodyFactory::PLAYER_3 | BodyFactory::PLAYER_4;
+	fixtureDef.filter.maskBits = fixture->GetFilterData().categoryBits;
 	fixtureDef.shape = &dynamicBox;
 	bodyComponent.body->CreateFixture(&fixtureDef);
 
-	entity.assign<BodyComponent>(bodyComponent);
+	entity->assign<BodyComponent>(bodyComponent);
 	//Physix_END
 
-	m_layerManager->add(entity);
+	m_layerManager->add(*entity);
 
-	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
-	return entity;
+	sf::Sprite sprite = entity->component<SpriteComponent>()->sprite;
+
+	GameGlobals::events->emit<BombCreatedEvent>(*entity, cellX, cellY, owner);
+	return *entity;
 }
 
 Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime)
@@ -465,12 +470,31 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::BOMB_CAP_BOOST: 
 		entity.assign<SpriteComponent>(createSprite("bombCapBoost"));
 		break;
+	case ItemType::BOMB_KICK_SKILL:
+		entity.assign<SpriteComponent>(createSprite("bomb_kick_skill"));
+		break;
 	default: break;
 	}
 
 	m_layerManager->add(entity);
 
 	return entity;
+}
+
+Entity* EntityFactory::createEntity()
+{
+	Entity entity = GameGlobals::entities->create();
+
+	m_entityMap[entity.id()] = entity;
+
+	return &m_entityMap[entity.id()];
+}
+
+void EntityFactory::destroyEntity(Entity entity)
+{
+	if (m_entityMap.count(entity.id())){
+		m_entityMap.erase(entity.id());
+	}
 }
 
 sf::Sprite EntityFactory::createSprite(const std::string& textureName)
