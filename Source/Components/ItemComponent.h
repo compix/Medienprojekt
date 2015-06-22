@@ -3,7 +3,8 @@
 enum class ItemType
 {
 	BOMB_CAP_BOOST,
-	BOMB_KICK_SKILL
+	BOMB_KICK_SKILL,
+	SPEED_MULTIPLICATOR
 };
 
 struct ItemComponent

@@ -13,5 +13,6 @@
 	"goku": "goku.png",
 	"smoke": "smoke.png",
 	"bombCapBoost": "bombCapBoost.png",
-    "bomb_kick_skill": "bomb_kick_skill.png"
+    "bomb_kick_skill": "bomb_kick_skill.png",
+    "speed_multiplicator": "speed_multiplicator.png"
 }

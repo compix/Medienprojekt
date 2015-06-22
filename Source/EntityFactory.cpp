@@ -473,6 +473,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::BOMB_KICK_SKILL:
 		entity.assign<SpriteComponent>(createSprite("bomb_kick_skill"));
 		break;
+	case ItemType::SPEED_MULTIPLICATOR:
+		entity.assign<SpriteComponent>(createSprite("speed_multiplicator"));
+		break;
 	default: break;
 	}
 

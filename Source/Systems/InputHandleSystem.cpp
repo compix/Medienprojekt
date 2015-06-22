@@ -31,6 +31,6 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		auto body = entity.component<BodyComponent>();
 		if (body)
-			body->body->SetLinearVelocity(b2Vec2(input->moveX * GameConstants::PLAYER_SPEED, input->moveY * GameConstants::PLAYER_SPEED));
+			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
 	}
 }
