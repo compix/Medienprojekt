@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Animation">
@@ -130,6 +130,12 @@
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\PortalComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -161,6 +167,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreateServerEvent.h">
@@ -333,6 +342,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\PortalSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
@@ -533,6 +545,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">

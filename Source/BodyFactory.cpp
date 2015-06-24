@@ -68,10 +68,6 @@ b2FixtureDef* BodyFactory::CreateFixtureDef(b2FixtureDef* fixtureDef, b2Shape* s
 	fixtureDef->shape = shape;
 	
 	fixtureDef->density = 1.0f;
-	if (isA == BodyFactory::BOMB)
-	{
-		fixtureDef->density = 1.0f;
-	}
 	fixtureDef->friction = 0.f;
 	return fixtureDef;
 }

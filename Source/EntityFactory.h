@@ -28,7 +28,7 @@ public:
 	Entity createSolidBlock(uint8_t cellX, uint8_t cellY);
 
 	Entity createBomb(uint8_t cellX, uint8_t cellY, Entity owner);
-	
+	Entity createPortal(uint8_t cellX, uint8_t cellY, Entity owner);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime);
 

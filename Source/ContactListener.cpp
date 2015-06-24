@@ -33,13 +33,20 @@ void ContactListener::EndContact(b2Contact* contact)
 			notSensor = fixtureB->GetBody();
 		}
 		else { //fixtureA ist kein Sensor
-			sensor = fixtureB->GetBody();
-			notSensor = fixtureA->GetBody();
+			auto temp = fixtureA;
+			fixtureA = fixtureB;
+			fixtureB = temp;
+
+			sensor = fixtureA->GetBody();
+			notSensor = fixtureB->GetBody();
 	}
 		Entity* entityNotSensor = static_cast<Entity*>(notSensor->GetUserData());
 		Entity* entitySensor = static_cast<Entity*>(sensor->GetUserData());
-		if (entitySensor->component<OwnerComponent>()->entity.id() == entityNotSensor->id()){
-			createCollisionToBomb(sensor, notSensor);
+
+		if (BodyFactory::contactBetween(contact,BodyFactory::BOMB_RADAR,BodyFactory::PLAYER)){
+			if (entitySensor->component<OwnerComponent>()->entity.id() == entityNotSensor->id()){
+				createCollisionToBomb(sensor, notSensor);
+			}
 		}
 	}
 	

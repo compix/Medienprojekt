@@ -17,4 +17,7 @@ namespace GameConstants
 
 	const bool SOUND = true;
 	const bool MUSIC = true;
+
+	const float PORTAL_TIMER_LINKED = 10.f;			//Wenn zwei Portale stehen
+	const float PORTAL_TIMER_NOT_LINKED = 30.f;		//Wenn ein Portal noch nicht verbunden ist, bis es verbunden wird.
 }

@@ -123,6 +123,8 @@
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
@@ -136,6 +138,7 @@
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
     <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
@@ -272,6 +276,7 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />

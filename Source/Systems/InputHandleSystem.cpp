@@ -9,6 +9,7 @@
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
 #include "../Components/DirectionComponent.h"
+#include "../Events/CreatePortalEvent.h"
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -27,6 +28,12 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 			}
 			
 			input->bombButtonPressed = false;
+		}
+
+		if (input->skillButtonPressed)
+		{
+			GameGlobals::events->emit<CreatePortalEvent>(entity);
+			input->skillButtonPressed = false;
 		}
 
 		auto body = entity.component<BodyComponent>();

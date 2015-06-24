@@ -38,6 +38,7 @@
 #include "Components/DynamicComponent.h"
 #include "Components/AIComponent.h"
 #include <sstream>
+#include "Components/PortalComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -243,6 +244,53 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	GameGlobals::events->emit<BombCreatedEvent>(*entity, cellX, cellY, owner);
 	return *entity;
+}
+
+Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.scaleX = 1.5f;
+	transformComponent.scaleY = 1.5f;
+
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<OwnerComponent>(owner);
+	entity.assign<PortalComponent>();
+	entity.assign<TimerComponent>(GameConstants::PORTAL_TIMER_NOT_LINKED);
+
+	entity.assign<CellComponent>(cellX, cellY);
+
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+
+	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
+	auto emitter = manager->spawnEmitter();
+
+	if (emitter)
+	{
+		entity.assign<ParticleComponent>();
+		entity.component<ParticleComponent>()->emitter = emitter;
+
+		emitter->spawnTime(0.01f)
+			.maxLifetime(5.f)
+			.speedModifier(1.f)
+			.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
+			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(5, 5)))
+			.spawnWidth(GameConstants::CELL_WIDTH)
+			.spawnHeight(GameConstants::CELL_HEIGHT)
+			.spawnDuration(100.f)
+			.transparencyFunction(Gradient<float>(GradientType::REGRESS, 255, 0))
+			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 150, 252), RGB(0, 255, 252)))
+			.position((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f
+			);
+	}
+
+	m_layerManager->add(entity);
+
+	return entity;
 }
 
 Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime)

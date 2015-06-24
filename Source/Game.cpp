@@ -36,6 +36,7 @@
 #include "Systems/MusicSystem.h"
 #include "Events/StartGameEvent.h"
 #include "Systems/BombKickSystem.h"
+#include "Systems/PortalSystem.h"
 
 
 Game::Game()
@@ -144,6 +145,7 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
+	m_systems.add<PortalSystem>(m_layerManager.get());
 	m_systems.add<BodySystem>();
 	m_systems.add<SoundSystem>();
 	m_systems.add<MusicSystem>();
