@@ -151,7 +151,9 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 	cellX = entity.component<CellComponent>()->x;
 	cellY = entity.component<CellComponent>()->y;
 
-	if (entity.has_component<DirectionComponent>()){ //Wenn es von einer Entity ausgeht, die eine Richtung hat, dann wird es vor der Entity platziert
+	/**Auskomentierter Code, dient dazu das Portal vor den TriggerEntity zu setzen**/
+
+	/*if (entity.has_component<DirectionComponent>()){ //Wenn es von einer Entity ausgeht, die eine Richtung hat, dann wird es vor der Entity platziert
 		switch (entity.component<DirectionComponent>()->direction)
 		{
 		case Direction::UP: cellY--; break;
@@ -160,12 +162,15 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 		case Direction::RIGHT: cellX++; break;
 		default: break;
 		}
-	}
+	}*/
+
+
 	
-	if (!m_layerManager->hasEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, cellX, cellY)){	//Wenn Portal gelegt werden kann
+	//if (!m_layerManager->hasEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, cellX, cellY)){	//Wenn Portal gelegt werden kann
 		if (m_portals.count(entity.id()) < 2){																//Maximal zwei Portale
 			auto portal = GameGlobals::entityFactory->createPortal(cellX, cellY, entity);
-			m_portals.insert(std::pair<Entity::Id, Entity>(entity.id(), portal));							//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
+			m_portals.insert(std::pair<Entity::Id, Entity>(entity.id(), portal));	//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
+			entity.assign<PortalMarkerComponent>(portal.id());
 			if (m_portals.count(entity.id()) == 2)
 			{
 				std::pair<std::multimap<Entity::Id, Entity>::iterator, std::multimap<Entity::Id, Entity>::iterator> ppp;
@@ -180,7 +185,7 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 				}
 			}
 		}
-	}
+	//}
 }
 
 b2Vec2 PortalSystem::fitEntityIntoCell(CellComponent* cellComponent)
