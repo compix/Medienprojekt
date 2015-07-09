@@ -23,6 +23,9 @@
 #include "../Events/ExplosionCreatedEvent.h"
 #include "../Events/PortalCreatedEvent.h"
 #include "../Events/ItemCreatedEvent.h"
+#include "../Events/BoostEffectCreatedEvent.h"
+#include "../Events/SmokeCreatedEvent.h"
+#include "../Events/DeathEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -36,6 +39,9 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<EntityDestroyedEvent>(*this);
 	GameGlobals::events->subscribe<PortalCreatedEvent>(*this);
 	GameGlobals::events->subscribe<ItemCreatedEvent>(*this);
+	GameGlobals::events->subscribe<BoostEffectCreatedEvent>(*this);
+	GameGlobals::events->subscribe<SmokeCreatedEvent>(*this);
+	GameGlobals::events->subscribe<DeathEvent>(*this);
 
 	m_handler.setCallback(MessageType::CHAT, &NetServer::onChatMessage, this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
@@ -68,6 +74,11 @@ NetServer::~NetServer()
 	GameGlobals::events->unsubscribe<BombCreatedEvent>(*this);
 	GameGlobals::events->unsubscribe<ExplosionCreatedEvent>(*this);
 	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
+	GameGlobals::events->unsubscribe<PortalCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<ItemCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<BoostEffectCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<SmokeCreatedEvent>(*this);
+	GameGlobals::events->unsubscribe<DeathEvent>(*this);
 
 	// Delete all playerinfos
 	auto host = m_connection.getHost();
@@ -137,6 +148,23 @@ void NetServer::receive(const ItemCreatedEvent& evt)
 	broadcast(NetChannel::WORLD_RELIABLE, createItemPacket(evt.entity, evt.x, evt.y, evt.type));
 }
 
+void NetServer::receive(const BoostEffectCreatedEvent& evt)
+{
+	broadcast(NetChannel::WORLD_RELIABLE, createBoostEffectPacket(evt.entity, evt.x, evt.y, evt.target));
+}
+
+void NetServer::receive(const SmokeCreatedEvent& evt)
+{
+	broadcast(NetChannel::WORLD_RELIABLE, createSmokePacket(evt.entity, evt.x, evt.y));
+}
+
+void NetServer::receive(const DeathEvent& evt)
+{
+	m_messageWriter.init(MessageType::DEATH);
+	m_messageWriter.write<uint64_t>(evt.dyingEntity.id().id());
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
 void NetServer::broadcast(NetChannel channel, ENetPacket *packet)
 {
 	enet_host_broadcast(m_connection.getHost(), (enet_uint8)channel, packet);
@@ -187,7 +215,9 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	sendBombEntities(evt.peer);
 	sendPortalEntities(evt.peer);
 	sendItemEntities(evt.peer);
-	//Fixme: explosions
+	//Fixme: boost effects
+	sendExplosionEntities(evt.peer);
+	sendSmokeEntities(evt.peer);
 
 	// Send the playerId to the client
 	m_messageWriter.init(MessageType::PLAYER_ID);
@@ -208,31 +238,37 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 void NetServer::onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
-	auto input = info->entity.component<InputComponent>();
-	input->moveX = reader.read<float>();
-	input->moveY = reader.read<float>();
+	if (info->entity.valid()) {
+		auto input = info->entity.component<InputComponent>();
+		input->moveX = reader.read<float>();
+		input->moveY = reader.read<float>();
 
-	// Normalize (just in case someone is cheating)
-	if (input->moveX && input->moveY)
-	{
-		float len = sqrtf(input->moveX * input->moveX + input->moveY * input->moveY);
-		input->moveX /= len;
-		input->moveY /= len;
+		// Normalize (just in case someone is cheating)
+		if (input->moveX && input->moveY)
+		{
+			float len = sqrtf(input->moveX * input->moveX + input->moveY * input->moveY);
+			input->moveX /= len;
+			input->moveY /= len;
+		}
 	}
 }
 
 void NetServer::onInputBombActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
-	auto input = info->entity.component<InputComponent>();
-	input->bombButtonPressed = true;
+	if (info->entity.valid()) {
+		auto input = info->entity.component<InputComponent>();
+		input->bombButtonPressed = true;
+	}
 }
 
 void NetServer::onInputSkillActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
-	auto input = info->entity.component<InputComponent>();
-	input->skillButtonPressed = true;
+	if (info->entity.valid()) {
+		auto input = info->entity.component<InputComponent>();
+		input->skillButtonPressed = true;
+	}
 }
 
 
@@ -315,6 +351,17 @@ ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Ent
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
+void NetServer::sendExplosionEntities(ENetPeer* peer)
+{
+	ComponentHandle<ExplosionComponent> explosion;
+	ComponentHandle<SpreadComponent> spread;
+	ComponentHandle<OwnerComponent> owner;
+	ComponentHandle<CellComponent> cell;
+	using GameGlobals::entities;
+	for (Entity entity : entities->entities_with_components(explosion, spread, owner, cell))
+		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime));
+}
+
 ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
 {
 	m_messageWriter.init(MessageType::CREATE_EXPLOSION);
@@ -363,6 +410,29 @@ ENetPacket* NetServer::createItemPacket(Entity entity, uint8_t x, uint8_t y, Ite
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<ItemType>(type);
+	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+ENetPacket* NetServer::createBoostEffectPacket(Entity entity, uint8_t x, uint8_t y, entityx::Entity target)
+{
+	m_messageWriter.init(MessageType::CREATE_BOOST_EFFECT);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint8_t>(x);
+	m_messageWriter.write<uint8_t>(y);
+	m_messageWriter.write<uint64_t>(target.id().id());
+	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+void NetServer::sendSmokeEntities(ENetPeer* peer)
+{
+}
+
+ENetPacket* NetServer::createSmokePacket(Entity entity, uint8_t x, uint8_t y)
+{
+	m_messageWriter.init(MessageType::CREATE_SMOKE);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint8_t>(x);
+	m_messageWriter.write<uint8_t>(y);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

@@ -3,7 +3,7 @@
 
 struct DeathEvent
 {
-	DeathEvent(entityx::Entity dieingEntity) : dieingEntity(dieingEntity) {}
+	DeathEvent(entityx::Entity dyingEntity) : dyingEntity(dyingEntity) {}
 
-	entityx::Entity dieingEntity;
+	entityx::Entity dyingEntity;
 };

@@ -73,11 +73,20 @@ public:
 	void init(uint8_t width, uint8_t height) override;
 
 protected:
-	void addSystems() override;
+	void addSystems() override
+	{
+		addSystems(false);
+	}
+	void addSystems(bool server);
 };
 
 class ServerGame : public LocalGame
 {
+protected:
+	void addSystems() override
+	{
+		LocalGame::addSystems(true);
+	}
 };
 
 class ClientGame : public Game

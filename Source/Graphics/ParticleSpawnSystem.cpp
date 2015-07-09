@@ -32,10 +32,10 @@ void ParticleSpawnSystem::configure(entityx::EventManager& events)
 
 void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
 {
-	if (!deathEvent.dieingEntity.valid())
+	if (!deathEvent.dyingEntity.valid())
 		return;
 
-	auto entity = deathEvent.dieingEntity;
+	auto entity = deathEvent.dyingEntity;
 
 	if (entity.has_component<SpriteComponent>())
 		entity.remove<SpriteComponent>();

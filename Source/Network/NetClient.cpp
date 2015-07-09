@@ -7,6 +7,7 @@
 #include "../Game.h"
 #include "../Components/InputComponent.h"
 #include "../Events/ExitEvent.h"
+#include "../Events/DeathEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -27,6 +28,9 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::CREATE_EXPLOSION, &NetClient::onCreateExplosionMessage, this);
 	m_handler.setCallback(MessageType::CREATE_PORTAL, &NetClient::onCreatePortalMessage, this);
 	m_handler.setCallback(MessageType::CREATE_ITEM, &NetClient::onCreateItemMessage, this);
+	m_handler.setCallback(MessageType::CREATE_BOOST_EFFECT, &NetClient::onCreateBoostEffectMessage, this);
+	m_handler.setCallback(MessageType::CREATE_SMOKE, &NetClient::onCreateSmokeMessage, this);
+	m_handler.setCallback(MessageType::DEATH, &NetClient::onDeathMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
 	
@@ -200,6 +204,33 @@ void NetClient::onCreateItemMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t y = reader.read<uint8_t>();
 	ItemType type = reader.read<ItemType>();
 	mapEntity(id, GameGlobals::entityFactory->createItem(x, y, type));
+}
+
+void NetClient::onCreateBoostEffectMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	uint8_t x = reader.read<uint8_t>();
+	uint8_t y = reader.read<uint8_t>();
+	uint64_t targetId = reader.read<uint64_t>();
+	Entity target = getEntity(targetId);
+	if (target.valid())
+		mapEntity(id, GameGlobals::entityFactory->createBoostEffect(x, y, target));
+}
+
+void NetClient::onCreateSmokeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	uint8_t x = reader.read<uint8_t>();
+	uint8_t y = reader.read<uint8_t>();
+	mapEntity(id, GameGlobals::entityFactory->createSmoke(x, y));
+}
+
+void NetClient::onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	Entity entity = getEntity(id);
+	if (entity.valid())
+		GameGlobals::events->emit<DeathEvent>(entity);
 }
 
 void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

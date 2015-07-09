@@ -58,6 +58,7 @@
 			<logicalFolder name="Events" displayName="Events" projectFiles="true">
 				<itemPath>../../../Source/Events/BombCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/BombExplodedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/BoostEffectCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreateLocalGameEvent.h</itemPath>
@@ -78,6 +79,7 @@
 				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SmokeCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SoundEvent.h</itemPath>
 				<itemPath>../../../Source/Events/StartGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
@@ -366,6 +368,7 @@
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombExplodedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -386,6 +389,7 @@
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SmokeCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SoundEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -647,6 +651,7 @@
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombExplodedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -667,6 +672,7 @@
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SmokeCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SoundEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>

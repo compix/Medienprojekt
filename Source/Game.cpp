@@ -143,7 +143,7 @@ void Game::refreshView()
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
-void LocalGame::addSystems()
+void LocalGame::addSystems(bool server)
 {
 	m_systems.add<PortalSystem>(m_layerManager.get());
 	m_systems.add<BodySystem>();
@@ -159,7 +159,8 @@ void LocalGame::addSystems()
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();
-	m_systems.add<AISystem>(m_pathEngine.get());
+	if (!server)
+		m_systems.add<AISystem>(m_pathEngine.get());
 	m_systems.add<InputHandleSystem>();
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
@@ -188,4 +189,5 @@ void ClientGame::addSystems()
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
+	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 }

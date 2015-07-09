@@ -31,6 +31,8 @@
 #include "Events/ExplosionCreatedEvent.h"
 #include "Events/PortalCreatedEvent.h"
 #include "Events/ItemCreatedEvent.h"
+#include "Events/BoostEffectCreatedEvent.h"
+#include "Events/SmokeCreatedEvent.h"
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
@@ -455,6 +457,7 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<SmokeCreatedEvent>(entity, cellX, cellY);
 	return entity;
 }
 
@@ -497,6 +500,7 @@ Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity tar
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<BoostEffectCreatedEvent>(entity, cellX, cellY, target);
 	return entity;
 }
 

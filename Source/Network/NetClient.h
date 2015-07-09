@@ -38,6 +38,9 @@ public:
 	void onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateItemMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCreateBoostEffectMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCreateSmokeMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 private:

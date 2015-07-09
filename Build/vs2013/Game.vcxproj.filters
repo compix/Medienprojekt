@@ -160,6 +160,9 @@
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ChatEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -218,6 +221,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SoundEvent.h">
