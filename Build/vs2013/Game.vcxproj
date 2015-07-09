@@ -150,6 +150,7 @@
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />

@@ -41,6 +41,8 @@
 				<itemPath>../../../Source/Components/LinkComponent.h</itemPath>
 				<itemPath>../../../Source/Components/OwnerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ParticleComponent.h</itemPath>
+				<itemPath>../../../Source/Components/PortalComponent.h</itemPath>
+				<itemPath>../../../Source/Components/PortalMarkerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ShaderComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SolidBlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SpriteComponent.h</itemPath>
@@ -59,6 +61,7 @@
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreateLocalGameEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CreatePortalEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreateServerEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DisconnectEvent.h</itemPath>
@@ -70,6 +73,7 @@
 				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
 				<itemPath>../../../Source/Events/MusicEvent.h</itemPath>
 				<itemPath>../../../Source/Events/PlayerJoinEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PortalCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
@@ -145,6 +149,8 @@
 				<itemPath>../../../Source/Systems/AnimationSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.h</itemPath>
+				<itemPath>../../../Source/Systems/BombKickSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/BombKickSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DamageSystem.cpp</itemPath>
@@ -171,6 +177,8 @@
 				<itemPath>../../../Source/Systems/MusicSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/ParticleSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/ParticleSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/PortalSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/PortalSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/SoundSystem.cpp</itemPath>
@@ -348,6 +356,8 @@
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalMarkerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -358,6 +368,7 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -369,6 +380,7 @@
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -399,6 +411,7 @@
 			<item path="../../../Source/Systems/AISystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -412,6 +425,7 @@
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/MusicSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/SoundSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -470,6 +484,7 @@
 			<item path="../../../Source/Systems/AISystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -483,6 +498,7 @@
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/MusicSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/SoundSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -620,6 +636,8 @@
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalMarkerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -630,6 +648,7 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateLocalGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -641,6 +660,7 @@
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -671,6 +691,7 @@
 			<item path="../../../Source/Systems/AISystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -684,6 +705,7 @@
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/MusicSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/SoundSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -742,6 +764,7 @@
 			<item path="../../../Source/Systems/AISystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -755,6 +778,7 @@
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/MusicSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/SoundSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>

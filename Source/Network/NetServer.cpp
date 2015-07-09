@@ -19,6 +19,8 @@
 #include "../Components/InputComponent.h"
 #include "../Components/DynamicComponent.h"
 #include "../Events/ExplosionCreatedEvent.h"
+#include "../Events/PortalCreatedEvent.h"
+#include "../Components/PortalComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -30,6 +32,8 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<BombCreatedEvent>(*this);
 	GameGlobals::events->subscribe<ExplosionCreatedEvent>(*this);
 	GameGlobals::events->subscribe<EntityDestroyedEvent>(*this);
+	GameGlobals::events->subscribe<PortalCreatedEvent>(*this);
+
 	m_handler.setCallback(MessageType::CHAT, &NetServer::onChatMessage, this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -120,6 +124,11 @@ void NetServer::receive(const EntityDestroyedEvent& evt)
 	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
+void NetServer::receive(const PortalCreatedEvent& evt)
+{
+	broadcast(NetChannel::WORLD_RELIABLE, createPortalPacket(evt.entity, evt.x, evt.y, evt.owner));
+}
+
 void NetServer::broadcast(NetChannel channel, ENetPacket *packet)
 {
 	enet_host_broadcast(m_connection.getHost(), (enet_uint8)channel, packet);
@@ -168,6 +177,7 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	// Send entities to new player
 	sendPlayerEntities(evt.peer);
 	sendBombEntities(evt.peer);
+	sendPortalEntities(evt.peer);
 	//Fixme: explosions
 
 	// Send the playerId to the client
@@ -305,6 +315,26 @@ ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y
 	m_messageWriter.write<Direction>(direction);
 	m_messageWriter.write<uint8_t>(range);
 	m_messageWriter.write<float>(spreadTime);
+	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+void NetServer::sendPortalEntities(ENetPeer* peer)
+{
+	ComponentHandle<PortalComponent> portal;
+	ComponentHandle<OwnerComponent> owner;
+	ComponentHandle<CellComponent> cell;
+	using GameGlobals::entities;
+	for (Entity entity : entities->entities_with_components(portal, owner, cell))
+		send(peer, NetChannel::WORLD_RELIABLE, createPortalPacket(entity, cell->x, cell->y, owner->entity));
+}
+
+ENetPacket *NetServer::createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner)
+{
+	m_messageWriter.init(MessageType::CREATE_PORTAL);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint8_t>(x);
+	m_messageWriter.write<uint8_t>(y);
+	m_messageWriter.write<uint64_t>(owner.id().id());
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

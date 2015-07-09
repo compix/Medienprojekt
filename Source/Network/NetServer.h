@@ -5,6 +5,7 @@
 #include <entityx/entityx.h>
 #include "../Events/ExplosionCreatedEvent.h"
 
+struct PortalCreatedEvent;
 struct SendChatEvent;
 struct BombCreatedEvent;
 using NetCode::ServerConnection;
@@ -29,6 +30,7 @@ public:
 	void receive(const BombCreatedEvent &evt);
 	void receive(const ExplosionCreatedEvent& evt);
 	void receive(const EntityDestroyedEvent &evt);
+	void receive(const PortalCreatedEvent &evt);
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onInputBombActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -45,6 +47,8 @@ private:
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner);
 	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime);
+	void sendPortalEntities(ENetPeer* peer);
+	ENetPacket* createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner);
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
 
