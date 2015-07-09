@@ -18,9 +18,11 @@
 #include "../Components/OwnerComponent.h"
 #include "../Components/InputComponent.h"
 #include "../Components/DynamicComponent.h"
+#include "../Components/PortalComponent.h"
+#include "../Components/ItemComponent.h"
 #include "../Events/ExplosionCreatedEvent.h"
 #include "../Events/PortalCreatedEvent.h"
-#include "../Components/PortalComponent.h"
+#include "../Events/ItemCreatedEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -33,6 +35,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<ExplosionCreatedEvent>(*this);
 	GameGlobals::events->subscribe<EntityDestroyedEvent>(*this);
 	GameGlobals::events->subscribe<PortalCreatedEvent>(*this);
+	GameGlobals::events->subscribe<ItemCreatedEvent>(*this);
 
 	m_handler.setCallback(MessageType::CHAT, &NetServer::onChatMessage, this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
@@ -129,6 +132,11 @@ void NetServer::receive(const PortalCreatedEvent& evt)
 	broadcast(NetChannel::WORLD_RELIABLE, createPortalPacket(evt.entity, evt.x, evt.y, evt.owner));
 }
 
+void NetServer::receive(const ItemCreatedEvent& evt)
+{
+	broadcast(NetChannel::WORLD_RELIABLE, createItemPacket(evt.entity, evt.x, evt.y, evt.type));
+}
+
 void NetServer::broadcast(NetChannel channel, ENetPacket *packet)
 {
 	enet_host_broadcast(m_connection.getHost(), (enet_uint8)channel, packet);
@@ -178,6 +186,7 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	sendPlayerEntities(evt.peer);
 	sendBombEntities(evt.peer);
 	sendPortalEntities(evt.peer);
+	sendItemEntities(evt.peer);
 	//Fixme: explosions
 
 	// Send the playerId to the client
@@ -335,6 +344,25 @@ ENetPacket *NetServer::createPortalPacket(Entity entity, uint8_t x, uint8_t y, E
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<uint64_t>(owner.id().id());
+	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
+}
+
+void NetServer::sendItemEntities(ENetPeer* peer)
+{
+	ComponentHandle<ItemComponent> item;
+	ComponentHandle<CellComponent> cell;
+	using GameGlobals::entities;
+	for (Entity entity : entities->entities_with_components(item, cell))
+		send(peer, NetChannel::WORLD_RELIABLE, createItemPacket(entity, cell->x, cell->y, item->type));
+}
+
+ENetPacket* NetServer::createItemPacket(Entity entity, uint8_t x, uint8_t y, ItemType type)
+{
+	m_messageWriter.init(MessageType::CREATE_ITEM);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint8_t>(x);
+	m_messageWriter.write<uint8_t>(y);
+	m_messageWriter.write<ItemType>(type);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

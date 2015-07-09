@@ -26,6 +26,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::CREATE_BOMB, &NetClient::onCreateBombMessage, this);
 	m_handler.setCallback(MessageType::CREATE_EXPLOSION, &NetClient::onCreateExplosionMessage, this);
 	m_handler.setCallback(MessageType::CREATE_PORTAL, &NetClient::onCreatePortalMessage, this);
+	m_handler.setCallback(MessageType::CREATE_ITEM, &NetClient::onCreateItemMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
 	
@@ -190,6 +191,15 @@ void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEv
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
 		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner));
+}
+
+void NetClient::onCreateItemMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	uint8_t x = reader.read<uint8_t>();
+	uint8_t y = reader.read<uint8_t>();
+	ItemType type = reader.read<ItemType>();
+	mapEntity(id, GameGlobals::entityFactory->createItem(x, y, type));
 }
 
 void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

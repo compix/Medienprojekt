@@ -9,7 +9,6 @@
 #include "../Components/LayerComponent.h"
 #include "../Components/PortalMarkerComponent.h"
 #include "../Components/TimerComponent.h"
-#include "../Events/PortalCreatedEvent.h"
 
 
 using namespace entityx;
@@ -185,7 +184,6 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 					(*it2).second.assign<TimerComponent>(GameConstants::PORTAL_TIMER_LINKED);
 				}
 			}
-			GameGlobals::events->emit<PortalCreatedEvent>(portal, cellX, cellY, entity);
 		}
 	//}
 }

@@ -29,6 +29,8 @@
 #include "Systems/ParticleSystem.h"
 #include "Events/BombCreatedEvent.h"
 #include "Events/ExplosionCreatedEvent.h"
+#include "Events/PortalCreatedEvent.h"
+#include "Events/ItemCreatedEvent.h"
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
@@ -290,6 +292,7 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
 	return entity;
 }
 
@@ -529,6 +532,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<ItemCreatedEvent>(entity, cellX, cellY, type);
 	return entity;
 }
 

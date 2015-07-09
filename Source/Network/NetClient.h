@@ -37,6 +37,7 @@ public:
 	void onCreateBombMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCreateItemMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 private:

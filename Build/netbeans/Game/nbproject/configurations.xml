@@ -68,6 +68,7 @@
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExplosionCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ItemCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ItemPickedUpEvent.h</itemPath>
 				<itemPath>../../../Source/Events/JoinServerEvent.h</itemPath>
 				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
@@ -375,6 +376,7 @@
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -655,6 +657,7 @@
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinServerEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>

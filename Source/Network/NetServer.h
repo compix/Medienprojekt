@@ -5,6 +5,8 @@
 #include <entityx/entityx.h>
 #include "../Events/ExplosionCreatedEvent.h"
 
+struct ItemCreatedEvent;
+enum class ItemType : uint8_t;
 struct PortalCreatedEvent;
 struct SendChatEvent;
 struct BombCreatedEvent;
@@ -31,6 +33,7 @@ public:
 	void receive(const ExplosionCreatedEvent& evt);
 	void receive(const EntityDestroyedEvent &evt);
 	void receive(const PortalCreatedEvent &evt);
+	void receive(const ItemCreatedEvent &evt);
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onInputBombActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -49,6 +52,8 @@ private:
 	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime);
 	void sendPortalEntities(ENetPeer* peer);
 	ENetPacket* createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner);
+	void sendItemEntities(ENetPeer* peer);
+	ENetPacket* createItemPacket(Entity entity, uint8_t x, uint8_t y, ItemType type);
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
 
