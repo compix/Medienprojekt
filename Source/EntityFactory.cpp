@@ -29,6 +29,10 @@
 #include "Systems/ParticleSystem.h"
 #include "Events/BombCreatedEvent.h"
 #include "Events/ExplosionCreatedEvent.h"
+#include "Events/PortalCreatedEvent.h"
+#include "Events/ItemCreatedEvent.h"
+#include "Events/BoostEffectCreatedEvent.h"
+#include "Events/SmokeCreatedEvent.h"
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
@@ -290,6 +294,7 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
 	return entity;
 }
 
@@ -452,6 +457,7 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<SmokeCreatedEvent>(entity, cellX, cellY);
 	return entity;
 }
 
@@ -494,6 +500,7 @@ Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity tar
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<BoostEffectCreatedEvent>(entity, cellX, cellY, target);
 	return entity;
 }
 
@@ -529,6 +536,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit<ItemCreatedEvent>(entity, cellX, cellY, type);
 	return entity;
 }
 

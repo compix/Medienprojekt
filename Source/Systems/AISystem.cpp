@@ -14,6 +14,12 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 {
 	entityx::Entity player;
 
+	m_pathEngine->update();
+	//m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
+
+	//m_pathEngine->visualize();
+	//m_pathEngine->visualize(m_path);
+
 	for (auto p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
 		if (!p.has_component<AIComponent>())

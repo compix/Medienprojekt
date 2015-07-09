@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Animation">
@@ -160,6 +160,9 @@
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ChatEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -190,6 +193,9 @@
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -205,6 +211,9 @@
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -212,6 +221,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SoundEvent.h">

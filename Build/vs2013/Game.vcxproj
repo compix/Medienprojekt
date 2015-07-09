@@ -135,6 +135,7 @@
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h" />
@@ -145,14 +146,17 @@
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />

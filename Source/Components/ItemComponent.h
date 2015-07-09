@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ItemType
+enum class ItemType : uint8_t
 {
 	BOMB_CAP_BOOST,
 	BOMB_KICK_SKILL,
