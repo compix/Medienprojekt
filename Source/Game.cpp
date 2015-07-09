@@ -124,13 +124,6 @@ void Game::update(TimeDelta dt)
 
 	//auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
 	//auto cell = player.component<CellComponent>();
-
-	m_pathEngine->update();
-	//m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
-	
-	//m_pathEngine->visualize();
-	//m_pathEngine->visualize(m_path);
-	
 }
 
 void Game::refreshView()
