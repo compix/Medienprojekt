@@ -1,6 +1,7 @@
 #include "InputSystem.h"
 #include "../Utils/InputManager.h"
 #include "../Components/InputComponent.h"
+#include "../Components/AIComponent.h"
 #include "../GameGlobals.h"
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
@@ -9,7 +10,7 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 	for (auto entity : entities)
 	{
 		auto input = entity.component<InputComponent>();
-		if (input->playerIndex < 0)
+		if (input->playerIndex < 0 || entity.has_component<AIComponent>())
 			continue;
 
 		auto &playerInput = GameGlobals::input->getPlayerInput(input->playerIndex);
