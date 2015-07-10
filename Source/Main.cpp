@@ -1,4 +1,4 @@
-﻿#include "Main.h"
+#include "Main.h"
 #include "Game.h"
 #include "Menu/Menu.h"
 #include "Utils/InputManager.h"

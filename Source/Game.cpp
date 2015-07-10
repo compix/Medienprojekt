@@ -130,11 +130,19 @@ void Game::update(TimeDelta dt)
 
 void Game::refreshView()
 {
-	float min = std::min(GameGlobals::window->getSize().x, GameGlobals::window->getSize().y);
-	float levelLength = std::min(getWidth()*GameConstants::CELL_WIDTH, getHeight()*GameConstants::CELL_HEIGHT);
-	float scaleFactor = std::max(1.f, levelLength / min);
-	m_view.reset(sf::FloatRect(0, 0, GameGlobals::window->getSize().x * scaleFactor, GameGlobals::window->getSize().y * scaleFactor));
-	m_view.setCenter(GameGlobals::game->getWidth()*GameConstants::CELL_WIDTH*0.5f, GameGlobals::game->getHeight()*GameConstants::CELL_HEIGHT*0.5f);
+	float gameW = GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH;
+	float gameH = GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT;
+	float screenW = GameGlobals::window->getSize().x;
+	float screenH = GameGlobals::window->getSize().y;
+	float screenRatio = screenW / screenH;
+	float viewRatio = gameW / gameH;
+	float scaleFactor;
+	if (viewRatio > screenRatio)
+		scaleFactor = gameW / screenW;
+	else
+		scaleFactor = gameH / screenH;
+	m_view.reset(sf::FloatRect(0, 0, screenW * scaleFactor, screenH * scaleFactor));
+	m_view.setCenter(gameW*0.5f, gameH*0.5f);
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
