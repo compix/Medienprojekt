@@ -26,5 +26,15 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 
 		input->moveX = playerInput.moveX;
 		input->moveY = playerInput.moveY;
+		
+		// Normalize (in case someone is cheating)
+		if (input->moveX || input->moveY)
+		{
+			float len = sqrtf(input->moveX * input->moveX + input->moveY * input->moveY);
+			if(len > 1) {
+				input->moveX /= len;
+				input->moveY /= len;
+			}
+		}
 	}
 }

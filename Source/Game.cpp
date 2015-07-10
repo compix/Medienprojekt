@@ -37,6 +37,7 @@
 #include "Events/StartGameEvent.h"
 #include "Systems/BombKickSystem.h"
 #include "Systems/PortalSystem.h"
+#include "Utils/InputManager.h"
 
 
 Game::Game()
@@ -111,6 +112,7 @@ void Game::update(TimeDelta dt)
 	if (!initialized)
 		return;
 
+	GameGlobals::input->update();
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	//m_PhysixSystem->DrawDebug();

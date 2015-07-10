@@ -242,14 +242,6 @@ void NetServer::onInputDirectionMessage(MessageReader<MessageType>& reader, ENet
 		auto input = info->entity.component<InputComponent>();
 		input->moveX = reader.read<float>();
 		input->moveY = reader.read<float>();
-
-		// Normalize (just in case someone is cheating)
-		if (input->moveX && input->moveY)
-		{
-			float len = sqrtf(input->moveX * input->moveX + input->moveY * input->moveY);
-			input->moveX /= len;
-			input->moveY /= len;
-		}
 	}
 }
 

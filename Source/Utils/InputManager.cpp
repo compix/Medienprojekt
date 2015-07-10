@@ -4,8 +4,23 @@
 #include <iostream>
 #include <string.h>
 #include "../GameGlobals.h"
+#include "json/json.h"
+#include <fstream>
+#include "Exceptions.h"
 
 using namespace std;
+
+
+static const char *axisNames[] = {
+	"X",
+	"Y",
+	"Z",
+	"R",
+	"U",
+	"V",
+	"PovX",
+	"PovY"
+};
 
 InputManager::InputManager()
 {
@@ -22,17 +37,74 @@ InputManager::InputManager()
 			pi.buttonPressed[j] = false;
 		}
 	}
-
-	// player 0 dummy binding, to be replaced by menu/config
-	bindKey(0, PlayerButton::BOMB, sf::Keyboard::Key::Space);
-	bindKey(0, PlayerButton::SKILL, sf::Keyboard::Key::LControl);
-	bindKey(0, PlayerButton::UP, sf::Keyboard::Key::Up);
-	bindKey(0, PlayerButton::DOWN, sf::Keyboard::Key::Down);
-	bindKey(0, PlayerButton::LEFT, sf::Keyboard::Key::Left);
-	bindKey(0, PlayerButton::RIGHT, sf::Keyboard::Key::Right);
+	
+	loadConfigFromJson("input.json");
+	
+	for(unsigned int i=0; i<sf::Joystick::Count; i++) {
+		m_joystickMap[i] = nullptr;
+		if(sf::Joystick::isConnected(i))
+			onJoystickConnected(i);
+	}
 }
 
 InputManager::~InputManager() { }
+
+bool InputManager::loadConfigFromJson(const std::string& path) {
+	Json::Value root;
+	Json::Reader reader;
+	ifstream ifs(path, ifstream::binary);
+
+	if(!ifs.is_open()) {
+		cerr << "Can't find file: " << path << endl;
+		throw file_not_found(path);
+	}
+	
+	if (!reader.parse(ifs, root, false))
+	{
+		cerr << "Parsing error: " << reader.getFormattedErrorMessages() << endl;
+		return false;
+	}
+
+	if(!root.isArray()) {
+		cerr << "Expected Array in input.json" << endl;
+		return false;
+	}
+	
+	int index = 0;
+	for (auto it: root)
+	{
+		if(!it.isObject()) {
+			cerr << "Expected Object in input.json" << endl;
+			return false;
+		}
+		std::string joystick = it["Joystick"].asString();
+		if(!joystick.empty()) {
+			auto &config = m_storedJoystickConfigs[index];
+			config.configured = true;
+			config.name = joystick;
+			config.bombButton = it["BOMB"].asInt();
+			config.skillButton = it["SKILL"].asInt();
+			config.xAxis = getAxis(it["X-Axis"].asString().c_str());
+			config.yAxis = getAxis(it["Y-Axis"].asString().c_str());
+			config.scaleX = it["scaleX"].asFloat() / 100.0f;
+			config.scaleY = it["scaleY"].asFloat() / 100.0f;
+			config.playerIndex = index;
+		} else {
+			bindKey(index, PlayerButton::BOMB, getKeyCode(it["BOMB"].asString().c_str()));
+			bindKey(index, PlayerButton::SKILL, getKeyCode(it["SKILL"].asString().c_str()));
+			bindKey(index, PlayerButton::UP, getKeyCode(it["UP"].asString().c_str()));
+			bindKey(index, PlayerButton::DOWN, getKeyCode(it["DOWN"].asString().c_str()));
+			bindKey(index, PlayerButton::LEFT, getKeyCode(it["LEFT"].asString().c_str()));
+			bindKey(index, PlayerButton::RIGHT, getKeyCode(it["RIGHT"].asString().c_str()));
+		}
+		
+		index++;
+		if(index >= MAX_PLAYER_INPUTS)
+			break;
+	}
+
+	return true;
+}
 
 PlayerInput &InputManager::getPlayerInput(int id)
 {
@@ -78,6 +150,20 @@ void InputManager::receive(const MenuShowEvent &evt)
 		GameGlobals::events->unsubscribe<sf::Event>(*this);
 	else
 		GameGlobals::events->subscribe<sf::Event>(*this);
+}
+
+void InputManager::update()
+{
+	for(int i=0; i<sf::Joystick::Count; i++)
+	{
+		auto *config = m_joystickMap[i];
+		if(config)
+		{
+			auto &player = m_playerInputs[config->playerIndex];
+			player.moveX = sf::Joystick::getAxisPosition(i, config->xAxis) * config->scaleX;
+			player.moveY = sf::Joystick::getAxisPosition(i, config->yAxis) * config->scaleY;
+		}
+	}
 }
 
 void InputManager::onKeyPressed(int code)
@@ -149,24 +235,58 @@ void InputManager::updatePlayerMove(PlayerInput &playerInput)
 
 void InputManager::onJoystickButtonPressed(int id, int button)
 {
-	cout << "Joystick button pressed: " << id << "/" << button << endl;
+	auto *config = m_joystickMap[id];
+	if(config) {
+		auto &player = m_playerInputs[config->playerIndex];
+		if(config->bombButton == button)
+			player.buttonPressed[PlayerButton::BOMB] = true;
+		else if(config->skillButton == button)
+			player.buttonPressed[PlayerButton::SKILL] = true;
+	}
 }
 
 void InputManager::onJoystickButtonReleased(int id, int button)
 {
-	cout << "Joystick button released: " << id << "/" << button << endl;
+//	cout << "Joystick button released: " << id << "/" << button << endl;
 }
 
 void InputManager::onJoystickConnected(int id)
 {
 	sf::Joystick::Identification info = sf::Joystick::getIdentification(id);
-	cout << "Joystick connected: " << info.name.toAnsiString() << endl;
+	auto name = info.name.toAnsiString();
+	cout << "Joystick connected: " << name << endl;
+	cout << "Buttons: " << sf::Joystick::getButtonCount(id) << endl;
+	cout << "Axes: ";
+	bool hasAxes = false;
+	for(int j = 0; j<sf::Joystick::AxisCount; j++)
+	{
+		if(sf::Joystick::hasAxis(id, (sf::Joystick::Axis)j))
+		{
+			if(hasAxes)
+				cout << ", ";
+			cout << axisNames[j];
+			hasAxes = true;
+		}
+	}
+	if(!hasAxes)
+		cout << "None";
+	cout << endl;
+	
+	for(int i=0; i<MAX_PLAYER_INPUTS; i++)
+	{
+		auto &config = m_storedJoystickConfigs[i];
+		if(config.configured && name == config.name) {
+			m_joystickMap[id] = &config;
+			break;
+		}
+	}
 }
 
 void InputManager::onJoystickDisconnected(int id)
 {
 	sf::Joystick::Identification info = sf::Joystick::getIdentification(id);
 	cout << "Joystick disconnected: " << info.name.toAnsiString() << endl;
+	m_joystickMap[id] = nullptr;
 }
 
 // Keep in sync with sf::Keyboard::Key
@@ -295,4 +415,17 @@ int InputManager::getKeyCode(const char *name)
 		}
 	}
 	return -1;
+}
+
+sf::Joystick::Axis InputManager::getAxis(const char *name)
+{
+	if (name)
+	{
+		for (int i = 0; i < sf::Joystick::AxisCount; i++)
+		{
+			if (strcmp(axisNames[i], name) == 0)
+				return (sf::Joystick::Axis)i;
+		}
+	}
+	return (sf::Joystick::Axis)-1;
 }

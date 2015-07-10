@@ -2,6 +2,7 @@
 #include <map>
 #include <entityx/entityx.h>
 #include "../Events/MenuShowEvent.h"
+#include <SFML/Window/Joystick.hpp>
 
 namespace sf
 {
@@ -37,6 +38,19 @@ struct KeycodeMapEntry
 	int playerIndex;
 };
 
+struct JoystickConfig
+{
+	std::string name;
+	bool configured = false;
+	int skillButton;
+	int bombButton;
+	int playerIndex;
+	sf::Joystick::Axis xAxis;
+	sf::Joystick::Axis yAxis;
+	float scaleX;
+	float scaleY;
+};
+
 class InputManager : public Receiver<InputManager>
 {
 public:
@@ -47,15 +61,20 @@ public:
 
 	static const char *getKeyName(int code);
 	static int getKeyCode(const char *name);
+	static sf::Joystick::Axis getAxis(const char *name);
 
 	void receive(const sf::Event &evt);
 	void receive(const MenuShowEvent &evt);
+	
+	void update();
 
 private:
 	PlayerInput m_playerInputs[MAX_PLAYER_INPUTS];
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
-	std::map<int, int> m_joystickMap;
+	JoystickConfig m_storedJoystickConfigs[MAX_PLAYER_INPUTS];
+	JoystickConfig *m_joystickMap[sf::Joystick::Count];
 
+	bool loadConfigFromJson(const std::string& path);
 	void bindKey(int playerIndex, PlayerButton button, int keyCode);
 
 	void onKeyPressed(int code);

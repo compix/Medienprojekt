@@ -1,0 +1,35 @@
+[
+	{
+		"BOMB": "Space",
+		"SKILL": "Left Control",
+		"UP": "W",
+		"DOWN": "S",
+		"LEFT": "A",
+		"RIGHT": "D"
+	},
+	{
+		"BOMB": "Right Control",
+		"SKILL": "Right Shift",
+		"UP": "Up Arrow",
+		"DOWN": "Down Arrow",
+		"LEFT": "Left Arrow",
+		"RIGHT": "Right Arrow"
+	},
+	{
+		"BOMB": "Numpad 0",
+		"SKILL": "Numpad 5",
+		"UP": "Numpad 8",
+		"DOWN": "Numpad 2",
+		"LEFT": "Numpad 4",
+		"RIGHT": "Numpad 6"
+	},
+	{
+		"Joystick": "Saitek Cyborg Rumble Pad",
+		"BOMB": 0,
+		"SKILL": 1,
+		"X-Axis": "PovX",
+		"Y-Axis": "PovY",
+		"scaleX": 1,
+		"scaleY": -1
+	}
+]
