@@ -1,10 +1,10 @@
 #pragma once
 #include "../MenuPage.h"
 
-class MenuPageJoinServer : public MenuPage
+class MenuPageJoinGame : public MenuPage
 {
 public:
-	MenuPageJoinServer(Menu &menu);
+	MenuPageJoinGame(Menu &menu);
 	void onSubmit();
 private:
 	tgui::EditBox::Ptr m_name;

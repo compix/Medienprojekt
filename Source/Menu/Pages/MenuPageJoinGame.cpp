@@ -1,9 +1,9 @@
-#include "MenuPageJoinServer.h"
-#include "../../Events/JoinServerEvent.h"
+#include "MenuPageJoinGame.h"
+#include "../../Events/JoinGameEvent.h"
 #include "../../GameGlobals.h"
 #include "../Menu.h"
 
-MenuPageJoinServer::MenuPageJoinServer(Menu &menu)
+MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
 	:MenuPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
@@ -34,12 +34,12 @@ MenuPageJoinServer::MenuPageJoinServer(Menu &menu)
 	y += stepY;
 	tgui::Button::Ptr button = createButton(x2, y, width2, height2, "Join");
 
-	button->bindCallback(&MenuPageJoinServer::onSubmit, this, tgui::Button::LeftMouseClicked);
+	button->bindCallback(&MenuPageJoinGame::onSubmit, this, tgui::Button::LeftMouseClicked);
 
 	m_onShowFocus = m_name.get();
 }
 
-void MenuPageJoinServer::onSubmit()
+void MenuPageJoinGame::onSubmit()
 {
 	std::string name = m_name->getText();
 	std::string host = m_host->getText();
@@ -48,7 +48,7 @@ void MenuPageJoinServer::onSubmit()
 
 	int portValue = atoi(port.c_str());
 
-	GameGlobals::events->emit<JoinServerEvent>(host, portValue, name);
+	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
 	//fixme: push lobby page
 	m_menu.popPage();
 	m_menu.popPage();

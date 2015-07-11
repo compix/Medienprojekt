@@ -103,6 +103,9 @@
     <ClInclude Include="..\..\Source\Components\FloorComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\HealthComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -122,6 +125,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\LinkComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LocalInputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
@@ -169,13 +175,10 @@
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h">
+    <ClInclude Include="..\..\Source\Events\CreateGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\CreateServerEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\DeathEvent.h">
@@ -199,7 +202,7 @@
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\JoinServerEvent.h">
+    <ClInclude Include="..\..\Source\Events\JoinGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h">
@@ -264,19 +267,16 @@
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateServer.h">
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinServer.h">
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h">
-      <Filter>Menu\Pages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLocalGame.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h">
@@ -479,19 +479,16 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateServer.cpp">
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinServer.cpp">
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp">
-      <Filter>Menu\Pages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp">

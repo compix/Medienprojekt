@@ -50,6 +50,15 @@ tgui::EditBox::Ptr MenuPage::createEditBox(float x, float y, float width, float 
 	return editbox;
 }
 
+tgui::Checkbox::Ptr MenuPage::createCheckbox(float x, float y, float width, float height)
+{
+	tgui::Checkbox::Ptr checkbox(*m_panel);
+	checkbox->load("Assets/ui/widgets/Black.conf");
+	checkbox->setPosition(x, y);
+	checkbox->setSize(width, height);
+	return checkbox;
+}
+
 tgui::Button::Ptr MenuPage::createButton(float x, float y, float width, float height, const string &text)
 {
 	tgui::Button::Ptr button(*m_panel);
@@ -68,4 +77,13 @@ tgui::ChatBox::Ptr MenuPage::createChatBox(float x, float y, float width, float 
 	chatBox->setPosition(x, y);
 	chatBox->setSize(width, height);
 	return chatBox;
+}
+
+tgui::ComboBox::Ptr MenuPage::createComboBox(float x, float y, float width, float height)
+{
+	tgui::ComboBox::Ptr comboBox(*m_panel);
+	comboBox->load("Assets/ui/widgets/Black.conf");
+	comboBox->setPosition(x, y);
+	comboBox->setSize(width, height);
+	return comboBox;
 }

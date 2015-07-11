@@ -21,8 +21,10 @@ protected:
 	tgui::Picture::Ptr createPicture(float width, float height, const string &filename);
 	tgui::Label::Ptr createLabel(float x, float y, const string &text);
 	tgui::EditBox::Ptr createEditBox(float x, float y, float width, float height);
+	tgui::Checkbox::Ptr createCheckbox(float x, float y, float width, float height);
 	tgui::Button::Ptr createButton(float x, float y, float width, float height, const string &text);
 	tgui::ChatBox::Ptr createChatBox(float x, float y, float width, float height);
+	tgui::ComboBox::Ptr createComboBox(float x, float y, float width, float height);
 
 protected:
 	Menu &m_menu;

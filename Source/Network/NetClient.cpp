@@ -8,6 +8,7 @@
 #include "../Components/InputComponent.h"
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
+#include "../Components/LocalInputComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -116,7 +117,7 @@ void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent&
 {
 	uint64_t id = reader.read<uint64_t>();
 	m_playerEntity = getEntity(id);
-	m_playerEntity.component<InputComponent>()->playerIndex = 0;
+	m_playerEntity.assign<LocalInputComponent>(0);
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -161,7 +162,8 @@ void NetClient::onCreatePlayerMessage(MessageReader<MessageType>& reader, ENetEv
 	uint64_t id = reader.read<uint64_t>();
 	float x = reader.read<float>();
 	float y = reader.read<float>();
-	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y));
+	int playerIndex = -1; //fixme
+	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y, playerIndex));
 }
 
 void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

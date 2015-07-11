@@ -11,6 +11,9 @@
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
+#include "Components/LocalInputComponent.h"
+#include "Components/AIComponent.h"
+#include "Components/FreeSlotComponent.h"
 
 using namespace std;
 
@@ -59,17 +62,16 @@ int Main::run()
 	AnimatorManager::init();
 
 	m_events.subscribe<ExitEvent>(*this);
-	m_events.subscribe<CreateLocalGameEvent>(*this);
-	m_events.subscribe<CreateServerEvent>(*this);
-	m_events.subscribe<JoinServerEvent>(*this);
+	m_events.subscribe<CreateGameEvent>(*this);
+	m_events.subscribe<JoinGameEvent>(*this);
 
 	// Create dummy local game
-	std::vector<std::string> names;
-	names.push_back("Stan");
-	names.push_back("Kenny");
-	names.push_back("Kyle");
-	names.push_back("Cartman");
-	m_events.emit<CreateLocalGameEvent>(21, 21, names);
+	std::vector<CreateGamePlayerInfo> players;
+	players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
+	players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
+	players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::LOCAL));
+	players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::LOCAL));
+	m_events.emit<CreateGameEvent>(21, 21, players);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 
@@ -115,54 +117,57 @@ int Main::run()
 	return EXIT_SUCCESS;
 }
 
-void Main::receive(const CreateLocalGameEvent& evt)
+void Main::initPlayers(const std::vector<CreateGamePlayerInfo>& players)
 {
-	disconnect();
-	GameGlobals::game = make_unique<LocalGame>();
-	GameGlobals::game->init(evt.width, evt.height);
-
-	using GameGlobals::entities;
 	int i = 0;
 	ComponentHandle<InputComponent> input;
-	for (Entity entity : entities->entities_with_components(input))
+	for (Entity entity : GameGlobals::entities->entities_with_components(input))
 	{
-		if (i == evt.names.size())
+		if (i == players.size())
 			entity.destroy();
 		else
 		{
-//			player->name = evt.names[i]; // fixme
-			input->playerIndex = i++;
+			//			player->name = evt.names[i]; // fixme
+			switch (players[i].type)
+			{
+			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
+			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
+			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
+			}
+			i++;
 		}
 	}
 }
 
-void Main::receive(const CreateServerEvent& evt)
+void Main::receive(const CreateGameEvent& evt)
 {
 	disconnect();
-	m_server = make_unique<NetServer>();
-	if (m_server->connect(evt.host, evt.port))
+	if (evt.online)
 	{
-		cout << "Server created" << endl;
-		GameGlobals::game = make_unique<ServerGame>();
-		GameGlobals::game->init(evt.width, evt.height);
-
-		using GameGlobals::entities;
-		ComponentHandle<InputComponent> input;
-		for (Entity entity : entities->entities_with_components(input))
+		m_server = make_unique<NetServer>();
+		if (m_server->connect(evt.host, evt.port))
 		{
-			input->playerIndex = 0;
-			break;
+			cout << "Server created" << endl;
+			GameGlobals::game = make_unique<ServerGame>();
+			GameGlobals::game->init(evt.width, evt.height);
+			initPlayers(evt.players);
+		}
+		else
+		{
+			m_server.reset();
+			cerr << "Could not create server host" << endl;
+			GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
 		}
 	}
 	else
 	{
-		m_server.reset();
-		cerr << "Could not create client host" << endl;
-		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
+		GameGlobals::game = make_unique<LocalGame>();
+		GameGlobals::game->init(evt.width, evt.height);
+		initPlayers(evt.players);
 	}
 }
 
-void Main::receive(const JoinServerEvent& evt)
+void Main::receive(const JoinGameEvent& evt)
 {
 	disconnect();
 	m_client = make_unique<NetClient>();

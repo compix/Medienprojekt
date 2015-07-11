@@ -114,6 +114,7 @@
     <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
+    <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LocalInputComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
     <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
@@ -138,9 +140,8 @@
     <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreateServerEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
     <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
@@ -148,7 +149,7 @@
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
-    <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
+    <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
@@ -173,11 +174,10 @@
     <ClInclude Include="..\..\Source\Menu\Menu.h" />
     <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLocalGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageSettings.h" />
     <ClInclude Include="..\..\Source\NetCode\Connection.h" />
@@ -252,11 +252,10 @@
     <ClCompile Include="..\..\Source\Menu\Menu.cpp" />
     <ClCompile Include="..\..\Source\Menu\MenuPage.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
     <ClCompile Include="..\..\Source\Network\NetClient.cpp" />

@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include <entityx/entityx.h>
 #include "Events/ExitEvent.h"
-#include "Events/CreateLocalGameEvent.h"
-#include "Events/CreateServerEvent.h"
-#include "Events/JoinServerEvent.h"
+#include "Events/CreateGameEvent.h"
+#include "Events/JoinGameEvent.h"
 #include "Network/NetServer.h"
 #include "Network/NetClient.h"
 #include "LayerManager.h"
@@ -21,9 +20,9 @@ public:
 	{
 		m_running = false;
 	}
-	void receive(const CreateLocalGameEvent& evt);
-	void receive(const CreateServerEvent& evt);
-	void receive(const JoinServerEvent& evt);
+	void initPlayers(const std::vector<CreateGamePlayerInfo> &players);
+	void receive(const CreateGameEvent& evt);
+	void receive(const JoinGameEvent& evt);
 	void disconnect();
 
 private:
