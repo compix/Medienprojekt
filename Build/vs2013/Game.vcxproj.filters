@@ -175,6 +175,9 @@
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ConnectionStateEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -194,6 +197,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\ForceDisconnectEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h">
@@ -265,6 +271,9 @@
       <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h">
+      <Filter>Menu\Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageConnecting.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h">
@@ -477,6 +486,9 @@
       <Filter>Menu</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp">
+      <Filter>Menu\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageConnecting.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp">

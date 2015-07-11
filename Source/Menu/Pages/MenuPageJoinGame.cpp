@@ -4,7 +4,7 @@
 #include "../Menu.h"
 
 MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
-	:MenuPage(menu)
+	:MenuPage(menu), m_connectingPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 	createLabel(50, 50, "Join Server");
@@ -49,7 +49,5 @@ void MenuPageJoinGame::onSubmit()
 	int portValue = atoi(port.c_str());
 
 	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
-	//fixme: push lobby page
-	m_menu.popPage();
-	m_menu.popPage();
+	m_menu.pushPage(&m_connectingPage);
 }

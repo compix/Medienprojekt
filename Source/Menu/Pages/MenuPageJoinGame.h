@@ -1,5 +1,6 @@
 #pragma once
 #include "../MenuPage.h"
+#include "MenuPageConnecting.h"
 
 class MenuPageJoinGame : public MenuPage
 {
@@ -10,4 +11,5 @@ private:
 	tgui::EditBox::Ptr m_name;
 	tgui::EditBox::Ptr m_host;
 	tgui::EditBox::Ptr m_port;
+	MenuPageConnecting m_connectingPage;
 };

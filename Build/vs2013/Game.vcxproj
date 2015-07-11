@@ -140,6 +140,7 @@
     <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ConnectionStateEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ForceDisconnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="..\..\Source\Menu\Menu.h" />
     <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageConnecting.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
@@ -252,6 +255,7 @@
     <ClCompile Include="..\..\Source\Menu\Menu.cpp" />
     <ClCompile Include="..\..\Source\Menu\MenuPage.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageConnecting.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />

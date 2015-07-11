@@ -9,6 +9,7 @@
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
 #include "../Components/LocalInputComponent.h"
+#include "../Events/ConnectionStateEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -38,6 +39,7 @@ NetClient::NetClient()
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
 	{
+		GameGlobals::events->emit<ConnectionStateEvent>("Connection established");
 		cout << "Connected to server!" << endl;
 
 		m_messageWriter.init(MessageType::HANDSHAKE);
@@ -111,6 +113,7 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	uint8_t width = reader.read<uint8_t>();
 	uint8_t height = reader.read<uint8_t>();
 	GameGlobals::game->init(width, height);
+	GameGlobals::events->emit<ConnectionStateEvent>("Received handshake", true);
 }
 
 void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

@@ -14,6 +14,9 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Components/FreeSlotComponent.h"
+#include "Events/ConnectionStateEvent.h"
+#include <format.h>
+#include "Events/ForceDisconnectEvent.h"
 
 using namespace std;
 
@@ -64,6 +67,7 @@ int Main::run()
 	m_events.subscribe<ExitEvent>(*this);
 	m_events.subscribe<CreateGameEvent>(*this);
 	m_events.subscribe<JoinGameEvent>(*this);
+	m_events.subscribe<ForceDisconnectEvent>(*this);
 
 	// Create dummy local game
 	std::vector<CreateGamePlayerInfo> players;
@@ -173,15 +177,19 @@ void Main::receive(const JoinGameEvent& evt)
 	m_client = make_unique<NetClient>();
 	if (m_client->connect(evt.host, evt.port))
 	{
-		cout << "Client created" << endl;
+		GameGlobals::events->emit<ConnectionStateEvent>(fmt::format("Connecting to {}:{}", evt.host, evt.port));
 		GameGlobals::game = make_unique<ClientGame>();
 	}
 	else
 	{
 		m_client.reset();
-		cerr << "Could not create client host" << endl;
-		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
+		GameGlobals::events->emit<ConnectionStateEvent>("Could not create client host");
 	}
+}
+
+void Main::receive(const ForceDisconnectEvent& evt)
+{
+	disconnect();
 }
 
 void Main::disconnect()

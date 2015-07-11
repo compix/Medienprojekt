@@ -63,6 +63,7 @@
 				<itemPath>../../../Source/Events/BoostEffectCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ConnectionStateEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreateGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreatePortalEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
@@ -70,6 +71,7 @@
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExplosionCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ForceDisconnectEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ItemCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ItemPickedUpEvent.h</itemPath>
 				<itemPath>../../../Source/Events/JoinGameEvent.h</itemPath>
@@ -114,6 +116,8 @@
 				<logicalFolder name="Pages" displayName="Pages" projectFiles="true">
 					<itemPath>../../../Source/Menu/Pages/MenuPageChat.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageChat.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageConnecting.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageConnecting.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageCreateGame.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageCreateGame.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.cpp</itemPath>
@@ -372,6 +376,7 @@
 			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectionStateEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -379,6 +384,7 @@
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -401,6 +407,7 @@
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
@@ -477,6 +484,7 @@
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -654,6 +662,7 @@
 			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectionStateEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -661,6 +670,7 @@
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -683,6 +693,7 @@
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
@@ -759,6 +770,7 @@
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
