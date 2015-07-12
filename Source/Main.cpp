@@ -112,7 +112,9 @@ int Main::run()
 		
 		window.display();
 
-		if (m_server)
+		if (m_forceDisconnect)
+			disconnect();
+		else if (m_server)
 			m_server->update();
 		else if (m_client)
 			m_client->update();
@@ -189,11 +191,12 @@ void Main::receive(const JoinGameEvent& evt)
 
 void Main::receive(const ForceDisconnectEvent& evt)
 {
-	disconnect();
+	m_forceDisconnect = true;
 }
 
 void Main::disconnect()
 {
+	m_forceDisconnect = false;
 	if (m_server)
 		m_server.reset();
 	if (m_client)

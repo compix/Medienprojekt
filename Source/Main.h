@@ -32,4 +32,5 @@ private:
 	unique_ptr<NetClient> m_client;
 	unique_ptr<NetServer> m_server;
 	EventManager m_events;
+	bool m_forceDisconnect = false;
 };
