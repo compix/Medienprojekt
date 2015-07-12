@@ -10,6 +10,7 @@
 #include "../Events/DeathEvent.h"
 #include "../Components/LocalInputComponent.h"
 #include "../Events/ConnectionStateEvent.h"
+#include "../Events/ForceDisconnectEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -49,6 +50,9 @@ NetClient::NetClient()
 	m_connection.setDisconnectCallback([](ENetEvent &event)
 	{
 		cout << "Disconnected from server!" << endl;
+		if (!event.peer)
+			GameGlobals::events->emit<ConnectionStateEvent>("Connection failed");
+		GameGlobals::events->emit<ForceDisconnectEvent>();
 	});
 }
 
