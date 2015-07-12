@@ -224,8 +224,8 @@ namespace NetCode
 				ENetEvent event;
 				event.type = ENET_EVENT_TYPE_DISCONNECT;
 				event.peer = nullptr;
-				if (m_disconnectCallback)
-					m_disconnectCallback(event);
+				if (this->m_disconnectCallback)
+					this->m_disconnectCallback(event);
 			}
 			return result;
 		}
