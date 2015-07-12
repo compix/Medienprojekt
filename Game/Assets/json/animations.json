@@ -1,13 +1,4 @@
 {
-	"char_idle": 
-	{
-	    "colCount" : 8,
-        "rowCount": 3,
-        "frameCount" : 20,
-        "frameDuration": 0.025,
-		"startFrame": 0,
-        "playMode" : "LOOP"
-	},
     "char_walk_down": 
 	{
         "colCount" : 5,

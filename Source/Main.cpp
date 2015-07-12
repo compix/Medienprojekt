@@ -17,6 +17,7 @@
 #include "Events/ConnectionStateEvent.h"
 #include <format.h>
 #include "Events/ForceDisconnectEvent.h"
+#include "Events/PreloadEvent.h"
 
 using namespace std;
 
@@ -65,20 +66,11 @@ int Main::run()
 	AssetManager assetManager;
 	GameGlobals::assetManager = &assetManager;
 
-	AnimatorManager::init();
-
 	m_events.subscribe<ExitEvent>(*this);
 	m_events.subscribe<CreateGameEvent>(*this);
 	m_events.subscribe<JoinGameEvent>(*this);
 	m_events.subscribe<ForceDisconnectEvent>(*this);
-
-	// Create dummy local game
-	std::vector<CreateGamePlayerInfo> players;
-	players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
-	players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
-	players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::LOCAL));
-	players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::LOCAL));
-	m_events.emit<CreateGameEvent>(21, 21, players);
+	m_events.subscribe<PreloadEvent>(*this);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 	sf::View screenView(sf::FloatRect(0, 0, 800, 600));
@@ -114,9 +106,11 @@ int Main::run()
 			window.setView(GameGlobals::game->getView());
 			auto dt = deltaTime.asSeconds();
 			// Limit dt to 100ms
-			if (dt > 0.1) dt = 0.1;
+			if (dt > 0.1f) dt = 0.1f;
 			GameGlobals::game->update(dt);
 		}
+		else if (!assetManager.preloadsDone())
+			assetManager.preloadNext();
 
 		window.setView(menuView);
 		menu.draw();
@@ -203,6 +197,22 @@ void Main::receive(const JoinGameEvent& evt)
 void Main::receive(const ForceDisconnectEvent& evt)
 {
 	m_forceDisconnect = true;
+}
+
+void Main::receive(const PreloadEvent& evt)
+{
+	if (evt.progress == evt.total)
+	{
+		AnimatorManager::init();
+
+		// Create dummy local game
+		std::vector<CreateGamePlayerInfo> players;
+		players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
+		players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
+		players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::LOCAL));
+		players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::LOCAL));
+		m_events.emit<CreateGameEvent>(21, 21, players);
+	}
 }
 
 void Main::disconnect()

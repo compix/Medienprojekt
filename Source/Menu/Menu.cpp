@@ -2,12 +2,14 @@
 #include "MenuPage.h"
 #include "../Events/MenuShowEvent.h"
 #include "../GameGlobals.h"
+#include "../Events/PreloadEvent.h"
 
 Menu::Menu()
-	: m_gui(*GameGlobals::window), m_rootPage(*this), m_chatPage(*this)
+	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this)
 {
-	GameGlobals::events->subscribe<sf::Event>(*this);
-//	pushPage(&m_rootPage);
+	GameGlobals::events->subscribe<PreloadEvent>(*this);
+
+	pushPage(&m_loadingPage);
 }
 
 void Menu::draw()
@@ -31,6 +33,16 @@ void Menu::receive(const sf::Event &evt)
 			pushPage(&m_rootPage);
 		else if (evt.key.code == sf::Keyboard::Return)
 			pushPage(&m_chatPage);
+	}
+}
+
+void Menu::receive(const PreloadEvent& evt)
+{
+	if (evt.progress == evt.total)
+	{
+		popPage();
+		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
+		GameGlobals::events->subscribe<sf::Event>(*this);
 	}
 }
 

@@ -25,6 +25,7 @@ protected:
 	tgui::Button::Ptr createButton(float x, float y, float width, float height, const string &text);
 	tgui::ChatBox::Ptr createChatBox(float x, float y, float width, float height);
 	tgui::ComboBox::Ptr createComboBox(float x, float y, float width, float height);
+	tgui::LoadingBar::Ptr createLoadingBar(float x, float y, float width, float height, int min, int max);
 
 protected:
 	Menu &m_menu;

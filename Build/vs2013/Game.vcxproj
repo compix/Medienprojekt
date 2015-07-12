@@ -156,6 +156,7 @@
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
     <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLoading.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageSettings.h" />
@@ -260,6 +262,7 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLoading.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
@@ -290,6 +293,7 @@
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\MusicLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\SoundLoader.cpp" />

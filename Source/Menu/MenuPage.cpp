@@ -87,3 +87,14 @@ tgui::ComboBox::Ptr MenuPage::createComboBox(float x, float y, float width, floa
 	comboBox->setSize(width, height);
 	return comboBox;
 }
+
+tgui::LoadingBar::Ptr MenuPage::createLoadingBar(float x, float y, float width, float height, int min, int max)
+{
+	tgui::LoadingBar::Ptr loadingBar(*m_panel);
+	loadingBar->load("Assets/ui/widgets/Black.conf");
+	loadingBar->setPosition(x, y);
+	loadingBar->setSize(width, height);
+	loadingBar->setMinimum(min);
+	loadingBar->setMaximum(max);
+	return loadingBar;
+}

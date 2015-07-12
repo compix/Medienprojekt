@@ -79,6 +79,7 @@
 				<itemPath>../../../Source/Events/MusicEvent.h</itemPath>
 				<itemPath>../../../Source/Events/PlayerJoinEvent.h</itemPath>
 				<itemPath>../../../Source/Events/PortalCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PreloadEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
@@ -124,6 +125,8 @@
 					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageJoinGame.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageJoinGame.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLoading.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLoading.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageRoot.cpp</itemPath>
@@ -198,6 +201,7 @@
 				<logicalFolder name="AssetManagement" displayName="AssetManagement" projectFiles="true">
 					<itemPath>../../../Source/Utils/AssetManagement/AnimationLoader.cpp</itemPath>
 					<itemPath>../../../Source/Utils/AssetManagement/AnimationLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AssetLoader.cpp</itemPath>
 					<itemPath>../../../Source/Utils/AssetManagement/AssetLoader.h</itemPath>
 					<itemPath>../../../Source/Utils/AssetManagement/AssetManager.cpp</itemPath>
 					<itemPath>../../../Source/Utils/AssetManagement/AssetManager.h</itemPath>
@@ -394,6 +398,7 @@
 			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -413,6 +418,7 @@
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
@@ -491,6 +497,7 @@
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -529,6 +536,7 @@
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/AssetManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/MusicLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -682,6 +690,7 @@
 			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -701,6 +710,7 @@
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
@@ -779,6 +789,7 @@
 			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -817,6 +828,7 @@
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/AssetManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/MusicLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>

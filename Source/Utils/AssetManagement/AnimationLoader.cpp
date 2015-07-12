@@ -1,6 +1,6 @@
 #include "AnimationLoader.h"
 
-Assets::Animation& AnimationLoader::load(const string& name, const Json::Value& jsonValue)
+bool AnimationLoader::load(const string& key, const Json::Value& jsonValue)
 {
 	Assets::Animation animation;
 
@@ -35,6 +35,6 @@ Assets::Animation& AnimationLoader::load(const string& name, const Json::Value& 
 			cout << "AnimationLoader - WARNING: Unrecognized JsonKey: " << it.key() << endl;
 	}
 
-	m_assets[name] = animation;
-	return m_assets[name];
+	m_assets[key] = animation;
+	return true;
 }

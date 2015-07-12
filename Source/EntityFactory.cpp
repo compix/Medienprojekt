@@ -63,8 +63,7 @@ Entity EntityFactory::createPlayer(float x, float y, int playerIndex)
 	transformComponent.scaleY = 2.f;
 
 	entity->assign<TransformComponent>(transformComponent);
-	sf::Sprite sprite = createSprite("char_idle");
-	entity->assign<SpriteComponent>(sprite);
+	entity->assign<SpriteComponent>();
 
 	AnimationComponent animationComponent;
 	entity->assign<AnimationComponent>(animationComponent);

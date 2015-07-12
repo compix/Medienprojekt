@@ -223,6 +223,9 @@
     <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\PreloadEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -283,6 +286,9 @@
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h">
+      <Filter>Menu\Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLoading.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h">
@@ -503,6 +509,9 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLoading.cpp">
+      <Filter>Menu\Pages</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
@@ -587,6 +596,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetLoader.cpp">
       <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp">

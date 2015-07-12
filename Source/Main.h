@@ -7,6 +7,7 @@
 #include "Network/NetClient.h"
 #include "LayerManager.h"
 
+struct PreloadEvent;
 struct ForceDisconnectEvent;
 using entityx::Receiver;
 using std::unique_ptr;
@@ -25,6 +26,7 @@ public:
 	void receive(const CreateGameEvent& evt);
 	void receive(const JoinGameEvent& evt);
 	void receive(const ForceDisconnectEvent& evt);
+	void receive(const PreloadEvent& evt);
 	void disconnect();
 
 private:

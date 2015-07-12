@@ -7,11 +7,12 @@ using sf::Texture;
 class TextureLoader : public AssetLoader<Texture>
 {
 public:
-	TextureLoader();
-	TextureLoader(string basePath);
+	TextureLoader() : AssetLoader("Textures", "Assets/textures/") {}
 
-	virtual Texture& load(const string& filename, const string& name) override;
-	Texture& load(const string& name, const Json::Value& jsonValue) override;
+protected:
+	bool preload(const string& key, const string &filename) override;
+	bool load(const string& key, const Json::Value& jsonValue) override;
 
+public:
 	inline AssetMap getTextureMap() { return m_assets; }
 };

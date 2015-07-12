@@ -9,11 +9,11 @@ using std::string;
 class SoundLoader : public AssetLoader<SoundBuffer>
 {
 public:
-	SoundLoader();
-	SoundLoader(std::string basePath);
+	SoundLoader() : AssetLoader("Sounds", "Assets/sound/") {}
 
-	virtual SoundBuffer& load(const string& filename, const string& name) override;
-	SoundBuffer& load(const string& name, const Json::Value& jsonValue) override;
+protected:
+	bool preload(const string& key, const string &filename) override;
+	bool load(const string& key, const Json::Value& jsonValue) override;
 
 };
 
