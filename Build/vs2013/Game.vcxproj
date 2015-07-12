@@ -196,6 +196,7 @@
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombKickSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ChatRenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombKickSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ChatRenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />

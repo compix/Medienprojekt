@@ -38,12 +38,15 @@
 #include "Systems/BombKickSystem.h"
 #include "Systems/PortalSystem.h"
 #include "Utils/InputManager.h"
+#include "Systems/ChatRenderSystem.h"
 
 
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
 	GameGlobals::entities = &m_entities;
+
+	GameGlobals::gameView = &m_view;
 }
 
 Game::~Game() { 
@@ -171,8 +174,7 @@ void LocalGame::addSystems(bool server)
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	
-
+	m_systems.add<ChatRenderSystem>();
 }
 
 void LocalGame::init(uint8_t width, uint8_t height)

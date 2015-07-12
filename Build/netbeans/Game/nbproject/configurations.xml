@@ -159,6 +159,8 @@
 				<itemPath>../../../Source/Systems/BombKickSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ChatRenderSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ChatRenderSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DamageSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/DamageSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DeathSystem.cpp</itemPath>
@@ -425,6 +427,7 @@
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -498,6 +501,7 @@
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -711,6 +715,7 @@
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
@@ -784,6 +789,7 @@
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>

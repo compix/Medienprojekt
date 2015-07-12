@@ -329,6 +329,9 @@
     <ClInclude Include="..\..\Source\Systems\BombSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\ChatRenderSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -530,6 +533,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\ChatRenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp">

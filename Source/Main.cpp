@@ -29,6 +29,9 @@ namespace GameGlobals
 	EntityFactory *entityFactory = nullptr;
 	AssetManager *assetManager = nullptr;
 	unique_ptr<Game> game;
+	sf::View *menuView = nullptr;
+	sf::View *screenView = nullptr;
+	sf::View *gameView = nullptr;
 };
 
 void changeToGameDir()
@@ -78,6 +81,9 @@ int Main::run()
 	m_events.emit<CreateGameEvent>(21, 21, players);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
+	sf::View screenView(sf::FloatRect(0, 0, 800, 600));
+	GameGlobals::menuView = &menuView;
+	GameGlobals::screenView = &screenView;
 
 	sf::Clock clock;
 	while (window.isOpen() && m_running)
@@ -91,6 +97,8 @@ int Main::run()
 			{
 				GameGlobals::game->refreshView();
 				menuView.setSize(event.size.width, event.size.height);
+				screenView.setSize(event.size.width, event.size.height);
+				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
 				GameGlobals::game->setMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
