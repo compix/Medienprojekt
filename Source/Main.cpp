@@ -112,7 +112,10 @@ int Main::run()
 		window.clear();
 		if (GameGlobals::game) {
 			window.setView(GameGlobals::game->getView());
-			GameGlobals::game->update(deltaTime.asSeconds());
+			auto dt = deltaTime.asSeconds();
+			// Limit dt to 100ms
+			if (dt > 0.1) dt = 0.1;
+			GameGlobals::game->update(dt);
 		}
 
 		window.setView(menuView);
