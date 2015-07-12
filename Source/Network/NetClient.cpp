@@ -8,6 +8,9 @@
 #include "../Components/InputComponent.h"
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
+#include "../Components/LocalInputComponent.h"
+#include "../Events/ConnectionStateEvent.h"
+#include "../Events/ForceDisconnectEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -37,6 +40,7 @@ NetClient::NetClient()
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
 	{
+		GameGlobals::events->emit<ConnectionStateEvent>("Connection established");
 		cout << "Connected to server!" << endl;
 
 		m_messageWriter.init(MessageType::HANDSHAKE);
@@ -46,6 +50,9 @@ NetClient::NetClient()
 	m_connection.setDisconnectCallback([](ENetEvent &event)
 	{
 		cout << "Disconnected from server!" << endl;
+		if (!event.peer)
+			GameGlobals::events->emit<ConnectionStateEvent>("Connection failed");
+		GameGlobals::events->emit<ForceDisconnectEvent>();
 	});
 }
 
@@ -110,13 +117,14 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	uint8_t width = reader.read<uint8_t>();
 	uint8_t height = reader.read<uint8_t>();
 	GameGlobals::game->init(width, height);
+	GameGlobals::events->emit<ConnectionStateEvent>("Received handshake", true);
 }
 
 void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
 	m_playerEntity = getEntity(id);
-	m_playerEntity.component<InputComponent>()->playerIndex = 0;
+	m_playerEntity.assign<LocalInputComponent>(0);
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -161,7 +169,8 @@ void NetClient::onCreatePlayerMessage(MessageReader<MessageType>& reader, ENetEv
 	uint64_t id = reader.read<uint64_t>();
 	float x = reader.read<float>();
 	float y = reader.read<float>();
-	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y));
+	int playerIndex = -1; //fixme
+	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y, playerIndex));
 }
 
 void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

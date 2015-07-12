@@ -26,6 +26,7 @@
 #include "../Events/BoostEffectCreatedEvent.h"
 #include "../Events/SmokeCreatedEvent.h"
 #include "../Events/DeathEvent.h"
+#include "../Components/FreeSlotComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -102,9 +103,9 @@ void NetServer::update()
 		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 }
 
-bool NetServer::connect(const std::string &hostname, int port)
+bool NetServer::connect(int port)
 {
-	return m_connection.connect(hostname, port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
+	return m_connection.connect("", port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
 }
 
 void NetServer::disconnect()
@@ -179,14 +180,11 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 {
 	Entity playerEntity;
 	using GameGlobals::entities;
-	ComponentHandle<InputComponent> input;
-	for (Entity entity : entities->entities_with_components(input))
+	for (Entity entity : entities->entities_with_components<FreeSlotComponent>())
 	{
-		if (input->playerIndex == -1) {
-			playerEntity = entity;
-			input->playerIndex = -2;
-			break;
-		}
+		playerEntity = entity;
+		entity.remove<FreeSlotComponent>();
+		break;
 	}
 	if (!playerEntity.valid())
 	{

@@ -3,6 +3,7 @@
 #include <entityx/entityx.h>
 #include "../Events/MenuShowEvent.h"
 #include <SFML/Window/Joystick.hpp>
+#include "../GameConstants.h"
 
 namespace sf
 {
@@ -10,8 +11,6 @@ namespace sf
 }
 
 using entityx::Receiver;
-
-const int MAX_PLAYER_INPUTS = 4;
 
 enum PlayerButton
 {
@@ -69,9 +68,9 @@ public:
 	void update();
 
 private:
-	PlayerInput m_playerInputs[MAX_PLAYER_INPUTS];
+	PlayerInput m_playerInputs[GameConstants::MAX_PLAYERS];
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
-	JoystickConfig m_storedJoystickConfigs[MAX_PLAYER_INPUTS];
+	JoystickConfig m_storedJoystickConfigs[GameConstants::MAX_PLAYERS];
 	JoystickConfig *m_joystickMap[sf::Joystick::Count];
 
 	bool loadConfigFromJson(const std::string& path);

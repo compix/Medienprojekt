@@ -49,12 +49,9 @@ EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerMana
 {
 }
 
-Entity EntityFactory::createPlayer(float x, float y)
+Entity EntityFactory::createPlayer(float x, float y, int playerIndex)
 {
 	Entity* entity = createEntity(); // createEntity() für Entities mit Body benutzen. Ist nicht schlimm, wenn das auch für welche ohne gemacht wrid.
-
-	static int playerId = 0;
-	++playerId;
 
 	uint8_t cellX = x / GameConstants::CELL_WIDTH;
 	uint8_t cellY = y / GameConstants::CELL_HEIGHT;
@@ -76,26 +73,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	entity->assign<DirectionComponent>();
 	entity->assign<CellComponent>(cellX, cellY);
 
-	uint16 isA = BodyFactory::PLAYER_1;
-	switch (playerId)
-	{
-	case 0:
-		isA = BodyFactory::PLAYER_1;
-		break;
-	case 1:
-		isA = BodyFactory::PLAYER_2;
-		break;
-	case 2:
-		isA = BodyFactory::PLAYER_3;
-		entity->assign<AIComponent>();
-		break;
-	case 3:
-		isA = BodyFactory::PLAYER_4;
-		break;
-	default:
-		break;
-	}
-	
+	uint16 isA = BodyFactory::PLAYER_1 + playerIndex;
 	BodyComponent bodyComponent;
 	bodyComponent.body = BodyFactory::CreateCircle(entity, 
 						 x, y, 10.f,
@@ -106,9 +84,7 @@ Entity EntityFactory::createPlayer(float x, float y)
 	bodyComponent.body->SetFixedRotation(true);
 	entity->assign<BodyComponent>(bodyComponent);
 
-	InputComponent inputComponent;
-	inputComponent.playerIndex = -1;
-	entity->assign<InputComponent>(inputComponent);
+	entity->assign<InputComponent>();
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity->assign<InventoryComponent>();
 	entity->assign<DynamicComponent>();

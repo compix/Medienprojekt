@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include <entityx/entityx.h>
 #include "Events/ExitEvent.h"
-#include "Events/CreateLocalGameEvent.h"
-#include "Events/CreateServerEvent.h"
-#include "Events/JoinServerEvent.h"
+#include "Events/CreateGameEvent.h"
+#include "Events/JoinGameEvent.h"
 #include "Network/NetServer.h"
 #include "Network/NetClient.h"
 #include "LayerManager.h"
 
+struct ForceDisconnectEvent;
 using entityx::Receiver;
 using std::unique_ptr;
 
@@ -21,9 +21,10 @@ public:
 	{
 		m_running = false;
 	}
-	void receive(const CreateLocalGameEvent& evt);
-	void receive(const CreateServerEvent& evt);
-	void receive(const JoinServerEvent& evt);
+	void initPlayers(const std::vector<CreateGamePlayerInfo> &players);
+	void receive(const CreateGameEvent& evt);
+	void receive(const JoinGameEvent& evt);
+	void receive(const ForceDisconnectEvent& evt);
 	void disconnect();
 
 private:
@@ -31,4 +32,5 @@ private:
 	unique_ptr<NetClient> m_client;
 	unique_ptr<NetServer> m_server;
 	EventManager m_events;
+	bool m_forceDisconnect = false;
 };

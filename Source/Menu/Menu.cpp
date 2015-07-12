@@ -59,3 +59,9 @@ void Menu::popPage()
 			GameGlobals::events->emit<MenuShowEvent>(false);
 	}
 }
+
+void Menu::popAllPages()
+{
+	while (!m_pageStack.empty())
+		popPage();
+}

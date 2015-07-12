@@ -48,7 +48,7 @@ bool LevelGenerator::characterRule(LevelPosition pos)
 	{
 		float x = (float)GameConstants::CELL_WIDTH * pos.cellX + GameConstants::CELL_WIDTH*0.5f;
 		float y = (float)GameConstants::CELL_HEIGHT * pos.cellY;
-		GameGlobals::entityFactory->createPlayer(x, y);
+		GameGlobals::entityFactory->createPlayer(x, y, m_playerIndex++);
 	}
 
 	return condition;

@@ -7,6 +7,7 @@
 #include "json/json.h"
 #include <fstream>
 #include "Exceptions.h"
+#include "../GameConstants.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ InputManager::InputManager()
 	GameGlobals::events->subscribe<MenuShowEvent>(*this);
 	GameGlobals::events->subscribe<sf::Event>(*this);
 
-	for (int i = 0; i < MAX_PLAYER_INPUTS; i++)
+	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 	{
 		PlayerInput &pi = m_playerInputs[i];
 		pi.moveX = 0;
@@ -99,7 +100,7 @@ bool InputManager::loadConfigFromJson(const std::string& path) {
 		}
 		
 		index++;
-		if(index >= MAX_PLAYER_INPUTS)
+		if (index >= GameConstants::MAX_PLAYERS)
 			break;
 	}
 
@@ -108,7 +109,7 @@ bool InputManager::loadConfigFromJson(const std::string& path) {
 
 PlayerInput &InputManager::getPlayerInput(int id)
 {
-	assert(id >= 0 && id < MAX_PLAYER_INPUTS);
+	assert(id >= 0 && id < GameConstants::MAX_PLAYERS);
 	return m_playerInputs[id];
 }
 
@@ -272,7 +273,7 @@ void InputManager::onJoystickConnected(int id)
 		cout << "None";
 	cout << endl;
 	
-	for(int i=0; i<MAX_PLAYER_INPUTS; i++)
+	for (int i = 0; i<GameConstants::MAX_PLAYERS; i++)
 	{
 		auto &config = m_storedJoystickConfigs[i];
 		if(config.configured && name == config.name) {

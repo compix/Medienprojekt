@@ -27,6 +27,7 @@ public:
 	void receive(const sf::Event &evt);
 	void pushPage(MenuPage *page);
 	void popPage();
+	void popAllPages();
 
 protected:
 	friend class MenuPage;

@@ -219,7 +219,13 @@ namespace NetCode
 			if (this->m_state == ConnectionState::CONNECTING && (getTime() - m_connectionTime) > 5000)
 			{
 				this->disconnectNow();
-				//fixme: notify listeners if not done automaticly.
+
+				// Notify listener
+				ENetEvent event;
+				event.type = ENET_EVENT_TYPE_DISCONNECT;
+				event.peer = nullptr;
+				if (m_disconnectCallback)
+					m_disconnectCallback(event);
 			}
 			return result;
 		}

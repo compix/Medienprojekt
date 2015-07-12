@@ -4,26 +4,22 @@
 #include "../../GameGlobals.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
-	:MenuPage(menu), m_localGamePage(menu), m_createServerPage(menu), m_joinServerPage(menu), m_settingsPage(menu), m_creditsPage(menu)
+	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_settingsPage(menu), m_creditsPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 
 	auto x = 300;
-	int y = 120;
+	int y = 150;
 	auto stepY = 60;
 	auto width = 200;
 	auto height = 40;
 
-	tgui::Button::Ptr button = createButton(x, y, width, height, "Local Game");
-	button->bindCallback(&MenuPageRoot::onLocalGame, this, tgui::Button::LeftMouseClicked);
+	tgui::Button::Ptr button = createButton(x, y, width, height, "Create Game");
+	button->bindCallback(&MenuPageRoot::onCreateGame, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
-	button = createButton(x, y, width, height, "Create Server");
-	button->bindCallback(&MenuPageRoot::onCreateServer, this, tgui::Button::LeftMouseClicked);
-
-	y += stepY;
-	button = createButton(x, y, width, height, "Join Server");
-	button->bindCallback(&MenuPageRoot::onJoinServer, this, tgui::Button::LeftMouseClicked);
+	button = createButton(x, y, width, height, "Join Game");
+	button->bindCallback(&MenuPageRoot::onJoinGame, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
 	button = createButton(x, y, width, height, "Settings");
@@ -38,19 +34,14 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	button->bindCallback(&MenuPageRoot::onExit, this, tgui::Button::LeftMouseClicked);
 }
 
-void MenuPageRoot::onLocalGame()
+void MenuPageRoot::onCreateGame()
 {
-	m_menu.pushPage(&m_localGamePage);
+	m_menu.pushPage(&m_createGamePage);
 }
 
-void MenuPageRoot::onCreateServer()
+void MenuPageRoot::onJoinGame()
 {
-	m_menu.pushPage(&m_createServerPage);
-}
-
-void MenuPageRoot::onJoinServer()
-{
-	m_menu.pushPage(&m_joinServerPage);
+	m_menu.pushPage(&m_joinGamePage);
 }
 
 void MenuPageRoot::onSettings()

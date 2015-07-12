@@ -3,17 +3,16 @@
 #include "../Components/InputComponent.h"
 #include "../Components/AIComponent.h"
 #include "../GameGlobals.h"
+#include "../Components/LocalInputComponent.h"
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
-	auto entities = entityManager.entities_with_components<InputComponent>();
+	ComponentHandle<InputComponent> input;
+	ComponentHandle<LocalInputComponent> localInput;
+	auto entities = entityManager.entities_with_components(input, localInput);
 	for (auto entity : entities)
 	{
-		auto input = entity.component<InputComponent>();
-		if (input->playerIndex < 0 || entity.has_component<AIComponent>())
-			continue;
-
-		auto &playerInput = GameGlobals::input->getPlayerInput(input->playerIndex);
+		auto &playerInput = GameGlobals::input->getPlayerInput(localInput->inputIndex);
 		if (playerInput.buttonPressed[PlayerButton::BOMB])
 		{
 			input->bombButtonPressed = true;
