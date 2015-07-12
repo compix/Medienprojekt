@@ -11,9 +11,9 @@ class MenuPage
 public:
 	MenuPage(Menu &menu);
 	virtual ~MenuPage();
-	virtual void hide() { m_panel->hide(); }
 
 	virtual void show();
+	virtual void hide() { m_panel->hide(); }
 	virtual void close();
 	virtual void onEscape() { close(); }
 

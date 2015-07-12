@@ -48,6 +48,6 @@ void MenuPageJoinGame::onSubmit()
 
 	int portValue = atoi(port.c_str());
 
-	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
 	m_menu.pushPage(&m_connectingPage);
+	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
 }

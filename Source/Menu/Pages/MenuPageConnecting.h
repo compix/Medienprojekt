@@ -11,6 +11,9 @@ class MenuPageConnecting : public MenuPage, public Receiver<MenuPageConnecting>
 public:
 	MenuPageConnecting(Menu &menu);
 
+	void show() override;
+	void hide() override;
+
 	void receive(const ConnectionStateEvent& evt);
 	virtual void onEscape() override {}
 
