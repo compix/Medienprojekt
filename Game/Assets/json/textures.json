@@ -1,6 +1,4 @@
 {
-    "char_idle": "char_idle_1024.png",
-    "char_death": "char_death_2048.png",
     "block": "Block.png",
     "solid_block":  "SolidBlock.png",
 	"bomb": "Bomb.png",
