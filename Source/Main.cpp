@@ -151,7 +151,7 @@ void Main::receive(const CreateGameEvent& evt)
 	if (evt.online)
 	{
 		m_server = make_unique<NetServer>();
-		if (m_server->connect(evt.host, evt.port))
+		if (m_server->connect(evt.port))
 		{
 			cout << "Server created" << endl;
 			GameGlobals::game = make_unique<ServerGame>();

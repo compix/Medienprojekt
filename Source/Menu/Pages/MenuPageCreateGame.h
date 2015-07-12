@@ -17,7 +17,6 @@ private:
 	tgui::ComboBox::Ptr m_playerCount;
 	tgui::ComboBox::Ptr m_width;
 	tgui::ComboBox::Ptr m_height;
-	tgui::EditBox::Ptr m_host;
 	tgui::EditBox::Ptr m_port;
 	tgui::Button::Ptr m_submitButton;
 };

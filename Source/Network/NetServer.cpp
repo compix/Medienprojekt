@@ -103,9 +103,9 @@ void NetServer::update()
 		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 }
 
-bool NetServer::connect(const std::string &hostname, int port)
+bool NetServer::connect(int port)
 {
-	return m_connection.connect(hostname, port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
+	return m_connection.connect("", port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT);
 }
 
 void NetServer::disconnect()

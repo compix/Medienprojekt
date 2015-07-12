@@ -17,17 +17,17 @@ MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
 	auto stepY = 50;
 	auto labelYOffset = 6;
 
-	createLabel(x1, y + labelYOffset, "Name: ");
+	createLabel(x1, y + labelYOffset, "Name:");
 	m_name = createEditBox(x2, y, width2, height2);
 	m_name->setText("Client");
 
 	y += stepY;
-	createLabel(x1, y + labelYOffset, "Host/IP: ");
+	createLabel(x1, y + labelYOffset, "Host/IP:");
 	m_host = createEditBox(x2, y, width2, height2);
 	m_host->setText("localhost");
 
 	y += stepY;
-	createLabel(x1, y + labelYOffset, "Port: ");
+	createLabel(x1, y + labelYOffset, "UDP Port:");
 	m_port = createEditBox(x2, y, width2, height2);
 	m_port->setText("1234");
 

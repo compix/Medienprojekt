@@ -42,7 +42,7 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	{
 		createLabel(x1, y + labelYOffset, fmt::format("Player {}:", i+1));
 		m_name[i] = createEditBox(x2, y, width2, height2);
-		m_name[i]->setText(fmt::format("Player {}", i + 1));
+		m_name[i]->setText(fmt::format("Player {}:", i + 1));
 		if (i > 0)
 		{
 			m_type[i] = createComboBox(x3, y, width3, height2);
@@ -56,10 +56,8 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	}
 
 	y += stepY * 0.25f;
-	createLabel(x1, y + labelYOffset, "IP: Port");
-	m_host = createEditBox(x2, y, width2, height2);
-	m_host->setText("");
-	m_port = createEditBox(x3, y, width3, height2);
+	createLabel(x1, y + labelYOffset, "UDP Port:");
+	m_port = createEditBox(x2, y, width2, height2);
 	m_port->setText("1234");
 
 	y += stepY * 1.25f;
@@ -90,11 +88,10 @@ void MenuPageCreateGame::onSubmit()
 
 	if (onlinePlayers)
 	{
-		std::string host = m_host->getText();
 		std::string port = m_port->getText();
 		int portValue = atoi(port.c_str());
 
-		GameGlobals::events->emit<CreateGameEvent>(width, height, players, host, portValue, onlinePlayers);
+		GameGlobals::events->emit<CreateGameEvent>(width, height, players, portValue, onlinePlayers);
 		//fixme: push lobby page
 	}
 	else
@@ -155,6 +152,5 @@ void MenuPageCreateGame::onChange()
 		setEnabledComboBox(m_type[i], i < numPlayers);
 	}
 
-	setEnabled(m_host, online);
 	setEnabled(m_port, online);
 }
