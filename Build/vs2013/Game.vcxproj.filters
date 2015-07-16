@@ -136,6 +136,9 @@
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\PlayerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\PortalComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -172,10 +175,10 @@
     <ClInclude Include="..\..\Source\Events\ChatEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\ConnectEvent.h">
+    <ClInclude Include="..\..\Source\Events\ClientStateEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\ConnectionStateEvent.h">
+    <ClInclude Include="..\..\Source\Events\ConnectEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h">
@@ -209,6 +212,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\LobbyEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h">

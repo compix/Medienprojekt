@@ -39,6 +39,11 @@
 #include "Systems/PortalSystem.h"
 #include "Utils/InputManager.h"
 #include "Systems/ChatRenderSystem.h"
+#include "Events/CreateGameEvent.h"
+#include "Components/InputComponent.h"
+#include "Components/FreeSlotComponent.h"
+#include "Components/LocalInputComponent.h"
+#include "Components/AIComponent.h"
 
 
 Game::Game()
@@ -107,7 +112,6 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
-	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void Game::update(TimeDelta dt)
@@ -149,7 +153,7 @@ void Game::refreshView()
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
-void LocalGame::addSystems(bool server)
+void LocalGame::addSystems()
 {
 	m_systems.add<PortalSystem>(m_layerManager.get());
 	m_systems.add<BodySystem>();
@@ -165,8 +169,7 @@ void LocalGame::addSystems(bool server)
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();
-	if (!server)
-		m_systems.add<AISystem>(m_pathEngine.get());
+	m_systems.add<AISystem>(m_pathEngine.get());
 	m_systems.add<InputHandleSystem>();
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
@@ -177,13 +180,39 @@ void LocalGame::addSystems(bool server)
 	m_systems.add<ChatRenderSystem>();
 }
 
-void LocalGame::init(uint8_t width, uint8_t height)
+void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 {
-	Game::init(width, height);
-	LevelGenerator levelGenerator(width, height);
+	m_numPlayers = players.size();
+	for (int i = 0; i < m_numPlayers; i++)
+		m_playerTypes[i] = players[i].type;
+}
+
+void LocalGame::resetEntities()
+{
+	m_entities.reset();
+	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
 	m_pathEngine->getGraph()->init();
+
+	int i = 0;
+	ComponentHandle<InputComponent> input;
+	for (Entity entity : GameGlobals::entities->entities_with_components(input))
+	{
+		if (i == m_numPlayers)
+			entity.destroy();
+		else
+		{
+			switch (m_playerTypes[i])
+			{
+			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
+			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
+			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
+			}
+			i++;
+		}
+	}
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void ClientGame::addSystems()

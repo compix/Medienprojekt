@@ -4,7 +4,10 @@
 #include "../NetCode/Connection.h"
 #include <entityx/entityx.h>
 #include "../Events/ExplosionCreatedEvent.h"
+#include "NetPlayerInfo.h"
+#include "../GameConstants.h"
 
+struct SetReadyEvent;
 struct DeathEvent;
 struct SmokeCreatedEvent;
 struct BoostEffectCreatedEvent;
@@ -28,7 +31,7 @@ public:
 	~NetServer();
 
 	void update();
-	bool connect(int port);
+	bool connect(const CreateGameEvent& evt);
 	void disconnect();
 
 	void receive(const SendChatEvent &evt);
@@ -40,17 +43,21 @@ public:
 	void receive(const BoostEffectCreatedEvent &evt);
 	void receive(const SmokeCreatedEvent &evt);
 	void receive(const DeathEvent &evt);
+	void receive(const SetReadyEvent &evt);
+
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onInputBombActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onInputSkillActivatedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onChatMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
+	void onPlayerReadyMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
+	void broadcastPlayerReady(uint8_t playerIndex, bool ready);
 
 private:
 	template <class T>
 	void sendBlockEntities(ENetPeer* peer, MessageType type);
 	void sendPlayerEntities(ENetPeer* peer);
-	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y);
+	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y, uint8_t playerIndex);
 	void broadcastDynamicUpdates();
 	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y);
 	void sendBombEntities(ENetPeer* peer);
@@ -66,9 +73,17 @@ private:
 	ENetPacket* createSmokePacket(Entity entity, uint8_t x, uint8_t y);
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
+	void sendPlayerId(NetPlayerInfo* netPlayerInfo);
+	Entity getFreeSlotEntity();
+	bool emitLobbyEvent();
 
 private:
+	ServerStatus m_status = ServerStatus::INIT;
+	NetPlayerInfo m_playerInfos[GameConstants::MAX_PLAYERS];
+	uint8_t m_numPlayers = 0;
 	ServerConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;
+	uint8_t m_width;
+	uint8_t m_height;
 };

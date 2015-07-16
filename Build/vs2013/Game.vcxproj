@@ -125,6 +125,7 @@
     <ClInclude Include="..\..\Source\Components\LocalInputComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PlayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
     <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
@@ -139,8 +140,8 @@
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
     <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ClientStateEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ConnectionStateEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />

@@ -18,8 +18,11 @@ MenuPageChat::MenuPageChat(Menu &menu)
 void MenuPageChat::onSubmit()
 {
 	sf::String message = m_editBox->getText();
-	GameGlobals::events->emit<SendChatEvent>(message);
-	m_editBox->setText("");
+	if (!message.isEmpty())
+	{
+		GameGlobals::events->emit<SendChatEvent>(message);
+		m_editBox->setText("");
+	}
 }
 
 void MenuPageChat::receive(const ChatEvent &evt)
@@ -29,5 +32,5 @@ void MenuPageChat::receive(const ChatEvent &evt)
 
 void MenuPageChat::receive(const PlayerJoinEvent &evt)
 {
-	m_chatBox->addLine(">" + evt.name + " joined the game");
+	m_chatBox->addLine(">" + evt.name + " joined the game", sf::Color::Green);
 }

@@ -3,6 +3,7 @@
 #include <format.h>
 #include "../../GameGlobals.h"
 #include "../Menu.h"
+#include "../../Events/LobbyEvent.h"
 
 MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	:MenuPage(menu)
@@ -38,11 +39,11 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	createLabel(x2, y + labelYOffset, "Name");
 	createLabel(x3, y + labelYOffset, "Type");
 	y += stepY;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 	{
 		createLabel(x1, y + labelYOffset, fmt::format("Player {}:", i+1));
 		m_name[i] = createEditBox(x2, y, width2, height2);
-		m_name[i]->setText(fmt::format("Player {}:", i + 1));
+		m_name[i]->setText(fmt::format("Player {}", i + 1));
 		if (i > 0)
 		{
 			m_type[i] = createComboBox(x3, y, width3, height2);
@@ -92,40 +93,27 @@ void MenuPageCreateGame::onSubmit()
 		int portValue = atoi(port.c_str());
 
 		GameGlobals::events->emit<CreateGameEvent>(width, height, players, portValue, onlinePlayers);
-		//fixme: push lobby page
+		m_menu.showLobby();
+
+		LobbyEvent evt(numPlayers);
+		for (int i = 0; i < numPlayers; i++)
+		{
+			auto type = players[i].type;
+			evt.enabled[i] = type == CreateGamePlayerType::LOCAL;
+			evt.ready[i] = type == CreateGamePlayerType::COMPUTER;
+			if (type == CreateGamePlayerType::CLIENT)
+				evt.name[i] = "?";
+			else
+				evt.name[i] = players[i].name;
+		}
+		GameGlobals::events->emit(evt);
 	}
 	else
 	{
 		GameGlobals::events->emit<CreateGameEvent>(width, height, players);
+		m_menu.popPage();
+		m_menu.popPage();
 	}
-	m_menu.popPage();
-	m_menu.popPage();
-}
-
-void MenuPageCreateGame::setEnabled(tgui::Widget::Ptr widget, bool enable)
-{
-	if (enable)
-	{
-		widget->enable();
-		widget->setTransparency(255);
-	}
-	else
-	{
-		widget->disable();
-		widget->setTransparency(128);
-	}
-}
-
-void MenuPageCreateGame::setEnabledComboBox(tgui::ComboBox::Ptr widget, bool enable)
-{
-	setEnabled(widget, enable);
-	sf::Uint8 a = enable ? 255 : 128;
-	sf::Color bg = widget->getBackgroundColor();
-	sf::Color border = widget->getBorderColor();
-	bg.a = a;
-	border.a = a;
-	widget->setBackgroundColor(bg);
-	widget->setBorderColor(border);
 }
 
 tgui::ComboBox::Ptr MenuPageCreateGame::createSizeComboBox(float x, float y, float width, float height, int from, int to, int selected)
@@ -142,7 +130,7 @@ void MenuPageCreateGame::onChange()
 {
 	int numPlayers = m_playerCount->getSelectedItemId();
 	bool online = false;
-	for (int i = 1; i < 4; i++)
+	for (int i = 1; i < GameConstants::MAX_PLAYERS; i++)
 	{
 		auto type = (CreateGamePlayerType)m_type[i]->getSelectedItemId();
 		bool isClient = type == CreateGamePlayerType::CLIENT;

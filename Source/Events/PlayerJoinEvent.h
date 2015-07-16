@@ -3,7 +3,8 @@
 
 struct PlayerJoinEvent
 {
-	explicit PlayerJoinEvent(std::string name) : name(name) {}
+	explicit PlayerJoinEvent(uint8_t playerIndex, std::string name) : playerIndex(playerIndex), name(name) {}
 
+	uint8_t playerIndex;
 	std::string name;
 };

@@ -7,6 +7,7 @@ enum class MessageType : uint16_t
 	PLAYER_ID,
 	CHAT,
 	PLAYER_JOINED,
+	PLAYER_READY,
 	CREATE_BLOCK,
 	CREATE_SOLID_BLOCK,
 	CREATE_FLOOR,
@@ -38,6 +39,14 @@ enum class NetChannel : uint8_t
 	INPUT_UNRELIABLE,
 
 	COUNT
+};
+
+enum class ServerStatus : uint8_t
+{
+	INIT,
+	LOBBY,
+	INGAME,
+	SHUTDOWN
 };
 
 namespace NetConstants

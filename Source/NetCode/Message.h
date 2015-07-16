@@ -146,7 +146,7 @@ namespace NetCode
 			MessageReader<MT> reader(event.packet->data, event.packet->dataLength);
 			MT type = reader.getType();
 			uint16_t _type = static_cast<uint16_t>(type);
-			assert(_type >= 0 && type < MT::COUNT);
+			assert(_type >= 0 && type < MT::COUNT && m_callbacks[_type]);
 			m_callbacks[_type](reader, event);
 		}
 

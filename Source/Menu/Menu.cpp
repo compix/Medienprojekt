@@ -5,7 +5,7 @@
 #include "../Events/PreloadEvent.h"
 
 Menu::Menu()
-	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this)
+	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this), m_lobbyPage(*this)
 {
 	GameGlobals::events->subscribe<PreloadEvent>(*this);
 
@@ -44,6 +44,11 @@ void Menu::receive(const PreloadEvent& evt)
 		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
 		GameGlobals::events->subscribe<sf::Event>(*this);
 	}
+}
+
+void Menu::showLobby()
+{
+	pushPage(&m_lobbyPage);
 }
 
 void Menu::pushPage(MenuPage *page)

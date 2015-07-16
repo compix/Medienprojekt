@@ -43,13 +43,14 @@
 #include "Components/AIComponent.h"
 #include <sstream>
 #include "Components/PortalComponent.h"
+#include "Components/PlayerComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
 {
 }
 
-Entity EntityFactory::createPlayer(float x, float y, int playerIndex)
+Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 {
 	Entity* entity = createEntity(); // createEntity() für Entities mit Body benutzen. Ist nicht schlimm, wenn das auch für welche ohne gemacht wrid.
 
@@ -88,6 +89,7 @@ Entity EntityFactory::createPlayer(float x, float y, int playerIndex)
 	entity->assign<InventoryComponent>();
 	entity->assign<DynamicComponent>();
 	entity->assign<HealthComponent>(1);
+	entity->assign<PlayerComponent>(playerIndex);
 
 	m_layerManager->add(*entity);
 
