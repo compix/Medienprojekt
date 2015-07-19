@@ -1,9 +1,9 @@
 #pragma once
-#include <string>
 
 struct ReadyEvent
 {
-	explicit ReadyEvent(std::string name) : name(name) {}
+	explicit ReadyEvent(uint8_t playerIndex, bool ready) : playerIndex(playerIndex), ready(ready) {}
 
-	std::string name;
+	uint8_t playerIndex;
+	bool ready;
 };

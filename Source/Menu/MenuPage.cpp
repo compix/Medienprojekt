@@ -4,7 +4,7 @@
 MenuPage::MenuPage(Menu &menu)
 	:m_menu(menu), m_gui(menu.m_gui), m_panel(m_gui), m_onShowFocus(nullptr)
 {
-	m_panel->setSize(800, 600);// fixme: replace by constants?
+	m_panel->setSize(800, 600);
 	m_panel->setBackgroundColor(sf::Color::Transparent);
 	m_panel->hide();
 }
@@ -76,6 +76,7 @@ tgui::ChatBox::Ptr MenuPage::createChatBox(float x, float y, float width, float 
 	chatBox->load("Assets/ui/widgets/Black.conf");
 	chatBox->setPosition(x, y);
 	chatBox->setSize(width, height);
+	chatBox->setTextColor(sf::Color::White);
 	return chatBox;
 }
 
@@ -97,4 +98,46 @@ tgui::LoadingBar::Ptr MenuPage::createLoadingBar(float x, float y, float width, 
 	loadingBar->setMinimum(min);
 	loadingBar->setMaximum(max);
 	return loadingBar;
+}
+
+void MenuPage::setVisible(tgui::Widget::Ptr widget, const bool visible)
+{
+	if (visible)
+		widget->show();
+	else
+		widget->hide();
+}
+
+void MenuPage::setEnabled(tgui::Widget::Ptr widget, bool enable)
+{
+	if (enable)
+	{
+		widget->enable();
+		widget->setTransparency(255);
+	}
+	else
+	{
+		widget->disable();
+		widget->setTransparency(128);
+	}
+}
+
+void MenuPage::setEnabledComboBox(tgui::ComboBox::Ptr widget, bool enable)
+{
+	setEnabled(widget, enable);
+	sf::Uint8 a = enable ? 255 : 128;
+	sf::Color bg = widget->getBackgroundColor();
+	sf::Color border = widget->getBorderColor();
+	bg.a = a;
+	border.a = a;
+	widget->setBackgroundColor(bg);
+	widget->setBorderColor(border);
+}
+
+void MenuPage::setChecked(tgui::Checkbox::Ptr widget, const bool checked)
+{
+	if (checked)
+		widget->check();
+	else
+		widget->uncheck();
 }

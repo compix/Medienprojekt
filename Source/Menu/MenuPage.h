@@ -26,6 +26,10 @@ protected:
 	tgui::ChatBox::Ptr createChatBox(float x, float y, float width, float height);
 	tgui::ComboBox::Ptr createComboBox(float x, float y, float width, float height);
 	tgui::LoadingBar::Ptr createLoadingBar(float x, float y, float width, float height, int min, int max);
+	void setVisible(tgui::Widget::Ptr widget, const bool visible);
+	void setEnabled(tgui::Widget::Ptr widget, bool enable);
+	void setEnabledComboBox(tgui::ComboBox::Ptr widget, bool enable);
+	void setChecked(tgui::Checkbox::Ptr widget, const bool checked);
 
 protected:
 	Menu &m_menu;

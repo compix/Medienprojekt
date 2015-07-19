@@ -14,7 +14,7 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Components/FreeSlotComponent.h"
-#include "Events/ConnectionStateEvent.h"
+#include "Events/ClientStateEvent.h"
 #include <format.h>
 #include "Events/ForceDisconnectEvent.h"
 #include "Events/PreloadEvent.h"
@@ -87,7 +87,8 @@ int Main::run()
 				window.close();
 			else if (event.type == sf::Event::Resized)
 			{
-				GameGlobals::game->refreshView();
+				if (GameGlobals::game)
+					GameGlobals::game->refreshView();
 				menuView.setSize(event.size.width, event.size.height);
 				screenView.setSize(event.size.width, event.size.height);
 				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
@@ -120,34 +121,12 @@ int Main::run()
 		if (m_forceDisconnect)
 			disconnect();
 		else if (m_server)
-			m_server->update();
+			m_server->update(deltaTime.asSeconds());
 		else if (m_client)
 			m_client->update();
 	}
 
 	return EXIT_SUCCESS;
-}
-
-void Main::initPlayers(const std::vector<CreateGamePlayerInfo>& players)
-{
-	int i = 0;
-	ComponentHandle<InputComponent> input;
-	for (Entity entity : GameGlobals::entities->entities_with_components(input))
-	{
-		if (i == players.size())
-			entity.destroy();
-		else
-		{
-			//			player->name = evt.names[i]; // fixme
-			switch (players[i].type)
-			{
-			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
-			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
-			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
-			}
-			i++;
-		}
-	}
 }
 
 void Main::receive(const CreateGameEvent& evt)
@@ -156,12 +135,13 @@ void Main::receive(const CreateGameEvent& evt)
 	if (evt.online)
 	{
 		m_server = make_unique<NetServer>();
-		if (m_server->connect(evt.port))
+		if (m_server->connect(evt))
 		{
 			cout << "Server created" << endl;
 			GameGlobals::game = make_unique<ServerGame>();
-			GameGlobals::game->init(evt.width, evt.height);
-			initPlayers(evt.players);
+			auto *game = (LocalGame *)GameGlobals::game.get();
+			game->init(evt.width, evt.height);
+			game->initPlayers(evt.players);
 		}
 		else
 		{
@@ -173,8 +153,10 @@ void Main::receive(const CreateGameEvent& evt)
 	else
 	{
 		GameGlobals::game = make_unique<LocalGame>();
-		GameGlobals::game->init(evt.width, evt.height);
-		initPlayers(evt.players);
+		auto *game = (LocalGame *)GameGlobals::game.get();
+		game->init(evt.width, evt.height);
+		game->initPlayers(evt.players);
+		game->resetEntities();
 	}
 }
 
@@ -184,13 +166,13 @@ void Main::receive(const JoinGameEvent& evt)
 	m_client = make_unique<NetClient>();
 	if (m_client->connect(evt.host, evt.port))
 	{
-		GameGlobals::events->emit<ConnectionStateEvent>(fmt::format("Connecting to {}:{}", evt.host, evt.port));
+		GameGlobals::events->emit<ClientStateEvent>(fmt::format("Connecting to {}:{}", evt.host, evt.port), ClientState::CONNECTING);
 		GameGlobals::game = make_unique<ClientGame>();
 	}
 	else
 	{
 		m_client.reset();
-		GameGlobals::events->emit<ConnectionStateEvent>("Could not create client host");
+		GameGlobals::events->emit<ClientStateEvent>("Could not create client host", ClientState::DISCONNECTED);
 	}
 }
 

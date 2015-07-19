@@ -2,5 +2,8 @@
 
 struct SetReadyEvent
 {
-	explicit SetReadyEvent() {}
+	explicit SetReadyEvent(int playerIndex, bool ready) : playerIndex(playerIndex), ready(ready) {}
+
+	int playerIndex;
+	bool ready;
 };

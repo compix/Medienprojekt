@@ -3,11 +3,13 @@
 #include "../Events/MenuShowEvent.h"
 #include "../GameGlobals.h"
 #include "../Events/PreloadEvent.h"
+#include "../Events/ForceDisconnectEvent.h"
 
 Menu::Menu()
-	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this)
+	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this), m_lobbyPage(*this)
 {
 	GameGlobals::events->subscribe<PreloadEvent>(*this);
+	GameGlobals::events->subscribe<ForceDisconnectEvent>(*this);
 
 	pushPage(&m_loadingPage);
 }
@@ -44,6 +46,20 @@ void Menu::receive(const PreloadEvent& evt)
 		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
 		GameGlobals::events->subscribe<sf::Event>(*this);
 	}
+}
+
+void Menu::receive(const ForceDisconnectEvent& evt)
+{
+	if (!evt.message.empty()) {
+		popAllPages();
+		pushPage(&m_rootPage);
+		//fixme: push error message page
+	}
+}
+
+void Menu::showLobby()
+{
+	pushPage(&m_lobbyPage);
 }
 
 void Menu::pushPage(MenuPage *page)

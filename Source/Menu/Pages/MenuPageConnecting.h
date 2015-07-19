@@ -1,9 +1,10 @@
 #pragma once
 #include "../MenuPage.h"
+#include "MenuPageLobby.h"
 #include "../../Events/ChatEvent.h"
 #include "../../Events/PlayerJoinEvent.h"
 
-struct ConnectionStateEvent;
+struct ClientStateEvent;
 using entityx::Receiver;
 
 class MenuPageConnecting : public MenuPage, public Receiver<MenuPageConnecting>
@@ -13,9 +14,9 @@ public:
 
 	void show() override;
 	void hide() override;
-
-	void receive(const ConnectionStateEvent& evt);
 	virtual void onEscape() override {}
+
+	void receive(const ClientStateEvent& evt);
 
 protected:
 	void onAbort();

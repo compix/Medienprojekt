@@ -22,7 +22,6 @@ public:
 	{
 		m_running = false;
 	}
-	void initPlayers(const std::vector<CreateGamePlayerInfo> &players);
 	void receive(const CreateGameEvent& evt);
 	void receive(const JoinGameEvent& evt);
 	void receive(const ForceDisconnectEvent& evt);

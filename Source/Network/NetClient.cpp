@@ -9,8 +9,14 @@
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
 #include "../Components/LocalInputComponent.h"
-#include "../Events/ConnectionStateEvent.h"
+#include "../Events/ClientStateEvent.h"
 #include "../Events/ForceDisconnectEvent.h"
+#include "../Events/LobbyEvent.h"
+#include "../Events/CountdownEvent.h"
+#include "../Events/ReadyEvent.h"
+#include "../Events/SendChatEvent.h"
+#include "../Events/SetReadyEvent.h"
+#include "../Events/StartGameEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -19,8 +25,10 @@ NetClient::NetClient()
 	: m_messageWriter(1024)
 {
 	GameGlobals::events->subscribe<SendChatEvent>(*this);
+	GameGlobals::events->subscribe<SetReadyEvent>(*this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
-	m_handler.setCallback(MessageType::PLAYER_ID, &NetClient::onPlayerIdMessage, this);
+	m_handler.setCallback(MessageType::START_GAME, &NetClient::onStartGameMessage, this);
+	m_handler.setCallback(MessageType::PLAYER_READY, &NetClient::onPlayerReadyMessage, this);
 	m_handler.setCallback(MessageType::CHAT, &NetClient::onChatMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_JOINED, &NetClient::onPlayerJoinedMessage, this);
 	m_handler.setCallback(MessageType::CREATE_SOLID_BLOCK, &NetClient::onCreateSolidBlockMessage, this);
@@ -36,11 +44,14 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::DEATH, &NetClient::onDeathMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
+	m_handler.setCallback(MessageType::COUNTDOWN, &NetClient::onCountdownMessage, this);
+	m_handler.setCallback(MessageType::ALL_READY, &NetClient::onAllReadyMessage, this);
+	
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
 	{
-		GameGlobals::events->emit<ConnectionStateEvent>("Connection established");
+		GameGlobals::events->emit<ClientStateEvent>("Connection established", ClientState::CONNECTED);
 		cout << "Connected to server!" << endl;
 
 		m_messageWriter.init(MessageType::HANDSHAKE);
@@ -51,8 +62,8 @@ NetClient::NetClient()
 	{
 		cout << "Disconnected from server!" << endl;
 		if (!event.peer)
-			GameGlobals::events->emit<ConnectionStateEvent>("Connection failed");
-		GameGlobals::events->emit<ForceDisconnectEvent>();
+			GameGlobals::events->emit<ClientStateEvent>("Connection failed", ClientState::DISCONNECTED);
+		GameGlobals::events->emit<ForceDisconnectEvent>(event.peer ? "Server disconnected" : "Connection failed");
 	});
 }
 
@@ -112,19 +123,59 @@ void NetClient::receive(const SendChatEvent& evt)
 	send(NetChannel::CHAT, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
-void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+void NetClient::receive(const SetReadyEvent& evt)
 {
-	uint8_t width = reader.read<uint8_t>();
-	uint8_t height = reader.read<uint8_t>();
-	GameGlobals::game->init(width, height);
-	GameGlobals::events->emit<ConnectionStateEvent>("Received handshake", true);
+	if (evt.playerIndex == m_playerIndex)
+	{
+		m_messageWriter.init(MessageType::PLAYER_READY);
+		m_messageWriter.write<bool>(evt.ready);
+		send(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	}
 }
 
-void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	ServerStatus status = reader.read<ServerStatus>();
+	m_playerIndex = reader.read<uint8_t>();
+	uint8_t width = reader.read<uint8_t>();
+	uint8_t height = reader.read<uint8_t>();
+	uint8_t numPlayers = reader.read<uint8_t>();
+
+	LobbyEvent lobbyEvt(numPlayers);
+	for (int i = 0; i < numPlayers; i++)
+	{
+		lobbyEvt.name[i] = reader.read<string>();
+		lobbyEvt.ready[i] = reader.read<bool>();
+		lobbyEvt.enabled[i] = i == m_playerIndex;
+	}
+
+	GameGlobals::game->init(width, height);
+
+	if (status == ServerStatus::INGAME)
+		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::PREGAME);
+	else if (status == ServerStatus::LOBBY || status == ServerStatus::LOBBY_COUNTDOWN)
+	{
+		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::LOBBY);
+		GameGlobals::events->emit(lobbyEvt);
+	}
+	// fixme: else
+}
+
+void NetClient::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint8_t playerIndex = reader.read<uint8_t>();
+	bool ready = reader.read<bool>();
+	GameGlobals::events->emit<ReadyEvent>(playerIndex, ready);
+}
+
+void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
 	m_playerEntity = getEntity(id);
-	m_playerEntity.assign<LocalInputComponent>(0);
+	if (m_playerEntity.valid())
+		m_playerEntity.assign<LocalInputComponent>(0);
+
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -136,8 +187,9 @@ void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt
 
 void NetClient::onPlayerJoinedMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
+	uint8_t playerIndex = reader.read<uint8_t>();
 	string name = reader.read<string>();
-	GameGlobals::events->emit<PlayerJoinEvent>(name);
+	GameGlobals::events->emit<PlayerJoinEvent>(playerIndex, name);
 }
 
 void NetClient::onCreateSolidBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -167,9 +219,9 @@ void NetClient::onCreateFloorMessage(MessageReader<MessageType>& reader, ENetEve
 void NetClient::onCreatePlayerMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
+	int playerIndex = reader.read<uint8_t>();
 	float x = reader.read<float>();
 	float y = reader.read<float>();
-	int playerIndex = -1; //fixme
 	mapEntity(id, GameGlobals::entityFactory->createPlayer(x, y, playerIndex));
 }
 
@@ -275,6 +327,16 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 			}
 		}
 	}
+}
+
+void NetClient::onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<CountdownEvent>(reader.read<string>());
+}
+
+void NetClient::onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<LobbyEventDisable>();
 }
 
 Entity NetClient::getEntity(uint64_t id)

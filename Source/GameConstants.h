@@ -21,4 +21,7 @@ namespace GameConstants
 
 	const float PORTAL_TIMER_LINKED = 10.f;			//Wenn zwei Portale stehen
 	const float PORTAL_TIMER_NOT_LINKED = 30.f;		//Wenn ein Portal noch nicht verbunden ist, bis es verbunden wird.
+
+	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
+	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
 }

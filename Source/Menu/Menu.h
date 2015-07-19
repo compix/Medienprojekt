@@ -7,6 +7,7 @@
 #include "Pages/MenuPageChat.h"
 #include "Pages/MenuPageLoading.h"
 
+struct ForceDisconnectEvent;
 struct PreloadEvent;
 using entityx::Receiver;
 
@@ -28,6 +29,8 @@ public:
 
 	void receive(const sf::Event &evt);
 	void receive(const PreloadEvent &evt);
+	void receive(const ForceDisconnectEvent& evt);
+	void showLobby();
 	void pushPage(MenuPage *page);
 	void popPage();
 	void popAllPages();
@@ -39,4 +42,5 @@ protected:
 	MenuPageLoading m_loadingPage;
 	MenuPageRoot m_rootPage;
 	MenuPageChat m_chatPage;
+	MenuPageLobby m_lobbyPage;
 };

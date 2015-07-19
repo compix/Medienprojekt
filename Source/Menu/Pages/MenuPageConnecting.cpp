@@ -1,7 +1,7 @@
 #include "MenuPageConnecting.h"
 #include "../../Events/SendChatEvent.h"
 #include "../../GameGlobals.h"
-#include "../../Events/ConnectionStateEvent.h"
+#include "../../Events/ClientStateEvent.h"
 #include "../../Events/ForceDisconnectEvent.h"
 #include "../Menu.h"
 
@@ -20,12 +20,12 @@ void MenuPageConnecting::show()
 	MenuPage::show();
 
 	m_chatBox->removeAllLines();
-	GameGlobals::events->subscribe<ConnectionStateEvent>(*this);
+	GameGlobals::events->subscribe<ClientStateEvent>(*this);
 }
 
 void MenuPageConnecting::hide()
 {
-	GameGlobals::events->unsubscribe<ConnectionStateEvent>(*this);
+	GameGlobals::events->unsubscribe<ClientStateEvent>(*this);
 
 	MenuPage::hide();
 }
@@ -36,9 +36,14 @@ void MenuPageConnecting::onAbort()
 	close();
 }
 
-void MenuPageConnecting::receive(const ConnectionStateEvent &evt)
+void MenuPageConnecting::receive(const ClientStateEvent &evt)
 {
 	m_chatBox->addLine(evt.message);
-	if (evt.finished)
-		m_menu.popAllPages(); //fixme: if game not started, pop one, push lobby
+	if (evt.state == ClientState::PREGAME)
+		m_menu.popAllPages();
+	else if (evt.state == ClientState::LOBBY)
+	{
+		m_menu.popPage();
+		m_menu.showLobby();
+	}
 }
