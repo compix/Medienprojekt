@@ -144,7 +144,7 @@ void NetServer::update(float deltaTime)
 		{
 			std::string message;
 			if (m_status == ServerStatus::LOBBY)
-				message = fmt::format("Starting in: {}", (int)lower);
+				message = fmt::format("Get Ready: {}", (int)lower);
 			else
 				message = fmt::format("Starting: {}", (int)lower);
 

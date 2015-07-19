@@ -9,6 +9,9 @@
 #include "../../Events/ReadyEvent.h"
 #include "../../Events/StartGameEvent.h"
 #include "../Menu.h"
+#include "../../Events/ForceDisconnectEvent.h"
+#include "../../Events/DisconnectEvent.h"
+#include "../../Network/NetPlayerInfo.h"
 
 MenuPageLobby::MenuPageLobby(Menu &menu)
 	:MenuPage(menu)
@@ -31,12 +34,15 @@ MenuPageLobby::MenuPageLobby(Menu &menu)
 		y += stepY;
 	}
 
-	m_timer = createLabel(x1, 540 + labelYOffset, "");
+	m_timer = createLabel(x1, 480 + labelYOffset, "");
 
 	m_chatBox = createChatBox(320, 20, 460, 500);
 
 	m_editBox = createEditBox(320, 540, 460, 40);
 	m_editBox->bindCallback(&MenuPageLobby::onSubmit, this, tgui::EditBox::ReturnKeyPressed);
+
+	auto button = createButton(x1, 540, (x2 - x1 + readySize), 40, "Disconnect");
+	button->bindCallback(&MenuPageLobby::onAbort, this, tgui::Button::LeftMouseClicked);
 
 	m_onShowFocus = m_editBox.get();
 }
@@ -61,6 +67,7 @@ void MenuPageLobby::show()
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
 	GameGlobals::events->subscribe<ReadyEvent>(*this);
 	GameGlobals::events->subscribe<CountdownEvent>(*this);
+	GameGlobals::events->subscribe<DisconnectEvent>(*this);
 }
 
 void MenuPageLobby::hide()
@@ -71,6 +78,7 @@ void MenuPageLobby::hide()
 	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
 	GameGlobals::events->unsubscribe<ReadyEvent>(*this);
 	GameGlobals::events->unsubscribe<CountdownEvent>(*this);
+	GameGlobals::events->unsubscribe<DisconnectEvent>(*this);
 
 	MenuPage::hide();
 }
@@ -83,6 +91,12 @@ void MenuPageLobby::onSubmit()
 		GameGlobals::events->emit<SendChatEvent>(message);
 		m_editBox->setText("");
 	}
+}
+
+void MenuPageLobby::onAbort()
+{
+	GameGlobals::events->emit<ForceDisconnectEvent>();
+	m_menu.popPage();
 }
 
 void MenuPageLobby::onChange(int index)
@@ -117,6 +131,18 @@ void MenuPageLobby::receive(const PlayerJoinEvent &evt)
 	setChecked(m_ready[evt.playerIndex], false);
 	m_chatBox->addLine(">" + evt.name + " joined the game", sf::Color::Green);
 	m_ignoreChecked = false;
+}
+
+void MenuPageLobby::receive(const DisconnectEvent& evt)
+{
+	if (evt.playerInfo)
+	{
+		m_ignoreChecked = true;
+		m_name[evt.playerInfo->playerIndex]->setText("?");
+		setChecked(m_ready[evt.playerInfo->playerIndex], false);
+		m_chatBox->addLine(">" + evt.playerInfo->name + " left the game", sf::Color::Green);
+		m_ignoreChecked = false;
+	}
 }
 
 void MenuPageLobby::receive(const ReadyEvent& evt)

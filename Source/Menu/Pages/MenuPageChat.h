@@ -2,6 +2,7 @@
 #include "../MenuPage.h"
 #include "../../Events/ChatEvent.h"
 #include "../../Events/PlayerJoinEvent.h"
+#include "../../Events/DisconnectEvent.h"
 
 using entityx::Receiver;
 
@@ -12,7 +13,7 @@ public:
 
 	void receive(const ChatEvent& evt);
 	void receive(const PlayerJoinEvent& evt);
-
+	void receive(const DisconnectEvent& evt);
 protected:
 	void onSubmit();
 protected:

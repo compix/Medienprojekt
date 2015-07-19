@@ -62,7 +62,7 @@ NetClient::NetClient()
 		cout << "Disconnected from server!" << endl;
 		if (!event.peer)
 			GameGlobals::events->emit<ClientStateEvent>("Connection failed", ClientState::DISCONNECTED);
-		GameGlobals::events->emit<ForceDisconnectEvent>();
+		GameGlobals::events->emit<ForceDisconnectEvent>(event.peer ? "Server disconnected" : "Connection failed");
 	});
 }
 

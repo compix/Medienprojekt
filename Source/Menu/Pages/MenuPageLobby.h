@@ -2,6 +2,7 @@
 #include "../MenuPage.h"
 #include "../../GameConstants.h"
 
+struct DisconnectEvent;
 struct CountdownEvent;
 struct ReadyEvent;
 struct StartGameEvent;
@@ -22,6 +23,7 @@ public:
 	void receive(const LobbyEvent& evt);
 	void receive(const ChatEvent& evt);
 	void receive(const PlayerJoinEvent& evt);
+	void receive(const DisconnectEvent& evt);
 	void receive(const ReadyEvent& evt);
 	void receive(const StartGameEvent& evt);
 	void receive(const CountdownEvent& evt);
@@ -31,6 +33,7 @@ public:
 
 private:
 	void onSubmit();
+	void onAbort();
 
 private:
 	tgui::Label::Ptr m_name[GameConstants::MAX_PLAYERS];

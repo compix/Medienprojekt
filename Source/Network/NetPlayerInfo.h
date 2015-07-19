@@ -11,6 +11,9 @@ enum class NetPlayerStatus
 	READY
 };
 
+struct _ENetPeer;
+typedef _ENetPeer ENetPeer;
+
 struct NetPlayerInfo
 {
 	std::string name = "Connecting...";
