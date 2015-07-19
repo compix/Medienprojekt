@@ -1,74 +1,146 @@
 {
-    "char_walk_down": 
-	{
-        "colCount" : 5,
-        "rowCount": 4,
-        "frameCount" : 4,
-        "frameDuration": 0.1,
-		"startFrame": 1,
-        "playMode" : "LOOP"
-    },
-	"char_walk_right": 
-	{
-        "colCount" : 5,
-        "rowCount": 4,
-        "frameCount" : 4,
-        "frameDuration": 0.1,
-		"startFrame": 6,
-        "playMode" : "LOOP"
-    },
-	"char_walk_up": 
-	{
-        "colCount" : 5,
-        "rowCount": 4,
-        "frameCount" : 4,
-        "frameDuration": 0.1,
-		"startFrame": 11,
-        "playMode" : "LOOP"
-    },
-	"char_walk_left": 
-	{
-        "colCount" : 5,
-        "rowCount": 4,
-        "frameCount" : 4,
-        "frameDuration": 0.1,
-		"startFrame": 16,
-        "playMode" : "LOOP"
-    },
     "char_idle_down": 
 	{
-        "colCount" : 5,
-        "rowCount": 4,
+        "colCount" : 13,
+        "rowCount": 8,
         "frameCount" : 1,
-        "frameDuration": 0.1,
+        "frameDuration": 1,
 		"startFrame": 0,
         "playMode" : "LOOP"
     },
-	"char_idle_right": 
+    "char_walk_down": 
 	{
-        "colCount" : 5,
-        "rowCount": 4,
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 1,
+        "playMode" : "LOOP"
+    },
+    "char_idle_down_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
         "frameCount" : 1,
-        "frameDuration": 0.1,
-		"startFrame": 5,
+        "frameDuration": 1,
+		"startFrame": 13,
+        "playMode" : "LOOP"
+    },
+    "char_walk_down_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 14,
         "playMode" : "LOOP"
     },
 	"char_idle_up": 
 	{
-        "colCount" : 5,
-        "rowCount": 4,
+        "colCount" : 13,
+        "rowCount": 8,
         "frameCount" : 1,
-        "frameDuration": 0.1,
-		"startFrame": 10,
+        "frameDuration": 1,
+		"startFrame": 26,
+        "playMode" : "LOOP"
+    },
+	"char_walk_up": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 27,
+        "playMode" : "LOOP"
+    },
+	"char_idle_up_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 1,
+        "frameDuration": 1,
+		"startFrame": 39,
+        "playMode" : "LOOP"
+    },
+	"char_walk_up_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 40,
         "playMode" : "LOOP"
     },
 	"char_idle_left": 
 	{
-        "colCount" : 5,
-        "rowCount": 4,
+        "colCount" : 13,
+        "rowCount": 8,
         "frameCount" : 1,
-        "frameDuration": 0.1,
-		"startFrame": 15,
+        "frameDuration": 1,
+		"startFrame": 52,
+        "playMode" : "LOOP"
+    },
+	"char_walk_left": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 53,
+        "playMode" : "LOOP"
+    },
+	"char_walk_right": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 65,
+        "playMode" : "LOOP_REVERSED"
+    },
+	"char_idle_right": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 1,
+        "frameDuration": 1,
+		"startFrame": 77,
+        "playMode" : "LOOP"
+    },
+	"char_idle_left_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 1,
+        "frameDuration": 1,
+		"startFrame": 78,
+        "playMode" : "LOOP"
+    },
+	"char_walk_left_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 79,
+        "playMode" : "LOOP"
+    },
+	"char_walk_right_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 12,
+        "frameDuration": 0.07,
+		"startFrame": 91,
+        "playMode" : "LOOP_REVERSED"
+    },
+	"char_idle_right_bomb": 
+	{
+        "colCount" : 13,
+        "rowCount": 8,
+        "frameCount" : 1,
+        "frameDuration": 1,
+		"startFrame": 103,
         "playMode" : "LOOP"
     }
 }

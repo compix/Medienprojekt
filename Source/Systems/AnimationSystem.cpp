@@ -19,7 +19,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 		auto directionComponent = entity.component<DirectionComponent>();
 		if (directionComponent)
 		{
-			if (abs(input->moveX) > abs(input->moveY))
+			if (abs(input->moveX) >= abs(input->moveY))
 			{
 				if (input->moveX > 0)
 					directionComponent->direction = Direction::RIGHT;
