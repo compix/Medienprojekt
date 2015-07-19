@@ -60,15 +60,15 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	TransformComponent transformComponent;
 	transformComponent.x = x;
 	transformComponent.y = y;
-	transformComponent.scaleX = 2.f;
-	transformComponent.scaleY = 2.f;
+	transformComponent.scaleX = 1.f;
+	transformComponent.scaleY = 1.f;
 
 	entity->assign<TransformComponent>(transformComponent);
 	entity->assign<SpriteComponent>();
 
 	AnimationComponent animationComponent;
 	entity->assign<AnimationComponent>(animationComponent);
-	AnimatorManager::assignCharacterAnimator(*entity);
+	AnimatorManager::assignCharacterAnimator(*entity, playerIndex);
 
 	entity->assign<DirectionComponent>();
 	entity->assign<CellComponent>(cellX, cellY);
