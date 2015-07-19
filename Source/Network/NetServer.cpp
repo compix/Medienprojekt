@@ -180,6 +180,7 @@ bool NetServer::connect(const CreateGameEvent& evt)
 			else
 				m_playerInfos[i].status = NetPlayerStatus::CONNECTED;
 			m_playerInfos[i].name = player.name;
+			makeUniqueName(&m_playerInfos[i]);
 			m_playerInfos[i].entity.invalidate();
 		}
 		m_playerInfos[i].type = player.type;
@@ -366,11 +367,28 @@ void NetServer::forceReady()
 	startCountdown();
 }
 
+void NetServer::makeUniqueName(NetPlayerInfo *info)
+{
+	bool changed;
+	do {
+		changed = false;
+		for (int i = 0; i < m_numPlayers; i++)
+		{
+			if (info != &m_playerInfos[i] && info->name == m_playerInfos[i].name)
+			{
+				info->name += '#';
+				changed = true;
+			}
+		}
+	} while (changed);
+}
+
 void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
 	info->status = NetPlayerStatus::CONNECTED;
-	info->name = reader.read<string>(); // fixme: correct name, so it does not exist twice
+	info->name = reader.read<string>();
+	makeUniqueName(info);
 	GameGlobals::events->emit<PlayerJoinEvent>(info->playerIndex, info->name);
 
 	// Send greeting back

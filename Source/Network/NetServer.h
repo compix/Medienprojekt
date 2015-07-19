@@ -78,6 +78,7 @@ private:
 	void emitLobbyEvent(bool disable);
 	bool allPlayersReady();
 	void forceReady();
+	void makeUniqueName(NetPlayerInfo* info);
 	void startCountdown();
 	void startGame();
 
