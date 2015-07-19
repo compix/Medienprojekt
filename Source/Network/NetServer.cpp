@@ -28,10 +28,12 @@
 #include "../Events/DeathEvent.h"
 #include "../Events/SetReadyEvent.h"
 #include "../Events/LobbyEvent.h"
+#include "../Events/CountdownEvent.h"
 #include "../Components/FreeSlotComponent.h"
 #include "../Events/StartGameEvent.h"
 #include "../Components/PlayerComponent.h"
 #include "../Events/ReadyEvent.h"
+#include <format.h>
 
 using namespace std;
 using namespace NetCode;
@@ -120,11 +122,39 @@ NetServer::~NetServer()
 	cout << "Connection closed" << endl;
 }
 
-void NetServer::update()
+void NetServer::update(float deltaTime)
 {
 	broadcastDynamicUpdates();
 	if (!m_connection.update())
 		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
+
+	// Do countdowns
+	if ((m_status == ServerStatus::LOBBY || m_status == ServerStatus::LOBBY_COUNTDOWN) && m_countdown > 0)
+	{
+		auto lower = floor(m_countdown);
+		m_countdown -= deltaTime;
+		if (m_countdown <= 0)
+		{
+			if (m_status == ServerStatus::LOBBY)
+				forceReady();
+			else
+				startGame();
+		}
+		else if (m_countdown <= lower)
+		{
+			std::string message;
+			if (m_status == ServerStatus::LOBBY)
+				message = fmt::format("Starting in: {}", (int)lower);
+			else
+				message = fmt::format("Starting: {}", (int)lower);
+
+			m_messageWriter.init(MessageType::COUNTDOWN);
+			m_messageWriter.write<string>(message);
+			broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+
+			GameGlobals::events->emit<CountdownEvent>(message);
+		}
+	}
 }
 
 bool NetServer::connect(const CreateGameEvent& evt)
@@ -132,6 +162,7 @@ bool NetServer::connect(const CreateGameEvent& evt)
 	if (!m_connection.connect("", evt.port, NetConstants::MAX_CLIENTS, (enet_uint8)NetChannel::COUNT))
 		return false;
 
+	m_countdown = GameConstants::LOBBY_COUNTDOWN;
 	m_width = evt.width;
 	m_height = evt.height;
 
@@ -221,30 +252,49 @@ void NetServer::receive(const DeathEvent& evt)
 
 void NetServer::receive(const SetReadyEvent& evt)
 {
+	if (m_status != ServerStatus::LOBBY)
+		return;
+
 	m_playerInfos[evt.playerIndex].status = evt.ready ? NetPlayerStatus::READY : NetPlayerStatus::CONNECTED;
 	broadcastPlayerReady(evt.playerIndex, evt.ready);
-	if (emitLobbyEvent())
+	bool allReady = allPlayersReady();
+	emitLobbyEvent(allReady);
+	if (allReady)
+		startCountdown();
+}
+
+void NetServer::startCountdown()
+{
+	if (m_status != ServerStatus::LOBBY)
+		return;
+
+	m_status = ServerStatus::LOBBY_COUNTDOWN;
+	m_countdown = GameConstants::LOBBY_READY_COUNTDOWN;
+}
+
+void NetServer::startGame()
+{
+	if (m_status != ServerStatus::LOBBY_COUNTDOWN)
+		return;
+
+	auto *game = (LocalGame *)GameGlobals::game.get();
+	game->resetEntities();
+
+	// Assign entities and send playerids
+	for (int i = 0; i < m_numPlayers; i++)
 	{
-		//fixme: start countdown
-		auto *game = (LocalGame *)GameGlobals::game.get();
-		game->resetEntities();
-
-		// Assign entities and send playerids
-		for (int i = 0; i < m_numPlayers; i++)
+		if (m_playerInfos[i].peer && m_playerInfos[i].status >= NetPlayerStatus::CONNECTED)
 		{
-			if (m_playerInfos[i].peer && m_playerInfos[i].status >= NetPlayerStatus::CONNECTED)
-			{
-				m_playerInfos[i].entity = getFreeSlotEntity();
+			m_playerInfos[i].entity = getFreeSlotEntity();
 
-				// Send all blocks:
-				sendBlockEntities<SolidBlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_SOLID_BLOCK);
-				sendBlockEntities<FloorComponent>(m_playerInfos[i].peer, MessageType::CREATE_FLOOR);
-				sendBlockEntities<BlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_BLOCK);
+			// Send all blocks:
+			sendBlockEntities<SolidBlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_SOLID_BLOCK);
+			sendBlockEntities<FloorComponent>(m_playerInfos[i].peer, MessageType::CREATE_FLOOR);
+			sendBlockEntities<BlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_BLOCK);
 
-				// Send players
-				sendPlayerEntities(m_playerInfos[i].peer);
-				sendStartGame(&m_playerInfos[i]);
-			}
+			// Send players
+			sendPlayerEntities(m_playerInfos[i].peer);
+			sendStartGame(&m_playerInfos[i]);
 		}
 	}
 }
@@ -277,7 +327,19 @@ Entity NetServer::getFreeSlotEntity()
 	return Entity();
 }
 
-bool NetServer::emitLobbyEvent()
+void NetServer::emitLobbyEvent(bool disable)
+{
+	LobbyEvent lobbyEvt(m_numPlayers);
+	for (int i = 0; i < m_numPlayers; i++)
+	{
+		lobbyEvt.enabled[i] = !disable && m_playerInfos[i].type == CreateGamePlayerType::LOCAL;
+		lobbyEvt.ready[i] = m_playerInfos[i].status == NetPlayerStatus::READY;
+		lobbyEvt.name[i] = m_playerInfos[i].name;
+	}
+	GameGlobals::events->emit(lobbyEvt);
+}
+
+bool NetServer::allPlayersReady()
 {
 	int ready = 0;
 	for (int i = 0; i < m_numPlayers; i++)
@@ -285,18 +347,20 @@ bool NetServer::emitLobbyEvent()
 		if (m_playerInfos[i].status == NetPlayerStatus::READY || m_playerInfos[i].status == NetPlayerStatus::DISCONNECTED)
 			ready++;
 	}
+	return ready == m_numPlayers;
+}
 
+void NetServer::forceReady()
+{
 	LobbyEvent lobbyEvt(m_numPlayers);
-	bool allReady = ready == m_numPlayers;
 	for (int i = 0; i < m_numPlayers; i++)
 	{
-		lobbyEvt.enabled[i] = !allReady && m_playerInfos[i].type == CreateGamePlayerType::LOCAL;
-		lobbyEvt.ready[i] = m_playerInfos[i].status == NetPlayerStatus::READY;
+		lobbyEvt.enabled[i] = false;
+		lobbyEvt.ready[i] = true;
 		lobbyEvt.name[i] = m_playerInfos[i].name;
 	}
 	GameGlobals::events->emit(lobbyEvt);
-
-	return allReady;
+	startCountdown();
 }
 
 void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -355,6 +419,9 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 
 void NetServer::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
+	if (m_status != ServerStatus::LOBBY)
+		return;
+
 	bool ready = reader.read<bool>();
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
 	info->status = ready ? NetPlayerStatus::READY : NetPlayerStatus::CONNECTED;
@@ -362,6 +429,9 @@ void NetServer::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 
 	// Let all clients know
 	broadcastPlayerReady(info->playerIndex, ready);
+
+	if (allPlayersReady())
+		startCountdown();
 }
 
 void NetServer::broadcastPlayerReady(uint8_t playerIndex, bool ready)

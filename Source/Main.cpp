@@ -121,7 +121,7 @@ int Main::run()
 		if (m_forceDisconnect)
 			disconnect();
 		else if (m_server)
-			m_server->update();
+			m_server->update(deltaTime.asSeconds());
 		else if (m_client)
 			m_client->update();
 	}

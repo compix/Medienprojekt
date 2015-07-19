@@ -12,6 +12,7 @@
 #include "../Events/ClientStateEvent.h"
 #include "../Events/ForceDisconnectEvent.h"
 #include "../Events/LobbyEvent.h"
+#include "../Events/CountdownEvent.h"
 #include "../Events/ReadyEvent.h"
 #include "../Events/SendChatEvent.h"
 #include "../Events/SetReadyEvent.h"
@@ -43,6 +44,8 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::DEATH, &NetClient::onDeathMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
+	m_handler.setCallback(MessageType::COUNTDOWN, &NetClient::onCountdownMessage, this);
+	
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -149,7 +152,7 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 
 	if (status == ServerStatus::INGAME)
 		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::PREGAME);
-	else if (status == ServerStatus::LOBBY)
+	else if (status == ServerStatus::LOBBY || status == ServerStatus::LOBBY_COUNTDOWN)
 	{
 		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::LOBBY);
 		GameGlobals::events->emit(lobbyEvt);
@@ -323,6 +326,11 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 			}
 		}
 	}
+}
+
+void NetClient::onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<CountdownEvent>(reader.read<string>());
 }
 
 Entity NetClient::getEntity(uint64_t id)

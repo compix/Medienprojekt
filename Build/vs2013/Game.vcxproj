@@ -142,6 +142,7 @@
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\ClientStateEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CountdownEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />

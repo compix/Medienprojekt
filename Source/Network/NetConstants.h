@@ -21,6 +21,7 @@ enum class MessageType : uint16_t
 	DESTROY_ENTITY,
 	UPDATE_DYNAMIC,
 	START_GAME,
+	COUNTDOWN,
 
 	INPUT_DIRECTION,
 	INPUT_BOMB_ACTIVATED,
@@ -44,6 +45,7 @@ enum class ServerStatus : uint8_t
 {
 	INIT,
 	LOBBY,
+	LOBBY_COUNTDOWN,
 	INGAME,
 	SHUTDOWN
 };

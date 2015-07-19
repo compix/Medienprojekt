@@ -181,6 +181,9 @@
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\CountdownEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>

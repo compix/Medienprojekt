@@ -48,6 +48,7 @@ public:
 	void onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 private:
 	void mapEntity(uint64_t id, Entity entity);
 	Entity getEntity(uint64_t id);

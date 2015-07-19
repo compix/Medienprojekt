@@ -2,6 +2,7 @@
 #include "../MenuPage.h"
 #include "../../GameConstants.h"
 
+struct CountdownEvent;
 struct ReadyEvent;
 struct StartGameEvent;
 struct LobbyEvent;
@@ -23,6 +24,8 @@ public:
 	void receive(const PlayerJoinEvent& evt);
 	void receive(const ReadyEvent& evt);
 	void receive(const StartGameEvent& evt);
+	void receive(const CountdownEvent& evt);
+	
 
 	void onChange(int index);
 
@@ -35,4 +38,5 @@ private:
 	tgui::ChatBox::Ptr m_chatBox;
 	tgui::EditBox::Ptr m_editBox;
 	tgui::Label::Ptr m_timer;
+	bool m_ignoreChecked = false;
 };

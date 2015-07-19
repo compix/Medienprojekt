@@ -65,6 +65,7 @@
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ClientStateEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CountdownEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreateGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/CreatePortalEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
@@ -386,6 +387,7 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ClientStateEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CountdownEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -680,6 +682,7 @@
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ClientStateEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CountdownEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/CreatePortalEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>

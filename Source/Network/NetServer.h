@@ -30,7 +30,7 @@ public:
 	NetServer();
 	~NetServer();
 
-	void update();
+	void update(float deltaTime);
 	bool connect(const CreateGameEvent& evt);
 	void disconnect();
 
@@ -75,7 +75,11 @@ private:
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
 	void sendStartGame(NetPlayerInfo* netPlayerInfo);
 	Entity getFreeSlotEntity();
-	bool emitLobbyEvent();
+	void emitLobbyEvent(bool disable);
+	bool allPlayersReady();
+	void forceReady();
+	void startCountdown();
+	void startGame();
 
 private:
 	ServerStatus m_status = ServerStatus::INIT;
@@ -86,4 +90,5 @@ private:
 	MessageWriter<MessageType> m_messageWriter;
 	uint8_t m_width;
 	uint8_t m_height;
+	float m_countdown = 0;
 };
