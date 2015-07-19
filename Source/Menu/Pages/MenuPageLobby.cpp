@@ -64,6 +64,7 @@ void MenuPageLobby::show()
 	GameGlobals::events->subscribe<ChatEvent>(*this);
 	GameGlobals::events->subscribe<PlayerJoinEvent>(*this);
 	GameGlobals::events->subscribe<LobbyEvent>(*this);
+	GameGlobals::events->subscribe<LobbyEventDisable>(*this);
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
 	GameGlobals::events->subscribe<ReadyEvent>(*this);
 	GameGlobals::events->subscribe<CountdownEvent>(*this);
@@ -75,6 +76,7 @@ void MenuPageLobby::hide()
 	GameGlobals::events->unsubscribe<ChatEvent>(*this);
 	GameGlobals::events->unsubscribe<PlayerJoinEvent>(*this);
 	GameGlobals::events->unsubscribe<LobbyEvent>(*this);
+	GameGlobals::events->unsubscribe<LobbyEventDisable>(*this);
 	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
 	GameGlobals::events->unsubscribe<ReadyEvent>(*this);
 	GameGlobals::events->unsubscribe<CountdownEvent>(*this);
@@ -118,6 +120,13 @@ void MenuPageLobby::receive(const LobbyEvent& evt)
 	}
 	m_ignoreChecked = false;
 }
+
+void MenuPageLobby::receive(const LobbyEventDisable& evt)
+{
+	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
+		setEnabled(m_ready[i], false);
+}
+
 
 void MenuPageLobby::receive(const ChatEvent &evt)
 {

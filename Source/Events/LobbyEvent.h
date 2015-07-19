@@ -18,3 +18,5 @@ struct LobbyEvent
 	bool enabled[GameConstants::MAX_PLAYERS];
 	bool ready[GameConstants::MAX_PLAYERS];
 };
+
+struct LobbyEventDisable {};

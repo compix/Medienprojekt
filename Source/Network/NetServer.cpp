@@ -270,6 +270,9 @@ void NetServer::startCountdown()
 
 	m_status = ServerStatus::LOBBY_COUNTDOWN;
 	m_countdown = GameConstants::LOBBY_READY_COUNTDOWN;
+
+	m_messageWriter.init(MessageType::ALL_READY);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetServer::startGame()

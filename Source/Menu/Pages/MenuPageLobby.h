@@ -7,6 +7,7 @@ struct CountdownEvent;
 struct ReadyEvent;
 struct StartGameEvent;
 struct LobbyEvent;
+struct LobbyEventDisable;
 struct ChatEvent;
 struct PlayerJoinEvent;
 using entityx::Receiver;
@@ -21,6 +22,7 @@ public:
 	virtual void onEscape() override {}
 
 	void receive(const LobbyEvent& evt);
+	void receive(const LobbyEventDisable& evt);
 	void receive(const ChatEvent& evt);
 	void receive(const PlayerJoinEvent& evt);
 	void receive(const DisconnectEvent& evt);

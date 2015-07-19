@@ -45,6 +45,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
 	m_handler.setCallback(MessageType::COUNTDOWN, &NetClient::onCountdownMessage, this);
+	m_handler.setCallback(MessageType::ALL_READY, &NetClient::onAllReadyMessage, this);
 	
 	
 	m_connection.setHandler(&m_handler);
@@ -331,6 +332,11 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 void NetClient::onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	GameGlobals::events->emit<CountdownEvent>(reader.read<string>());
+}
+
+void NetClient::onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<LobbyEventDisable>();
 }
 
 Entity NetClient::getEntity(uint64_t id)
