@@ -32,7 +32,7 @@ public:
 
 	void onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onPlayerReadyMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
-	void onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onChatMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onPlayerJoinedMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onCreateSolidBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -59,4 +59,5 @@ private:
 	MessageWriter<MessageType> m_messageWriter;
 	std::map<uint64_t, Entity> entityMap;
 	Entity m_playerEntity;
+	uint8_t m_playerIndex = 0;
 };

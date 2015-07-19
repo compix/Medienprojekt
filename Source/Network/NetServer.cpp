@@ -235,7 +235,15 @@ void NetServer::receive(const SetReadyEvent& evt)
 			if (m_playerInfos[i].peer && m_playerInfos[i].status >= NetPlayerStatus::CONNECTED)
 			{
 				m_playerInfos[i].entity = getFreeSlotEntity();
-				sendPlayerId(&m_playerInfos[i]);
+
+				// Send all blocks:
+				sendBlockEntities<SolidBlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_SOLID_BLOCK);
+				sendBlockEntities<FloorComponent>(m_playerInfos[i].peer, MessageType::CREATE_FLOOR);
+				sendBlockEntities<BlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_BLOCK);
+
+				// Send players
+				sendPlayerEntities(m_playerInfos[i].peer);
+				sendStartGame(&m_playerInfos[i]);
 			}
 		}
 	}
@@ -251,15 +259,11 @@ void NetServer::send(ENetPeer* peer, NetChannel channel, ENetPacket *packet)
 	enet_peer_send(peer, (enet_uint8)channel, packet);
 }
 
-void NetServer::sendPlayerId(NetPlayerInfo* info)
+void NetServer::sendStartGame(NetPlayerInfo* info)
 {
-	m_messageWriter.init(MessageType::PLAYER_ID);
+	m_messageWriter.init(MessageType::START_GAME);
 	m_messageWriter.write<uint64_t>(info->entity.valid() ? info->entity.id().id() : Entity::INVALID.id());
 	send(info->peer, NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
-
-	//fixme: merge START_GAME with PLAYER_ID
-	//	m_messageWriter.init(MessageType::START_GAME);
-	//	send(evt.peer, NetChannel::WORLD, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 Entity NetServer::getFreeSlotEntity()
@@ -344,7 +348,7 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 		if (playerEntity.valid())
 			info->entity = playerEntity;
 
-		sendPlayerId(info);
+		sendStartGame(info);
 	}
 
 }

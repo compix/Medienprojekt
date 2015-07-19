@@ -85,7 +85,6 @@ void MenuPageLobby::onSubmit()
 void MenuPageLobby::onChange(int index)
 {
 	GameGlobals::events->emit<SetReadyEvent>(index, m_ready[index]->isChecked());
-	
 }
 
 void MenuPageLobby::receive(const LobbyEvent& evt)

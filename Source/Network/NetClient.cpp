@@ -15,6 +15,7 @@
 #include "../Events/ReadyEvent.h"
 #include "../Events/SendChatEvent.h"
 #include "../Events/SetReadyEvent.h"
+#include "../Events/StartGameEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -25,7 +26,7 @@ NetClient::NetClient()
 	GameGlobals::events->subscribe<SendChatEvent>(*this);
 	GameGlobals::events->subscribe<SetReadyEvent>(*this);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
-	m_handler.setCallback(MessageType::PLAYER_ID, &NetClient::onPlayerIdMessage, this);
+	m_handler.setCallback(MessageType::START_GAME, &NetClient::onStartGameMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_READY, &NetClient::onPlayerReadyMessage, this);
 	m_handler.setCallback(MessageType::CHAT, &NetClient::onChatMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_JOINED, &NetClient::onPlayerJoinedMessage, this);
@@ -120,15 +121,18 @@ void NetClient::receive(const SendChatEvent& evt)
 
 void NetClient::receive(const SetReadyEvent& evt)
 {
-	m_messageWriter.init(MessageType::PLAYER_READY);
-	m_messageWriter.write<bool>(evt.ready);
-	send(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	if (evt.playerIndex == m_playerIndex)
+	{
+		m_messageWriter.init(MessageType::PLAYER_READY);
+		m_messageWriter.write<bool>(evt.ready);
+		send(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	}
 }
 
 void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	ServerStatus status = reader.read<ServerStatus>();
-	uint8_t playerIndex = reader.read<uint8_t>();
+	m_playerIndex = reader.read<uint8_t>();
 	uint8_t width = reader.read<uint8_t>();
 	uint8_t height = reader.read<uint8_t>();
 	uint8_t numPlayers = reader.read<uint8_t>();
@@ -138,7 +142,7 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	{
 		lobbyEvt.name[i] = reader.read<string>();
 		lobbyEvt.ready[i] = reader.read<bool>();
-		lobbyEvt.enabled[i] = i == playerIndex;
+		lobbyEvt.enabled[i] = i == m_playerIndex;
 	}
 
 	GameGlobals::game->init(width, height);
@@ -160,12 +164,14 @@ void NetClient::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 	GameGlobals::events->emit<ReadyEvent>(playerIndex, ready);
 }
 
-void NetClient::onPlayerIdMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
 	m_playerEntity = getEntity(id);
 	if (m_playerEntity.valid())
 		m_playerEntity.assign<LocalInputComponent>(0);
+
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

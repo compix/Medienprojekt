@@ -4,7 +4,6 @@
 enum class MessageType : uint16_t
 {
 	HANDSHAKE,
-	PLAYER_ID,
 	CHAT,
 	PLAYER_JOINED,
 	PLAYER_READY,

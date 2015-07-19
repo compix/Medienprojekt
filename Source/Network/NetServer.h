@@ -73,7 +73,7 @@ private:
 	ENetPacket* createSmokePacket(Entity entity, uint8_t x, uint8_t y);
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
-	void sendPlayerId(NetPlayerInfo* netPlayerInfo);
+	void sendStartGame(NetPlayerInfo* netPlayerInfo);
 	Entity getFreeSlotEntity();
 	bool emitLobbyEvent();
 
