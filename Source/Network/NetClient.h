@@ -22,7 +22,7 @@ public:
 	NetClient();
 	~NetClient();
 
-	void update();
+	void update(float deltaTime);
 	void sendInputEventMessage(MessageType type);
 	bool connect(const std::string &hostname, int port);
 	void disconnect();
@@ -62,4 +62,5 @@ private:
 	std::map<uint64_t, Entity> entityMap;
 	Entity m_playerEntity;
 	uint8_t m_playerIndex = 0;
+	float m_nextSend = 0;
 };

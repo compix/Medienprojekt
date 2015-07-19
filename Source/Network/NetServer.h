@@ -92,4 +92,5 @@ private:
 	uint8_t m_width;
 	uint8_t m_height;
 	float m_countdown = 0;
+	float m_nextBroadcast = 0;
 };

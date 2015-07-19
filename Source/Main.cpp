@@ -123,7 +123,7 @@ int Main::run()
 		else if (m_server)
 			m_server->update(deltaTime.asSeconds());
 		else if (m_client)
-			m_client->update();
+			m_client->update(deltaTime.asSeconds());
 	}
 
 	return EXIT_SUCCESS;

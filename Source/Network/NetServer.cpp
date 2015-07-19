@@ -124,7 +124,13 @@ NetServer::~NetServer()
 
 void NetServer::update(float deltaTime)
 {
-	broadcastDynamicUpdates();
+	m_nextBroadcast -= deltaTime;
+	if (m_nextBroadcast <= 0)
+	{
+		m_nextBroadcast = 0.016f;
+		broadcastDynamicUpdates();
+	}
+
 	if (!m_connection.update())
 		cout << "Error during host service" << endl; //fixme: count errors, if too many disconnect
 

@@ -74,10 +74,12 @@ NetClient::~NetClient()
 	cout << "Connection closed" << endl;
 }
 
-void NetClient::update()
+void NetClient::update(float deltaTime)
 {
-	if (m_playerEntity.valid())
+	m_nextSend -= deltaTime;
+	if (m_nextSend <= 0 && m_playerEntity.valid())
 	{
+		m_nextSend = 0.016f;
 		auto input = m_playerEntity.component<InputComponent>();
 		if (input->bombButtonPressed)
 		{
