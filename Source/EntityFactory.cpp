@@ -68,7 +68,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 	AnimationComponent animationComponent;
 	entity->assign<AnimationComponent>(animationComponent);
-	AnimatorManager::assignCharacterAnimator(*entity);
+	AnimatorManager::assignCharacterAnimator(*entity, playerIndex);
 
 	entity->assign<DirectionComponent>();
 	entity->assign<CellComponent>(cellX, cellY);
