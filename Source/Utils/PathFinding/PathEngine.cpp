@@ -6,6 +6,8 @@
 #include "../../Components/BombComponent.h"
 #include "../../Components/BlockComponent.h"
 #include "SimulationGraph.h"
+#include "../../Components/CellComponent.h"
+#include "../../Components/PortalComponent.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
 	:m_layerManager(layerManager)

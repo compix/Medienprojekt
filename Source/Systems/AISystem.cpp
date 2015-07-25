@@ -22,8 +22,8 @@
 #include "../AI/Checks/IsSafePath.h"
 #include "../AI/PathRatings/RateDesperateSaveAttempt.h"
 
-AISystem::AISystem(PathEngine* pathEngine)
-	: m_pathEngine(pathEngine)
+AISystem::AISystem(PathEngine* pathEngine, LayerManager* layerManager)
+	: m_pathEngine(pathEngine), m_layerManager(layerManager)
 {
 }
 
@@ -119,7 +119,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 		if (m_path.nodeCount > 1)
 		{
-			static FollowPath followPath(m_path);
+			static FollowPath followPath(m_path, m_layerManager);
 			followPath.setPath(m_path);
 
 			bool cellAffected = m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion;
@@ -135,6 +135,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 void AISystem::visualize()
 {
+	m_pathEngine->visualize();
 	m_pathEngine->visualize(m_path);
 }
 

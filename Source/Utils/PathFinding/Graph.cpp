@@ -11,6 +11,7 @@
 #include "../../Components/TimerComponent.h"
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/HealthComponent.h"
+#include "../../Components/PortalComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -411,18 +412,59 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
 	assert(node->x > 0 && node->x < m_width - 1 && node->y > 0 && node->y < m_height - 1);
 
+	entityx::Entity portal;
 	switch (neighbor)
 	{
 	case Direction::LEFT:
+		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x - 1, node->y);
+		if (portal)
+		{
+			if (portal.component<PortalComponent>()->otherPortal.valid())
+			{
+				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+				auto cell = otherPortal.component<CellComponent>();
+				return &m_nodeGrid[cell->x][cell->y];
+			}
+		}
 		return &m_nodeGrid[node->x - 1][node->y];
 		break;
 	case Direction::RIGHT:
+		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x + 1, node->y);
+		if (portal)
+		{
+			if (portal.component<PortalComponent>()->otherPortal.valid())
+			{
+				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+				auto cell = otherPortal.component<CellComponent>();
+				return &m_nodeGrid[cell->x][cell->y];
+			}
+		}
 		return &m_nodeGrid[node->x + 1][node->y];
 		break;
 	case Direction::UP:
+		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x, node->y - 1);
+		if (portal)
+		{
+			if (portal.component<PortalComponent>()->otherPortal.valid())
+			{
+				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+				auto cell = otherPortal.component<CellComponent>();
+				return &m_nodeGrid[cell->x][cell->y];
+			}
+		}
 		return &m_nodeGrid[node->x][node->y - 1];
 		break;
 	case Direction::DOWN:
+		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x, node->y + 1);
+		if (portal)
+		{
+			if (portal.component<PortalComponent>()->otherPortal.valid())
+			{
+				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+				auto cell = otherPortal.component<CellComponent>();
+				return &m_nodeGrid[cell->x][cell->y];
+			}
+		}
 		return &m_nodeGrid[node->x][node->y + 1];
 		break;
 	default: 

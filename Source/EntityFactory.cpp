@@ -86,7 +86,6 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 		isA = BodyFactory::PLAYER_1;
 		break;
 	case 2:
-		entity->assign<AIComponent>();
 		isA = BodyFactory::PLAYER_2;
 		break;
 	case 3:

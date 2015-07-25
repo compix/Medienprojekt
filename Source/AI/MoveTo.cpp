@@ -6,8 +6,8 @@
 #include "../Components/AIComponent.h"
 #include "../Utils/Random.h"
 
-MoveTo::MoveTo(PathEngine* pathEngine, uint8_t targetX, uint8_t targetY)
-	:FollowPath(Path()), m_pathEngine(pathEngine), m_targetX(targetX), m_targetY(targetY)
+MoveTo::MoveTo(PathEngine* pathEngine, LayerManager* layerManager, uint8_t targetX, uint8_t targetY)
+	:FollowPath(Path(), layerManager), m_pathEngine(pathEngine), m_targetX(targetX), m_targetY(targetY)
 {
 }
 

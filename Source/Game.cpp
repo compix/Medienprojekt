@@ -170,7 +170,7 @@ void LocalGame::addSystems()
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();
-	m_systems.add<AISystem>(m_pathEngine.get());
+	m_systems.add<AISystem>(m_pathEngine.get(), m_layerManager.get());
 	m_systems.add<InputHandleSystem>(m_layerManager.get());
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());

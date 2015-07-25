@@ -175,6 +175,7 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 			{
 				std::pair<std::multimap<Entity::Id, Entity>::iterator, std::multimap<Entity::Id, Entity>::iterator> ppp;
 				ppp = m_portals.equal_range(entity.id());
+				Entity otherPortal;
 				for (std::multimap<Entity::Id, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
 				{
 					if ((*it2).second.has_component<TimerComponent>())				//TIMER erneuern
@@ -182,7 +183,15 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 						(*it2).second.remove<TimerComponent>();
 					}
 					(*it2).second.assign<TimerComponent>(GameConstants::PORTAL_TIMER_LINKED);
+			
+					if ((*it2).second != portal)
+						otherPortal = (*it2).second;
+
 				}
+
+				// Link the portals:
+				otherPortal.component<PortalComponent>()->otherPortal = portal;
+				portal.component<PortalComponent>()->otherPortal = otherPortal;
 			}
 		}
 	//}

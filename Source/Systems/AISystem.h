@@ -9,7 +9,7 @@
 class AISystem : public entityx::System<AISystem>
 {
 public:
-	AISystem(PathEngine* pathEngine);
+	AISystem(PathEngine* pathEngine, LayerManager* layerManager);
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	void visualize();
@@ -20,6 +20,7 @@ public:
 
 private:
 	PathEngine* m_pathEngine;
+	LayerManager* m_layerManager;
 	Path m_path;
 	Path m_safePath;
 

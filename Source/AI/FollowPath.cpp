@@ -3,9 +3,10 @@
 #include "../Utils/Random.h"
 #include "../Components/CellComponent.h"
 #include "../Components/InputComponent.h"
+#include "../Components/PortalComponent.h"
 
-FollowPath::FollowPath(Path path)
-	:m_path(path), m_lastMoveX(0), m_lastMoveY(0)
+FollowPath::FollowPath(Path path, LayerManager* layerManager)
+	:m_path(path), m_lastMoveX(0), m_lastMoveY(0), m_layerManager(layerManager)
 {
 }
 
@@ -28,6 +29,18 @@ void FollowPath::update(entityx::Entity& entity)
 
 		int moveX = n2->x - n1->x;
 		int moveY = n2->y - n1->y;
+
+		auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, n2->x, n2->y);
+		if (portal)
+		{
+			if (portal.component<PortalComponent>()->otherPortal.valid())
+			{
+				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+				auto protalCell = otherPortal.component<CellComponent>();
+				moveX = protalCell->x - n1->x;
+				moveY = protalCell->y - n1->y;
+			}
+		}
 
 		int leftAvoidance  = (cell->x - static_cast<int>((transform->x - playerRadius) / GameConstants::CELL_WIDTH)) * abs(moveY);
 		int rightAvoidance = (cell->x - static_cast<int>((transform->x + playerRadius) / GameConstants::CELL_WIDTH)) * abs(moveY);

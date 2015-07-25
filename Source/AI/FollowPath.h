@@ -6,13 +6,14 @@
 class FollowPath : public Behavior
 {
 public:
-	explicit FollowPath(Path path);
+	explicit FollowPath(Path path, LayerManager* layerManager);
 
 	inline void setPath(Path path) { m_path = path; }
 	void update(entityx::Entity& entity) override;
 
 protected:
 	Path m_path;
+	LayerManager* m_layerManager;
 
 	uint8_t m_lastMoveX, m_lastMoveY;
 };
