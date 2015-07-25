@@ -50,6 +50,9 @@ Entity EntityFactory::createPlayer(float x, float y)
 	static int playerId = 0;
 	++playerId;
 
+	if (playerId == 5)
+		playerId = 1;
+
 	uint8_t cellX = x / GameConstants::CELL_WIDTH;
 	uint8_t cellY = y / GameConstants::CELL_HEIGHT;
 
@@ -73,17 +76,17 @@ Entity EntityFactory::createPlayer(float x, float y)
 	uint16 isA = BodyFactory::PLAYER_1;
 	switch (playerId)
 	{
-	case 0:
+	case 1:
 		isA = BodyFactory::PLAYER_1;
 		break;
-	case 1:
+	case 2:
+		entity.assign<AIComponent>();
 		isA = BodyFactory::PLAYER_2;
 		break;
-	case 2:
-		isA = BodyFactory::PLAYER_3;
-		entity.assign<AIComponent>();
-		break;
 	case 3:
+		isA = BodyFactory::PLAYER_3;
+		break;
+	case 4:
 		isA = BodyFactory::PLAYER_4;
 		break;
 	default:
@@ -197,7 +200,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<TransformComponent>(transformComponent);
 	auto texture = createSprite("bomb");
 	entity.assign<SpriteComponent>(texture);
-	entity.assign<BombComponent>(7, 0.06f);
+	entity.assign<BombComponent>(7, GameConstants::EXPLOSION_SPREAD_TIME);
 	entity.assign<TimerComponent>(2.f);
 	entity.assign<HealthComponent>(1);
 	entity.assign<OwnerComponent>(owner);

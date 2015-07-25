@@ -3,28 +3,36 @@
 #include <unordered_map>
 #include <set>
 #include "../../Game.h"
+#include "../../Components/BombComponent.h"
+#include "../../Components/BlockComponent.h"
+#include "SimulationGraph.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
 	:m_layerManager(layerManager)
 {
 	m_graph = std::make_unique<Graph>(layerManager);
+	m_simGraph = std::make_unique<SimulationGraph>(layerManager, m_graph.get());
 
-	m_startDummy.prev = nullptr;
-	m_endDummy.next = nullptr;
+	m_startDummy.prev[0] = nullptr;
+	m_endDummy.next[0] = nullptr;
+
+	m_startDummy.prev[1] = nullptr;
+	m_endDummy.next[1] = nullptr;
 }
-void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, Path& pathOut)
+
+void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, Path& pathOut, uint8_t taskNum)
 {
 	auto goal = m_graph->getNode(endX, endY);
 
 	GraphNode* start = m_graph->getNode(startX, startY);
 	start->costSoFar = 0;
 	start->estimatedTotalCost = estimate(start, goal);
-	start->prevOnPath = nullptr;
-	start->next = &m_endDummy;
-	start->prev = &m_startDummy;
-	m_startDummy.next = start;
+	start->prevOnPath[taskNum] = nullptr;
+	start->next[taskNum] = &m_endDummy;
+	start->prev[taskNum] = &m_startDummy;
+	m_startDummy.next[taskNum] = start;
 
-	m_graph->resetPathInfo();
+	m_graph->resetPathInfo(taskNum);
 
 	bool pathFound = false;
 	GraphNode* minNode = start;
@@ -32,7 +40,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 	while (minNode != &m_endDummy)
 	{
 		// close this node
-		minNode->state = GraphNode::CLOSED;
+		minNode->state[taskNum] = GraphNode::CLOSED;
 
 		
 		if (minNode == goal)
@@ -49,15 +57,15 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 			if (!neighbor->valid)
 				continue;
 
-			switch (neighbor->state)
+			switch (neighbor->state[taskNum])
 			{
 			case GraphNode::UNVISITED:
 				// New node - Initialize it.
 				neighbor->costSoFar = minNode->costSoFar + neighbor->cost;
 				neighbor->estimatedTotalCost = neighbor->costSoFar + estimate(neighbor, goal);
-				neighbor->prevOnPath = minNode;
-				neighbor->state = GraphNode::OPEN;
-				insert(neighbor, minNode);
+				neighbor->prevOnPath[taskNum] = minNode;
+				neighbor->state[taskNum] = GraphNode::OPEN;
+				insert(neighbor, minNode, taskNum);
 				break;
 			case GraphNode::OPEN:
 				// update/relax the node if necessary
@@ -65,10 +73,10 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 				{
 					neighbor->costSoFar = minNode->costSoFar + neighbor->cost;
 					neighbor->estimatedTotalCost = neighbor->costSoFar + estimate(neighbor, goal);
-					neighbor->prevOnPath = minNode;
+					neighbor->prevOnPath[taskNum] = minNode;
 					// update list position
-					auto at = remove(neighbor);
-					insert(neighbor, at);
+					auto at = remove(neighbor, taskNum);
+					insert(neighbor, at, taskNum);
 				}
 				break;
 			case GraphNode::CLOSED: break;
@@ -76,21 +84,173 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 			}
 		}
 	
-		remove(minNode);
+		remove(minNode, taskNum);
 		// Get the next min
-		minNode = m_startDummy.next;
+		minNode = m_startDummy.next[taskNum];
+	}
+
+	if (pathFound)
+		makePath(pathOut, minNode, taskNum);
+}
+
+void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, Path& pathOut, uint8_t taskNum)
+{
+	m_simGraph->resetPathInfo(taskNum);
+
+	std::queue<GraphNode*> processQueue;
+	auto startNode = m_simGraph->getNode(startX, startY);
+	startNode->prevOnPath[taskNum] = nullptr;
+	processQueue.push(startNode);
+	startNode->state[taskNum] = GraphNode::CLOSED;
+
+	while (processQueue.size() > 0)
+	{
+		GraphNode* curNode = processQueue.front();
+		processQueue.pop();
+
+		bool goalReached = false;
+
+		switch (targetType)
+		{
+		case NodeType::SAFE:
+			if (!curNode->properties.affectedByExplosion)
+				goalReached = true;
+			break;
+		case NodeType::SAFE_NOT_MARKED:
+			if (!curNode->properties.affectedByExplosion && !curNode->marked)
+				goalReached = true;
+			break;
+		case NodeType::FREE:
+			if (!curNode->marked && curNode->valid)
+				goalReached = true;
+			break;
+		case NodeType::ITEM:
+			if (curNode->properties.isItem && !curNode->marked)
+				goalReached = true;
+			break;
+		default:
+			// Should never happen
+			assert(false);
+			break;
+		}
+
+		if (goalReached)
+		{
+			makePath(pathOut, curNode, taskNum);
+			return;
+		}
+
+		// Go through all neighbors
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
+			if (!neighbor->valid)
+				continue;
+			
+			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
+			{
+				neighbor->prevOnPath[taskNum] = curNode;
+				neighbor->state[taskNum] = GraphNode::CLOSED;
+				processQueue.push(neighbor);	
+			}
+		}
 	}
 
 	pathOut.nodeCount = 0;
-	pathOut.cost = 0;
+}
 
-	if (pathFound)
-		makePath(pathOut, minNode);
+void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t taskNum)
+{
+	m_simGraph->resetPathInfo(taskNum);
+
+	std::queue<GraphNode*> processQueue;
+	auto startNode = m_simGraph->getNode(startX, startY);
+	startNode->prevOnPath[taskNum] = nullptr;
+	processQueue.push(startNode);
+	startNode->state[taskNum] = GraphNode::CLOSED;
+
+	while (processQueue.size() > 0)
+	{
+		GraphNode* curNode = processQueue.front();
+		processQueue.pop();
+
+		if (ratePath(this, curNode, pathOut, taskNum))
+			return;
+
+		// Go through all neighbors
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
+			if (!neighbor->valid)
+				continue;
+
+			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
+			{
+				neighbor->prevOnPath[taskNum] = curNode;
+				neighbor->state[taskNum] = GraphNode::CLOSED;
+				processQueue.push(neighbor);
+			}
+		}
+	}
+
+	pathOut.nodeCount = 0;
+}
+
+void PathEngine::searchBest(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t maxChecks, uint8_t taskNum)
+{
+	assert(maxChecks > 0);
+
+	m_simGraph->resetPathInfo(taskNum);
+
+	std::queue<GraphNode*> processQueue;
+	auto startNode = m_simGraph->getNode(startX, startY);
+	startNode->prevOnPath[taskNum] = nullptr;
+	processQueue.push(startNode);
+	startNode->state[taskNum] = GraphNode::CLOSED;
+	Path path;
+	Path bestPath;
+
+	while (processQueue.size() > 0)
+	{
+		GraphNode* curNode = processQueue.front();
+		processQueue.pop();
+
+		if (ratePath(this, curNode, path, taskNum))
+		{		
+			maxChecks--;
+			if (path.rating > bestPath.rating)
+				bestPath = path;
+		}
+
+		if (maxChecks == 0)
+			break;
+
+		// Go through all neighbors
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
+			if (!neighbor->valid)
+				continue;
+
+			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
+			{
+				neighbor->prevOnPath[taskNum] = curNode;
+				neighbor->state[taskNum] = GraphNode::CLOSED;
+				processQueue.push(neighbor);
+			}
+		}
+	}
+
+	pathOut.nodes.clear();
+	pathOut.nodeCount = bestPath.nodeCount;
+	pathOut.rating = bestPath.rating;
+	for (int i = 0; i < bestPath.nodeCount; ++i)
+		pathOut.nodes.push_back(bestPath.nodes[i]);
 }
 
 void PathEngine::visualize()
 {
-	m_graph->visualize();
+	m_graph->visualize(true, true);
 }
 
 void PathEngine::visualize(Path& path)
@@ -110,46 +270,47 @@ void PathEngine::visualize(Path& path)
 	}
 }
 
-void PathEngine::update()
+void PathEngine::update(float deltaTime)
 {
-	m_graph->update();
+	m_graph->update(deltaTime);
+	m_simGraph->update(deltaTime);
 }
 
 uint32_t PathEngine::estimate(GraphNode* node, GraphNode* goal)
 {
-	return (abs(node->x - goal->x) + abs(node->y - goal->y)) * NodeCost::NORMAL;
+	return (abs(node->x - goal->x) + abs(node->y - goal->y));
 }
 
-void PathEngine::insert(GraphNode* newNode, GraphNode* at)
+void PathEngine::insert(GraphNode* newNode, GraphNode* at, uint8_t taskNum)
 {
 	// Requires to have a dummy at the start and end of the list
-	assert(newNode && at && at->next && at->prev);
+	assert(newNode && at && at->next[taskNum] && at->prev[taskNum]);
 
 	auto cur = at;
 
-	while (cur->next->next && newNode->estimatedTotalCost > cur->next->estimatedTotalCost)
-		cur = cur->next;
+	while (cur->next[taskNum]->next[taskNum] && newNode->estimatedTotalCost > cur->next[taskNum]->estimatedTotalCost)
+		cur = cur->next[taskNum];
 
 	while (cur->prev && newNode->estimatedTotalCost < cur->estimatedTotalCost)
-		cur = cur->prev;
+		cur = cur->prev[taskNum];
 
 	// found correct position -> place newNode after the current node and adjust pointers accordingly
-	auto n = cur->next;
-	cur->next = newNode;
-	newNode->next = n;
-	newNode->prev = cur;
-	n->prev = newNode;
+	auto n = cur->next[taskNum];
+	cur->next[taskNum] = newNode;
+	newNode->next[taskNum] = n;
+	newNode->prev[taskNum] = cur;
+	n->prev[taskNum] = newNode;
 }
 
-GraphNode* PathEngine::remove(GraphNode* node)
+GraphNode* PathEngine::remove(GraphNode* node, uint8_t taskNum)
 {
 	assert(node);
-	node->prev->next = node->next;
-	node->next->prev = node->prev;
-	return node->prev;
+	node->prev[taskNum]->next[taskNum] = node->next[taskNum];
+	node->next[taskNum]->prev[taskNum] = node->prev[taskNum];
+	return node->prev[taskNum];
 }
 
-void PathEngine::makePath(Path& pathOut, GraphNode* goal)
+void PathEngine::makePath(Path& pathOut, GraphNode* goal, uint8_t taskNum)
 {
 	auto cur = goal;
 
@@ -161,14 +322,15 @@ void PathEngine::makePath(Path& pathOut, GraphNode* goal)
 	while (cur)
 	{
 		++num;
-		cur = cur->prevOnPath;
+		cur = cur->prevOnPath[taskNum];
 	}
 
+	pathOut.nodes.resize(num);
 	cur = goal;
 	while (cur)
 	{
 		pathOut.nodes[--num] = cur;
 		++pathOut.nodeCount;
-		cur = cur->prevOnPath;
+		cur = cur->prevOnPath[taskNum];
 	}
 }

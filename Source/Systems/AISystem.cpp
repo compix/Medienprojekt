@@ -4,6 +4,24 @@
 #include "../Components/CellComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../Utils/PathFinding/PathEngine.h"
+#include "../GameConstants.h"
+#include "../Utils/Random.h"
+#include "../AI/PlaceBomb.h"
+#include "../Events/ItemPickedUpEvent.h"
+#include "../Game.h"
+#include "../Components/DestructionComponent.h"
+#include "../Events/CreateLocalGameEvent.h"
+#include "../Components/BlockComponent.h"
+#include "../AI/FollowPath.h"
+#include "../AI/MoveTo.h"
+#include "../AI/PathRatings/RateSafety.h"
+#include "../AI/PathRatings/RateItem.h"
+#include "../AI/PathRatings/RateDestroyBlockSpot.h"
+#include "../AI/PathRatings/RateEscape.h"
+#include "../AI/PathRatings/RateCombination.h"
+#include "../AI/PathRatings/RateTrapDanger.h"
+#include "../AI/Checks/IsSafePath.h"
+#include "../AI/PathRatings/RateDesperateSaveAttempt.h"
 
 AISystem::AISystem(PathEngine* pathEngine)
 	: m_pathEngine(pathEngine)
@@ -12,54 +30,133 @@ AISystem::AISystem(PathEngine* pathEngine)
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
-	entityx::Entity player;
+	static float updateTimer = 1.f / 30.f;
+	updateTimer -= dt;
 
-	for (auto p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
+	float timePerCell = (GameConstants::CELL_WIDTH / GameConstants::S_SCALE) / GameConstants::PLAYER_SPEED;
+
+	Entity player;
+	ComponentHandle<CellComponent> playerCell;
+
+	for (auto& entity : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
-		if (!p.has_component<AIComponent>())
-		{
-			player = p;
-			break;
-		}
+		if (entity.has_component<AIComponent>())
+			continue;
+
+		player = entity;
+		playerCell = player.component<CellComponent>();
+		break;
 	}
 
-	if (!player.valid())
-		return;
-
-	auto playerCell = player.component<CellComponent>();
-
-	for (auto e : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
+	for (auto& entity : entityManager.entities_with_components<AIComponent, CellComponent>())
 	{
-		auto inputComponent = e.component<InputComponent>();
-		auto cell = e.component<CellComponent>();
+		auto cell = entity.component<CellComponent>();
 
-		
-		auto node = m_pathEngine->getNode(playerCell->x, playerCell->y);
-		auto playerNode = node;
-
-		// Find path to player
-		for (int i = -1; i < 4; ++i)
+		if (updateTimer <= 0.f)
 		{
-			if (node->valid)
+			updateTimer = 1.f / 30.f;
+
+			std::vector<Entity> closeEnemies;
+			getEnemies(entity, closeEnemies);
+
+			bool found = false;
+			bool escape = false;
+
+			RateEscape rateEscape(entity, closeEnemies);
+			RateItem rateItem;
+			RateCombination<RateEscape, RateItem> rateCombination(rateEscape, rateItem);
+
+			/*
+			if (closeEnemies.size() > 0)
 			{
-				m_pathEngine->computePath(cell->x, cell->y, node->x, node->y, m_path);
-				break;
+				m_pathEngine->searchBest(cell->x, cell->y, m_path, rateCombination, 100);
+				escape = true;
+			}*/
+
+			Path itemPath;
+			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(), RateTrapDanger(entity, closeEnemies)));
+
+			Path destroyBlockPath;
+			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath, 
+				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger>(RateDestroyBlockSpot(), RateEscape(entity, closeEnemies), RateTrapDanger(entity, closeEnemies, true)));
+
+			if (!escape)
+			{
+				if (itemPath.rating > destroyBlockPath.rating)
+				{
+					m_path = itemPath;
+				}
+				else
+				{
+					m_path = destroyBlockPath;
+					if (m_path.nodeCount == 1)
+					{
+						static PlaceBomb placeBomb;
+						placeBomb.update(entity);
+					}
+				}
 			}
-			
-			node = m_pathEngine->getNeighbor(playerNode, static_cast<Direction>(i+1));
-		}	
+
+			if (m_path.nodeCount > 0)
+				found = true;
+
+			if (!found && m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
+			{
+				m_pathEngine->searchBest(cell->x, cell->y, m_path, RateSafety());
+
+				IsSafePath isSafePath;
+				if (!isSafePath(m_path))
+				{
+					m_pathEngine->searchBest(cell->x, cell->y, m_path, RateDesperateSaveAttempt(), 20);
+				}
+			}
+				
+		}
 
 		if (m_path.nodeCount > 1)
 		{
-			// Follow path
-			auto n1 = m_path.nodes[0];
-			auto n2 = m_path.nodes[1];
+			static FollowPath followPath(m_path);
+			followPath.setPath(m_path);
 
-			if (n1->cost >= NodeCost::DANGER_HIGH || n2->cost < NodeCost::DANGER_HIGH)
-			{
-				inputComponent->moveX = n2->x - n1->x;
-				inputComponent->moveY = n2->y - n1->y;
-			}
+			bool cellAffected = m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion;
+			bool nextCellAffected = m_path.nodes[1]->properties.affectedByExplosion;
+			bool nextCellOnFire = m_path.nodes[1]->properties.affectedByExplosion && (m_path.nodes[1]->properties.timeTillExplosion < timePerCell * 1.1f);
+			bool cellOnFire = m_path.nodes[0]->properties.affectedByExplosion && (m_path.nodes[0]->properties.timeTillExplosion < timePerCell);
+
+			if (cellOnFire || !nextCellOnFire && (cellAffected || !nextCellAffected))
+				followPath.update(entity);
 		}
+	}
+}
+
+void AISystem::visualize()
+{
+	m_pathEngine->visualize(m_path);
+}
+
+void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)
+{
+	outEnemies.clear();
+	for(auto& e : GameGlobals::entities->entities_with_components<InventoryComponent>())
+	{
+		if (e != self)
+			outEnemies.push_back(e);
+	}
+}
+
+void AISystem::getCloseEnemies(Entity self, std::vector<Entity>& outEnemies)
+{
+	assert(self.valid() && self.has_component<CellComponent>() && self.has_component<InventoryComponent>());
+
+	auto selfCell = self.component<CellComponent>();
+	outEnemies.clear();
+
+	for (auto& e : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
+	{
+		auto cell = e.component<CellComponent>();
+		uint32_t distance = abs(selfCell->x - cell->x) + abs(selfCell->y - cell->y);
+		if (e != self && distance < 4)
+			outEnemies.push_back(e);
+			
 	}
 }

@@ -1,39 +1,52 @@
 #pragma once
 #include <stdint.h>
 
-
-// Experimental node costs
-namespace NodeCost
+struct NodeProperties
 {
-	const uint32_t NORMAL = 100;
+	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), 
+		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), isItem(false), hasBomb(false) {}
 
-	const uint32_t DANGER_LOW = 300;
-	const uint32_t DANGER_NORMAL = 400;
-	const uint32_t DANGER_HIGH = 10000;
-}
+	bool affectedByExplosion;
+	float timeTillExplosion;
+
+	// If there is a bomb on that node, how many destructible blocks will the explosion hit?
+	uint8_t numOfBlocksAffectedByExplosion;
+
+	// If there is a bomb on that node, how many players will the explosion hit?
+	uint8_t numOfPlayersAffectedByExplosion;
+
+	uint8_t numOfItemsAffectedByExplosion;
+
+	bool isItem;
+	bool hasBomb;
+};
 
 struct GraphNode
 {
-	GraphNode() : cost(NodeCost::NORMAL), valid(false) { }
+	GraphNode() : cost(1), valid(false), marked(false) { }
 
 	uint8_t x, y;
 	uint32_t cost;
 	bool valid;
 
 	// Path Information
-	GraphNode* prevOnPath;
+	GraphNode* prevOnPath[2];
 
 	uint32_t costSoFar;
 	uint32_t estimatedTotalCost;
+
+	bool marked;
 
 	enum State
 	{
 		UNVISITED,
 		OPEN,
 		CLOSED
-	} state;
+	} state[2];
+
+	NodeProperties properties;
 
 	// List information to keep a sorted list.
-	GraphNode* next;
-	GraphNode* prev;
+	GraphNode* next[2];
+	GraphNode* prev[2];
 };

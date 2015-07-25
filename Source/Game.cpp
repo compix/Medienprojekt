@@ -109,6 +109,8 @@ void Game::update(TimeDelta dt)
 	if (!initialized)
 		return;
 
+	m_pathEngine->update(static_cast<float>(dt));
+
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	//m_PhysixSystem->DrawDebug();
@@ -120,14 +122,7 @@ void Game::update(TimeDelta dt)
 	GameGlobals::window->draw(m_light);
 	GameGlobals::window->draw(*m_particleEmitter);
 
-	//auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
-	//auto cell = player.component<CellComponent>();
-
-	m_pathEngine->update();
-	//m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
-	
-	//m_pathEngine->visualize();
-	//m_pathEngine->visualize(m_path);
+	m_systems.system<AISystem>()->visualize();
 }
 
 void Game::refreshView()
@@ -142,8 +137,8 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
-	m_systems.add<SoundSystem>();
-	m_systems.add<MusicSystem>();
+	//m_systems.add<SoundSystem>();
+	//m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>();
@@ -155,7 +150,7 @@ void LocalGame::addSystems()
 	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>();
 	m_systems.add<AISystem>(m_pathEngine.get());
-	m_systems.add<InputHandleSystem>();
+	m_systems.add<InputHandleSystem>(m_layerManager.get());
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
@@ -172,6 +167,7 @@ void LocalGame::init(uint8_t width, uint8_t height)
 	levelGenerator.generateRandomLevel();
 
 	m_pathEngine->getGraph()->init();
+	m_pathEngine->getSimGraph()->init();
 }
 
 void ClientGame::addSystems()

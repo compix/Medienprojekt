@@ -9,6 +9,12 @@
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
 #include "../Components/DirectionComponent.h"
+#include "../Components/BombComponent.h"
+
+InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
+	:m_layerManager(layerManager)
+{
+}
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -20,7 +26,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->bombButtonPressed)
 		{
-			if (inventory->bombCount > 0)
+			if (inventory->bombCount > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
 			{
 				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
 				inventory->bombCount--;

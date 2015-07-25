@@ -14,4 +14,6 @@ namespace GameConstants
 
 	const bool SOUND = true;
 	const bool MUSIC = true;
+
+	const float EXPLOSION_SPREAD_TIME = 0.06f;
 }

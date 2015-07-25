@@ -9,17 +9,24 @@
 #include "../../Components/LayerComponent.h"
 #include "../../Components/FloorComponent.h"
 #include "../../Components/TimerComponent.h"
+#include "../../Components/InventoryComponent.h"
+#include "../../Components/HealthComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
 {
+	
 	auto mainLayer = m_layerManager->getLayer(GameConstants::MAIN_LAYER);
+	
 	m_width = mainLayer->getWidth();
 	m_height = mainLayer->getHeight();
 
 	m_nodeGrid = new GraphNode*[m_width];
+
 	for (int i = 0; i < m_width; i++)
+	{
 		m_nodeGrid[i] = new GraphNode[m_height];
+	}
 
 	mainLayer->listen(this);
 }
@@ -27,73 +34,200 @@ Graph::Graph(LayerManager* layerManager)
 Graph::~Graph()
 {
 	for (int i = 0; i < m_width; i++)
+	{
 		delete[] m_nodeGrid[i];
-
+	}
+		
 	delete[] m_nodeGrid;
 }
 
-void Graph::update()
+void Graph::timeTravel(float seconds, float t)
 {
 	resetCosts();
+	resetProperties();
+	m_normalBombs.clear();
 
-	// Go through all bombs and mark danger zones. Note: For correct danger estimations the AI should be considered and every AI should have an own graph like this.
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	{	
+		auto bombComponent = bomb.component<BombComponent>();
+		auto timerComponent = bomb.component<TimerComponent>();
+		auto cell = bomb.component<CellComponent>();
+
+		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
+		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
+	}
+
+	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
+
+	// Go through all explosion components and simulate the explosion.
+	for (auto& explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
+	{
+		auto cell = explosion.component<CellComponent>();
+		auto spread = explosion.component<SpreadComponent>();
+
+		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, seconds);
+	}
+
+	for (auto& bomb : m_normalBombs)
+	{
+		float exploTime = bomb.explosionTime;
+		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
+			exploTime = m_nodeGrid[bomb.x][bomb.y].properties.timeTillExplosion;
+
+		placeBomb(bomb.x, bomb.y, bomb.range, exploTime, seconds);
+	}
+
+	for (auto& item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
+	{
+		auto cell = item.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
+	}
+}
+
+void Graph::update(float deltaTime)
+{
+	resetCosts();
+	resetProperties();
+	m_normalBombs.clear();
+
+	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
 		auto bombComponent = bomb.component<BombComponent>();
 		auto timerComponent = bomb.component<TimerComponent>();
 		auto cell = bomb.component<CellComponent>();
 
-		auto correspondingNode = getNode(cell->x, cell->y);
-
-		// Simulate the explosion:
-		for (int i = 0; i < 4; ++i) // Go in all directions
-		{
-			Direction currentNeighbor = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-			auto currentNode = correspondingNode;
-			currentNode->cost = estimateDangerCost(timerComponent->seconds);
-
-			for (int j = 0; j < bombComponent->explosionRange; ++j)
-			{
-				currentNode = getNeighbor(currentNode, currentNeighbor);
-
-				if (currentNode->valid)
-					currentNode->cost = estimateDangerCost(timerComponent->seconds);
-				else
-					break;			
-			}
-		}
+		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
+		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
 	}
 
+	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
+
 	// Go through all explosion components and simulate the explosion.
-	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
+	for (auto& explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
 	{
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
 
-		auto currentNode = getNode(cell->x, cell->y);
-		currentNode->cost = NodeCost::DANGER_HIGH;
+		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
+	}
 
-		for (int j = 0; j < spread->range; ++j)
+	for (auto& bomb : m_normalBombs)
+	{
+		float exploTime = bomb.explosionTime;
+		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
+			exploTime = m_nodeGrid[bomb.x][bomb.y].properties.timeTillExplosion;
+
+		placeBomb(bomb.x, bomb.y, bomb.range, exploTime);
+	}
+
+	for (auto& item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
+	{
+		auto cell = item.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
+	}
+}
+
+void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime)
+{
+	float futureExplosionTime = explosionTime + range * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
+
+	if (futureExplosionTime <= 0.f)
+		return;
+
+	auto currentNode = getNode(x, y);
+	float currentExplosionTime = currentNode->properties.timeTillExplosion;
+	futureExplosionTime = explosionTime - futureTime;
+	currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
+	currentNode->properties.affectedByExplosion = true;
+
+	// Simulate the explosion:
+	for (int j = 0; j < range; ++j)
+	{
+		currentNode = getNeighbor(currentNode, direction);
+		futureExplosionTime = explosionTime + (j + 1) * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
+		currentExplosionTime = currentNode->properties.timeTillExplosion;
+
+		if (currentNode->valid)
+		{				
+			currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
+			currentNode->properties.affectedByExplosion = true;
+
+			if (m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			{
+				m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+			}
+		}
+		else
 		{
-			currentNode = getNeighbor(currentNode, spread->direction);
+			if (m_layerManager->hasEntityWithComponents<BlockComponent, HealthComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			{
+				if (currentNode->properties.affectedByExplosion)
+					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+
+				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
+				currentNode->properties.affectedByExplosion = true;
+			}
+
+			if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			{
+				currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
+				currentNode->properties.affectedByExplosion = true;
+			}
+
+			break;
+		}
+	}
+}
+
+void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime)
+{	
+	auto currentNode = getNode(x, y);
+	currentNode->properties.numOfBlocksAffectedByExplosion = 0;
+	currentNode->properties.numOfPlayersAffectedByExplosion = 0;
+	currentNode->properties.numOfItemsAffectedByExplosion = 0;
+
+	for (int i = 0; i < 4; ++i) // Go in all directions
+	{
+		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
+		explosionSpread(x, y, range, explosionTime, direction, futureTime);
+	}
+}
+
+void Graph::removeBomb(uint8_t x, uint8_t y, uint8_t range)
+{
+	// Reverse the explosion simulation
+	for (int i = 0; i < 4; ++i) // Go in all directions
+	{
+		Direction currentNeighbor = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
+		auto currentNode = getNode(x, y);
+		currentNode->properties.affectedByExplosion = false;
+
+		for (int j = 0; j < range; ++j)
+		{
+			currentNode = getNeighbor(currentNode, currentNeighbor);
 
 			if (currentNode->valid)
-				currentNode->cost = NodeCost::DANGER_HIGH;
+			{
+				currentNode->properties.affectedByExplosion = false;
+			}
 			else
 				break;
 		}
 	}
 }
 
-uint32_t Graph::estimateDangerCost(float remainingTimeTillExplosion)
+void Graph::resetMarks()
 {
-	if (remainingTimeTillExplosion >= 2.f)
-		return NodeCost::DANGER_LOW;
-	else if (remainingTimeTillExplosion >= 1.f)
-		return NodeCost::DANGER_NORMAL;
-	else
-		return NodeCost::DANGER_HIGH;
+	for (auto x = 0; x < m_width; ++x)
+	{
+		for (auto y = 0; y < m_height; ++y)
+		{
+			m_nodeGrid[x][y].marked = false;
+		}
+	}
 }
+
+
 
 void Graph::resetCosts()
 {
@@ -101,7 +235,21 @@ void Graph::resetCosts()
 	{
 		for (auto y = 0; y < m_height; ++y)
 		{
-			m_nodeGrid[x][y].cost = NodeCost::NORMAL;
+			m_nodeGrid[x][y].cost = 1;
+		}
+	}
+}
+
+void Graph::resetProperties()
+{
+	for (auto x = 0; x < m_width; ++x)
+	{
+		for (auto y = 0; y < m_height; ++y)
+		{
+			m_nodeGrid[x][y].properties.affectedByExplosion = false;
+			m_nodeGrid[x][y].properties.isItem = false;
+			m_nodeGrid[x][y].properties.hasBomb = false;
+			//m_nodeGrid[x][y].properties.marked = false;
 		}
 	}
 }
@@ -134,6 +282,11 @@ void Graph::onEntityAdded(entityx::Entity& entity)
 		auto cell = entity.component<CellComponent>();
 		removeNode(cell->x, cell->y);
 	}
+
+	if (entity.has_component<ItemComponent>())
+	{
+		auto cell = entity.component<CellComponent>();
+	}
 }
 
 void Graph::onEntityRemoved(entityx::Entity& entity)
@@ -147,13 +300,13 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 	}
 }
 
-void Graph::resetPathInfo()
+void Graph::resetPathInfo(uint8_t taskNum)
 {
 	for (auto x = 0; x < m_width; ++x)
 	{
 		for (auto y = 0; y < m_height; ++y)
 		{
-			m_nodeGrid[x][y].state = GraphNode::UNVISITED;
+			m_nodeGrid[x][y].state[taskNum] = GraphNode::UNVISITED;
 		}
 	}
 }
@@ -182,65 +335,74 @@ void Graph::init()
 	}
 }
 
-void Graph::visualize()
+void Graph::visualize(bool nodes, bool smells)
 {
-	sf::CircleShape circle(20);
-	circle.setOrigin(10, 10);
-	circle.setFillColor(sf::Color(0, 255, 0, 50));
-
-	sf::RectangleShape rect(sf::Vector2f(2, GameConstants::CELL_HEIGHT));
-	rect.setFillColor(sf::Color(0, 255, 0, 40));
-
-	for (auto x = 0; x < m_width; ++x)
+	if (nodes)
 	{
-		for (auto y = 0; y < m_height; ++y)
+		sf::CircleShape circle(20);
+		circle.setOrigin(10, 10);
+		circle.setFillColor(sf::Color(0, 255, 0, 50));
+
+		sf::RectangleShape rect(sf::Vector2f(2, GameConstants::CELL_HEIGHT));
+		rect.setFillColor(sf::Color(0, 255, 0, 40));
+
+		for (auto x = 0; x < m_width; ++x)
 		{
-			auto& node = m_nodeGrid[x][y];
-			if (!node.valid)
-				continue;
-
-			switch (node.state)
+			for (auto y = 0; y < m_height; ++y)
 			{
-			case GraphNode::UNVISITED:
+				auto& node = m_nodeGrid[x][y];
+				if (!node.valid)
+					continue;
+
 				circle.setFillColor(sf::Color(0, 255, 0, 50));
-				break;
-			case GraphNode::OPEN:
-				circle.setFillColor(sf::Color(255, 255, 0, 50));
-				break;
-			case GraphNode::CLOSED:
-				circle.setFillColor(sf::Color(255, 0, 0, 50));
-				break;
-			default: break;
+
+				if (node.properties.affectedByExplosion)
+					circle.setFillColor(sf::Color(100 * node.properties.timeTillExplosion, 0, 0, 100));
+
+				/*
+				switch (node.state)
+				{
+				case GraphNode::UNVISITED:
+					circle.setFillColor(sf::Color(0, 255, 0, 50));
+					break;
+				case GraphNode::OPEN:
+					circle.setFillColor(sf::Color(255, 255, 0, 50));
+					break;
+				case GraphNode::CLOSED:
+					circle.setFillColor(sf::Color(255, 0, 0, 50));
+					break;
+				default: break;
+				}*/
+
+				circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
+				rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 13.f);
+
+				if (hasNeighbor(&node, Direction::LEFT))
+				{
+					rect.setRotation(90);
+					GameGlobals::window->draw(rect);
+				}
+
+				if (hasNeighbor(&node, Direction::RIGHT))
+				{
+					rect.setRotation(-90);
+					GameGlobals::window->draw(rect);
+				}
+
+				if (hasNeighbor(&node, Direction::UP))
+				{
+					rect.setRotation(180);
+					GameGlobals::window->draw(rect);
+				}
+
+				if (hasNeighbor(&node, Direction::DOWN))
+				{
+					rect.setRotation(0);
+					GameGlobals::window->draw(rect);
+				}
+
+				GameGlobals::window->draw(circle);
 			}
-
-			circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 5.f);
-			rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 13.f);
-
-			if (hasNeighbor(&node, Direction::LEFT))
-			{
-				rect.setRotation(90);
-				GameGlobals::window->draw(rect);
-			}
-
-			if (hasNeighbor(&node, Direction::RIGHT))
-			{
-				rect.setRotation(-90);
-				GameGlobals::window->draw(rect);
-			}
-
-			if (hasNeighbor(&node, Direction::UP))
-			{
-				rect.setRotation(180);
-				GameGlobals::window->draw(rect);
-			}
-
-			if (hasNeighbor(&node, Direction::DOWN))
-			{
-				rect.setRotation(0);
-				GameGlobals::window->draw(rect);
-			}
-
-			GameGlobals::window->draw(circle);
 		}
 	}
 }
