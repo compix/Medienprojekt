@@ -359,6 +359,8 @@ void Graph::visualize(bool nodes, bool smells)
 
 				if (node.properties.affectedByExplosion)
 					circle.setFillColor(sf::Color(100 * node.properties.timeTillExplosion, 0, 0, 100));
+				else
+					continue;
 
 				/*
 				switch (node.state)
@@ -375,9 +377,11 @@ void Graph::visualize(bool nodes, bool smells)
 				default: break;
 				}*/
 
+				
 				circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
 				rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 13.f);
 
+				/*
 				if (hasNeighbor(&node, Direction::LEFT))
 				{
 					rect.setRotation(90);
@@ -401,6 +405,7 @@ void Graph::visualize(bool nodes, bool smells)
 					rect.setRotation(0);
 					GameGlobals::window->draw(rect);
 				}
+				*/
 
 				GameGlobals::window->draw(circle);
 			}
@@ -412,61 +417,21 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
 	assert(node->x > 0 && node->x < m_width - 1 && node->y > 0 && node->y < m_height - 1);
 
-	entityx::Entity portal;
+	GraphNode* portalNode;
 	switch (neighbor)
 	{
 	case Direction::LEFT:
-		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x - 1, node->y);
-		if (portal)
-		{
-			if (portal.component<PortalComponent>()->otherPortal.valid())
-			{
-				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto cell = otherPortal.component<CellComponent>();
-				return &m_nodeGrid[cell->x][cell->y];
-			}
-		}
-		return &m_nodeGrid[node->x - 1][node->y];
-		break;
+		portalNode = getOtherPortalNode(node->x - 1, node->y);
+		return portalNode ? portalNode : &m_nodeGrid[node->x - 1][node->y];
 	case Direction::RIGHT:
-		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x + 1, node->y);
-		if (portal)
-		{
-			if (portal.component<PortalComponent>()->otherPortal.valid())
-			{
-				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto cell = otherPortal.component<CellComponent>();
-				return &m_nodeGrid[cell->x][cell->y];
-			}
-		}
-		return &m_nodeGrid[node->x + 1][node->y];
-		break;
+		portalNode = getOtherPortalNode(node->x + 1, node->y);
+		return portalNode ? portalNode : &m_nodeGrid[node->x + 1][node->y];
 	case Direction::UP:
-		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x, node->y - 1);
-		if (portal)
-		{
-			if (portal.component<PortalComponent>()->otherPortal.valid())
-			{
-				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto cell = otherPortal.component<CellComponent>();
-				return &m_nodeGrid[cell->x][cell->y];
-			}
-		}
-		return &m_nodeGrid[node->x][node->y - 1];
-		break;
+		portalNode = getOtherPortalNode(node->x, node->y - 1);
+		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y - 1];
 	case Direction::DOWN:
-		portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, node->x, node->y + 1);
-		if (portal)
-		{
-			if (portal.component<PortalComponent>()->otherPortal.valid())
-			{
-				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto cell = otherPortal.component<CellComponent>();
-				return &m_nodeGrid[cell->x][cell->y];
-			}
-		}
-		return &m_nodeGrid[node->x][node->y + 1];
-		break;
+		portalNode = getOtherPortalNode(node->x, node->y + 1);
+		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
 		assert(false);
 		return nullptr;
@@ -476,4 +441,20 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 {
 	return getNeighbor(node, neighbor)->valid;
+}
+
+GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
+{
+	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, x, y);
+	if (portal)
+	{
+		if (portal.component<PortalComponent>()->otherPortal.valid())
+		{
+			auto otherPortal = portal.component<PortalComponent>()->otherPortal;
+			auto cell = otherPortal.component<CellComponent>();
+			return &m_nodeGrid[cell->x][cell->y];
+		}
+	}
+
+	return nullptr;
 }

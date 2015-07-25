@@ -39,7 +39,7 @@ public:
 
 	void resetPathInfo(uint8_t taskNum);
 
-	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; };
+	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; }
 
 	void init();
 
@@ -47,6 +47,7 @@ public:
 
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
+	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
 
 	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime = 0.f);
 	void removeBomb(uint8_t x, uint8_t y, uint8_t range);
