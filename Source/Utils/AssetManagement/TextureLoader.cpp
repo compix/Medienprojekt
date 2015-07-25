@@ -1,27 +1,12 @@
 #include "TextureLoader.h"
 
-TextureLoader::TextureLoader()
+bool TextureLoader::preload(const string& key, const string& filename)
 {
-	m_basePath = "Assets/textures/";
+	return m_assets[key].loadFromFile(m_basePath + filename);
 }
 
-TextureLoader::TextureLoader(std::string basePath)
+bool TextureLoader::load(const string& key, const Json::Value& jsonValue)
 {
-	m_basePath = basePath;
-}
-
-Texture& TextureLoader::load(const string& filename, const string& name)
-{
-	Texture texture;
-	string path = m_basePath + filename;
-	if (!texture.loadFromFile(path))
-		throw file_not_found(path);
-
-	m_assets[name] = texture;
-	return m_assets[name];
-}
-
-Texture& TextureLoader::load(const string& name, const Json::Value& jsonValue)
-{
-	return load(jsonValue.asString(), name);
+	addPreload(key, jsonValue.asString());
+	return true;
 }

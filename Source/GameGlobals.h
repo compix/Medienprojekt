@@ -11,6 +11,7 @@ namespace entityx
 namespace sf
 {
 	class RenderWindow;
+	class View;
 }
 
 class InputManager;
@@ -31,5 +32,8 @@ namespace GameGlobals
 	extern EntityFactory *entityFactory;
 	extern AssetManager *assetManager;
 	extern unique_ptr<Game> game;
+	extern sf::View *menuView;
+	extern sf::View *screenView;
+	extern sf::View *gameView;
 };
 

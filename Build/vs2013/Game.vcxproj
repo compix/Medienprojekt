@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -128,6 +128,7 @@
     <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
+    <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
@@ -135,8 +136,12 @@
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LocalInputComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PlayerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
@@ -147,23 +152,32 @@
     <ClInclude Include="..\..\Source\EntityLayer.h" />
     <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ClientStateEvent.h" />
     <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreateLocalGameEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreateServerEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CountdownEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
     <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
     <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
     <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
     <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ForceDisconnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
-    <ClInclude Include="..\..\Source\Events\JoinServerEvent.h" />
+    <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
@@ -180,11 +194,12 @@
     <ClInclude Include="..\..\Source\Menu\Menu.h" />
     <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageConnecting.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinServer.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLoading.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
-    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLocalGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageSettings.h" />
     <ClInclude Include="..\..\Source\NetCode\Connection.h" />
@@ -198,7 +213,9 @@
     <ClInclude Include="..\..\Source\Systems\AISystem.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BombKickSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ChatRenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
@@ -211,6 +228,7 @@
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
@@ -270,11 +288,12 @@
     <ClCompile Include="..\..\Source\Menu\Menu.cpp" />
     <ClCompile Include="..\..\Source\Menu\MenuPage.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageConnecting.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinServer.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLoading.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />
-    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLocalGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
     <ClCompile Include="..\..\Source\Network\NetClient.cpp" />
@@ -284,7 +303,9 @@
     <ClCompile Include="..\..\Source\Systems\AISystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BombKickSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ChatRenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
@@ -297,10 +318,12 @@
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\MusicLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\SoundLoader.cpp" />

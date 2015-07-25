@@ -1,6 +1,4 @@
 {
-    "char_idle": "char_idle_1024.png",
-    "char_death": "char_death_2048.png",
     "block": "Block.png",
     "solid_block":  "SolidBlock.png",
 	"bomb": "Bomb.png",
@@ -10,7 +8,12 @@
 	"floor": "floor.png",
 	"solidBlockNM": "SolidBlockNM.png",
 	"light": "light.png",
-	"goku": "goku.png",
+	"player0": "player0.png",
+	"player1": "player1.png",
+	"player2": "player2.png",
+	"player3": "player3.png",
 	"smoke": "smoke.png",
-	"bombCapBoost": "bombCapBoost.png"
+	"bombCapBoost": "bombCapBoost.png",
+    "bomb_kick_skill": "bomb_kick_skill.png",
+    "speed_multiplicator": "speed_multiplicator.png"
 }

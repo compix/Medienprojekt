@@ -10,7 +10,6 @@
 #include "../Events/ItemPickedUpEvent.h"
 #include "../Game.h"
 #include "../Components/DestructionComponent.h"
-#include "../Events/CreateLocalGameEvent.h"
 #include "../Components/BlockComponent.h"
 #include "../AI/FollowPath.h"
 #include "../AI/MoveTo.h"
@@ -32,12 +31,10 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 {
 	static float updateTimer = 1.f / 30.f;
 	updateTimer -= dt;
-
 	float timePerCell = (GameConstants::CELL_WIDTH / GameConstants::S_SCALE) / GameConstants::PLAYER_SPEED;
 
 	Entity player;
 	ComponentHandle<CellComponent> playerCell;
-
 	for (auto& entity : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
 		if (entity.has_component<AIComponent>())
@@ -48,21 +45,28 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		break;
 	}
 
-	for (auto& entity : entityManager.entities_with_components<AIComponent, CellComponent>())
+	for (auto& entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
+
+		// Reset inputs
+		auto input = entity.component<InputComponent>();
+		input->moveX = 0.f;
+		input->moveY = 0.f;
+		input->bombButtonPressed = false;
+		input->skillButtonPressed = false;
 
 		if (updateTimer <= 0.f)
 		{
 			updateTimer = 1.f / 30.f;
 
-			std::vector<Entity> closeEnemies;
-			getEnemies(entity, closeEnemies);
+			std::vector<Entity> enemies;
+			getEnemies(entity, enemies);
 
 			bool found = false;
 			bool escape = false;
 
-			RateEscape rateEscape(entity, closeEnemies);
+			RateEscape rateEscape(entity, enemies);
 			RateItem rateItem;
 			RateCombination<RateEscape, RateItem> rateCombination(rateEscape, rateItem);
 
@@ -74,11 +78,11 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			}*/
 
 			Path itemPath;
-			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(), RateTrapDanger(entity, closeEnemies)));
+			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(), RateTrapDanger(entity, enemies)));
 
 			Path destroyBlockPath;
 			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath, 
-				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger>(RateDestroyBlockSpot(), RateEscape(entity, closeEnemies), RateTrapDanger(entity, closeEnemies, true)));
+				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger>(RateDestroyBlockSpot(), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true)));
 
 			if (!escape)
 			{

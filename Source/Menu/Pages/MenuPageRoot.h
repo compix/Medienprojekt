@@ -1,8 +1,7 @@
 #pragma once
 #include "../MenuPage.h"
-#include "MenuPageLocalGame.h"
-#include "MenuPageCreateServer.h"
-#include "MenuPageJoinServer.h"
+#include "MenuPageCreateGame.h"
+#include "MenuPageJoinGame.h"
 #include "MenuPageSettings.h"
 #include "MenuPageCredits.h"
 
@@ -12,17 +11,15 @@ public:
 	MenuPageRoot(Menu &menu);
 
 protected:
-	void onLocalGame();
-	void onCreateServer();
-	void onJoinServer();
+	void onCreateGame();
+	void onJoinGame();
 	void onSettings();
 	void onCredits();
 	void onExit();
 
 protected:
-	MenuPageLocalGame m_localGamePage;
-	MenuPageCreateServer m_createServerPage;
-	MenuPageJoinServer m_joinServerPage;
+	MenuPageCreateGame m_createGamePage;
+	MenuPageJoinGame m_joinGamePage;
 	MenuPageSettings m_settingsPage;
 	MenuPageCredits m_creditsPage;
 };

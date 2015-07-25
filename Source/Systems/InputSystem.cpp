@@ -1,18 +1,18 @@
 #include "InputSystem.h"
 #include "../Utils/InputManager.h"
 #include "../Components/InputComponent.h"
+#include "../Components/AIComponent.h"
 #include "../GameGlobals.h"
+#include "../Components/LocalInputComponent.h"
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
-	auto entities = entityManager.entities_with_components<InputComponent>();
+	ComponentHandle<InputComponent> input;
+	ComponentHandle<LocalInputComponent> localInput;
+	auto entities = entityManager.entities_with_components(input, localInput);
 	for (auto entity : entities)
 	{
-		auto input = entity.component<InputComponent>();
-		if (input->playerIndex < 0)
-			continue;
-
-		auto &playerInput = GameGlobals::input->getPlayerInput(input->playerIndex);
+		auto &playerInput = GameGlobals::input->getPlayerInput(localInput->inputIndex);
 		if (playerInput.buttonPressed[PlayerButton::BOMB])
 		{
 			input->bombButtonPressed = true;
@@ -26,5 +26,15 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 
 		input->moveX = playerInput.moveX;
 		input->moveY = playerInput.moveY;
+		
+		// Normalize (in case someone is cheating)
+		if (input->moveX || input->moveY)
+		{
+			float len = sqrtf(input->moveX * input->moveX + input->moveY * input->moveY);
+			if(len > 1) {
+				input->moveX /= len;
+				input->moveY /= len;
+			}
+		}
 	}
 }

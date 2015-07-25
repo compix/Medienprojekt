@@ -35,12 +35,23 @@
 #include "Systems/SoundSystem.h"
 #include "Systems/MusicSystem.h"
 #include "Events/StartGameEvent.h"
+#include "Systems/BombKickSystem.h"
+#include "Systems/PortalSystem.h"
+#include "Utils/InputManager.h"
+#include "Systems/ChatRenderSystem.h"
+#include "Events/CreateGameEvent.h"
+#include "Components/InputComponent.h"
+#include "Components/FreeSlotComponent.h"
+#include "Components/LocalInputComponent.h"
+#include "Components/AIComponent.h"
 
 
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
 	GameGlobals::entities = &m_entities;
+
+	GameGlobals::gameView = &m_view;
 }
 
 Game::~Game() { 
@@ -101,7 +112,6 @@ void Game::init(uint8_t width, uint8_t height)
 		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
 
 	initialized = true;
-	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void Game::update(TimeDelta dt)
@@ -111,6 +121,7 @@ void Game::update(TimeDelta dt)
 
 	m_pathEngine->update(static_cast<float>(dt));
 
+	GameGlobals::input->update();
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	//m_PhysixSystem->DrawDebug();
@@ -127,16 +138,26 @@ void Game::update(TimeDelta dt)
 
 void Game::refreshView()
 {
-	float min = std::min(GameGlobals::window->getSize().x, GameGlobals::window->getSize().y);
-	float levelLength = std::min(getWidth()*GameConstants::CELL_WIDTH, getHeight()*GameConstants::CELL_HEIGHT);
-	float scaleFactor = std::max(1.f, levelLength / min);
-	m_view.reset(sf::FloatRect(0, 0, GameGlobals::window->getSize().x * scaleFactor, GameGlobals::window->getSize().y * scaleFactor));
-	m_view.setCenter(GameGlobals::game->getWidth()*GameConstants::CELL_WIDTH*0.5f, GameGlobals::game->getHeight()*GameConstants::CELL_HEIGHT*0.5f);
+	float gameW = GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH;
+	float gameH = GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT;
+	float screenW = GameGlobals::window->getSize().x;
+	float screenH = GameGlobals::window->getSize().y;
+	float screenRatio = screenW / screenH;
+	float viewRatio = gameW / gameH;
+	float scaleFactor;
+	if (viewRatio > screenRatio)
+		scaleFactor = gameW / screenW;
+	else
+		scaleFactor = gameH / screenH;
+	m_view.reset(sf::FloatRect(0, 0, screenW * scaleFactor, screenH * scaleFactor));
+	m_view.setCenter(gameW*0.5f, gameH*0.5f);
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
 void LocalGame::addSystems()
 {
+	m_systems.add<PortalSystem>(m_layerManager.get());
+	m_systems.add<BodySystem>();
 	//m_systems.add<SoundSystem>();
 	//m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
@@ -145,9 +166,9 @@ void LocalGame::addSystems()
 	m_systems.add<DamageSystem>(m_layerManager.get());
 	m_systems.add<DestructionSystem>();
 	m_systems.add<ExplosionSystem>(m_layerManager.get());
+	m_systems.add<BombKickSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
-	m_systems.add<BodySystem>();
 	m_systems.add<InputSystem>();
 	m_systems.add<AISystem>(m_pathEngine.get());
 	m_systems.add<InputHandleSystem>(m_layerManager.get());
@@ -157,17 +178,43 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-
+	m_systems.add<ChatRenderSystem>();
 }
 
-void LocalGame::init(uint8_t width, uint8_t height)
+void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 {
-	Game::init(width, height);
-	LevelGenerator levelGenerator(width, height);
+	m_numPlayers = players.size();
+	for (int i = 0; i < m_numPlayers; i++)
+		m_playerTypes[i] = players[i].type;
+}
+
+void LocalGame::resetEntities()
+{
+	m_entities.reset();
+	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
 	m_pathEngine->getGraph()->init();
 	m_pathEngine->getSimGraph()->init();
+
+	int i = 0;
+	ComponentHandle<InputComponent> input;
+	for (Entity entity : GameGlobals::entities->entities_with_components(input))
+	{
+		if (i == m_numPlayers)
+			entity.destroy();
+		else
+		{
+			switch (m_playerTypes[i])
+			{
+			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
+			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
+			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
+			}
+			i++;
+		}
+	}
+	GameGlobals::events->emit<StartGameEvent>();
 }
 
 void ClientGame::addSystems()
@@ -178,4 +225,5 @@ void ClientGame::addSystems()
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
 	m_systems.add<LightSystem>();
+	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 }

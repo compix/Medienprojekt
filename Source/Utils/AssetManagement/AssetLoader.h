@@ -13,67 +13,55 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-template<class T>
-class AssetLoader
+struct PreloadFile
+{
+	std::string key;
+	std::string filename;
+};
+
+class AssetLoaderBase
 {
 public:
-	typedef unordered_map<string, T> AssetMap;
+	AssetLoaderBase(const std::string name, const std::string basePath) : m_name(name), m_basePath(basePath) {}
+	virtual ~AssetLoaderBase() { }
 
-	virtual ~AssetLoader() { };
 
-	virtual bool loadAllFromJson(const string& path);
-	virtual T& load(const string& filename);
-	virtual T& load(const string& filename, const string& name) = 0;
-	virtual T& load(const string& name, const Json::Value& jsonValue) = 0;
-	virtual T& get(const string& name);
+	bool loadFromJson(const string& path);
+	const std::string &getName() { return m_name; }
+	int getPreloadCount() { return m_preloads.size(); }
+	bool preloadsDone() { return m_preloads.empty(); }
+	bool preloadNext();
+	const std::string &getNextFilename();
 
-	void setBasePath(const string& path);
 protected:
-	AssetMap m_assets;
+	virtual bool preload(const string& key, const string &filename) = 0;
+	virtual bool load(const string& key, const Json::Value& jsonValue) = 0;
+	void addPreload(const string &key, const string &filename);
+
+private:
+	std::deque<PreloadFile> m_preloads;
+
+protected:
+	string m_name;
 	string m_basePath;
 };
 
 template<class T>
-bool AssetLoader<T>::loadAllFromJson(const string& path)
+class AssetLoader : public AssetLoaderBase
 {
-	Json::Value root;
-	Json::Reader reader;
-	ifstream ifs(path, ifstream::binary);
+public:
+	AssetLoader(const std::string name, const std::string basePath) : AssetLoaderBase(name, basePath) {}
+	typedef unordered_map<string, T> AssetMap;
 
-	if(!ifs.is_open()) {
-		cerr << "Can't find file: " << path << endl;
-		throw file_not_found(path);
-	}
-	
-	if (!reader.parse(ifs, root, false))
-	{
-		cerr << "Parsing error: " << reader.getFormattedErrorMessages() << endl;
-		return false;
-	}
+public:
+	virtual T& get(const string& name);
 
-	for (auto it = root.begin(); it != root.end(); ++it)
-	{
-		load(it.key().asString(), *it);
-	}
-
-	return true;
-}
+protected:
+	AssetMap m_assets;
+};
 
 template<class T>
 T& AssetLoader<T>::get(const string& name)
 {
 	return m_assets.at(name);
 }
-
-template<class T>
-T& AssetLoader<T>::load(const string& filename)
-{
-	return load(filename, filename);
-}
-
-template<class T>
-void AssetLoader<T>::setBasePath(const string& path)
-{
-	m_basePath = path;
-}
-

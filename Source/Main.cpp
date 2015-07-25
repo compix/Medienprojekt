@@ -1,4 +1,4 @@
-﻿#include "Main.h"
+#include "Main.h"
 #include "Game.h"
 #include "Menu/Menu.h"
 #include "Utils/InputManager.h"
@@ -11,6 +11,13 @@
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
+#include "Components/LocalInputComponent.h"
+#include "Components/AIComponent.h"
+#include "Components/FreeSlotComponent.h"
+#include "Events/ClientStateEvent.h"
+#include <format.h>
+#include "Events/ForceDisconnectEvent.h"
+#include "Events/PreloadEvent.h"
 
 using namespace std;
 
@@ -23,6 +30,9 @@ namespace GameGlobals
 	EntityFactory *entityFactory = nullptr;
 	AssetManager *assetManager = nullptr;
 	unique_ptr<Game> game;
+	sf::View *menuView = nullptr;
+	sf::View *screenView = nullptr;
+	sf::View *gameView = nullptr;
 };
 
 void changeToGameDir()
@@ -56,22 +66,16 @@ int Main::run()
 	AssetManager assetManager;
 	GameGlobals::assetManager = &assetManager;
 
-	AnimatorManager::init();
-
 	m_events.subscribe<ExitEvent>(*this);
-	m_events.subscribe<CreateLocalGameEvent>(*this);
-	m_events.subscribe<CreateServerEvent>(*this);
-	m_events.subscribe<JoinServerEvent>(*this);
-
-	// Create dummy local game
-	std::vector<std::string> names;
-	names.push_back("Stan");
-	names.push_back("Kenny");
-	names.push_back("Kyle");
-	names.push_back("Cartman");
-	m_events.emit<CreateLocalGameEvent>(21, 21, names);
+	m_events.subscribe<CreateGameEvent>(*this);
+	m_events.subscribe<JoinGameEvent>(*this);
+	m_events.subscribe<ForceDisconnectEvent>(*this);
+	m_events.subscribe<PreloadEvent>(*this);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
+	sf::View screenView(sf::FloatRect(0, 0, 800, 600));
+	GameGlobals::menuView = &menuView;
+	GameGlobals::screenView = &screenView;
 
 	sf::Clock clock;
 	while (window.isOpen() && m_running)
@@ -83,8 +87,11 @@ int Main::run()
 				window.close();
 			else if (event.type == sf::Event::Resized)
 			{
-				GameGlobals::game->refreshView();
+				if (GameGlobals::game)
+					GameGlobals::game->refreshView();
 				menuView.setSize(event.size.width, event.size.height);
+				screenView.setSize(event.size.width, event.size.height);
+				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
 				GameGlobals::game->setMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
@@ -98,89 +105,101 @@ int Main::run()
 		window.clear();
 		if (GameGlobals::game) {
 			window.setView(GameGlobals::game->getView());
-			GameGlobals::game->update(deltaTime.asSeconds());
+			auto dt = deltaTime.asSeconds();
+			// Limit dt to 100ms
+			if (dt > 0.1f) dt = 0.1f;
+			GameGlobals::game->update(dt);
 		}
+		else if (!assetManager.preloadsDone())
+			assetManager.preloadNext();
 
 		window.setView(menuView);
 		menu.draw();
 		
 		window.display();
 
-		if (m_server)
-			m_server->update();
+		if (m_forceDisconnect)
+			disconnect();
+		else if (m_server)
+			m_server->update(deltaTime.asSeconds());
 		else if (m_client)
-			m_client->update();
+			m_client->update(deltaTime.asSeconds());
 	}
 
 	return EXIT_SUCCESS;
 }
 
-void Main::receive(const CreateLocalGameEvent& evt)
+void Main::receive(const CreateGameEvent& evt)
 {
 	disconnect();
-	GameGlobals::game = make_unique<LocalGame>();
-	GameGlobals::game->init(evt.width, evt.height);
-
-	using GameGlobals::entities;
-	int i = 0;
-	ComponentHandle<InputComponent> input;
-	for (Entity entity : entities->entities_with_components(input))
+	if (evt.online)
 	{
-		if (i == evt.names.size())
-			entity.destroy();
+		m_server = make_unique<NetServer>();
+		if (m_server->connect(evt))
+		{
+			cout << "Server created" << endl;
+			GameGlobals::game = make_unique<ServerGame>();
+			auto *game = (LocalGame *)GameGlobals::game.get();
+			game->init(evt.width, evt.height);
+			game->initPlayers(evt.players);
+		}
 		else
 		{
-//			player->name = evt.names[i]; // fixme
-			input->playerIndex = i++;
-		}
-	}
-}
-
-void Main::receive(const CreateServerEvent& evt)
-{
-	disconnect();
-	m_server = make_unique<NetServer>();
-	if (m_server->connect(evt.host, evt.port))
-	{
-		cout << "Server created" << endl;
-		GameGlobals::game = make_unique<ServerGame>();
-		GameGlobals::game->init(evt.width, evt.height);
-
-		using GameGlobals::entities;
-		ComponentHandle<InputComponent> input;
-		for (Entity entity : entities->entities_with_components(input))
-		{
-			input->playerIndex = 0;
-			break;
+			m_server.reset();
+			cerr << "Could not create server host" << endl;
+			GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
 		}
 	}
 	else
 	{
-		m_server.reset();
-		cerr << "Could not create client host" << endl;
-		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
+		GameGlobals::game = make_unique<LocalGame>();
+		auto *game = (LocalGame *)GameGlobals::game.get();
+		game->init(evt.width, evt.height);
+		game->initPlayers(evt.players);
+		game->resetEntities();
 	}
 }
 
-void Main::receive(const JoinServerEvent& evt)
+void Main::receive(const JoinGameEvent& evt)
 {
 	disconnect();
 	m_client = make_unique<NetClient>();
 	if (m_client->connect(evt.host, evt.port))
 	{
-		cout << "Client created" << endl;
+		GameGlobals::events->emit<ClientStateEvent>(fmt::format("Connecting to {}:{}", evt.host, evt.port), ClientState::CONNECTING);
 		GameGlobals::game = make_unique<ClientGame>();
 	}
 	else
 	{
 		m_client.reset();
-		cerr << "Could not create client host" << endl;
-		GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
+		GameGlobals::events->emit<ClientStateEvent>("Could not create client host", ClientState::DISCONNECTED);
+	}
+}
+
+void Main::receive(const ForceDisconnectEvent& evt)
+{
+	m_forceDisconnect = true;
+}
+
+void Main::receive(const PreloadEvent& evt)
+{
+	if (evt.progress == evt.total)
+	{
+		AnimatorManager::init();
+
+		// Create dummy local game
+		std::vector<CreateGamePlayerInfo> players;
+		players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
+		players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
+		players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::LOCAL));
+		players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::LOCAL));
+		m_events.emit<CreateGameEvent>(21, 21, players);
 	}
 }
 
 void Main::disconnect()
 {
+	m_forceDisconnect = false;
 	if (m_server)
 		m_server.reset();
 	if (m_client)

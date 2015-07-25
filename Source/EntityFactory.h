@@ -22,13 +22,13 @@ public:
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 
-	Entity createPlayer(float x, float y);
+	Entity createPlayer(float x, float y, uint8_t playerIndex);
 
 	Entity createBlock(uint8_t cellX, uint8_t cellY);
 	Entity createSolidBlock(uint8_t cellX, uint8_t cellY);
 
 	Entity createBomb(uint8_t cellX, uint8_t cellY, Entity owner);
-	
+	Entity createPortal(uint8_t cellX, uint8_t cellY, Entity owner);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime);
 
@@ -39,6 +39,9 @@ public:
 	Entity createBoostEffect(uint8_t cellX, uint8_t cellY, Entity target);
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
+
+	Entity* createEntity();
+	void	destroyEntity(Entity entity);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:
@@ -46,5 +49,6 @@ private:
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
 	entityx::SystemManager* m_systemManager;
+	std::map<Entity::Id, Entity> m_entityMap;
 };
 

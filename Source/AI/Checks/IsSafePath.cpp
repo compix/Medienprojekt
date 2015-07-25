@@ -17,7 +17,7 @@ bool IsSafePath::operator()(Path& path, float* minExplosionTime)
 			float exploTime = node->properties.timeTillExplosion - timePerCell * i;
 			if (minExplosionTime)
 				*minExplosionTime = std::min(*minExplosionTime, exploTime);
-			if (exploTime <= timePerCell*0.5f)
+			if (exploTime <= timePerCell)
 				return false;
 		}
 	}

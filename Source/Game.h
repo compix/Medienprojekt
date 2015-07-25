@@ -67,13 +67,21 @@ protected:
 	Path m_path;
 };
 
+enum class CreateGamePlayerType;
+struct CreateGamePlayerInfo;
+
 class LocalGame : public Game
 {
 public:
-	void init(uint8_t width, uint8_t height) override;
+	void initPlayers(const vector<CreateGamePlayerInfo> &players);
+	void resetEntities();
 
 protected:
 	void addSystems() override;
+
+protected:
+	CreateGamePlayerType m_playerTypes[GameConstants::MAX_PLAYERS];
+	uint8_t m_numPlayers;
 };
 
 class ServerGame : public LocalGame

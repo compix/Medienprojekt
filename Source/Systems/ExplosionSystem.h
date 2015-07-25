@@ -5,7 +5,7 @@
 class ExplosionSystem : public entityx::System<ExplosionSystem>
 {
 public:
-	ExplosionSystem(LayerManager* layerManager);
+	explicit ExplosionSystem(LayerManager* layerManager);
 
 	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
 

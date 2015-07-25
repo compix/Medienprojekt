@@ -1,10 +1,10 @@
-#include "MenuPageJoinServer.h"
-#include "../../Events/JoinServerEvent.h"
+#include "MenuPageJoinGame.h"
+#include "../../Events/JoinGameEvent.h"
 #include "../../GameGlobals.h"
 #include "../Menu.h"
 
-MenuPageJoinServer::MenuPageJoinServer(Menu &menu)
-	:MenuPage(menu)
+MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
+	:MenuPage(menu), m_connectingPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 	createLabel(50, 50, "Join Server");
@@ -17,29 +17,29 @@ MenuPageJoinServer::MenuPageJoinServer(Menu &menu)
 	auto stepY = 50;
 	auto labelYOffset = 6;
 
-	createLabel(x1, y + labelYOffset, "Name: ");
+	createLabel(x1, y + labelYOffset, "Name:");
 	m_name = createEditBox(x2, y, width2, height2);
 	m_name->setText("Client");
 
 	y += stepY;
-	createLabel(x1, y + labelYOffset, "Host/IP: ");
+	createLabel(x1, y + labelYOffset, "Host/IP:");
 	m_host = createEditBox(x2, y, width2, height2);
 	m_host->setText("localhost");
 
 	y += stepY;
-	createLabel(x1, y + labelYOffset, "Port: ");
+	createLabel(x1, y + labelYOffset, "UDP Port:");
 	m_port = createEditBox(x2, y, width2, height2);
 	m_port->setText("1234");
 
 	y += stepY;
 	tgui::Button::Ptr button = createButton(x2, y, width2, height2, "Join");
 
-	button->bindCallback(&MenuPageJoinServer::onSubmit, this, tgui::Button::LeftMouseClicked);
+	button->bindCallback(&MenuPageJoinGame::onSubmit, this, tgui::Button::LeftMouseClicked);
 
 	m_onShowFocus = m_name.get();
 }
 
-void MenuPageJoinServer::onSubmit()
+void MenuPageJoinGame::onSubmit()
 {
 	std::string name = m_name->getText();
 	std::string host = m_host->getText();
@@ -48,8 +48,6 @@ void MenuPageJoinServer::onSubmit()
 
 	int portValue = atoi(port.c_str());
 
-	GameGlobals::events->emit<JoinServerEvent>(host, portValue, name);
-	//fixme: push lobby page
-	m_menu.popPage();
-	m_menu.popPage();
+	m_menu.pushPage(&m_connectingPage);
+	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
 }

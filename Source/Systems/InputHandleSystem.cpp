@@ -9,12 +9,15 @@
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
 #include "../Components/DirectionComponent.h"
+#include "../Events/CreatePortalEvent.h"
+
 #include "../Components/BombComponent.h"
 
 InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager)
 {
 }
+
 
 void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
@@ -35,8 +38,14 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 			input->bombButtonPressed = false;
 		}
 
+		if (input->skillButtonPressed)
+		{
+			GameGlobals::events->emit<CreatePortalEvent>(entity);
+			input->skillButtonPressed = false;
+		}
+
 		auto body = entity.component<BodyComponent>();
 		if (body)
-			body->body->SetLinearVelocity(b2Vec2(input->moveX * GameConstants::PLAYER_SPEED, input->moveY * GameConstants::PLAYER_SPEED));
+			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
 	}
 }
