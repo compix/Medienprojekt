@@ -59,7 +59,7 @@ private:
 	void sendPlayerEntities(ENetPeer* peer);
 	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y, uint8_t playerIndex);
 	void broadcastDynamicUpdates();
-	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y);
+	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y, uint64_t packetNumber);
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner);
 	void sendExplosionEntities(ENetPeer* peer);
