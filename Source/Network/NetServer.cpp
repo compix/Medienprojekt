@@ -307,6 +307,7 @@ void NetServer::startGame()
 			sendStartGame(&m_playerInfos[i]);
 		}
 	}
+	m_status = ServerStatus::INGAME;
 }
 
 void NetServer::broadcast(NetChannel channel, ENetPacket *packet)
