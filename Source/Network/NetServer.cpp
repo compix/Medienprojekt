@@ -86,7 +86,11 @@ NetServer::NetServer()
 			if (info->status == NetPlayerStatus::CONNECTING)
 				GameGlobals::events->emit<DisconnectEvent>("The client was unable to connect", info);
 			else
+			{
 				GameGlobals::events->emit<DisconnectEvent>("The client disconnected", info);
+				if (info->entity.valid())
+					info->entity.assign<FreeSlotComponent>();
+			}
 			cout << "A client disconnected!" << endl;
 			evt.peer->data = nullptr;
 			info->invalidate();
