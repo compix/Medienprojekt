@@ -2,10 +2,9 @@
 
 struct InputComponent
 {
-	InputComponent() : bombButtonPressed(false), skillButtonPressed(false), moveX(0.f), moveY(0.f) {}
-
-	float moveX;
-	float moveY;
-	bool bombButtonPressed;
-	bool skillButtonPressed;
+	float moveX = 0;
+	float moveY = 0;
+	bool bombButtonPressed = false;
+	bool skillButtonPressed = false;
+	uint64_t packetNumber = 0; // for netcode
 };

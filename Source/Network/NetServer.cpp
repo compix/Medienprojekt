@@ -86,7 +86,11 @@ NetServer::NetServer()
 			if (info->status == NetPlayerStatus::CONNECTING)
 				GameGlobals::events->emit<DisconnectEvent>("The client was unable to connect", info);
 			else
+			{
 				GameGlobals::events->emit<DisconnectEvent>("The client disconnected", info);
+				if (info->entity.valid())
+					info->entity.assign<FreeSlotComponent>();
+			}
 			cout << "A client disconnected!" << endl;
 			evt.peer->data = nullptr;
 			info->invalidate();
@@ -307,6 +311,7 @@ void NetServer::startGame()
 			sendStartGame(&m_playerInfos[i]);
 		}
 	}
+	m_status = ServerStatus::INGAME;
 }
 
 void NetServer::broadcast(NetChannel channel, ENetPacket *packet)
@@ -437,7 +442,10 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 
 		Entity playerEntity = getFreeSlotEntity();
 		if (playerEntity.valid())
+		{
 			info->entity = playerEntity;
+			playerEntity.component<InputComponent>()->packetNumber = 0;
+		}
 
 		sendStartGame(info);
 	}
@@ -474,6 +482,10 @@ void NetServer::onInputDirectionMessage(MessageReader<MessageType>& reader, ENet
 	NetPlayerInfo *info = static_cast<NetPlayerInfo *>(evt.peer->data);
 	if (info->entity.valid()) {
 		auto input = info->entity.component<InputComponent>();
+		auto packetNumber = reader.read<uint64_t>();
+		if (input->packetNumber >= packetNumber)
+			return;
+		input->packetNumber = packetNumber;
 		input->moveX = reader.read<float>();
 		input->moveY = reader.read<float>();
 	}
@@ -536,18 +548,19 @@ ENetPacket *NetServer::createPlayerPacket(Entity entity, float x, float y, uint8
 
 void NetServer::broadcastDynamicUpdates()
 {
-	ComponentHandle<DynamicComponent> input;
+	ComponentHandle<DynamicComponent> dynamic;
 	ComponentHandle<TransformComponent> transform;
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
-	for (Entity entity : entities->entities_with_components(input, transform, cell))
-		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y));
+	for (Entity entity : entities->entities_with_components(dynamic, transform, cell))
+		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y, dynamic->packetNumber++));
 }
 
-ENetPacket *NetServer::createUpdateDynamicPacket(Entity entity, float x, float y)
+ENetPacket *NetServer::createUpdateDynamicPacket(Entity entity, float x, float y, uint64_t packetNumber)
 {
 	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
 	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint64_t>(packetNumber);
 	m_messageWriter.write<float>(x);
 	m_messageWriter.write<float>(y);
 	auto input = entity.component<InputComponent>();

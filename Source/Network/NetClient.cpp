@@ -17,6 +17,7 @@
 #include "../Events/SendChatEvent.h"
 #include "../Events/SetReadyEvent.h"
 #include "../Events/StartGameEvent.h"
+#include "../Components/DynamicComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -93,6 +94,7 @@ void NetClient::update(float deltaTime)
 		}
 
 		m_messageWriter.init(MessageType::INPUT_DIRECTION);
+		m_messageWriter.write<uint64_t>(input->packetNumber++);
 		m_messageWriter.write<float>(input->moveX);
 		m_messageWriter.write<float>(input->moveY);
 		send(NetChannel::INPUT_UNRELIABLE, m_messageWriter.createPacket(0));
@@ -309,11 +311,16 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
+	uint64_t packetNumber = reader.read<uint64_t>();
 	float x = reader.read<float>();
 	float y = reader.read<float>();
 	Entity entity = getEntity(id);
 	if (entity.valid())
 	{
+		auto dynamic = entity.component<DynamicComponent>();
+		if (dynamic->packetNumber >= packetNumber)
+			return;
+		dynamic->packetNumber = packetNumber;
 		auto transform = entity.component<TransformComponent>();
 		if(transform.valid())
 		{
