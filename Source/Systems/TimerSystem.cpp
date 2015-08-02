@@ -1,15 +1,15 @@
 #include "TimerSystem.h"
 #include "../Components/TimerComponent.h"
-#include "../Events/TimeoutEvent.h"
 
-void TimerSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+
+void TimerSystem::update(float dt)
 {
 	for (auto entity : entityManager.entities_with_components<TimerComponent>())
 	{
-		if (!entity.valid())
+		if (!entity->isValid())
 			continue;
 
-		auto timer = entity.component<TimerComponent>();
+		auto timer = entity->get<TimerComponent>();
 		
 		if (timer->active)
 		{
@@ -17,7 +17,7 @@ void TimerSystem::update(entityx::EntityManager& entityManager, entityx::EventMa
 
 			if (timer->seconds <= 0.f)
 			{
-				entity.remove<TimerComponent>();
+				entity->remove<TimerComponent>();
 				eventManager.emit<TimeoutEvent>(entity);
 			}
 		}

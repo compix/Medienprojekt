@@ -1,8 +1,8 @@
 #include "MenuPageConnecting.h"
-#include "../../Events/SendChatEvent.h"
+
 #include "../../GameGlobals.h"
-#include "../../Events/ClientStateEvent.h"
-#include "../../Events/ForceDisconnectEvent.h"
+
+
 #include "../Menu.h"
 
 MenuPageConnecting::MenuPageConnecting(Menu &menu)
@@ -13,6 +13,8 @@ MenuPageConnecting::MenuPageConnecting(Menu &menu)
 	button->bindCallback(&MenuPageConnecting::onAbort, this, tgui::Button::LeftMouseClicked);
 
 	m_onShowFocus = button.get();
+	m_clientStateConnection = GameGlobals::events->clientState.connect(this, MenuPageConnecting::onClientState);
+	m_clientStateConnection.disable();
 }
 
 void MenuPageConnecting::show()
@@ -20,28 +22,28 @@ void MenuPageConnecting::show()
 	MenuPage::show();
 
 	m_chatBox->removeAllLines();
-	GameGlobals::events->subscribe<ClientStateEvent>(*this);
+	m_clientStateConnection.enable();
 }
 
 void MenuPageConnecting::hide()
 {
-	GameGlobals::events->unsubscribe<ClientStateEvent>(*this);
+	m_clientStateConnection.disable();
 
 	MenuPage::hide();
 }
 
 void MenuPageConnecting::onAbort()
 {
-	GameGlobals::events->emit<ForceDisconnectEvent>();
+	GameGlobals::events->forceDisconnect.emit("");
 	close();
 }
 
-void MenuPageConnecting::receive(const ClientStateEvent &evt)
+void MenuPageConnecting::onClientState(const string &message, ClientState state)
 {
-	m_chatBox->addLine(evt.message);
-	if (evt.state == ClientState::PREGAME)
+	m_chatBox->addLine(message);
+	if (state == ClientState::PREGAME)
 		m_menu.popAllPages();
-	else if (evt.state == ClientState::LOBBY)
+	else if (state == ClientState::LOBBY)
 	{
 		m_menu.popPage();
 		m_menu.showLobby();

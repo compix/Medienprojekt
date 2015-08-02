@@ -1,12 +1,15 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
 /**
  * @brief	Used for entities that can deal damage.
  */
 
-struct DamageDealerComponent
+struct DamageDealerComponent: public ECS::Component<DamageDealerComponent>
 {
-	DamageDealerComponent(unsigned int damage) : damage(damage) {}
-
-	unsigned int damage;
+	unsigned int damage = 0;
+	
+	void reset() override {
+		damage = 0;
+	}
 };

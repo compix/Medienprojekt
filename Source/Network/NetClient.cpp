@@ -1,22 +1,22 @@
 #include "NetClient.h"
 #include "NetConstants.h"
-#include "../Events/ChatEvent.h"
+
 #include <iostream>
 #include "../GameGlobals.h"
-#include "../Events/PlayerJoinEvent.h"
+
 #include "../Game.h"
 #include "../Components/InputComponent.h"
-#include "../Events/ExitEvent.h"
-#include "../Events/DeathEvent.h"
+
+
 #include "../Components/LocalInputComponent.h"
-#include "../Events/ClientStateEvent.h"
-#include "../Events/ForceDisconnectEvent.h"
-#include "../Events/LobbyEvent.h"
-#include "../Events/CountdownEvent.h"
-#include "../Events/ReadyEvent.h"
-#include "../Events/SendChatEvent.h"
-#include "../Events/SetReadyEvent.h"
-#include "../Events/StartGameEvent.h"
+
+
+
+
+
+
+
+
 #include "../Components/DynamicComponent.h"
 
 using namespace std;
@@ -52,7 +52,7 @@ NetClient::NetClient()
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
 	{
-		GameGlobals::events->emit<ClientStateEvent>("Connection established", ClientState::CONNECTED);
+		GameGlobals::events->clientState.emit("Connection established", ClientState::CONNECTED);
 		cout << "Connected to server!" << endl;
 
 		m_messageWriter.init(MessageType::HANDSHAKE);
@@ -63,8 +63,8 @@ NetClient::NetClient()
 	{
 		cout << "Disconnected from server!" << endl;
 		if (!event.peer)
-			GameGlobals::events->emit<ClientStateEvent>("Connection failed", ClientState::DISCONNECTED);
-		GameGlobals::events->emit<ForceDisconnectEvent>(event.peer ? "Server disconnected" : "Connection failed");
+			GameGlobals::events->clientState.emit("Connection failed", ClientState::DISCONNECTED);
+		GameGlobals::events->forceDisconnect.emit(event.peer ? "Server disconnected" : "Connection failed");
 	});
 }
 
@@ -78,10 +78,10 @@ NetClient::~NetClient()
 void NetClient::update(float deltaTime)
 {
 	m_nextSend -= deltaTime;
-	if (m_nextSend <= 0 && m_playerEntity.valid())
+	if (m_nextSend <= 0 && m_playerEntity->isValid())
 	{
 		m_nextSend = 0.016f;
-		auto input = m_playerEntity.component<InputComponent>();
+		auto input = m_playerEntity->get<InputComponent>();
 		if (input->bombButtonPressed)
 		{
 			sendInputEventMessage(MessageType::INPUT_BOMB_ACTIVATED);
@@ -120,19 +120,19 @@ void NetClient::disconnect()
 	m_connection.disconnect();
 }
 
-void NetClient::receive(const SendChatEvent& evt)
+void NetClient::onSendChat(const string &message)
 {
 	m_messageWriter.init(MessageType::CHAT);
-	m_messageWriter.write<string>(evt.message);
+	m_messageWriter.write<string>(message);
 	send(NetChannel::CHAT, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
-void NetClient::receive(const SetReadyEvent& evt)
+void NetClient::onSetReady(int playerIndex, bool ready)
 {
-	if (evt.playerIndex == m_playerIndex)
+	if (playerIndex == m_playerIndex)
 	{
 		m_messageWriter.init(MessageType::PLAYER_READY);
-		m_messageWriter.write<bool>(evt.ready);
+		m_messageWriter.write<bool>(ready);
 		send(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 	}
 }
@@ -156,11 +156,11 @@ void NetClient::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 	GameGlobals::game->init(width, height);
 
 	if (status == ServerStatus::INGAME)
-		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::PREGAME);
+		GameGlobals::events->clientState.emit("Received handshake", ClientState::PREGAME);
 	else if (status == ServerStatus::LOBBY || status == ServerStatus::LOBBY_COUNTDOWN)
 	{
-		GameGlobals::events->emit<ClientStateEvent>("Received handshake", ClientState::LOBBY);
-		GameGlobals::events->emit(lobbyEvt);
+		GameGlobals::events->clientState.emit("Received handshake", ClientState::LOBBY);
+		GameGlobals::events->lobby.emit(lobbyEvt);
 	}
 	// fixme: else
 }
@@ -169,31 +169,31 @@ void NetClient::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 {
 	uint8_t playerIndex = reader.read<uint8_t>();
 	bool ready = reader.read<bool>();
-	GameGlobals::events->emit<ReadyEvent>(playerIndex, ready);
+	GameGlobals::events->ready.emit(playerIndex, ready);
 }
 
 void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
 	m_playerEntity = getEntity(id);
-	if (m_playerEntity.valid())
+	if (m_playerEntity->isValid())
 		m_playerEntity.assign<LocalInputComponent>(0);
 
-	GameGlobals::events->emit<StartGameEvent>();
+	GameGlobals::events->startGame.emit();
 }
 
 void NetClient::onChatMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	string msg = reader.read<string>();
 	string name = reader.read<string>();
-	GameGlobals::events->emit<ChatEvent>(msg, name);
+	GameGlobals::events->chat.emit(msg, name);
 }
 
 void NetClient::onPlayerJoinedMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint8_t playerIndex = reader.read<uint8_t>();
 	string name = reader.read<string>();
-	GameGlobals::events->emit<PlayerJoinEvent>(playerIndex, name);
+	GameGlobals::events->playerJoin.emit(playerIndex, name);
 }
 
 void NetClient::onCreateSolidBlockMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -236,7 +236,7 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity owner = getEntity(ownerId);
-	if (owner.valid())
+	if (owner->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner));
 }
 
@@ -258,7 +258,7 @@ void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEv
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity owner = getEntity(ownerId);
-	if (owner.valid())
+	if (owner->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner));
 }
 
@@ -278,7 +278,7 @@ void NetClient::onCreateBoostEffectMessage(MessageReader<MessageType>& reader, E
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t targetId = reader.read<uint64_t>();
 	Entity target = getEntity(targetId);
-	if (target.valid())
+	if (target->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createBoostEffect(x, y, target));
 }
 
@@ -293,17 +293,17 @@ void NetClient::onCreateSmokeMessage(MessageReader<MessageType>& reader, ENetEve
 void NetClient::onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
-	Entity entity = getEntity(id);
-	if (entity.valid())
-		GameGlobals::events->emit<DeathEvent>(entity);
+	Entity *entity = getEntity(id);
+	if (entity->isValid())
+		GameGlobals::events->death.emit(entity);
 }
 
 void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
-	Entity entity = getEntity(id);
-	if (entity.valid()) {
-		entity.destroy();
+	Entity *entity = getEntity(id);
+	if (entity->isValid()) {
+		entity->destroy();
 		entityMap.erase(id);
 	}
 }
@@ -314,22 +314,22 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 	uint64_t packetNumber = reader.read<uint64_t>();
 	float x = reader.read<float>();
 	float y = reader.read<float>();
-	Entity entity = getEntity(id);
-	if (entity.valid())
+	Entity *entity = getEntity(id);
+	if (entity->isValid())
 	{
-		auto dynamic = entity.component<DynamicComponent>();
+		auto dynamic = entity->get<DynamicComponent>();
 		if (dynamic->packetNumber >= packetNumber)
 			return;
 		dynamic->packetNumber = packetNumber;
-		auto transform = entity.component<TransformComponent>();
-		if(transform.valid())
+		auto transform = entity->get<TransformComponent>();
+		if(transform->isValid())
 		{
 			transform->x = x;
 			transform->y = y;
 		}
 		if(entity != m_playerEntity) {
-			auto input = entity.component<InputComponent>();
-			if(input.valid())
+			auto input = entity->get<InputComponent>();
+			if(input->isValid())
 			{
 				input->moveX = reader.read<float>();
 				input->moveY = reader.read<float>();
@@ -340,12 +340,12 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 
 void NetClient::onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
-	GameGlobals::events->emit<CountdownEvent>(reader.read<string>());
+	GameGlobals::events->countdown.emit(reader.read<string>());
 }
 
 void NetClient::onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
-	GameGlobals::events->emit<LobbyEventDisable>();
+	GameGlobals::events->lobbyDisable.emit();
 }
 
 Entity NetClient::getEntity(uint64_t id)
@@ -366,13 +366,13 @@ void NetClient::send(NetChannel channel, ENetPacket* packet)
 	enet_peer_send(m_connection.getPeer(), (enet_uint8)channel, packet);
 }
 
-void NetClient::mapEntity(uint64_t id, Entity entity)
+void NetClient::mapEntity(uint64_t id, Entity *entity)
 {
 	if (entityMap.count(id) != 0)
 	{
 		// Fixme: Id already exists, show error, disconnect
 		cerr << "Error: Id already exists" << endl;
-		GameGlobals::events->emit<ExitEvent>();
+		GameGlobals::events->exit.emit();
 		return;
 	}
 	entityMap[id] = entity;

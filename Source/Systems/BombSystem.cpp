@@ -1,15 +1,15 @@
 #include "BombSystem.h"
-#include "../Events/TimeoutEvent.h"
+
 #include "../Components/BombComponent.h"
 #include "../EntityFactory.h"
 #include "../Components/CellComponent.h"
 #include "../Components/DestructionComponent.h"
-#include "../Events/EntityGotHitEvent.h"
+
 #include "../Components/TimerComponent.h"
-#include "../Events/BombExplodedEvent.h"
+
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
-#include "../Events/SoundEvent.h"
+
 
 BombSystem::BombSystem()
 {
@@ -21,44 +21,44 @@ BombSystem::~BombSystem()
 	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
 }
 
-void BombSystem::configure(entityx::EventManager& events)
+void BombSystem::addedToEngine(Engine *engine)
 {
 	events.subscribe<TimeoutEvent>(*this);
 	events.subscribe<EntityGotHitEvent>(*this);
 }
 
-void BombSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void BombSystem::update(float dt)
 {
 }
 
-void BombSystem::receive(const TimeoutEvent& timeoutEvent)
+void BombSystem::onTimeout(Entity *affectedEntity)
 {
-	detonate(timeoutEvent.affectedEntity);
+	detonate(affectedEntity);
 }
 
-void BombSystem::receive(const EntityGotHitEvent& entityGotHitEvent)
+void BombSystem::onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, int damage)
 {
-	detonate(entityGotHitEvent.damagedEntity);
+	detonate(damagedEntity);
 }
 
-void BombSystem::detonate(entityx::Entity entity)
+void BombSystem::detonate(Entity *entity)
 {
-	if (!entity.valid())
+	if (!entity->isValid())
 		return;
 
-	if (entity.has_component<BombComponent>())
+	if (entity->has<BombComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
-		auto bomb = entity.component<BombComponent>();
+		auto cell = entity->get<CellComponent>();
+		auto bomb = entity->get<BombComponent>();
 
 		if (bomb->exploded)
 			return;
 
-		GameGlobals::events->emit<SoundEvent>("explosion");
+		GameGlobals::events->sound.emit("explosion");
 		assert(cell);
 
 		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime);
-		GameGlobals::events->emit<BombExplodedEvent>(entity);
+		GameGlobals::events->bombExploded.emit(entity);
 		bomb->exploded = true;
 	}
 }

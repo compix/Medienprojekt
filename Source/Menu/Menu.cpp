@@ -1,15 +1,15 @@
 #include "Menu.h"
 #include "MenuPage.h"
-#include "../Events/MenuShowEvent.h"
+
 #include "../GameGlobals.h"
-#include "../Events/PreloadEvent.h"
-#include "../Events/ForceDisconnectEvent.h"
+
+
 
 Menu::Menu()
 	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this), m_lobbyPage(*this)
 {
-	GameGlobals::events->subscribe<PreloadEvent>(*this);
-	GameGlobals::events->subscribe<ForceDisconnectEvent>(*this);
+	m_preloadConnection = GameGlobals::events->preload.connect(this, Menu::onPreload);
+	GameGlobals::events->forceDisconnect.connect(this, Menu::onForceDisconnect);
 
 	pushPage(&m_loadingPage);
 }
@@ -20,7 +20,7 @@ void Menu::draw()
 		m_gui.draw(false);
 }
 
-void Menu::receive(const sf::Event &evt)
+void Menu::onSfml(const sf::Event &evt)
 {
 	if (!m_pageStack.empty())
 	{
@@ -38,19 +38,19 @@ void Menu::receive(const sf::Event &evt)
 	}
 }
 
-void Menu::receive(const PreloadEvent& evt)
+void Menu::onPreload(int progress, int total, string nextSection, const string &nextFilename)
 {
-	if (evt.progress == evt.total)
+	if (progress == total)
 	{
 		popPage();
-		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
-		GameGlobals::events->subscribe<sf::Event>(*this);
+		m_preloadConnection.disconnect();
+		GameGlobals::events->sfml.connect(this, Menu::onSfml);
 	}
 }
 
-void Menu::receive(const ForceDisconnectEvent& evt)
+void Menu::onForceDisconnect(const string &message)
 {
-	if (!evt.message.empty()) {
+	if (!message.empty()) {
 		popAllPages();
 		pushPage(&m_rootPage);
 		//fixme: push error message page
@@ -71,7 +71,7 @@ void Menu::pushPage(MenuPage *page)
 	page->show();
 
 	if (m_pageStack.size() == 1)
-		GameGlobals::events->emit<MenuShowEvent>(true);
+		GameGlobals::events->menuShow.emit(true);
 }
 
 void Menu::popPage()
@@ -84,7 +84,7 @@ void Menu::popPage()
 		if (!m_pageStack.empty())
 			m_pageStack.top()->show();
 		else
-			GameGlobals::events->emit<MenuShowEvent>(false);
+			GameGlobals::events->menuShow.emit(false);
 	}
 }
 

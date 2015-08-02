@@ -1,15 +1,16 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-struct EntityGotHitEvent;
 
-class HealthSystem : public entityx::System<HealthSystem>, public entityx::Receiver<HealthSystem>
+
+class HealthSystem : public EntitySystem<HealthSystem>
 {
 public:
 	~HealthSystem();
-	void configure(entityx::EventManager& events) override;
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void addedToEngine(Engine *engine) override;
+	void update(float dt) override;
 
-	void receive(const EntityGotHitEvent& entityGotHit);
+private:
+	void onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, int damage);
 };
 

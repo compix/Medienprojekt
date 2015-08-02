@@ -10,9 +10,9 @@ AISystem::AISystem(PathEngine* pathEngine)
 {
 }
 
-void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void AISystem::update(float dt)
 {
-	entityx::Entity player;
+	Entity *player = nullptr;
 
 	m_pathEngine->update();
 	//m_pathEngine->computePath(cell->x, cell->y, 11, 11, m_path);
@@ -22,22 +22,22 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 	for (auto p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
-		if (!p.has_component<AIComponent>())
+		if (!p->has<AIComponent>())
 		{
 			player = p;
 			break;
 		}
 	}
 
-	if (!player.valid())
+	if (!player)
 		return;
 
-	auto playerCell = player.component<CellComponent>();
+	auto playerCell = player->get<CellComponent>();
 
 	for (auto e : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
-		auto inputComponent = e.component<InputComponent>();
-		auto cell = e.component<CellComponent>();
+		auto inputComponent = e->get<InputComponent>();
+		auto cell = e->get<CellComponent>();
 
 		
 		auto node = m_pathEngine->getNode(playerCell->x, playerCell->y);

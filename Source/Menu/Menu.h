@@ -2,14 +2,12 @@
 
 #include <stack>
 #include <TGUI/TGUI.hpp>
-#include <entityx/entityx.h>
 #include "Pages/MenuPageRoot.h"
 #include "Pages/MenuPageChat.h"
 #include "Pages/MenuPageLoading.h"
+#include <signal11/Signal.h>
+using Signal11::ScopedConnectionRef;
 
-struct ForceDisconnectEvent;
-struct PreloadEvent;
-using entityx::Receiver;
 
 class Gui : public tgui::Gui
 {
@@ -20,22 +18,25 @@ public:
 	}
 };
 
-class Menu : public Receiver<Menu>
+class Menu 
 {
 public:
 	Menu();
 
 	void draw();
 
-	void receive(const sf::Event &evt);
-	void receive(const PreloadEvent &evt);
-	void receive(const ForceDisconnectEvent& evt);
 	void showLobby();
 	void pushPage(MenuPage *page);
 	void popPage();
 	void popAllPages();
 
+private:
+	void onSfml(const sf::Event &evt);
+	void onPreload(int progress, int total, string nextSection, const string &nextFilename);
+	void onForceDisconnect(const string &message);
+	
 protected:
+	ScopedConnectionRef m_preloadConnection;
 	friend class MenuPage;
 	Gui m_gui;
 	std::stack<MenuPage *> m_pageStack;

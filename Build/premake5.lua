@@ -1,5 +1,4 @@
-dofile "premake/actions/netbeans5/_netbeans.lua"
-dofile "premake/actions/netbeans5/netbeans_cpp.lua"
+require('netbeans')
 
 -- Prevent from script error when no action is given
 if not _ACTION then
@@ -42,6 +41,8 @@ else
 	location (buildDir)
 end
 
+flags {"C++11", "nbProjectFolder"}
+
 filter { "system:windows" }
 	defines { "WIN32" }
 
@@ -67,7 +68,7 @@ solution "Game"
 		kind "ConsoleApp"
 		language "C++"
 		objdir( objectDir .. "/Game" )
-		defines { "SFML_STATIC", "GLEW_STATIC" }
+		defines { "SFML_STATIC", "GLEW_STATIC", "USING_SIGNAL11", "USING_ECSTASY" }
 		includedirs {
 			thirdPartyDir .. "/Box2D/Box2D",
 			thirdPartyDir .. "/TGUI/include",
@@ -75,7 +76,7 @@ solution "Game"
 			thirdPartyDir .. "/enet/include",
 			thirdPartyDir .. "/jsoncpp/include",
 			thirdPartyDir .. "/cppformat",
-			thirdPartyDir .. "/entityx"
+			thirdPartyDir .. "/ecstasy/include"
 		}
 		files {
 			sourceDir .."/**.h",
@@ -96,7 +97,7 @@ solution "Game"
 				thirdPartyDir .. "/SFML/extlibs/libs-mingw/x86"
 			}
 		end
-		--linkoptions{"-lTGUI -lBox2D -ljsoncpp -lentityx"}
+		--linkoptions{"-lTGUI -lBox2D -ljsoncpp -lecstasy"}
 		filter { "Debug" }
 			targetdir( testDir )
 			links {
@@ -104,7 +105,7 @@ solution "Game"
 				"Box2D-s-d",
 				"enet-s-d",
 				"jsoncpp-s-d",
-				"entityx-s-d",
+				"ecstasy-s-d",
 				"cppformat-s-d",
 				"SFML-s-d"
 			}
@@ -115,7 +116,7 @@ solution "Game"
 				"Box2D-s",
 				"enet-s",
 				"jsoncpp-s",
-				"entityx-s",
+				"ecstasy-s",
 				"cppformat-s",
 				"SFML-s"
 			}
@@ -185,20 +186,24 @@ solution "Thirdparty"
 			thirdPartyDir .. "/cppformat/format.h",
 			thirdPartyDir .. "/cppformat/format.cc"
 		}
-
-	project "entityx"
+		
+	project "ecstasy"
 		kind "StaticLib"
 		language "C++"
-		objdir( objectDir .. "/entityx" )
-		includedirs { thirdPartyDir .. "/entityx" }
+		objdir( objectDir .. "/ecstasy" )
+		includedirs {
+			thirdPartyDir .. "/ecstasy/include"
+		}
 		files {
-			thirdPartyDir .. "/entityx/entityx/**.h",
-			thirdPartyDir .. "/entityx/entityx/**.hpp",
-			thirdPartyDir .. "/entityx/entityx/**.cc"
+			thirdPartyDir .. "/ecstasy/include/**.h",
+			thirdPartyDir .. "/ecstasy/source/**.h",
+			thirdPartyDir .. "/ecstasy/source/**.cpp"
 		}
-		excludes {
-			thirdPartyDir .. "/entityx/**_test.cc"
-		}
+		targetdir( libDir )
+		filter { "Release" }
+			targetsuffix  "-s"
+		filter { "Debug" }
+			targetsuffix  "-s-d"
 
 	project "jsoncpp"
 		kind "StaticLib"

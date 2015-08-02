@@ -2,17 +2,12 @@
 #include "../MenuPage.h"
 #include "../../GameConstants.h"
 
-struct DisconnectEvent;
-struct CountdownEvent;
-struct ReadyEvent;
-struct StartGameEvent;
 struct LobbyEvent;
 struct LobbyEventDisable;
-struct ChatEvent;
-struct PlayerJoinEvent;
-using entityx::Receiver;
+struct NetPlayerInfo;
+enum class CreateGamePlayerType;
 
-class MenuPageLobby : public MenuPage, public Receiver<MenuPageLobby>
+class MenuPageLobby : public MenuPage
 {
 public:
 	MenuPageLobby(Menu &menu);
@@ -21,21 +16,20 @@ public:
 	void hide() override;
 	virtual void onEscape() override {}
 
-	void receive(const LobbyEvent& evt);
-	void receive(const LobbyEventDisable& evt);
-	void receive(const ChatEvent& evt);
-	void receive(const PlayerJoinEvent& evt);
-	void receive(const DisconnectEvent& evt);
-	void receive(const ReadyEvent& evt);
-	void receive(const StartGameEvent& evt);
-	void receive(const CountdownEvent& evt);
-	
-
 	void onChange(int index);
 
 private:
 	void onSubmit();
 	void onAbort();
+
+	void onLobby(const LobbyEvent& evt);
+	void onLobbyDisable();
+	void onChat(const string &message, const string &name);
+	void onPlayerJoin(uint8_t playerIndex, const string &name);
+	void onDisconnect(const string &reason, NetPlayerInfo *playerInfo);
+	void onReady(uint8_t playerIndex, bool ready);
+	void onStartGame();
+	void onCountdown(const string &name, CreateGamePlayerType type);
 
 private:
 	tgui::Label::Ptr m_name[GameConstants::MAX_PLAYERS];

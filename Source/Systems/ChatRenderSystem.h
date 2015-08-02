@@ -1,36 +1,33 @@
 #pragma once
-#include <entityx/entityx.h>
 #include <SFML/Graphics.hpp>
 #include "../EntityLayer.h"
 #include "../LayerManager.h"
 
-struct ChatEvent;
-using entityx::System;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
-using entityx::Receiver;
+
+using namespace ECS;
 
 struct ChatEntry
 {
 	sf::Text name;
 	sf::Text message;
-	TimeDelta timeLeft = 0;
+	float timeLeft = 0;
 };
 
 const int MAX_CHAT_LINES = 8;
 
-class ChatRenderSystem : public System<ChatRenderSystem>, public Receiver<ChatRenderSystem>
+class ChatRenderSystem : public EntitySystem<ChatRenderSystem>
 {
 public:
 	ChatRenderSystem();
 	~ChatRenderSystem();
 
-	void configure(entityx::EventManager& events) override;
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
-	void updateEntries(TimeDelta dt);
+	void addedToEngine(Engine *engine) override;
+	void update(float dt) override;
+	void updateEntries(float dt);
 	void renderEntries();
-	void receive(const ChatEvent &evt);
+	
+private:
+	void onChat(const string &message, const string &name);
 
 private:
 	void initText(sf::Text &text);
@@ -40,7 +37,7 @@ private:
 	sf::Font m_font;
 	ChatEntry m_entries[MAX_CHAT_LINES];
 	int m_oldestEntry = 0;
-	TimeDelta m_moveUpTime;
+	float m_moveUpTime;
 	float m_lineSpacing;
 };
 

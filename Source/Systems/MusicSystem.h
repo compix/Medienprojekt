@@ -1,26 +1,24 @@
 #pragma once
-#include <entityx/Event.h>
-#include <entityx/System.h>
-#include "../Events/MusicEvent.h"
+#include <ecstasy/core/EntitySystem.h>
+
 #include <SFML/Audio/Music.hpp>
 
 
-struct MusicEvent;
-struct StartGameEvent;
-using entityx::System;
-using entityx::Receiver;
+
+
+using namespace ECS;
 using sf::Music;
 
-class MusicSystem : public System<MusicSystem>, public Receiver<MusicSystem>
+class MusicSystem : public EntitySystem<MusicSystem>
 {
 public:
-	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
-	void configure(entityx::EventManager &event_manager) override;
-	void receive(const StartGameEvent& event);
-	void receive(const MusicEvent& event);
-	MusicSystem();
-	~MusicSystem();
+	void addedToEngine(Engine *engine) override;
+	
+private:
+	void onStartGame();
+	void onMusic(const string &name, bool loop);
 
 private:
 	Music* m_music;

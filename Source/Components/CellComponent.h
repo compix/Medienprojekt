@@ -1,4 +1,5 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
 /**
  * @struct	CellComponent
@@ -6,10 +7,11 @@
  * @brief	Represents the cell in the grid the entity is currently in.
  */
 
-struct CellComponent
+struct CellComponent: public ECS::Component<CellComponent>
 {
-	CellComponent(uint8_t x = 0, uint8_t y = 0)
-		: x(x), y(y) {}
-
-	uint8_t x, y;
+	uint8_t x = 0, y = 0;
+	
+	void reset() override {
+		x = y = 0;
+	}
 };

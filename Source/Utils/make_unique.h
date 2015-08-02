@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #ifndef HAS_STD_MAKE_UNIQUE
 namespace std

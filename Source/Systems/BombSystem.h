@@ -1,22 +1,23 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-struct EntityGotHitEvent;
+
 class EntityFactory;
-struct TimeoutEvent;
 
-class BombSystem : public entityx::System<BombSystem>, public entityx::Receiver<BombSystem>
+
+class BombSystem : public EntitySystem<BombSystem>
 {
 public:
 	BombSystem();
 	~BombSystem();
-	void configure(entityx::EventManager& events) override;
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
-
-	void receive(const TimeoutEvent& timeoutEvent);
-	void receive(const EntityGotHitEvent& entityGotHitEvent);
+	void addedToEngine(Engine *engine) override;
+	void update(float dt) override;
 
 private:
-	void detonate(entityx::Entity entity);
+	void onTimeout(Entity *affectedEntity);
+	void onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, int damage);
+
+private:
+	void detonate(Entity *entity);
 };
 

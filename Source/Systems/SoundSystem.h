@@ -1,19 +1,16 @@
 #pragma once
-#include <entityx/System.h>
-#include "../Events/SoundEvent.h"
+#include <ecstasy/core/EntitySystem.h>
+
 #include <SFML/Audio.hpp>
 
-struct SoundEvent;
-using entityx::System;
-using entityx::Receiver;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
+
+using namespace ECS;
+
 using sf::Sound;
 using std::unordered_map;
 using std::vector;
 
-class SoundSystem : public System<SoundSystem>, public Receiver<SoundSystem>
+class SoundSystem : public EntitySystem<SoundSystem>
 {
 private:
 	typedef std::unordered_map<string, vector<Sound>> SoundMap;
@@ -22,8 +19,10 @@ private:
 	BoolMap  m_soundsPlaying;
 	unsigned int oldCount = 0;
 public:
-	void configure(EventManager& events) override;
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
-	void receive(const SoundEvent& event);
+	void addedToEngine(Engine *engine) override;
+	void update(float dt) override;
+	
+private:
+	void onSound(const string &name);
 };
 

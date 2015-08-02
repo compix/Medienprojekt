@@ -1,10 +1,10 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-struct DeathEvent;
 
-class DestructionSystem : public entityx::System<DestructionSystem>
+
+class DestructionSystem : public EntitySystem<DestructionSystem>
 {
 public:
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 };

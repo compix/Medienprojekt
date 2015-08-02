@@ -1,21 +1,22 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-struct ItemPickedUpEvent;
+
 class LayerManager;
 
-class ItemSystem : public entityx::System<ItemSystem>, public entityx::Receiver<ItemSystem>
+class ItemSystem : public EntitySystem<ItemSystem>
 {
 public:
 	ItemSystem(LayerManager* layerManager);
 	~ItemSystem();
 
-	void configure(entityx::EventManager& events) override;
+	void addedToEngine(Engine *engine) override;
 
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
-	void receive(const entityx::EntityDestroyedEvent& e);
-	void receive(const ItemPickedUpEvent& e);
+private:
+	void onEntityDestroyed(Entity *entity);
+	void onItemPickedUp(Entity *item, Entity *itemReceiver);
 
 private:
 	LayerManager* m_layerManager;

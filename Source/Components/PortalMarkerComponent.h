@@ -1,9 +1,12 @@
 #pragma once
-#include <entityx/Entity.h>
+#include <ecstasy/core/Component.h>
+#include "ecstasy/core/Entity.h"
 
-struct PortalMarkerComponent
+struct PortalMarkerComponent: public ECS::Component<PortalMarkerComponent>
 {
-	PortalMarkerComponent(entityx::Entity::Id portalId) :portalId(portalId){}
-
-	entityx::Entity::Id portalId;
+	uint64_t portalId = 0;
+	
+	void reset() override {
+		portalId = 0;
+	}
 };

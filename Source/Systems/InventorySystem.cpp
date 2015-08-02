@@ -1,9 +1,9 @@
 #include "InventorySystem.h"
-#include "../Events/BombExplodedEvent.h"
+
 #include "../Components/OwnerComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
-#include "../Events/TimeoutEvent.h"
+
 
 
 InventorySystem::~InventorySystem()
@@ -11,33 +11,31 @@ InventorySystem::~InventorySystem()
 	GameGlobals::events->unsubscribe<BombExplodedEvent>(*this);
 }
 
-void InventorySystem::configure(entityx::EventManager& events)
+void InventorySystem::addedToEngine(Engine *engine)
 {
 	events.subscribe<BombExplodedEvent>(*this);
 }
 
-void InventorySystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void InventorySystem::update(float dt)
 {
 
 }
 
-void InventorySystem::receive(const BombExplodedEvent& e)
+void InventorySystem::onBombExploded(Entity *bomb)
 {
-	auto bomb = e.bomb;
-
-	if (!bomb.valid())
+	if (!bomb->isValid())
 		return;
 
-	auto ownerComponent = bomb.component<OwnerComponent>();
+	auto ownerComponent = bomb->get<OwnerComponent>();
 	
 	if (ownerComponent)
 	{
 		auto owner = ownerComponent->entity;
 
-		if (!owner.valid())
+		if (!owner->isValid())
 			return;
 
-		auto inventory = owner.component<InventoryComponent>();
+		auto inventory = owner->get<InventoryComponent>();
 
 		if (inventory)
 		{

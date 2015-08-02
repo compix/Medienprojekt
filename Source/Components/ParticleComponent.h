@@ -1,10 +1,12 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 #include "../Graphics/ParticleEmitter.h"
 
-struct ParticleComponent
+struct ParticleComponent: public ECS::Component<ParticleComponent>
 {
-	ParticleComponent() {}
-	ParticleComponent(ParticleEmitter* emitter) : emitter(emitter) {}
-
-	ParticleEmitter* emitter;
+	ParticleEmitter* emitter = nullptr;
+	
+	void reset() override {
+		emitter = nullptr;
+	}
 };

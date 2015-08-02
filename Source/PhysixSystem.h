@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <Box2D/Box2D.h>
-#include <entityx/config.h>
 #include "SFMLDebugDraw.h"
 
 class PhysixSystem
@@ -18,7 +17,7 @@ public:
 	void SetDebugDrawer(SFMLDebugDraw* debugDraw);
 	void SetGravity(b2Vec2 gravity);
 
-	void Update(entityx::TimeDelta dt);
+	void Update(float dt);
 	void DrawDebug();
 	b2Vec2 GetGravity();
 	b2World* GetWorld();

@@ -1,14 +1,11 @@
 #pragma once
-#include <entityx/entityx.h>
+#include <ecstasy/core/EntitySystem.h>
 
-using entityx::System;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
+using namespace ECS;
 
-class AnimationSystem : public System<AnimationSystem>
+class AnimationSystem : public EntitySystem<AnimationSystem>
 {
 public:
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+	void update(float dt) override;
 };
 

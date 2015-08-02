@@ -1,13 +1,13 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 #include "../EntityFactory.h"
 
-class DamageSystem : public entityx::System<DamageSystem>
+class DamageSystem : public EntitySystem<DamageSystem>
 {
 public:
 	DamageSystem(LayerManager* layerManager);
 
-	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
 private:
 	LayerManager* m_layerManager;

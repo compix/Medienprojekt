@@ -4,7 +4,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <stdint.h>
 #include <assert.h>
-#include <entityx/entityx.h>
 #include "../../EntityLayer.h"
 #include "../Common.h"
 
@@ -22,8 +21,8 @@ public:
 	void addNode(uint8_t x, uint8_t y);
 	void removeNode(uint8_t x, uint8_t y);
 
-	void onEntityAdded(entityx::Entity& entity) override;
-	void onEntityRemoved(entityx::Entity& entity) override;
+	void onEntityAdded(Entity *entity) override;
+	void onEntityRemoved(Entity *entity) override;
 
 	void resetPathInfo();
 

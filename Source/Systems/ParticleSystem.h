@@ -1,25 +1,26 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 #include "../Graphics/ParticleManager.h"
+#include <ecstasy/core/EntitySystem.h>
+#include <signal11/Signal.h>
 
-struct DeathEvent;
-
-class ParticleSystem : public entityx::System<ParticleSystem>, public entityx::Receiver<ParticleSystem>
+class ParticleSystem : public EntitySystem<ParticleSystem>
 {
 public:
 	ParticleSystem();
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
 	ParticleManager* getManager(const std::string& textureName);
 
-	void configure(entityx::EventManager& events) override;
-
-	void receive(const entityx::EntityDestroyedEvent& e);
+	void addedToEngine(Engine *engine) override;
+	void removedFromEngine(Engine *engine) override;
 
 private:
+	void onEntityRemoved(Entity *entity);
 	void createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters);
 
 private:
 	std::unordered_map<std::string, ParticleManager> m_particleManagers;
+	Signal11::ConnectionScope m_connections;
 };
 

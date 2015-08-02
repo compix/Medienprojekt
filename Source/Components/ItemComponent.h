@@ -1,4 +1,5 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
 enum class ItemType : uint8_t
 {
@@ -7,10 +8,11 @@ enum class ItemType : uint8_t
 	SPEED_MULTIPLICATOR
 };
 
-struct ItemComponent
+struct ItemComponent: public ECS::Component<ItemComponent>
 {
-	ItemComponent() {}
-	ItemComponent(const ItemType& type) : type(type) {}
-
-	ItemType type;
+	ItemType type = ItemType::BOMB_CAP_BOOST;
+	
+	void reset() override {
+		type = ItemType::BOMB_CAP_BOOST;
+	}
 };

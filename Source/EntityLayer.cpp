@@ -1,4 +1,5 @@
 #include "EntityLayer.h"
+#include <iostream>
 
 EntityLayer::EntityLayer(int width, int height, int value)
 	: m_width(width), m_height(height), m_value(value)
@@ -17,7 +18,7 @@ EntityLayer::~EntityLayer()
 	delete[] m_grid;
 }
 
-void EntityLayer::add(Entity entity, int cellX, int cellY)
+void EntityLayer::add(Entity *entity, int cellX, int cellY)
 {
 	if (cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height)
 	{
@@ -31,7 +32,7 @@ void EntityLayer::add(Entity entity, int cellX, int cellY)
 		l->onEntityAdded(entity);
 }
 
-void EntityLayer::remove(Entity entity, int cellX, int cellY)
+void EntityLayer::remove(Entity *entity, int cellX, int cellY)
 {
 	if (cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height)
 	{

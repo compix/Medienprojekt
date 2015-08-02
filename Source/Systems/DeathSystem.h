@@ -1,14 +1,15 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-struct DeathEvent;
 
-class DeathSystem : public entityx::System<DeathSystem>, public entityx::Receiver<DeathSystem>
+
+class DeathSystem : public EntitySystem<DeathSystem>
 {
 public:
 	~DeathSystem();
-	void configure(entityx::EventManager& events) override;
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void addedToEngine(Engine *engine) override;
+	void update(float dt) override;
 
-	void receive(const DeathEvent& deathEvent);
+private:
+	void onDeath(Entity *dyingEntity);
 };

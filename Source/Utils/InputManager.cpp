@@ -120,7 +120,7 @@ void InputManager::bindKey(int playerIndex, PlayerButton button, int keyCode)
 	entry.playerIndex = playerIndex;
 }
 
-void InputManager::receive(const sf::Event& evt)
+void InputManager::onSfml(const sf::Event &evt)
 {
 	switch (evt.type)
 	{
@@ -145,9 +145,9 @@ void InputManager::receive(const sf::Event& evt)
 	}
 }
 
-void InputManager::receive(const MenuShowEvent &evt)
+void InputManager::onMenuShow(bool visible)
 {
-	if (evt.visible)
+	if (visible)
 		GameGlobals::events->unsubscribe<sf::Event>(*this);
 	else
 		GameGlobals::events->subscribe<sf::Event>(*this);

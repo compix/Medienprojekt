@@ -3,7 +3,7 @@
 #include <memory>
 #include "../Utils/make_unique.h"
 #include <assert.h>
-#include "entityx/entityx.h"
+#include "ecstasy/core/Entity.h"
 #include <typeinfo>
 #include <typeindex>
 #include "../Utils/AssetManagement/Assets.h"
@@ -35,12 +35,12 @@ class Animator
 {
 	friend class AnimatorManager;
 public:
-	void updateAnimation(AnimationType animationType, entityx::Entity& entity);
+	void updateAnimation(AnimationType animationType, Entity *entity);
 
 	template<class T>
-	void changeTo(entityx::Entity& entity);
+	void changeTo(Entity *entity);
 
-	void update(entityx::Entity& entity, float deltaTime);
+	void update(Entity *entity, float deltaTime);
 
 private:
 	void add(AnimationType animationType, const std::string& animationName, const std::string& textureName);
@@ -54,10 +54,10 @@ private:
 };
 
 template <class T>
-void Animator::changeTo(entityx::Entity& entity)
+void Animator::changeTo(Entity *entity)
 {
 	assert(m_states.count(typeid(T)) > 0);
-	auto animationComponent = entity.component<AnimationComponent>();
+	auto animationComponent = entity->get<AnimationComponent>();
 	animationComponent->state = m_states[typeid(T)].get();
 }
 

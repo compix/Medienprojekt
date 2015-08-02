@@ -1,10 +1,15 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct InventoryComponent
+struct InventoryComponent: public ECS::Component<InventoryComponent>
 {
-	InventoryComponent() : bombCount(8), bombKick(false), speedMultiplicator(1){}
-
-	int bombCount;
-	float speedMultiplicator;
-	bool bombKick;
+	int bombCount = 8;
+	float speedMultiplicator = 1;
+	bool bombKick = false;
+	
+	void reset() override {
+		bombCount = 8;
+		speedMultiplicator = 1;
+		bombKick = false;
+	}
 };

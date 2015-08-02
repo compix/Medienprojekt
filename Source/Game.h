@@ -1,5 +1,5 @@
 #pragma once
-#include "entityx/entityx.h"
+#include "ecstasy/core/Entity.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "Utils/AssetManagement/TextureLoader.h"
@@ -12,9 +12,6 @@
 #include "Utils/PathFinding/PathEngine.h"
 #include "ContactListener.h"
 
-using entityx::TimeDelta;
-using entityx::EventManager;
-using entityx::SystemManager;
 using std::unique_ptr;
 
 class ParticleEmitter;
@@ -26,7 +23,7 @@ public:
 	virtual ~Game();
 	virtual void init(uint8_t width, uint8_t height);
 
-	void update(TimeDelta dt);
+	void update(float dt);
 
 	inline void setMousePos(sf::Vector2i mousePos)
 	{
@@ -44,8 +41,7 @@ protected:
 protected:
 	sf::View m_view;
 	bool initialized = false;
-	EntityManager m_entities;
-	SystemManager m_systems;
+	Engine m_engine;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
 	PhysixSystem* m_PhysixSystem;

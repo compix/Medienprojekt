@@ -1,15 +1,15 @@
 #pragma once
 #include <vector>
-#include <entityx/entityx.h>
+#include <ecstasy/core/Entity.h>
 #include "Components/TransformComponent.h"
 #include <array>
+#include <algorithm>
+#include <assert.h>
 
 using std::vector;
-using entityx::Entity;
-using entityx::ComponentHandle;
-using entityx::EntityManager;
+using ECS::Entity;
 
-typedef std::vector<Entity> EntityCollection; // A collection is needed because more than one entity can be on the same cell
+typedef std::vector<Entity *> EntityCollection; // A collection is needed because more than one entity can be on the same cell
 typedef EntityCollection** EntityGrid;
 
 class EntityLayer
@@ -19,8 +19,8 @@ public:
 	{
 	public:
 		virtual ~IOnChangeListener() {};
-		virtual void onEntityAdded(entityx::Entity& entity) = 0;
-		virtual void onEntityRemoved(entityx::Entity& entity) = 0;
+		virtual void onEntityAdded(Entity *entity) = 0;
+		virtual void onEntityRemoved(Entity *entity) = 0;
 	};
 public:
 	/**
@@ -34,8 +34,8 @@ public:
 	template<class T>
 	void sort(T comparator, int cellX, int cellY);
 
-	void add(Entity entity, int cellX, int cellY);
-	void remove(Entity entity, int cellX, int cellY);
+	void add(Entity *entity, int cellX, int cellY);
+	void remove(Entity *entity, int cellX, int cellY);
 
 	inline int getValue() const { return m_value; }
 
@@ -67,11 +67,11 @@ void EntityLayer::sort(T comparator, int cellX, int cellY)
  */
 struct DepthComparator
 {
-	bool operator()(const Entity& e1, const Entity& e2)
+	bool operator()(const Entity *e1, const Entity *e2)
 	{
-		assert(e1.has_component<TransformComponent>() && e2.has_component<TransformComponent>());
-		const ComponentHandle<const TransformComponent, const EntityManager> t1 = e1.component<const TransformComponent, const EntityManager>();
-		const ComponentHandle<const TransformComponent, const EntityManager> t2 = e2.component<const TransformComponent, const EntityManager>();
+		auto t1 = e1->get<TransformComponent>();
+		auto t2 = e2->get<TransformComponent>();
+		assert(t1 && t2);
 
 		return (t1->y == t2->y) ? (t1->x < t2->x) : (t1->y < t2->y);
 	}

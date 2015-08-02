@@ -4,19 +4,19 @@
 #include "../Utils/Colors.h"
 #include <iostream>
 
-ParticleManager::ParticleManager() : ParticleManager(10000, 50)
+ParticleManager::ParticleManager(Engine *engine) : ParticleManager(engine, 10000, 50)
 {
 
 }
 
-ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters)
-	: m_defaultParticlesPerEmitter(defaultParticlesPerEmitter), m_timeTillUpdate(PARTICLE_UPDATE_FREQUENCY), m_texture(nullptr)
+ParticleManager::ParticleManager(Engine *engine, uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters)
+	: m_engine(engine), m_defaultParticlesPerEmitter(defaultParticlesPerEmitter), m_timeTillUpdate(PARTICLE_UPDATE_FREQUENCY), m_texture(nullptr)
 {
 	createEmitters(defaultParticlesPerEmitter, maxEmitters);
 }
 
-ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters)
-	: ParticleManager(defaultParticlesPerEmitter, maxEmitters)
+ParticleManager::ParticleManager(Engine *engine, uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters)
+	: ParticleManager(engine, defaultParticlesPerEmitter, maxEmitters)
 {
 	m_texture = texture;
 	setTexture(defaultParticlesPerEmitter);
@@ -106,7 +106,7 @@ void ParticleManager::createEmitters(uint32_t maxParticlesPerEmitter, uint16_t m
 	m_activeMap[maxParticlesPerEmitter] = 0;
 
 	for (uint16_t i = 0; i < maxEmitters; ++i)
-		m_emitterContainerMap[maxParticlesPerEmitter][i] = std::make_shared<ParticleEmitter>(maxParticlesPerEmitter);
+		m_emitterContainerMap[maxParticlesPerEmitter][i] = std::make_shared<ParticleEmitter>(m_engine, maxParticlesPerEmitter);
 
 	if (m_texture)
 		setTexture(maxParticlesPerEmitter);

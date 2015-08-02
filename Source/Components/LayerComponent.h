@@ -1,8 +1,11 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct LayerComponent
+struct LayerComponent: public ECS::Component<LayerComponent>
 {
-	LayerComponent(int layer) : layer(layer) {}
-
-	int layer;
+	int layer = 0;
+	
+	void reset() override {
+		layer = 0;
+	}
 };

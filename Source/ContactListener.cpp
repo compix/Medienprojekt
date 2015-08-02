@@ -2,7 +2,7 @@
 #include <iostream>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include "../../Source/BodyFactory.h"
-#include <entityx/Entity.h>
+#include "ecstasy/core/Entity.h"
 #include "Components/OwnerComponent.h"
 
 
@@ -44,7 +44,7 @@ void ContactListener::EndContact(b2Contact* contact)
 		Entity* entitySensor = static_cast<Entity*>(sensor->GetUserData());
 
 		if (BodyFactory::contactBetween(contact,BodyFactory::BOMB_RADAR,BodyFactory::PLAYER)){
-			if (entitySensor->component<OwnerComponent>()->entity.id() == entityNotSensor->id()){
+			if (entitySensor->get<OwnerComponent>()->entityId == entityNotSensor->getId()){
 				createCollisionToBomb(sensor, notSensor);
 			}
 		}

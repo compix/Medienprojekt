@@ -1,6 +1,6 @@
 #include "AssetManager.h"
 #include "../../Game.h"
-#include "../../Events/PreloadEvent.h"
+
 
 AssetManager::AssetManager()
 {
@@ -94,9 +94,9 @@ void AssetManager::emitPreloadEvent()
 	}
 
 	if (!preloadsDone())
-		GameGlobals::events->emit<PreloadEvent>(m_preloadsDone, m_preloadCount, m_loaders.front()->getName(), m_loaders.front()->getNextFilename());
+		GameGlobals::events->preload.emit(m_preloadsDone, m_preloadCount, m_loaders.front()->getName(), m_loaders.front()->getNextFilename());
 	else
-		GameGlobals::events->emit<PreloadEvent>(m_preloadsDone, m_preloadCount, "Game", "Game");
+		GameGlobals::events->preload.emit(m_preloadsDone, m_preloadCount, "Game", "Game");
 }
 
 

@@ -1,15 +1,14 @@
 #include "MenuPageChat.h"
-#include "../../Events/SendChatEvent.h"
 #include "../../GameGlobals.h"
-#include "../../Events/DisconnectEvent.h"
+
 #include "../../Network/NetPlayerInfo.h"
 
 MenuPageChat::MenuPageChat(Menu &menu)
 	:MenuPage(menu)
 {
-	GameGlobals::events->subscribe<ChatEvent>(*this);
-	GameGlobals::events->subscribe<PlayerJoinEvent>(*this);
-	GameGlobals::events->subscribe<DisconnectEvent>(*this);
+	GameGlobals::events->chat.connect(this, MenuPageChat::onChat);
+	GameGlobals::events->playerJoin.connect(this, MenuPageChat::onPlayerJoin);
+	GameGlobals::events->disconnect.connect(this, MenuPageChat::onDisconnect);
 
 	m_chatBox = createChatBox(20, 20, 760, 500);
 
@@ -24,23 +23,23 @@ void MenuPageChat::onSubmit()
 	sf::String message = m_editBox->getText();
 	if (!message.isEmpty())
 	{
-		GameGlobals::events->emit<SendChatEvent>(message);
+		GameGlobals::events->sendChat.emit(message);
 		m_editBox->setText("");
 	}
 }
 
-void MenuPageChat::receive(const ChatEvent &evt)
+void MenuPageChat::onChat(const string &message, const string &name)
 {
-	m_chatBox->addLine(evt.name + ": " + evt.message);
+	m_chatBox->addLine(name + ": " + message);
 }
 
-void MenuPageChat::receive(const PlayerJoinEvent &evt)
+void MenuPageChat::onPlayerJoin(uint8_t playerIndex, const string &name)
 {
-	m_chatBox->addLine(">" + evt.name + " joined the game", sf::Color::Green);
+	m_chatBox->addLine(">" + name + " joined the game", sf::Color::Green);
 }
 
-void MenuPageChat::receive(const DisconnectEvent& evt)
+void MenuPageChat::onDisconnect(const string &reason, NetPlayerInfo *playerInfo)
 {
-	if (evt.playerInfo)
-		m_chatBox->addLine(">" + evt.playerInfo->name + " left the game", sf::Color::Green);
+	if (playerInfo)
+		m_chatBox->addLine(">" + playerInfo->name + " left the game", sf::Color::Green);
 }

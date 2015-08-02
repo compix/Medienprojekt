@@ -1,19 +1,16 @@
 #pragma once
 #include "../MenuPage.h"
-#include "../../Events/ChatEvent.h"
-#include "../../Events/PlayerJoinEvent.h"
-#include "../../Events/DisconnectEvent.h"
+struct NetPlayerInfo;
 
-using entityx::Receiver;
-
-class MenuPageChat : public MenuPage, public Receiver<MenuPageChat>
+class MenuPageChat : public MenuPage
 {
 public:
 	MenuPageChat(Menu &menu);
-
-	void receive(const ChatEvent& evt);
-	void receive(const PlayerJoinEvent& evt);
-	void receive(const DisconnectEvent& evt);
+	
+private:
+	void onChat(const string &message, const string &name);
+	void onPlayerJoin(uint8_t playerIndex, const string &name);
+	void onDisconnect(const string &reason, NetPlayerInfo *playerInfo);
 protected:
 	void onSubmit();
 protected:

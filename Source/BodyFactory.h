@@ -1,8 +1,8 @@
 #pragma once
 #include <Box2D/Box2D.h>
-#include <entityx/Entity.h>
+#include "ecstasy/core/Entity.h"
 
-using entityx::Entity;
+using ECS::Entity;
 
 class BodyFactory
 {

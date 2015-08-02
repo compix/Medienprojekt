@@ -1,5 +1,5 @@
 #include "MenuPageLoading.h"
-#include "../../Events/PreloadEvent.h"
+
 #include "../../Game.h"
 
 MenuPageLoading::MenuPageLoading(Menu &menu)
@@ -14,12 +14,12 @@ MenuPageLoading::MenuPageLoading(Menu &menu)
 	m_filename = createLabel(50, 150, "");
 }
 
-void MenuPageLoading::receive(const PreloadEvent& evt)
+void MenuPageLoading::onPreload(int progress, int total, string nextSection, const string &nextFilename)
 {
-	m_loadingBar->setMaximum(evt.total);
-	m_loadingBar->setValue(evt.progress);
-	if (evt.progress == evt.total)
+	m_loadingBar->setMaximum(total);
+	m_loadingBar->setValue(progress);
+	if (progress == total)
 		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
-	m_section->setText(evt.nextSection);
-	m_filename->setText(evt.nextFilename);
+	m_section->setText(nextSection);
+	m_filename->setText(nextFilename);
 }

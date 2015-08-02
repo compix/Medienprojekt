@@ -1,13 +1,16 @@
 #pragma once
-#include <entityx/Entity.h>
+#include <ecstasy/core/Component.h>
+#include "ecstasy/core/Entity.h"
 
 /**
  * @brief	An entity can own another entity: A character owns a bomb for example.
  */
 
-struct OwnerComponent
+struct OwnerComponent: public ECS::Component<OwnerComponent>
 {
-	OwnerComponent(entityx::Entity entity) : entity(entity) {}
-
-	entityx::Entity entity;
+	uint64_t entityId = 0;
+	
+	void reset() override {
+		entityId = 0;
+	}
 };

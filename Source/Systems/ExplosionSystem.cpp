@@ -16,13 +16,13 @@
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
 
-void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
+void ExplosionSystem::update(float dt)
 {
 	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent>())
 	{
-		auto layer = entity.component<LayerComponent>();
-		auto spread = entity.component<SpreadComponent>();
-		auto cell = entity.component<CellComponent>();
+		auto layer = entity->get<LayerComponent>();
+		auto spread = entity->get<SpreadComponent>();
+		auto cell = entity->get<CellComponent>();
 
 		if (!spread || !cell || spread->stopped)
 			continue;
@@ -39,7 +39,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				int nextRange = spread->range - 1;
 				for (auto& e : m_layerManager->getEntities(layer->layer, nextCellX, nextCellY))
 				{
-					if (e.has_component<ExplosionComponent>() || e.has_component<EffectComponent>() || e.has_component<InventoryComponent>() || e.has_component<PortalComponent>())
+					if (e->has<ExplosionComponent>() || e->has<EffectComponent>() || e->has<InventoryComponent>() || e->has<PortalComponent>())
 						continue;
 
 					nextRange = 0;

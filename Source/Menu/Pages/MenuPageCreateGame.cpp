@@ -1,9 +1,9 @@
 #include "MenuPageCreateGame.h"
-#include "../../Events/CreateGameEvent.h"
+
 #include <format.h>
 #include "../../GameGlobals.h"
 #include "../Menu.h"
-#include "../../Events/LobbyEvent.h"
+
 
 MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	:MenuPage(menu)
@@ -92,7 +92,7 @@ void MenuPageCreateGame::onSubmit()
 		std::string port = m_port->getText();
 		int portValue = atoi(port.c_str());
 
-		GameGlobals::events->emit<CreateGameEvent>(width, height, players, portValue, onlinePlayers);
+		GameGlobals::events->createGame.emit(width, height, players, portValue, onlinePlayers);
 		m_menu.showLobby();
 
 		LobbyEvent evt(numPlayers);
@@ -106,11 +106,11 @@ void MenuPageCreateGame::onSubmit()
 			else
 				evt.name[i] = players[i].name;
 		}
-		GameGlobals::events->emit(evt);
+		GameGlobals::events->lobby.emit(evt);
 	}
 	else
 	{
-		GameGlobals::events->emit<CreateGameEvent>(width, height, players);
+		GameGlobals::events->createGame.emit(width, height, players);
 		m_menu.popPage();
 		m_menu.popPage();
 	}

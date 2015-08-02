@@ -41,7 +41,7 @@ void PhysixSystem::SetGravity(b2Vec2 gravity)
 	m_World.SetGravity(gravity);
 }
 
-void PhysixSystem::Update(entityx::TimeDelta dt)
+void PhysixSystem::Update(float dt)
 {
 	m_World.Step(dt,m_velocityIterations,m_positionIteration);
 }

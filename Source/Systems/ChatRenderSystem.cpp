@@ -2,8 +2,8 @@
 #include <iostream>
 #include <format.h>
 #include "../GameGlobals.h"
-#include "../Events/ChatEvent.h"
-#include "../Events/ExitEvent.h"
+
+
 #include "../Utils/Math.h"
 
 ChatRenderSystem::ChatRenderSystem()
@@ -11,7 +11,7 @@ ChatRenderSystem::ChatRenderSystem()
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
 		std::cout << "Failed to load font Assets/fonts/DejaVuSans.ttf" << std::endl;
-		GameGlobals::events->emit<ExitEvent>();
+		GameGlobals::events->exit.emit();
 	}
 	m_lineSpacing = m_font.getLineSpacing(18);
 
@@ -34,11 +34,11 @@ ChatRenderSystem::~ChatRenderSystem()
 	GameGlobals::events->unsubscribe<ChatEvent>(*this);
 }
 
-void ChatRenderSystem::configure(entityx::EventManager& events)
+void ChatRenderSystem::addedToEngine(Engine *engine)
 {
 	events.subscribe<ChatEvent>(*this);
 }
-void ChatRenderSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
+void ChatRenderSystem::update(float dt)
 {
 	if (m_moveUpTime > 0)
 		m_moveUpTime -= dt;
@@ -48,7 +48,7 @@ void ChatRenderSystem::update(EntityManager &entityManager, EventManager &eventM
 	GameGlobals::window->setView(*GameGlobals::gameView);
 }
 
-void ChatRenderSystem::updateEntries(TimeDelta dt)
+void ChatRenderSystem::updateEntries(float dt)
 {
 	int oldestEntry = m_oldestEntry;
 	int index = m_oldestEntry;
@@ -104,12 +104,12 @@ void ChatRenderSystem::renderEntries()
 	} while (index != m_oldestEntry);
 }
 
-void ChatRenderSystem::receive(const ChatEvent &evt)
+void ChatRenderSystem::onChat(const string &message, const string &name)
 {
 	auto & entry = getChatEntry();
 	entry.timeLeft = 5;
-	entry.name.setString(fmt::format("{}: ", evt.name));
-	entry.message.setString(evt.message);
+	entry.name.setString(fmt::format("{}: ", name));
+	entry.message.setString(message);
 }
 
 ChatEntry& ChatRenderSystem::getChatEntry()

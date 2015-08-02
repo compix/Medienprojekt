@@ -4,6 +4,7 @@
 #include "../Utils/AssetManagement/AssetManager.h"
 #include "../GameGlobals.h"
 #include "../Components/EffectComponent.h"
+#include <ecstasy/core/Entity.h>
 
 ParticleSystem::ParticleSystem()
 {
@@ -12,19 +13,22 @@ ParticleSystem::ParticleSystem()
 	createManager("smoke", 500, 500);
 }
 
-void ParticleSystem::configure(entityx::EventManager& events)
+void ParticleSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<entityx::EntityDestroyedEvent>(*this);
+	m_connections += engine->entityRemoved.connect(this, ParticleSystem::onEntityRemoved);
 }
 
-void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
+void ParticleSystem::removedFromEngine(Engine *engine)
 {
-	auto entity = e.entity;
+	m_connections.removeAll();
+}
 
-	if (!entity.valid())
+void ParticleSystem::onEntityRemoved(Entity *entity)
+{
+	if (!entity->isValid())
 		return;
 
-	auto particleComponent = entity.component<ParticleComponent>();
+	auto particleComponent = entity->get<ParticleComponent>();
 	if (particleComponent)
 	{
 		particleComponent->emitter->remove();
@@ -37,20 +41,20 @@ void ParticleSystem::createManager(const std::string& textureName, uint32_t maxP
 	m_particleManagers.insert({ textureName, ParticleManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
 }
 
-void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void ParticleSystem::update(float dt)
 {
 	for (auto e : entityManager.entities_with_components<ParticleComponent, TransformComponent>())
 	{
-		auto particleComponent = e.component<ParticleComponent>();
-		auto transform = e.component<TransformComponent>();
+		auto particleComponent = e->get<ParticleComponent>();
+		auto transform = e->get<TransformComponent>();
 
 		if (particleComponent->emitter->isFollowing())
 		{
 			auto target = particleComponent->emitter->m_target;
 			
-			if (target.valid() && target.has_component<TransformComponent>() && e.has_component<EffectComponent>())
+			if (target->isValid() && target->has<TransformComponent>() && e->has<EffectComponent>())
 			{
-				auto targetTransform = target.component<TransformComponent>();
+				auto targetTransform = target->get<TransformComponent>();
 				transform->x = targetTransform->x;
 				transform->y = targetTransform->y + 1.f; // + 1.f = little hack to force drawing the particle effect on top of the target
 			}

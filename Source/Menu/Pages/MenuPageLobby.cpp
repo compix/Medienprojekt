@@ -1,16 +1,16 @@
 #include "MenuPageLobby.h"
 #include "../../GameGlobals.h"
 #include "MenuPageChat.h"
-#include "../../Events/SendChatEvent.h"
-#include "../../Events/LobbyEvent.h"
-#include "../../Events/CountdownEvent.h"
+
+
+
 #include <format.h>
-#include "../../Events/SetReadyEvent.h"
-#include "../../Events/ReadyEvent.h"
-#include "../../Events/StartGameEvent.h"
+
+
+
 #include "../Menu.h"
-#include "../../Events/ForceDisconnectEvent.h"
-#include "../../Events/DisconnectEvent.h"
+
+
 #include "../../Network/NetPlayerInfo.h"
 
 MenuPageLobby::MenuPageLobby(Menu &menu)
@@ -90,24 +90,24 @@ void MenuPageLobby::onSubmit()
 	sf::String message = m_editBox->getText();
 	if (!message.isEmpty())
 	{
-		GameGlobals::events->emit<SendChatEvent>(message);
+		GameGlobals::events->sendChat.emit(message);
 		m_editBox->setText("");
 	}
 }
 
 void MenuPageLobby::onAbort()
 {
-	GameGlobals::events->emit<ForceDisconnectEvent>();
+	GameGlobals::events->forceDisconnect.emit();
 	m_menu.popPage();
 }
 
 void MenuPageLobby::onChange(int index)
 {
 	if(!m_ignoreChecked)
-		GameGlobals::events->emit<SetReadyEvent>(index, m_ready[index]->isChecked());
+		GameGlobals::events->setReady.emit(index, m_ready[index]->isChecked());
 }
 
-void MenuPageLobby::receive(const LobbyEvent& evt)
+void MenuPageLobby::onLobby(const LobbyEvent& evt)
 {
 	m_ignoreChecked = true;
 	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
@@ -121,52 +121,52 @@ void MenuPageLobby::receive(const LobbyEvent& evt)
 	m_ignoreChecked = false;
 }
 
-void MenuPageLobby::receive(const LobbyEventDisable& evt)
+void MenuPageLobby::onLobbyDisable()
 {
 	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 		setEnabled(m_ready[i], false);
 }
 
 
-void MenuPageLobby::receive(const ChatEvent &evt)
+void MenuPageLobby::onChat(const string &message, const string &name)
 {
-	m_chatBox->addLine(evt.name + ": " + evt.message);
+	m_chatBox->addLine(name + ": " + message);
 }
 
-void MenuPageLobby::receive(const PlayerJoinEvent &evt)
+void MenuPageLobby::onPlayerJoin(uint8_t playerIndex, const string &name)
 {
 	m_ignoreChecked = true;
-	m_name[evt.playerIndex]->setText(evt.name);
-	setChecked(m_ready[evt.playerIndex], false);
-	m_chatBox->addLine(">" + evt.name + " joined the game", sf::Color::Green);
+	m_name[playerIndex]->setText(name);
+	setChecked(m_ready[playerIndex], false);
+	m_chatBox->addLine(">" + name + " joined the game", sf::Color::Green);
 	m_ignoreChecked = false;
 }
 
-void MenuPageLobby::receive(const DisconnectEvent& evt)
+void MenuPageLobby::onDisconnect(const string &reason, NetPlayerInfo *playerInfo)
 {
-	if (evt.playerInfo)
+	if (playerInfo)
 	{
 		m_ignoreChecked = true;
-		m_name[evt.playerInfo->playerIndex]->setText("?");
-		setChecked(m_ready[evt.playerInfo->playerIndex], false);
-		m_chatBox->addLine(">" + evt.playerInfo->name + " left the game", sf::Color::Green);
+		m_name[playerInfo->playerIndex]->setText("?");
+		setChecked(m_ready[playerInfo->playerIndex], false);
+		m_chatBox->addLine(">" + playerInfo->name + " left the game", sf::Color::Green);
 		m_ignoreChecked = false;
 	}
 }
 
-void MenuPageLobby::receive(const ReadyEvent& evt)
+void MenuPageLobby::onReady(uint8_t playerIndex, bool ready)
 {
 	m_ignoreChecked = true;
-	setChecked(m_ready[evt.playerIndex], evt.ready);
+	setChecked(m_ready[playerIndex], ready);
 	m_ignoreChecked = false;
 }
 
-void MenuPageLobby::receive(const StartGameEvent& evt)
+void MenuPageLobby::onStartGame()
 {
 	m_menu.popAllPages();
 }
 
-void MenuPageLobby::receive(const CountdownEvent& evt)
+void MenuPageLobby::onCountdown(const string &name, CreateGamePlayerType type)
 {
-	m_timer->setText(evt.message);
+	m_timer->setText(message);
 }

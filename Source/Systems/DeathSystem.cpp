@@ -1,5 +1,5 @@
 #include "DeathSystem.h"
-#include "../Events/DeathEvent.h"
+
 #include "../Components/DestructionDelayComponent.h"
 #include "../Components/DestructionComponent.h"
 #include "../Components/BodyComponent.h"
@@ -10,32 +10,32 @@ DeathSystem::~DeathSystem()
 	GameGlobals::events->unsubscribe<DeathEvent>(*this);
 }
 
-void DeathSystem::configure(entityx::EventManager& events)
+void DeathSystem::addedToEngine(Engine *engine)
 {
 	events.subscribe<DeathEvent>(*this);
 }
 
-void DeathSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void DeathSystem::update(float dt)
 {
 }
 
-void DeathSystem::receive(const DeathEvent& deathEvent)
+void DeathSystem::onDeath(Entity *dyingEntity)
 {
 	auto dyingEntity = deathEvent.dyingEntity;
 
-	if (!dyingEntity.valid())
+	if (!dyingEntity->isValid())
 		return;
 
-	auto delayComponent = dyingEntity.component<DestructionDelayComponent>();
+	auto delayComponent = dyingEntity->get<DestructionDelayComponent>();
 
 	if (delayComponent)
 	{
-		if (!dyingEntity.has_component<DestructionComponent>())
+		if (!dyingEntity->has<DestructionComponent>())
 			dyingEntity.assign<DestructionComponent>(delayComponent->seconds);
 	}
 	else
 	{
-		if (!dyingEntity.has_component<DestructionComponent>())
+		if (!dyingEntity->has<DestructionComponent>())
 			dyingEntity.assign<DestructionComponent>();
 	}
 }

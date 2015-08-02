@@ -1,15 +1,11 @@
 #pragma once
-#include <entityx/entityx.h>
 #include "../EntityLayer.h"
 
-using entityx::System;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
+using namespace ECS;
 
-class InputSystem : public System<InputSystem>
+class InputSystem : public EntitySystem<InputSystem>
 {
 public:
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+	void update(float dt) override;
 };
 

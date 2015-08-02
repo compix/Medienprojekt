@@ -6,7 +6,7 @@
 #include "../Utils/Math.h"
 #include <cinttypes>
 #include "../Utils/AssetManagement/TexturePacker.h"
-#include <../entityx/entityx/entityx.h>
+#include <ecstasy/core/Engine.h>
 
 struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
@@ -27,8 +27,8 @@ class ParticleEmitter : public sf::Drawable
 	friend class ParticleManager;
 	friend class ParticleSystem;
 public:
-	ParticleEmitter();
-	ParticleEmitter(uint32_t maxParticles);
+	ParticleEmitter(Engine *engine);
+	ParticleEmitter(Engine *engine, uint32_t maxParticles);
 
 	void update(float deltaTime);
 
@@ -54,7 +54,7 @@ public:
 	inline ParticleEmitter& blendMode(const sf::BlendMode& blendMode) { m_blendMode = blendMode; return *this; }
 	// default: FLT_MAX
 	inline ParticleEmitter& spawnDuration(float spawnDuration) { m_spawnDuration = spawnDuration; return *this; }
-	ParticleEmitter& follow(entityx::Entity entity);
+	ParticleEmitter& follow(Entity *entity);
 	inline void stopFollowing() { m_following = false; }
 	inline ParticleEmitter& goalRadius(float goalRadius) { m_goalRadius = goalRadius; return *this; }
 	inline bool isFollowing() { return m_following; }
@@ -73,6 +73,7 @@ private:
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
+	Engine *m_engine;
 	Assets::Texture* m_texture;
 	uint32_t m_numActive;
 
@@ -90,7 +91,7 @@ private:
 	int m_burstParticleNumber;
 	int m_burstNumber;
 
-	entityx::Entity m_target;
+	uint64_t m_targetId;
 	bool m_following;
 	float m_goalRadius;
 	float m_followSpeed;

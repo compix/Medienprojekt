@@ -2,18 +2,17 @@
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
 
-using namespace entityx;
 using sf::Sound;
-void SoundSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
+void SoundSystem::update(float dt)
 {
 }
 
-void SoundSystem::configure(entityx::EventManager& event_manager)
+void SoundSystem::addedToEngine(Engine *engine)
 {
 	event_manager.subscribe<SoundEvent>(*this);
 }
 
-void SoundSystem::receive(const SoundEvent& event)
+void SoundSystem::onSound(const string &name)
 {
-	GameGlobals::assetManager->getSound(event.name)->play();
+	GameGlobals::assetManager->getSound(name)->play();
 }

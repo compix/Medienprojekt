@@ -15,7 +15,7 @@ class AnimatorManager
 {
 public:
 	static void init();
-	static void assignCharacterAnimator(entityx::Entity& entity, int playerIndex);
+	static void assignCharacterAnimator(Entity *entity, int playerIndex);
 private:
 	static void initCharacterAnimator(AnimatorType type, const std::string &textureName);
 private:

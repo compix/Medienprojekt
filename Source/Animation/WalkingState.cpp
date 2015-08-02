@@ -4,10 +4,10 @@
 #include "../Components/InputComponent.h"
 #include "IdleState.h"
 
-void WalkingState::update(Animator* animator, entityx::Entity& entity, float deltaTime)
+void WalkingState::update(Animator* animator, Entity *entity, float deltaTime)
 {
-	auto directionComponent = entity.component<DirectionComponent>();
-	auto inputComponent = entity.component<InputComponent>();
+	auto directionComponent = entity->get<DirectionComponent>();
+	auto inputComponent = entity->get<InputComponent>();
 
 	if (inputComponent)
 	{

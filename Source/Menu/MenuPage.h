@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <TGUI/TGUI.hpp>
-#include <entityx/entityx.h>
 
 using std::string;
 class Menu;

@@ -1,10 +1,14 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
 /**
  * @brief	Serves as a flag.
  */
-struct LocalInputComponent
+struct LocalInputComponent: public ECS::Component<LocalInputComponent>
 {
-	LocalInputComponent(int inputIndex) : inputIndex(inputIndex) {}
-	int inputIndex;
+	int inputIndex = 0;
+	
+	void reset() override {
+		inputIndex = 0;
+	}
 };

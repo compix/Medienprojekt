@@ -1,7 +1,6 @@
 #pragma once
 #include <map>
-#include <entityx/entityx.h>
-#include "../Events/MenuShowEvent.h"
+
 #include <SFML/Window/Joystick.hpp>
 #include "../GameConstants.h"
 
@@ -9,8 +8,6 @@ namespace sf
 {
 	class Event;
 }
-
-using entityx::Receiver;
 
 enum PlayerButton
 {
@@ -50,7 +47,7 @@ struct JoystickConfig
 	float scaleY;
 };
 
-class InputManager : public Receiver<InputManager>
+class InputManager 
 {
 public:
 	InputManager();
@@ -62,8 +59,8 @@ public:
 	static int getKeyCode(const char *name);
 	static sf::Joystick::Axis getAxis(const char *name);
 
-	void receive(const sf::Event &evt);
-	void receive(const MenuShowEvent &evt);
+	void onSfml(const sf::Event &evt);
+	void onMenuShow(bool visible);
 	
 	void update();
 

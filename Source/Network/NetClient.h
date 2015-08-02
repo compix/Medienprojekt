@@ -2,21 +2,16 @@
 #include "NetConstants.h"
 #include "../NetCode/Message.h"
 #include "../NetCode/Connection.h"
-#include <entityx/entityx.h>
 #include <map>
 
 using NetCode::ClientConnection;
 using NetCode::MessageHandler;
 using NetCode::MessageWriter;
 using NetCode::MessageReader;
-using entityx::EventManager;
-using entityx::Receiver;
-using entityx::Entity;
 
-struct SendChatEvent;
-struct SetReadyEvent;
+using ECS::Entity;
 
-class NetClient : public Receiver<NetClient>
+class NetClient 
 {
 public:
 	NetClient();
@@ -26,9 +21,6 @@ public:
 	void sendInputEventMessage(MessageType type);
 	bool connect(const std::string &hostname, int port);
 	void disconnect();
-
-	void receive(const SendChatEvent &evt);
-	void receive(const SetReadyEvent &evt);
 
 	void onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onPlayerReadyMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
@@ -50,8 +42,11 @@ public:
 	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+
 private:
-	void mapEntity(uint64_t id, Entity entity);
+	void onSendChat(const string &message);
+	void onSetReady(int playerIndex, bool ready);
+	void mapEntity(uint64_t id, Entity *entity);
 	Entity getEntity(uint64_t id);
 	void send(NetChannel channel, ENetPacket *packet);
 

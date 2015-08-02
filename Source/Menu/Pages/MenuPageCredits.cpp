@@ -7,6 +7,6 @@ MenuPageCredits::MenuPageCredits(Menu &menu)
 	createLabel(50, 50, "Credits");
 
 	createLabel(50, 250, "Dennis Grass");
-	createLabel(275, 350, "Wladimir Kröker");
+	createLabel(275, 350, "Wladimir KrÃ¶ker");
 	createLabel(500, 250, "Santo Pfingsten");
 }

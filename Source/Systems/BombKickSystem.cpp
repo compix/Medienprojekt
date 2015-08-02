@@ -16,16 +16,15 @@ BombKickSystem::BombKickSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
 
 
-void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void BombKickSystem::update(float dt)
 {
 	//Check to kick Bombs
 	for (auto player : entityManager.entities_with_components<InputComponent, CellComponent, LayerComponent>()) 
 	{
 
-		auto cellComponent = player.component<CellComponent>();
-		auto layerComponent = player.component<LayerComponent>();
-		auto inputComponent = player.component<InputComponent>();
-
+		auto cellComponent = player->get<CellComponent>();
+		auto layerComponent = player->get<LayerComponent>();
+		auto inputComponent = player->get<InputComponent>();
 
 		auto leftBombEntity = m_layerManager->getEntityWithComponent<BombComponent>(layerComponent->layer, cellComponent->x-1, cellComponent->y);
 		auto downBombEntity = m_layerManager->getEntityWithComponent<BombComponent>(layerComponent->layer, cellComponent->x, cellComponent->y+1);
@@ -42,18 +41,18 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 	//Check to stop kicked Bombs
 	for (auto bombs : entityManager.entities_with_components<BombComponent, CellComponent, LayerComponent, BodyComponent>()) 
 	{
-		auto cellComponent = bombs.component<CellComponent>();
-		auto layerComponent = bombs.component<LayerComponent>();
+		auto cellComponent = bombs->get<CellComponent>();
+		auto layerComponent = bombs->get<LayerComponent>();
 
 		auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - 1, cellComponent->y);
 		auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + 1);
 		auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + 1, cellComponent->y);
 		auto upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - 1);
 
-		b2Body* body = bombs.component<BodyComponent>()->body;
+		b2Body* body = bombs->get<BodyComponent>()->body;
 		b2Vec2 velo = body->GetLinearVelocity();
 
-		if (velo.Length() != 0){ // Wenn Geschwindigkeits Vektorlänge nicht null ist, also sich bewegt.
+		if (velo.Length() != 0){ // Wenn Geschwindigkeits Vektorlï¿½nge nicht null ist, also sich bewegt.
 			if (velo.y < 0)
 			{
 				if (upWall){
@@ -121,7 +120,7 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 				case Direction::RIGHT:	force.x = forcePower;	break;
 				default: break;
 				}
-				if (entity->component<InventoryComponent>()->bombKick && entity->component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
+				if (entity->component<InventoryComponent>()->bombKick && entity->component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus ï¿½bereinstimmt.
 				{
 					sensor->SetLinearVelocity(force);
 				}
@@ -145,8 +144,8 @@ bool BombKickSystem::fitIntoCell(SpriteComponent* spriteComponent, TransformComp
 void BombKickSystem::checkCollisionWithBomb(Entity e, Direction direction)
 {
 	{
-		if (e && e.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0){
-			for (b2ContactEdge* edge = e.component<BodyComponent>()->body->GetContactList(); edge; edge = edge->next)
+		if (e && e->get<BodyComponent>()->body->GetLinearVelocity().Length() == 0){
+			for (b2ContactEdge* edge = e->get<BodyComponent>()->body->GetContactList(); edge; edge = edge->next)
 			{
 				b2Contact* contact = edge->contact;
 				b2Fixture* fixtureA = contact->GetFixtureA();

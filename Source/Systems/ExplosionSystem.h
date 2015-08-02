@@ -1,13 +1,13 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 #include "../EntityFactory.h"
 
-class ExplosionSystem : public entityx::System<ExplosionSystem>
+class ExplosionSystem : public EntitySystem<ExplosionSystem>
 {
 public:
 	explicit ExplosionSystem(LayerManager* layerManager);
 
-	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
 private:
 	LayerManager* m_layerManager;

@@ -1,13 +1,12 @@
 #pragma once
 #include "../MenuPage.h"
 #include "MenuPageLobby.h"
-#include "../../Events/ChatEvent.h"
-#include "../../Events/PlayerJoinEvent.h"
+#include <signal11/Signal.h>
+using Signal11::ScopedConnectionRef;
 
-struct ClientStateEvent;
-using entityx::Receiver;
+enum class ClientState;
 
-class MenuPageConnecting : public MenuPage, public Receiver<MenuPageConnecting>
+class MenuPageConnecting : public MenuPage
 {
 public:
 	MenuPageConnecting(Menu &menu);
@@ -16,9 +15,11 @@ public:
 	void hide() override;
 	virtual void onEscape() override {}
 
-	void receive(const ClientStateEvent& evt);
+private:
+	void onClientState(const string &message, ClientState state);
 
 protected:
 	void onAbort();
 	tgui::ChatBox::Ptr m_chatBox;
+	ScopedConnectionRef m_clientStateConnection;
 };

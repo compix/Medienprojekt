@@ -6,7 +6,7 @@
 #include "../Components/ParticleComponent.h"
 #include "../Components/ShaderComponent.h"
 #include "../GameGlobals.h"
-#include "../Events/ExitEvent.h"
+
 
 RenderSystem::RenderSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
@@ -14,7 +14,7 @@ RenderSystem::RenderSystem(LayerManager* layerManager)
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
 		std::cout << "Failed to load font Assets/fonts/DejaVuSans.ttf" << std::endl;
-		GameGlobals::events->emit<ExitEvent>();
+		GameGlobals::events->.exit.emit();
 	}
 
 	m_fpsText.setFont(m_font);
@@ -23,7 +23,7 @@ RenderSystem::RenderSystem(LayerManager* layerManager)
 	m_fpsText.setStyle(sf::Text::Bold);
 }
 
-void RenderSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
+void RenderSystem::update(float dt)
 {
 	for (auto& layer : m_layerManager->getLayers())
 	{
@@ -48,17 +48,17 @@ void RenderSystem::render(EntityLayer* layer)
 
 			for (auto& e : collection)
 			{
-				if (!e.valid())
+				if (!e->isValid())
 					continue;
 
-				auto transform = e.component<TransformComponent>();
-				auto sprite = e.component<SpriteComponent>();
-				auto particleComponent = e.component<ParticleComponent>();
+				auto transform = e->get<TransformComponent>();
+				auto sprite = e->get<SpriteComponent>();
+				auto particleComponent = e->get<ParticleComponent>();
 
 				if (!transform)
 					continue;
 
-				auto shaderComponent = e.component<ShaderComponent>();
+				auto shaderComponent = e->get<ShaderComponent>();
 				sf::Shader* shader = nullptr;
 
 				if (shaderComponent)

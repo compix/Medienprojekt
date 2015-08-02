@@ -1,12 +1,15 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 #include <vector>
-#include <entityx/Entity.h>
+#include "ecstasy/core/Entity.h"
 
-struct LinkComponent
+struct LinkComponent: public ECS::Component<LinkComponent>
 {
-	LinkComponent(bool dependent) : dependent(dependent) {}
-	LinkComponent() : dependent(true) {}
-
-	bool dependent; // If dependent then links will be destroyed as soon as the owner of this component is destroyed
-	std::vector<entityx::Entity> links;
+	bool dependent = true; // If dependent then links will be destroyed as soon as the owner of this component is destroyed
+	std::vector<uint64_t> links;
+	
+	void reset() override {
+		dependent = true;
+		links.clear();
+	}
 };

@@ -1,10 +1,12 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 #include <cinttypes>
 
-struct PlayerComponent
+struct PlayerComponent: public ECS::Component<PlayerComponent>
 {
-	PlayerComponent(uint8_t index)
-		: index(index) {}
-
-	uint8_t index;
+	uint8_t index = 0;
+	
+	void reset() override {
+		index = 0;
+	}
 };

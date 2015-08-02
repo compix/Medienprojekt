@@ -12,9 +12,9 @@ void AnimatorManager::init()
 	initCharacterAnimator(AnimatorType::PLAYER3, "player3");
 }
 
-void AnimatorManager::assignCharacterAnimator(entityx::Entity& entity, int playerIndex)
+void AnimatorManager::assignCharacterAnimator(Entity *entity, int playerIndex)
 {
-	auto animationComponent = entity.component<AnimationComponent>();
+	auto animationComponent = entity->get<AnimationComponent>();
 	assert(animationComponent);
 
 	auto animator = m_animators[(AnimatorType)((int)AnimatorType::PLAYER0 + playerIndex)].get();

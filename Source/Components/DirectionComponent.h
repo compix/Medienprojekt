@@ -1,10 +1,12 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 #include "../Utils/Common.h"
 
-struct DirectionComponent
+struct DirectionComponent: public ECS::Component<DirectionComponent>
 {
-	DirectionComponent() : direction(Direction::DOWN) {}
-	DirectionComponent(Direction dir) : direction(dir) {}
-
-	Direction direction;
+	Direction direction = Direction::DOWN;
+	
+	void reset() override {
+		direction = Direction::DOWN;
+	}
 };

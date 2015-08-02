@@ -7,7 +7,7 @@
 #include "../Components/LayerComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../Components/DestructionComponent.h"
-#include "../Events/ItemPickedUpEvent.h"
+
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
@@ -20,27 +20,27 @@ ItemSystem::~ItemSystem()
 	GameGlobals::events->unsubscribe<ItemPickedUpEvent>(*this);
 }
 
-void ItemSystem::configure(entityx::EventManager& events)
+void ItemSystem::addedToEngine(Engine *engine)
 {
 	events.subscribe<entityx::EntityDestroyedEvent>(*this);
 	events.subscribe<ItemPickedUpEvent>(*this);
 }
 
-void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void ItemSystem::update(float dt)
 {
 	for (auto item : entityManager.entities_with_components<ItemComponent, CellComponent, LayerComponent>())
 	{
-		if (!item.valid() || item.has_component<DestructionComponent>())
+		if (!item->isValid() || item->has<DestructionComponent>())
 			continue;
 
-		auto cellComponent = item.component<CellComponent>();
-		auto layerComponent = item.component<LayerComponent>();
-		auto itemComponent = item.component<ItemComponent>();
+		auto cellComponent = item->get<CellComponent>();
+		auto layerComponent = item->get<LayerComponent>();
+		auto itemComponent = item->get<ItemComponent>();
 
 		auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
-		if (entityWithInventory.valid())
+		if (entityWithInventory->isValid())
 		{
-			auto inventory = entityWithInventory.component<InventoryComponent>();
+			auto inventory = entityWithInventory->get<InventoryComponent>();
 
 			switch (itemComponent->type)
 			{
@@ -64,16 +64,14 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 	}
 }
 
-void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
+void ItemSystem::onEntityDestroyed(Entity *entity)
 {
-	if (!e.entity.valid())
+	if (!entity->isValid())
 		return;
 
-	if (e.entity.has_component<BlockComponent>())
+	if (entity->has<BlockComponent>())
 	{
-		auto entity = e.entity;
-
-		auto cell = entity.component<CellComponent>();
+		auto cell = entity->get<CellComponent>();
 		assert(cell);
 
 		if (Random::getInt(1, 100) <= 33) // 33% Chance to spawn an item
@@ -93,11 +91,9 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 	}
 }
 
-void ItemSystem::receive(const ItemPickedUpEvent& e)
+void ItemSystem::onItemPickedUp(Entity *item, Entity *itemReceiver)
 {
-	auto item = e.item;
-
-	if (!item.valid())
+	if (!item->isValid())
 		return;
 
 	item.assign<DestructionComponent>(0.f);

@@ -1,17 +1,19 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
+using namespace ECS;
 
-struct BombExplodedEvent;
 
-class InventorySystem : public entityx::System<InventorySystem>, public entityx::Receiver<InventorySystem>
+
+class InventorySystem : public EntitySystem<InventorySystem>
 {
 public:
 	~InventorySystem();
 
-	void configure(entityx::EventManager& events) override;
+	void addedToEngine(Engine *engine) override;
 
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
-	void receive(const BombExplodedEvent& e);
+private:
+	void onBombExploded(Entity *bomb);
 };
 

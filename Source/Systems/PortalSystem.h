@@ -1,34 +1,29 @@
 #pragma once
-#include <entityx/entityx.h>
 #include "../Components/BodyComponent.h"
 #include "../Components/PortalComponent.h"
-#include "../Events/TimeoutEvent.h"
-#include "../Events/CreatePortalEvent.h"
+
+
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
 
-struct TimeoutEvent;
-using entityx::System;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
-using entityx::Receiver;
-using entityx::ComponentAddedEvent;
 
-class PortalSystem : public System<PortalSystem>, public Receiver<PortalSystem>
+using namespace ECS;
+
+class PortalSystem : public EntitySystem<PortalSystem>
 {
 public:
 	PortalSystem(LayerManager* layerManager);
 	~PortalSystem();
-	void configure(entityx::EventManager &event_manager) override;
-	void receive(const entityx::ComponentAddedEvent<PortalComponent> &event);
-	void receive(const entityx::EntityDestroyedEvent& event);
-	void receive(const CreatePortalEvent& event);
+	void addedToEngine(Engine *engine) override;
 	b2Vec2 fitEntityIntoCell(CellComponent* cellComponent);
-	void receive(const TimeoutEvent& timeoutEvent);
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+	void update(float dt) override;
 
 private:
+	void onEntityDestroyed(Entity *entity);
+	void onCreatePortal(Entity *triggerEntity);
+	void onTimeout(Entity *affectedEntity);
+	
+private:
 	LayerManager* m_layerManager;
-	std::multimap<Entity::Id, Entity> m_portals; //erlaubt mehrere Values zu einem Key 
+	std::multimap<uint64_t, Entity> m_portals; //erlaubt mehrere Values zu einem Key 
 };

@@ -1,5 +1,5 @@
 #include "MenuPageRoot.h"
-#include "../../Events/ExitEvent.h"
+
 #include "../Menu.h"
 #include "../../GameGlobals.h"
 
@@ -56,5 +56,5 @@ void MenuPageRoot::onCredits()
 
 void MenuPageRoot::onExit()
 {
-	GameGlobals::events->emit<ExitEvent>();
+	GameGlobals::events->exit.emit();
 }

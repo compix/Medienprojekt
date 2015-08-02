@@ -8,6 +8,7 @@
 #include "GameGlobals.h"
 #include "Components/DynamicComponent.h"
 #include "Utils/PathFinding/Graph.h"
+#include <ecstasy/core/Engine.h>
 
 EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 {
@@ -18,18 +19,23 @@ EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 
 LayerManager::~LayerManager()
 {
-	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
 }
 
-void LayerManager::configure(entityx::EventManager& events)
+void LayerManager::addedToEngine(Engine *engine)
 {
-	events.subscribe<entityx::EntityDestroyedEvent>(*this);
+	m_engine = engine;
+	m_connections += engine->entityRemoved.connect(this, LayerManager::onEntityRemoved);
 }
 
-void LayerManager::receive(const entityx::EntityDestroyedEvent& e)
+void LayerManager::removedFromEngine(Engine *engine)
 {
-	Entity entity = e.entity;
-	auto cell = entity.component<CellComponent>();
+	m_engine = nullptr;
+	m_connections.removeAll();
+}
+
+void LayerManager::onEntityRemoved(Entity *entity)
+{
+	auto cell = entity->get<CellComponent>();
 
 	if (cell)
 	{
@@ -37,10 +43,10 @@ void LayerManager::receive(const entityx::EntityDestroyedEvent& e)
 	}
 }
 
-void LayerManager::add(Entity entity)
+void LayerManager::add(Entity *entity)
 {
-	auto cell = entity.component<CellComponent>();
-	auto layerComponent = entity.component<LayerComponent>();
+	auto cell = entity->get<CellComponent>();
+	auto layerComponent = entity->get<LayerComponent>();
 
 	if (!cell)
 		std::cout << "Warning: Attempt to add an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
@@ -61,10 +67,10 @@ void LayerManager::add(Entity entity)
 	}
 }
 
-void LayerManager::remove(Entity entity)
+void LayerManager::remove(Entity *entity)
 {
-	auto cell = entity.component<CellComponent>();
-	auto layerComponent = entity.component<LayerComponent>();
+	auto cell = entity->get<CellComponent>();
+	auto layerComponent = entity->get<LayerComponent>();
 
 	if (!cell)
 		std::cout << "Warning: Attempt to remove an entity failed. Reason: " << entity << " does not have a CellComponent." << std::endl;
@@ -92,11 +98,11 @@ void LayerManager::remove(Entity entity)
 void LayerManager::update()
 {
 	
-	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
+	for (auto entity : *m_engine->getEntitiesFor(Family::all<DynamicComponent>().get()))
 	{
-		auto layerComponent = entity.component<LayerComponent>();
-		auto cell = entity.component<CellComponent>();
-		auto transform = entity.component<TransformComponent>();
+		auto layerComponent = entity->get<LayerComponent>();
+		auto cell = entity->get<CellComponent>();
+		auto transform = entity->get<TransformComponent>();
 
 		assert(layerComponent && cell && transform);
 

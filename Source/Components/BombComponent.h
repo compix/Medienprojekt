@@ -1,11 +1,15 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct BombComponent
+struct BombComponent: public ECS::Component<BombComponent>
 {
-	BombComponent(int explosionRange, float explosionSpreadTime) 
-		: explosionRange(explosionRange), explosionSpreadTime(explosionSpreadTime), exploded(false) {}
-
-	int explosionRange;
-	float explosionSpreadTime; // in seconds
-	bool exploded;
+	int explosionRange = 0;
+	float explosionSpreadTime = 0; // in seconds
+	bool exploded = false;
+	
+	void reset() override {
+		explosionRange = 0;
+		explosionSpreadTime = 0;
+		exploded = false;
+	}
 };

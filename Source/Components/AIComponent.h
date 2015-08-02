@@ -1,6 +1,7 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct AIComponent
+struct AIComponent: public ECS::Component<AIComponent>
 {
 	
 };

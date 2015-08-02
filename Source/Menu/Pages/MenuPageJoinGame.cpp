@@ -1,5 +1,5 @@
 #include "MenuPageJoinGame.h"
-#include "../../Events/JoinGameEvent.h"
+
 #include "../../GameGlobals.h"
 #include "../Menu.h"
 
@@ -49,5 +49,5 @@ void MenuPageJoinGame::onSubmit()
 	int portValue = atoi(port.c_str());
 
 	m_menu.pushPage(&m_connectingPage);
-	GameGlobals::events->emit<JoinGameEvent>(host, portValue, name);
+	GameGlobals::events->joinGame.emit(host, portValue, name);
 }

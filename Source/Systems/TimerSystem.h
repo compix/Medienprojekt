@@ -1,9 +1,9 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 
-class TimerSystem : public entityx::System<TimerSystem>
+class TimerSystem : public EntitySystem<TimerSystem>
 {
 public:
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 };
 

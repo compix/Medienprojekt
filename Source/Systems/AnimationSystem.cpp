@@ -8,15 +8,15 @@
 #include <algorithm>
 #include "../Animation/Animator.h"
 
-void AnimationSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
+void AnimationSystem::update(float dt)
 {
 	ComponentHandle<AnimationComponent> animation;
 	ComponentHandle<SpriteComponent> sprite;
 
 	for (auto entity : entityManager.entities_with_components<InputComponent, DirectionComponent>())
 	{
-		auto input = entity.component<InputComponent>();
-		auto directionComponent = entity.component<DirectionComponent>();
+		auto input = entity->get<InputComponent>();
+		auto directionComponent = entity->get<DirectionComponent>();
 		if (directionComponent)
 		{
 			if (abs(input->moveX) >= abs(input->moveY))
@@ -36,7 +36,7 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 		}
 	}
 	
-	for (Entity entity : entityManager.entities_with_components(animation, sprite))
+	for (Entity *entity : entityManager.entities_with_components(animation, sprite))
 	{
 		animation->animator->update(entity, (float)dt);
 

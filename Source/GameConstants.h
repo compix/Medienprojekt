@@ -10,7 +10,7 @@ namespace GameConstants
 
 	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
 	const float SPEED_MULTI_CAP = 3.f;		//Grenze des SPEED Multiplikators
-	const float SPEED_MULTI_INC = 0.25f;	//Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhöht wird
+	const float SPEED_MULTI_INC = 0.25f;	//Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhÃ¶ht wird
 	const float KICK_FORCE = 10.f;			//Kraft mit der die Bombe gekickt wird
 
 	const int FLOOR_LAYER = -1;

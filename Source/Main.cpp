@@ -14,10 +14,10 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Components/FreeSlotComponent.h"
-#include "Events/ClientStateEvent.h"
+
 #include <format.h>
-#include "Events/ForceDisconnectEvent.h"
-#include "Events/PreloadEvent.h"
+
+
 
 using namespace std;
 
@@ -25,8 +25,7 @@ namespace GameGlobals
 {
 	sf::RenderWindow *window = nullptr;
 	InputManager *input = nullptr;
-	EventManager *events = nullptr;
-	EntityManager *entities = nullptr;
+	GameEvents *events = nullptr;
 	EntityFactory *entityFactory = nullptr;
 	AssetManager *assetManager = nullptr;
 	unique_ptr<Game> game;
@@ -50,7 +49,8 @@ int Main::run()
 
 	NetCode::init();
 
-	GameGlobals::events = &m_events;
+	GameEvents events;
+	GameGlobals::events = &events;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 
@@ -66,11 +66,11 @@ int Main::run()
 	AssetManager assetManager;
 	GameGlobals::assetManager = &assetManager;
 
-	m_events.subscribe<ExitEvent>(*this);
-	m_events.subscribe<CreateGameEvent>(*this);
-	m_events.subscribe<JoinGameEvent>(*this);
-	m_events.subscribe<ForceDisconnectEvent>(*this);
-	m_events.subscribe<PreloadEvent>(*this);
+	events.exit.connect(this, Main::onExit);
+	events.createGame.connect(this, Main::onCreateGame);
+	events.joinGame.connect(this, Main::onJoinGame);
+	events.forceDisconnect.connect(this, Main::onForceDisconnect);
+	events.preload.connect(this, Main::onPreload);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 	sf::View screenView(sf::FloatRect(0, 0, 800, 600));
@@ -97,7 +97,7 @@ int Main::run()
 				GameGlobals::game->setMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 			}
 
-			m_events.emit(event);
+			GameGlobals::events->sfml.emit(event);
 		}
 
 		sf::Time deltaTime = clock.restart();
@@ -129,61 +129,61 @@ int Main::run()
 	return EXIT_SUCCESS;
 }
 
-void Main::receive(const CreateGameEvent& evt)
+void Main::onCreateGame(uint8_t width, uint8_t height, const vector<CreateGamePlayerInfo> &players, int port, int maxClients)
 {
 	disconnect();
-	if (evt.online)
+	if (port > 0)
 	{
 		m_server = make_unique<NetServer>();
-		if (m_server->connect(evt))
+		if (m_server->connect(width, height, players, port, maxClients))
 		{
 			cout << "Server created" << endl;
 			GameGlobals::game = make_unique<ServerGame>();
 			auto *game = (LocalGame *)GameGlobals::game.get();
-			game->init(evt.width, evt.height);
-			game->initPlayers(evt.players);
+			game->init(width, height);
+			game->initPlayers(players);
 		}
 		else
 		{
 			m_server.reset();
 			cerr << "Could not create server host" << endl;
-			GameGlobals::events->emit<ExitEvent>(); //fixme: show error to user
+			GameGlobals::events->exit.emit(); //fixme: show error to user
 		}
 	}
 	else
 	{
 		GameGlobals::game = make_unique<LocalGame>();
 		auto *game = (LocalGame *)GameGlobals::game.get();
-		game->init(evt.width, evt.height);
-		game->initPlayers(evt.players);
+		game->init(width, height);
+		game->initPlayers(players);
 		game->resetEntities();
 	}
 }
 
-void Main::receive(const JoinGameEvent& evt)
+void Main::onJoinGame(const string &host, int port, const string &name)
 {
 	disconnect();
 	m_client = make_unique<NetClient>();
-	if (m_client->connect(evt.host, evt.port))
+	if (m_client->connect(host, port))
 	{
-		GameGlobals::events->emit<ClientStateEvent>(fmt::format("Connecting to {}:{}", evt.host, evt.port), ClientState::CONNECTING);
+		GameGlobals::events->clientState.emit(fmt::format("Connecting to {}:{}", host, port), ClientState::CONNECTING);
 		GameGlobals::game = make_unique<ClientGame>();
 	}
 	else
 	{
 		m_client.reset();
-		GameGlobals::events->emit<ClientStateEvent>("Could not create client host", ClientState::DISCONNECTED);
+		GameGlobals::events->clientState.emit("Could not create client host", ClientState::DISCONNECTED);
 	}
 }
 
-void Main::receive(const ForceDisconnectEvent& evt)
+void Main::onForceDisconnect(const string &message)
 {
 	m_forceDisconnect = true;
 }
 
-void Main::receive(const PreloadEvent& evt)
+void Main::onPreload(int progress, int total, string nextSection, const string &nextFilename)
 {
-	if (evt.progress == evt.total)
+	if (progress == total)
 	{
 		AnimatorManager::init();
 
@@ -193,7 +193,7 @@ void Main::receive(const PreloadEvent& evt)
 		players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
 		players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::LOCAL));
 		players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::LOCAL));
-		m_events.emit<CreateGameEvent>(21, 21, players);
+		GameGlobals::events->createGame.emit(21, 21, players, 0, 0);
 	}
 }
 

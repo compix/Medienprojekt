@@ -1,15 +1,15 @@
 #pragma once
-#include <entityx/System.h>
+#include <ecstasy/core/EntitySystem.h>
 #include <SFML/Graphics/RenderTexture.hpp>
 
 namespace sf{
 	class RenderWindow;
 }
 
-class LightSystem : public entityx::System<LightSystem>
+class LightSystem : public EntitySystem<LightSystem>
 {
 public:
-	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
+	void update(float dt) override;
 
 	//inline const sf::Texture* getLightMap() { return &m_lightMap.getTexture(); };
 private:

@@ -1,8 +1,11 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct HealthComponent
+struct HealthComponent: public ECS::Component<HealthComponent>
 {
-	HealthComponent(int value) : value(value) {}
-
-	int value;
+	int value = 0;
+	
+	void reset() override {
+		value = 0;
+	}
 };

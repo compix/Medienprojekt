@@ -4,5 +4,5 @@
 class IdleState : public AnimationState
 {
 public:
-	void update(Animator* animator, entityx::Entity& entity, float deltaTime) override;
+	void update(Animator* animator, Entity *entity, float deltaTime) override;
 };

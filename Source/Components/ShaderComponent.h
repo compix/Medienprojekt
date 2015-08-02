@@ -1,4 +1,5 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
 enum class ShaderType
 {
@@ -6,10 +7,11 @@ enum class ShaderType
 	LIGHTMAP
 };
 
-struct ShaderComponent
+struct ShaderComponent: public ECS::Component<ShaderComponent>
 {
-	ShaderComponent(ShaderType type) : type(type) {}
-	ShaderComponent() : type(ShaderType::SFML) {}
-
-	ShaderType type;
+	ShaderType type = ShaderType::SFML;
+	
+	void reset() override {
+		type = ShaderType::SFML;
+	}
 };

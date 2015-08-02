@@ -1,21 +1,17 @@
 #pragma once
-#include <entityx/entityx.h>
 #include <SFML/Graphics.hpp>
 #include "../EntityLayer.h"
 #include "../LayerManager.h"
 #include "../Utils/FpsCalculator.h"
 
-using entityx::System;
-using entityx::EntityManager;
-using entityx::EventManager;
-using entityx::TimeDelta;
+using namespace ECS;
 
-class RenderSystem : public System<RenderSystem>
+class RenderSystem : public EntitySystem<RenderSystem>
 {
 public:
 	RenderSystem(LayerManager* layerManager);
 
-	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+	void update(float dt) override;
 private:
 	void render(EntityLayer* layer);
 	void updateAndShowFrameStats(float deltaTime);

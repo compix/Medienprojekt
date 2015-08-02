@@ -34,12 +34,12 @@
 #include "Systems/AISystem.h"
 #include "Systems/SoundSystem.h"
 #include "Systems/MusicSystem.h"
-#include "Events/StartGameEvent.h"
+
 #include "Systems/BombKickSystem.h"
 #include "Systems/PortalSystem.h"
 #include "Utils/InputManager.h"
 #include "Systems/ChatRenderSystem.h"
-#include "Events/CreateGameEvent.h"
+
 #include "Components/InputComponent.h"
 #include "Components/FreeSlotComponent.h"
 #include "Components/LocalInputComponent.h"
@@ -47,10 +47,8 @@
 
 
 Game::Game()
-	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
+	:m_timer(1.f), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
-	GameGlobals::entities = &m_entities;
-
 	GameGlobals::gameView = &m_view;
 }
 
@@ -82,19 +80,18 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
-	m_layerManager->configure(*GameGlobals::events);
+	m_layerManager->addedToEngine(&m_engine);
 
 	m_pathEngine = std::make_unique<PathEngine>(m_layerManager.get());
 
-	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
+	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_engine);
 	GameGlobals::entityFactory = m_entityFactory.get();
 
 	addSystems();
-	m_systems.configure();
 
 	//m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
 
-	auto particleSystem = m_systems.system<ParticleSystem>();
+	auto particleSystem = m_engine.getSystem<ParticleSystem>();
 	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter();
 
 	// This Particle Emitter is just for tests.
@@ -114,14 +111,14 @@ void Game::init(uint8_t width, uint8_t height)
 	initialized = true;
 }
 
-void Game::update(TimeDelta dt)
+void Game::update(float dt)
 {
 	if (!initialized)
 		return;
 
 	GameGlobals::input->update();
 	m_PhysixSystem->Update(dt);
-	m_systems.update_all(dt);
+	m_engine.update(dt);
 	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
@@ -132,7 +129,7 @@ void Game::update(TimeDelta dt)
 	GameGlobals::window->draw(*m_particleEmitter);
 
 	//auto player = *m_entities.entities_with_components<InventoryComponent>().begin();
-	//auto cell = player.component<CellComponent>();
+	//auto cell = player->get<CellComponent>();
 }
 
 void Game::refreshView()
@@ -155,29 +152,30 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
-	m_systems.add<PortalSystem>(m_layerManager.get());
-	m_systems.add<BodySystem>();
-	m_systems.add<SoundSystem>();
-	m_systems.add<MusicSystem>();
-	m_systems.add<InventorySystem>();
-	m_systems.add<TimerSystem>();
-	m_systems.add<BombSystem>();
-	m_systems.add<DamageSystem>(m_layerManager.get());
-	m_systems.add<DestructionSystem>();
-	m_systems.add<ExplosionSystem>(m_layerManager.get());
-	m_systems.add<BombKickSystem>(m_layerManager.get());
-	m_systems.add<HealthSystem>();
-	m_systems.add<DeathSystem>();
-	m_systems.add<InputSystem>();
-	m_systems.add<AISystem>(m_pathEngine.get());
-	m_systems.add<InputHandleSystem>();
-	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(m_layerManager.get());
-	m_systems.add<ParticleSystem>();
-	m_systems.add<LightSystem>();
-	m_systems.add<ItemSystem>(m_layerManager.get());
-	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	m_systems.add<ChatRenderSystem>();
+	//fixme: delete
+	m_engine.addSystem(new PortalSystem(m_layerManager.get()));
+	m_engine.addSystem(new BodySystem());
+	m_engine.addSystem(new SoundSystem());
+	m_engine.addSystem(new MusicSystem());
+	m_engine.addSystem(new InventorySystem());
+	m_engine.addSystem(new TimerSystem());
+	m_engine.addSystem(new BombSystem());
+	m_engine.addSystem(new DamageSystem(m_layerManager.get()));
+	m_engine.addSystem(new DestructionSystem());
+	m_engine.addSystem(new ExplosionSystem(m_layerManager.get()));
+	m_engine.addSystem(new BombKickSystem(m_layerManager.get()));
+	m_engine.addSystem(new HealthSystem());
+	m_engine.addSystem(new DeathSystem());
+	m_engine.addSystem(new InputSystem());
+	m_engine.addSystem(new AISystem(m_pathEngine.get()));
+	m_engine.addSystem(new InputHandleSystem());
+	m_engine.addSystem(new AnimationSystem());
+	m_engine.addSystem(new RenderSystem(m_layerManager.get()));
+	m_engine.addSystem(new ParticleSystem());
+	m_engine.addSystem(new LightSystem());
+	m_engine.addSystem(new ItemSystem(m_layerManager.get()));
+	m_engine.addSystem(new ParticleSpawnSystem(m_engine.getSystem<ParticleSystem>(), m_layerManager.get()));
+	m_engine.addSystem(new ChatRenderSystem());
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
@@ -189,39 +187,48 @@ void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 
 void LocalGame::resetEntities()
 {
-	m_entities.reset();
+	m_engine.removeAllEntities();
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
 	m_pathEngine->getGraph()->init();
 
 	int i = 0;
-	ComponentHandle<InputComponent> input;
-	for (Entity entity : GameGlobals::entities->entities_with_components(input))
+	for(Entity *entity: *m_engine.getEntitiesFor(Family::all<InputComponent>().get()))
 	{
 		if (i == m_numPlayers)
-			entity.destroy();
+			m_engine.removeEntity(entity);
 		else
 		{
 			switch (m_playerTypes[i])
 			{
-			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
-			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
-			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
+			case CreateGamePlayerType::LOCAL:{
+				auto localInput = m_engine.createComponent<LocalInputComponent>();
+				localInput->inputIndex = i;
+				entity->add(localInput);
+				break;
+			}
+			case CreateGamePlayerType::COMPUTER:
+				entity->add(m_engine.createComponent<AIComponent>());
+				break;
+			case CreateGamePlayerType::CLIENT: 
+				entity->add(m_engine.createComponent<FreeSlotComponent>());
+				break;
 			}
 			i++;
 		}
 	}
-	GameGlobals::events->emit<StartGameEvent>();
+	GameGlobals::events->startGame.emit();
 }
 
 void ClientGame::addSystems()
 {
-	m_systems.add<InputSystem>();
-//	m_systems.add<ClientInputHandleSystem>(); // fixme
-	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(m_layerManager.get());
-	m_systems.add<ParticleSystem>();
-	m_systems.add<LightSystem>();
-	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	//fixme: delete
+	m_engine.addSystem(new InputSystem());
+//	m_engine.addSystem(new ClientInputHandleSystem()); // fixme
+	m_engine.addSystem(new AnimationSystem());
+	m_engine.addSystem(new RenderSystem(m_layerManager.get()));
+	m_engine.addSystem(new ParticleSystem());
+	m_engine.addSystem(new LightSystem());
+	m_engine.addSystem(new ParticleSpawnSystem(m_engine.getSystem<ParticleSystem>(), m_layerManager.get()));
 }

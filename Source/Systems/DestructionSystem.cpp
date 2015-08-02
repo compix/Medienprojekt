@@ -2,20 +2,20 @@
 #include "../Components/DestructionComponent.h"
 #include "../Components/LinkComponent.h"
 
-void DestructionSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void DestructionSystem::update(float dt)
 {
 	for (auto entity : entityManager.entities_with_components<DestructionComponent>())
 	{
-		if (!entity.valid())
+		if (!entity->isValid())
 			continue;
 
-		auto destructionComponent = entity.component<DestructionComponent>();
+		auto destructionComponent = entity->get<DestructionComponent>();
 
 		destructionComponent->timeRemaining -= (float) dt;
 
 		if (destructionComponent->timeRemaining <= 0.f)
 		{
-			auto link = entity.component<LinkComponent>();
+			auto link = entity->get<LinkComponent>();
 
 			if (link && link->dependent)
 			{
@@ -23,7 +23,7 @@ void DestructionSystem::update(entityx::EntityManager& entityManager, entityx::E
 					e.destroy();
 			}
 
-			entity.destroy();
+			entity->destroy();
 		}
 	}
 }

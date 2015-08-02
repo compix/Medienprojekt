@@ -1,5 +1,5 @@
 #include "AssetLoader.h"
-#include "../../Events/ExitEvent.h"
+
 #include "../../Game.h"
 
 bool AssetLoaderBase::loadFromJson(const string& path)
@@ -35,7 +35,7 @@ bool AssetLoaderBase::preloadNext()
 	if (!success)
 	{
 		cerr << "Could not load file: " << entry.filename << endl;
-		GameGlobals::events->emit<ExitEvent>();
+		GameGlobals::events->exit.emit();
 	}
 	m_preloads.pop_front();
 	return success;

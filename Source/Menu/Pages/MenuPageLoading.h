@@ -1,15 +1,16 @@
 #pragma once
 #include "../MenuPage.h"
 
-struct PreloadEvent;
-using entityx::Receiver;
 
-class MenuPageLoading : public MenuPage, public Receiver<Menu>
+
+
+class MenuPageLoading : public MenuPage
 {
 public:
 	MenuPageLoading(Menu &menu);
 
-	void receive(const PreloadEvent &evt);
+private:
+	void onPreload(int progress, int total, string nextSection, const string &nextFilename);
 private:
 	tgui::LoadingBar::Ptr m_loadingBar;
 	tgui::Label::Ptr m_section;

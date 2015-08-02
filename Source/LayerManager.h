@@ -2,6 +2,8 @@
 #include "EntityLayer.h"
 #include <memory>
 #include <map>
+#include <ecstasy/core/Engine.h>
+#include <signal11/Signal.h>
 
 using std::vector;
 
@@ -10,7 +12,7 @@ class Graph;
 typedef std::shared_ptr<EntityLayer> EntityLayerPtr;
 typedef std::map<int, EntityLayerPtr> LayerContainer;
 
-class LayerManager : public entityx::Receiver<LayerManager>
+class LayerManager 
 {
 public:
 	EntityLayer* createLayer(int width, int height, int layer);
@@ -19,11 +21,11 @@ public:
 	inline LayerContainer& getLayers() { return m_layers; }
 	inline EntityLayer* getLayer(int layer) { assert(m_layers.count(layer) > 0); return m_layers[layer].get(); }
 
-	void configure(entityx::EventManager& events);
-	void receive(const entityx::EntityDestroyedEvent& e);
+	void addedToEngine(Engine *engine);
+	void removedFromEngine(Engine *engine);
 
-	void add(Entity entity);
-	void remove(Entity entity);
+	void add(Entity *entity);
+	void remove(Entity *entity);
 	void update();
 
 	EntityCollection getEntities(int layer, int cellX, int cellY);
@@ -35,15 +37,21 @@ public:
 	template<class T>
 	Entity getEntityWithComponent(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
+	
 private:
+	void onEntityRemoved(Entity *entity);
+	
+private:
+	Engine *m_engine = nullptr;
 	LayerContainer m_layers;
+	Signal11::ConnectionScope m_connections;
 };
 
 template <class T>
 bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<T>())
+	for (auto *e : getEntities(layer, cellX, cellY))
+		if (e->has<T>())
 			return true;
 
 	return false;
@@ -52,8 +60,8 @@ bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 template <class T>
 Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<T>())
+	for (auto *e : getEntities(layer, cellX, cellY))
+		if (e->has<T>())
 			return e;
 
 	return Entity();

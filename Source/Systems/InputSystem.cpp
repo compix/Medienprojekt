@@ -5,7 +5,7 @@
 #include "../GameGlobals.h"
 #include "../Components/LocalInputComponent.h"
 
-void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
+void InputSystem::update(float dt)
 {
 	ComponentHandle<InputComponent> input;
 	ComponentHandle<LocalInputComponent> localInput;

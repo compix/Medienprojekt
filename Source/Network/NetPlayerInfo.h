@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include <entityx/Entity.h>
-#include "../Events/CreateGameEvent.h"
+#include "ecstasy/core/Entity.h"
+
 
 enum class NetPlayerStatus
 {
@@ -11,6 +11,13 @@ enum class NetPlayerStatus
 	READY
 };
 
+enum class CreateGamePlayerType
+{
+	LOCAL,
+	COMPUTER,
+	CLIENT
+};
+
 struct _ENetPeer;
 typedef _ENetPeer ENetPeer;
 
@@ -18,7 +25,7 @@ struct NetPlayerInfo
 {
 	std::string name = "Connecting...";
 	NetPlayerStatus status = NetPlayerStatus::DISCONNECTED;
-	entityx::Entity entity;
+	Entity *entity;
 	uint8_t playerIndex;
 	CreateGamePlayerType type;
 	ENetPeer *peer = nullptr;
@@ -28,7 +35,7 @@ struct NetPlayerInfo
 		peer = _peer;
 		name = "Connecting...";
 		status = NetPlayerStatus::CONNECTING;
-		entity.invalidate();
+		entity = nullptr;
 	}
 
 	void invalidate()
@@ -36,6 +43,6 @@ struct NetPlayerInfo
 		peer = nullptr;
 		name = "?";
 		status = NetPlayerStatus::DISCONNECTED;
-		entity.invalidate();
+		entity = nullptr;
 	}
 };

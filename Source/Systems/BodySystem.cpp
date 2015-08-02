@@ -6,42 +6,7 @@
 #include "../GameGlobals.h"
 #include "../EntityFactory.h"
 
-using namespace entityx;
-
-BodySystem::~BodySystem()
-{
-	GameGlobals::events->unsubscribe<ComponentAddedEvent<BodyComponent>>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
-}
-
-void BodySystem::configure(entityx::EventManager& event_manager)
-{
-	event_manager.subscribe<ComponentAddedEvent<BodyComponent>>(*this);
-	event_manager.subscribe<EntityDestroyedEvent>(*this);
-}
-
-void BodySystem::receive(const entityx::ComponentAddedEvent<BodyComponent>& event)
-{
-
-}
-
-void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
-{
-	auto entity = event.entity;
-
-	if (!entity.valid())
-		return;
-
-	if (entity.has_component<BodyComponent>())
-	{
-		auto body = entity.component<BodyComponent>()->body;
-		body->GetWorld()->DestroyBody(body);
-	}
-
-	GameGlobals::entityFactory->destroyEntity(entity);
-}
-
-void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
+void BodySystem::update(float dt)
 {
 	ComponentHandle<BodyComponent> body;
 	ComponentHandle<TransformComponent> transform;
@@ -49,7 +14,7 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 	
 	float scale = PhysixSystem::m_Scale;
 
-	for (Entity entity : entityManager.entities_with_components(body, transform, sprite))
+	for (Entity *entity : entityManager.entities_with_components(body, transform, sprite))
 	{
 		transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
 		transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));

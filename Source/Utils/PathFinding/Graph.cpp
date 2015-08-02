@@ -39,9 +39,9 @@ void Graph::update()
 	// Go through all bombs and mark danger zones. Note: For correct danger estimations the AI should be considered and every AI should have an own graph like this.
 	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
-		auto bombComponent = bomb.component<BombComponent>();
-		auto timerComponent = bomb.component<TimerComponent>();
-		auto cell = bomb.component<CellComponent>();
+		auto bombComponent = bomb->get<BombComponent>();
+		auto timerComponent = bomb->get<TimerComponent>();
+		auto cell = bomb->get<CellComponent>();
 
 		auto correspondingNode = getNode(cell->x, cell->y);
 
@@ -67,8 +67,8 @@ void Graph::update()
 	// Go through all explosion components and simulate the explosion.
 	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
 	{
-		auto cell = explosion.component<CellComponent>();
-		auto spread = explosion.component<SpreadComponent>();
+		auto cell = explosion->get<CellComponent>();
+		auto spread = explosion->get<SpreadComponent>();
 
 		auto currentNode = getNode(cell->x, cell->y);
 		currentNode->cost = NodeCost::DANGER_HIGH;
@@ -125,24 +125,24 @@ void Graph::removeNode(uint8_t x, uint8_t y)
 	m_nodeGrid[x][y].valid = false;
 }
 
-void Graph::onEntityAdded(entityx::Entity& entity)
+void Graph::onEntityAdded(Entity *entity)
 {
-	assert(entity.has_component<CellComponent>());
+	assert(entity->has<CellComponent>());
 
-	if (entity.has_component<BombComponent>())
+	if (entity->has<BombComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
+		auto cell = entity->get<CellComponent>();
 		removeNode(cell->x, cell->y);
 	}
 }
 
-void Graph::onEntityRemoved(entityx::Entity& entity)
+void Graph::onEntityRemoved(Entity *entity)
 {
-	assert(entity.has_component<CellComponent>());
+	assert(entity->has<CellComponent>());
 
-	if (entity.has_component<BlockComponent>() || entity.has_component<BombComponent>())
+	if (entity->has<BlockComponent>() || entity->has<BombComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
+		auto cell = entity->get<CellComponent>();
 		addNode(cell->x, cell->y);
 	}
 }
@@ -173,7 +173,7 @@ void Graph::init()
 			m_nodeGrid[x][y].y = y;
 
 			for (auto& e : entities)
-				if (e.component<BlockComponent>() || e.component<SolidBlockComponent>())
+				if (e->get<BlockComponent>() || e->get<SolidBlockComponent>())
 					free = false;
 
 			if (free)

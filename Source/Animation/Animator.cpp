@@ -19,10 +19,10 @@ const AnimationInfo& Animator::get(AnimationType animationType)
 	return m_animations[animationType];
 }
 
-void Animator::updateAnimation(AnimationType animationType, entityx::Entity& entity)
+void Animator::updateAnimation(AnimationType animationType, Entity *entity)
 {
-	auto animationComponent = entity.component<AnimationComponent>();
-	auto spriteComponent = entity.component<SpriteComponent>();
+	auto animationComponent = entity->get<AnimationComponent>();
+	auto spriteComponent = entity->get<SpriteComponent>();
 
 	assert(animationComponent && spriteComponent);
 
@@ -61,9 +61,9 @@ void Animator::updateAnimation(AnimationType animationType, entityx::Entity& ent
 	}
 }
 
-void Animator::update(entityx::Entity& entity, float deltaTime)
+void Animator::update(Entity *entity, float deltaTime)
 {
-	auto animationComponent = entity.component<AnimationComponent>();
+	auto animationComponent = entity->get<AnimationComponent>();
 
 	if (animationComponent->state)
 		animationComponent->state->update(this, entity, deltaTime);

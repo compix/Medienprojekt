@@ -2,11 +2,11 @@
 #include "../Components/LightComponent.h"
 #include "../GameGlobals.h"
 
-void LightSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
+void LightSystem::update(float dt)
 {
 	for (auto entity : entityManager.entities_with_components<LightComponent>())
 	{
-		auto lightComponent = entity.component<LightComponent>();
+		auto lightComponent = entity->get<LightComponent>();
 
 		GameGlobals::window->draw(lightComponent->light);
 	}

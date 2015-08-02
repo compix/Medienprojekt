@@ -1,8 +1,6 @@
 #pragma once
+#include <ecstasy/core/Component.h>
 
-struct PortalComponent
+struct PortalComponent: public ECS::Component<PortalComponent>
 {
-	PortalComponent(){}
-
-	
 };
