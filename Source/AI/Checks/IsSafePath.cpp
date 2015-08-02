@@ -1,13 +1,15 @@
 #include "IsSafePath.h"
 #include "../../GameConstants.h"
+#include "AIUtil.h"
 
-bool IsSafePath::operator()(Path& path, float* minExplosionTime)
+bool IsSafePath::operator()(entityx::Entity& entity, Path& path, float* minExplosionTime)
 {
 	// How long does a player approx. need to get from one cell to another if the path is NOT blocked (worst case)?
-	float timePerCell = (GameConstants::CELL_WIDTH / GameConstants::S_SCALE) / GameConstants::PLAYER_SPEED;
+	float timePerCell = AIUtil::getTimePerCell(entity);
+	float updateTime = 1.f / 30.f;
 
 	if (minExplosionTime)
-		*minExplosionTime = 3.f;
+		*minExplosionTime = 2.f;
 
 	for (int i = 0; i < path.nodeCount; ++i)
 	{
@@ -17,7 +19,7 @@ bool IsSafePath::operator()(Path& path, float* minExplosionTime)
 			float exploTime = node->properties.timeTillExplosion - timePerCell * i;
 			if (minExplosionTime)
 				*minExplosionTime = std::min(*minExplosionTime, exploTime);
-			if (exploTime <= timePerCell)
+			if (exploTime <= timePerCell + updateTime * 2.f)
 				return false;
 		}
 	}

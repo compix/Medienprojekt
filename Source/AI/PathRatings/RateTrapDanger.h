@@ -16,17 +16,17 @@ struct Path;
 class RateTrapDanger
 {
 public:
-	explicit RateTrapDanger(entityx::Entity self, std::vector<entityx::Entity>& enemies, bool willPlaceBomb = false);
+	explicit RateTrapDanger(entityx::Entity& entity, std::vector<entityx::Entity>& enemies, bool willPlaceBomb = false);
 
 	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
 
 private:
-	int distanceToClosest(uint8_t x, uint8_t y);
+	int distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy);
 
 	bool testNode(GraphNode* startNode, GraphNode* testedNode, PathEngine* pathEngine, uint8_t taskNum);
 private:
 	std::vector<entityx::Entity> m_enemies;
-	entityx::Entity m_self;
+	entityx::Entity m_entity;
 
 	bool m_willPlaceBomb;
 };

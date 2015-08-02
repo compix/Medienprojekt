@@ -1,17 +1,17 @@
 #pragma once
-#include <cinttypes>
 #include "../../Utils/PathFinding/PathEngine.h"
 
-struct GraphNode;
-struct Path;
-
-class RateItem
+/**
+* Use only in combination. It doesn't make sense on its own.
+*/
+class RateDistanceToItems
 {
 public:
-	RateItem(entityx::Entity& entity);
+	explicit RateDistanceToItems(entityx::Entity& entity);
 
 	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
 
+	float inverseDistanceToItems(GraphNode* node);
 private:
 	entityx::Entity m_entity;
 };

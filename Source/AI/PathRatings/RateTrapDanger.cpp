@@ -5,8 +5,8 @@
 #include "RateSafety.h"
 #include "../../Utils/PathFinding/SimulationGraph.h"
 
-RateTrapDanger::RateTrapDanger(entityx::Entity self, std::vector<entityx::Entity>& enemies, bool willPlaceBomb)
-	:m_self(self), m_enemies(enemies), m_willPlaceBomb(willPlaceBomb)
+RateTrapDanger::RateTrapDanger(entityx::Entity& entity, std::vector<entityx::Entity>& enemies, bool willPlaceBomb)
+	:m_entity(entity), m_enemies(enemies), m_willPlaceBomb(willPlaceBomb)
 {
 }
 
@@ -49,7 +49,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, GraphNode* node, Path& p
 }
 
 
-int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y)
+int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy)
 {
 	int distance = 500;
 
@@ -58,7 +58,12 @@ int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y)
 		assert(e.valid() && e.has_component<CellComponent>());
 		auto cell = e.component<CellComponent>();
 
-		distance = std::min(distance, abs(cell->x - x) + abs(cell->y - y));
+		float newDistance = abs(cell->x - x) + abs(cell->y - y);
+		if (newDistance < distance)
+		{
+			distance = newDistance;
+			closestEnemy = e;
+		}
 	}
 
 	return distance;
@@ -66,10 +71,18 @@ int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y)
 
 bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, PathEngine* pathEngine, uint8_t taskNum)
 {
-
-	int distanceToClosestEnemy = distanceToClosest(testedNode->x, testedNode->y);
+	Entity closestEnemy;
+	int distanceToClosestEnemy = distanceToClosest(testedNode->x, testedNode->y, closestEnemy);
 
 	if (distanceToClosestEnemy > 5)
+		return true;
+
+	// Distance check not enough. Check the path
+	Path enemyPathToSpot;
+	auto enemyCell = closestEnemy.component<CellComponent>();
+	pathEngine->computePath(enemyCell->x, enemyCell->y, startNode->x, startNode->y, enemyPathToSpot, taskNum + 1);
+
+	if (enemyPathToSpot.nodeCount > 5 || enemyPathToSpot.nodeCount == 0)
 		return true;
 
 	IsSafePath isSafePath;
@@ -86,7 +99,7 @@ bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, PathE
 	}
 
 	Path safePath;
-	pathEngine->breadthFirstSearch(startNode->x, startNode->y, safePath, RateSafety(), taskNum + 1);
+	pathEngine->breadthFirstSearch(startNode->x, startNode->y, safePath, RateSafety(m_entity), taskNum + 1);
 	bool safe = safePath.nodeCount > 0;
 
 	// Reset to old state

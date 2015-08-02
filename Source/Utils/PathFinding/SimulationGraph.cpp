@@ -68,13 +68,15 @@ void SimulationGraph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float
 		}
 		else
 		{
-			if (m_layerManager->hasEntityWithComponents<BlockComponent, HealthComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			if (m_layerManager->hasEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
 			{
 				if (currentNode->properties.affectedByExplosion)
 					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
 
 				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
 				currentNode->properties.affectedByExplosion = true;
+
+				break;
 			}
 
 			if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
@@ -82,8 +84,8 @@ void SimulationGraph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float
 				currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
 				currentNode->properties.affectedByExplosion = true;
 			}
-
-			break;
+			else
+				break;
 		}
 	}
 }

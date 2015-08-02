@@ -2,11 +2,11 @@
 #include "../Checks/IsSafePath.h"
 #include "../../Components/CellComponent.h"
 
-RateEscape::RateEscape(entityx::Entity self, std::vector<entityx::Entity>& entitiesToAvoid)
-	:m_entitiesToAvoid(entitiesToAvoid), m_self(self)
+RateEscape::RateEscape(entityx::Entity& entity, std::vector<entityx::Entity>& entitiesToAvoid)
+	:m_entitiesToAvoid(entitiesToAvoid), m_entity(entity)
 {
-	assert(m_self.valid() && m_self.has_component<CellComponent>());
-	auto cell = m_self.component<CellComponent>();
+	assert(m_entity.valid() && m_entity.has_component<CellComponent>());
+	auto cell = m_entity.component<CellComponent>();
 	m_startDistance = computeDistanceToEnemies(cell->x, cell->y);
 }
 
@@ -24,7 +24,7 @@ bool RateEscape::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathO
 
 	pathEngine->makePath(pathOut, node, taskNum);
 
-	if (isSafePath(pathOut))
+	if (isSafePath(m_entity, pathOut))
 	{
 		pathOut.rating = distanceToClosest(node->x, node->y) > 4 ? 2.f : 0.f;
 		return true;

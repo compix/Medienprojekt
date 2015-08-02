@@ -58,6 +58,8 @@ public:
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
 
 	void resetMarks();
+
+	inline std::vector<entityx::Entity>& getAffectedBlocks() { return m_blocksAffectedByExplosion; }
 protected:
 	void resetCosts();
 	void resetProperties();
@@ -69,6 +71,7 @@ protected:
 	LayerManager* m_layerManager;
 
 	std::vector<NormalBomb> m_normalBombs;
+	std::vector<entityx::Entity> m_blocksAffectedByExplosion;
 };
 
 template <class T>

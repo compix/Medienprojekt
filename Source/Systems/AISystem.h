@@ -21,8 +21,4 @@ public:
 private:
 	PathEngine* m_pathEngine;
 	LayerManager* m_layerManager;
-	Path m_path;
-	Path m_safePath;
-
-	Path m_lastPath;
 };

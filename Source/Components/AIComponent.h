@@ -1,4 +1,5 @@
 #pragma once
+#include "../Utils/PathFinding/PathEngine.h"
 
 enum class BehaviorType
 {
@@ -8,5 +9,5 @@ enum class BehaviorType
 
 struct AIComponent
 {
-	
+	Path path;
 };

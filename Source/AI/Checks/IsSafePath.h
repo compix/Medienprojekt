@@ -5,5 +5,5 @@
 class IsSafePath
 {
 public:
-	bool operator()(Path& path, float* minExplosionTime = nullptr);
+	bool operator()(entityx::Entity& entity, Path& path, float* minExplosionTime = nullptr);
 };

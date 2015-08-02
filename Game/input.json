@@ -2,18 +2,18 @@
 	{
 		"BOMB": "Space",
 		"SKILL": "Left Control",
-		"UP": "W",
-		"DOWN": "S",
-		"LEFT": "A",
-		"RIGHT": "D"
-	},
-	{
-		"BOMB": "Right Control",
-		"SKILL": "Right Shift",
 		"UP": "Up Arrow",
 		"DOWN": "Down Arrow",
 		"LEFT": "Left Arrow",
 		"RIGHT": "Right Arrow"
+	},
+	{
+		"BOMB": "Right Control",
+		"SKILL": "Right Shift",
+		"UP": "W",
+		"DOWN": "S",
+		"LEFT": "A",
+		"RIGHT": "D"
 	},
 	{
 		"BOMB": "Numpad 0",

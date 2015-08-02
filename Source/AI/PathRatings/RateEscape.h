@@ -9,7 +9,7 @@ class PathEngine;
 class RateEscape
 {
 public:
-	explicit RateEscape(entityx::Entity self, std::vector<entityx::Entity>& entitiesToAvoid);
+	explicit RateEscape(entityx::Entity& entity, std::vector<entityx::Entity>& entitiesToAvoid);
 	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
 
 private:
@@ -20,6 +20,6 @@ private:
 	int distanceToClosest(uint8_t x, uint8_t y);
 private:
 	std::vector<entityx::Entity> m_entitiesToAvoid;
-	entityx::Entity m_self;
+	entityx::Entity m_entity;
 	int m_startDistance;
 };

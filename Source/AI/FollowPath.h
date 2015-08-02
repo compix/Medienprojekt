@@ -14,6 +14,4 @@ public:
 protected:
 	Path m_path;
 	LayerManager* m_layerManager;
-
-	uint8_t m_lastMoveX, m_lastMoveY;
 };

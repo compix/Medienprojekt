@@ -80,7 +80,7 @@ bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 
 bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
-	bool condition = Random::getInt(1, 100) <= 25; // 85% chance to spawn a block
+	bool condition = Random::getInt(1, 100) <= 85; // 85% chance to spawn a block
 	if (condition) 
 		GameGlobals::entityFactory->createBlock(pos.cellX, pos.cellY);
 

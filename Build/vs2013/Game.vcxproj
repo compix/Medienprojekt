@@ -94,6 +94,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AI\Behavior.h" />
+    <ClInclude Include="..\..\Source\AI\Checks\AIUtil.h" />
     <ClInclude Include="..\..\Source\AI\Checks\IsSafePath.h" />
     <ClInclude Include="..\..\Source\AI\Flee.h" />
     <ClInclude Include="..\..\Source\AI\FollowPath.h" />
@@ -102,6 +103,8 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToItems.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateEscape.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateItem.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
@@ -258,6 +261,7 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\Checks\AIUtil.cpp" />
     <ClCompile Include="..\..\Source\AI\Checks\IsSafePath.cpp" />
     <ClCompile Include="..\..\Source\AI\Flee.cpp" />
     <ClCompile Include="..\..\Source\AI\FollowPath.cpp" />
@@ -265,6 +269,8 @@
     <ClCompile Include="..\..\Source\AI\MoveTo.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToItems.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateEscape.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateItem.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />

@@ -156,16 +156,18 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
-	m_systems.add<PortalSystem>(m_layerManager.get());
+	
 	m_systems.add<BodySystem>();
 	//m_systems.add<SoundSystem>();
 	//m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
+	m_systems.add<ItemSystem>(m_layerManager.get());
 	m_systems.add<TimerSystem>();
 	m_systems.add<BombSystem>();
 	m_systems.add<DamageSystem>(m_layerManager.get());
 	m_systems.add<DestructionSystem>();
 	m_systems.add<ExplosionSystem>(m_layerManager.get());
+	m_systems.add<PortalSystem>(m_layerManager.get()); // <----- Has higher priority now: To fix 1 Frame DamageComponent bug on portal. FIX THIS (explosion on portal has to be duplicated)
 	m_systems.add<BombKickSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
@@ -175,8 +177,7 @@ void LocalGame::addSystems()
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
 	m_systems.add<ParticleSystem>();
-	m_systems.add<LightSystem>();
-	m_systems.add<ItemSystem>(m_layerManager.get());
+	m_systems.add<LightSystem>();	
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	m_systems.add<ChatRenderSystem>();
 }

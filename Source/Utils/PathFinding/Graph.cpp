@@ -12,6 +12,7 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/HealthComponent.h"
 #include "../../Components/PortalComponent.h"
+#include "../../Components/DestructionComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -90,6 +91,17 @@ void Graph::update(float deltaTime)
 	resetCosts();
 	resetProperties();
 	m_normalBombs.clear();
+	m_blocksAffectedByExplosion.clear();
+
+	for (auto& dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
+	{
+		if (!dieingBlock.valid())
+			continue;
+
+		auto cell = dieingBlock.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion = true;
+		m_blocksAffectedByExplosion.push_back(dieingBlock);
+	}
 
 	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
@@ -101,6 +113,11 @@ void Graph::update(float deltaTime)
 		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
 	}
 
+	// Sort by explosionTime so that bombs that are affected by an explosion have their explosion time set to the "correct" value
+	// This isn't perfect and should be reworked: 
+	// 1. Get the bomb with the lowest explosion time. 
+	// 2. Simulate the explosion and if it hits another bomb then simulate the explosion of the affected bomb if it's in the list.
+	// 3. Remove the bombs that were already simulated from the list and go to 1. if the list isn't empty.
 	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
 
 	// Go through all explosion components and simulate the explosion.
@@ -160,13 +177,18 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 		}
 		else
 		{
-			if (m_layerManager->hasEntityWithComponents<BlockComponent, HealthComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			if (m_layerManager->hasEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
 			{
 				if (currentNode->properties.affectedByExplosion)
 					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
 
 				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
 				currentNode->properties.affectedByExplosion = true;
+				auto block = m_layerManager->getEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
+				if (block.valid())
+					m_blocksAffectedByExplosion.push_back(block);
+
+				break;
 			}
 
 			if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
@@ -174,8 +196,8 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 				currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
 				currentNode->properties.affectedByExplosion = true;
 			}
-
-			break;
+			else
+				break;
 		}
 	}
 }

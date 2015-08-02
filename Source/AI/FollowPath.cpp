@@ -6,7 +6,7 @@
 #include "../Components/PortalComponent.h"
 
 FollowPath::FollowPath(Path path, LayerManager* layerManager)
-	:m_path(path), m_lastMoveX(0), m_lastMoveY(0), m_layerManager(layerManager)
+	:m_path(path), m_layerManager(layerManager)
 {
 }
 

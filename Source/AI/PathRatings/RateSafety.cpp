@@ -1,16 +1,21 @@
 #include "RateSafety.h"
 #include "../Checks/IsSafePath.h"
 
+RateSafety::RateSafety(entityx::Entity& entity)
+	:m_entity(entity)
+{
+}
+
 bool RateSafety::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
 {
 	if (!node->properties.affectedByExplosion)
 	{
 		pathEngine->makePath(pathOut, node, taskNum);
-		// Check if the new path is better than the best known path
+
 		float minExploTime;
 		IsSafePath isSafePath;
-		isSafePath(pathOut, &minExploTime);
-		pathOut.rating = minExploTime;
+		bool safe = isSafePath(m_entity, pathOut, &minExploTime);
+		pathOut.rating = minExploTime + (safe ? 1.f : 0.f);
 
 		return true;
 	}

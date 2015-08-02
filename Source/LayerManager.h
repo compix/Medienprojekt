@@ -29,7 +29,7 @@ public:
 
 	EntityCollection getEntities(int layer, int cellX, int cellY);
 
-	template<class T>
+	template<class C>
 	bool hasEntityWithComponent(int layer, int cellX, int cellY);
 
 	template<class C1, class C2, class... Args>
@@ -44,23 +44,28 @@ public:
 	bool hasComponents(Entity& e);
 
 	template<class C>
-	inline bool hasComponents(Entity& e) { return e.has_component<C>(); }
+	inline bool hasComponents(Entity& e) { return e.valid() && e.has_component<C>(); }
 
 	//inline bool hasComponents(Entity& e) { return true; }
 
 	// An invalid entity will be returned if there is no such entity
-	template<class T>
+	template<class C>
 	Entity getEntityWithComponent(int layer, int cellX, int cellY);
+
+	// An invalid entity will be returned if there is no such entity
+	template<class C1, class C2, class... Args>
+	Entity getEntityWithComponents(int layer, int cellX, int cellY);
+
 	bool isFree(int layer, int cellX, int cellY);
 private:
 	LayerContainer m_layers;
 };
 
-template <class T>
+template <class C>
 bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 {
 	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<T>())
+		if (e.valid() && e.has_component<C>())
 			return true;
 
 	return false;
@@ -80,7 +85,7 @@ template <class C>
 bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 {
 	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<C>())
+		if (e.valid() && e.has_component<C>())
 			return true;
 
 	return false;
@@ -89,14 +94,24 @@ bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 template <class C1, class C2, class ... Args>
 bool LayerManager::hasComponents(Entity& e)
 {
-	return e.has_component<C1>() && hasComponents<C2, Args...>(e);
+	return e.valid() && e.has_component<C1>() && hasComponents<C2, Args...>(e);
 }
 
-template <class T>
+template <class C>
 Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 {
 	for (auto& e : getEntities(layer, cellX, cellY))
-		if (e.has_component<T>())
+		if (e.valid() && e.has_component<C>())
+			return e;
+
+	return Entity();
+}
+
+template <class C1, class C2, class ... Args>
+Entity LayerManager::getEntityWithComponents(int layer, int cellX, int cellY)
+{
+	for (auto& e : getEntities(layer, cellX, cellY))
+		if (hasComponents<C1, C2, Args...>(e))
 			return e;
 
 	return Entity();

@@ -4,6 +4,12 @@
 #include "../../Components/BlockComponent.h"
 #include "RateSafety.h"
 #include "../../Utils/PathFinding/SimulationGraph.h"
+#include "../Checks/AIUtil.h"
+
+RateDestroyBlockSpot::RateDestroyBlockSpot(entityx::Entity& entity)
+	:m_entity(entity)
+{
+}
 
 bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
 {
@@ -12,12 +18,12 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 	if (node->valid)
 	{
 		pathEngine->makePath(pathOut, node, taskNum);
-		if (isSafePath(pathOut))
+		if (isSafePath(m_entity, pathOut))
 		{
 			bool found = true;
-			float timePerCell = (GameConstants::CELL_WIDTH / GameConstants::S_SCALE) / GameConstants::PLAYER_SPEED;
+			float timePerCell = AIUtil::getTimePerCell(m_entity);
 			float bombExploTime = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 2.f;
-			bool goalAffectedByExplosion = node->properties.affectedByExplosion;
+			bool spotAffectedByExplosion = node->properties.affectedByExplosion;
 
 			if (!pathEngine->getGraph()->inLine<BlockComponent>(node->x, node->y, 7)) // TODO replace the range
 				return false;
@@ -33,19 +39,19 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 			if (found)
 			{
 				Path safePath;
-				pathEngine->breadthFirstSearch(node->x, node->y, safePath, RateSafety(), taskNum + 1);
+				pathEngine->breadthFirstSearch(node->x, node->y, safePath, RateSafety(m_entity), taskNum + 1);
 
-				if (safePath.nodeCount < 2 || !isSafePath(safePath))
+				if (safePath.nodeCount < 2 || !isSafePath(m_entity, safePath))
 					found = false;
 
-				if (found && goalAffectedByExplosion)
+				if (found && spotAffectedByExplosion)
 				{
 					// Check the full path to be sure if it's really safe
 					Path fullPath;
 					fullPath.attach(pathOut);
 					fullPath.attach(safePath);
 
-					if (!isSafePath(fullPath))
+					if (!isSafePath(m_entity, fullPath))
 						found = false;
 				}
 			}
@@ -56,8 +62,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 			// Reset to the old state
 			pathEngine->getSimGraph()->resetSimulation();
 
-			if (found)
-				return true;
+			return found;
 		}
 	}
 

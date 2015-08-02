@@ -21,6 +21,9 @@
 #include "../AI/PathRatings/RateTrapDanger.h"
 #include "../AI/Checks/IsSafePath.h"
 #include "../AI/PathRatings/RateDesperateSaveAttempt.h"
+#include "../AI/Checks/AIUtil.h"
+#include "../AI/PathRatings/RateDistanceToItems.h"
+#include "../AI/PathRatings/RateDistanceToAffectedBlocks.h"
 
 AISystem::AISystem(PathEngine* pathEngine, LayerManager* layerManager)
 	: m_pathEngine(pathEngine), m_layerManager(layerManager)
@@ -31,7 +34,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 {
 	static float updateTimer = 1.f / 30.f;
 	updateTimer -= dt;
-	float timePerCell = (GameConstants::CELL_WIDTH / GameConstants::S_SCALE) / GameConstants::PLAYER_SPEED;
 
 	Entity player;
 	ComponentHandle<CellComponent> playerCell;
@@ -48,6 +50,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 	for (auto& entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
+		auto aiComponent = entity.component<AIComponent>();
+
+		float timePerCell = AIUtil::getTimePerCell(entity);
 
 		// Reset inputs
 		auto input = entity.component<InputComponent>();
@@ -56,87 +61,95 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
+
+		Path& path = aiComponent->path;
+
 		if (updateTimer <= 0.f)
 		{
-			updateTimer = 1.f / 30.f;
-
 			std::vector<Entity> enemies;
 			getEnemies(entity, enemies);
 
 			bool found = false;
 			bool escape = false;
 
-			RateEscape rateEscape(entity, enemies);
-			RateItem rateItem;
-			RateCombination<RateEscape, RateItem> rateCombination(rateEscape, rateItem);
-
-			/*
-			if (closeEnemies.size() > 0)
-			{
-				m_pathEngine->searchBest(cell->x, cell->y, m_path, rateCombination, 100);
-				escape = true;
-			}*/
+			Path waitPath;
+			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination<RateSafety, RateDistanceToAffectedBlocks>(RateSafety(entity), RateDistanceToAffectedBlocks(entity)));
 
 			Path itemPath;
-			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(), RateTrapDanger(entity, enemies)));
+			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(entity), RateTrapDanger(entity, enemies)));
 
 			Path destroyBlockPath;
 			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath, 
-				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger>(RateDestroyBlockSpot(), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true)));
+				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger, RateDistanceToItems>
+				(RateDestroyBlockSpot(entity), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true), RateDistanceToItems(entity)));
+
+			IsSafePath isSafePath;
 
 			if (!escape)
 			{
 				if (itemPath.rating > destroyBlockPath.rating)
 				{
-					m_path = itemPath;
+					path = itemPath;
 				}
+				else if (waitPath.rating > destroyBlockPath.rating && isSafePath(entity, waitPath))
+				{
+					path = waitPath;
+				} 
 				else
 				{
-					m_path = destroyBlockPath;
-					if (m_path.nodeCount == 1)
+					path = destroyBlockPath;
+					if (path.nodeCount == 1)
 					{
-						static PlaceBomb placeBomb;
+						PlaceBomb placeBomb;
 						placeBomb.update(entity);
 					}
 				}
 			}
 
-			if (m_path.nodeCount > 0)
+			if (path.nodeCount > 0)
 				found = true;
 
 			if (!found && m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
 			{
-				m_pathEngine->searchBest(cell->x, cell->y, m_path, RateSafety());
+				m_pathEngine->searchBest(cell->x, cell->y, path, RateSafety(entity));
 
-				IsSafePath isSafePath;
-				if (!isSafePath(m_path))
+				float minExploTime;
+				isSafePath(entity, path, &minExploTime);
+
+				if (minExploTime <= timePerCell*0.5f)
 				{
-					m_pathEngine->searchBest(cell->x, cell->y, m_path, RateDesperateSaveAttempt(), 20);
+					m_pathEngine->searchBest(cell->x, cell->y, path, RateDesperateSaveAttempt(entity), 20);
 				}
 			}
 				
 		}
 
-		if (m_path.nodeCount > 1)
+		if (path.nodeCount > 1)
 		{
-			static FollowPath followPath(m_path, m_layerManager);
-			followPath.setPath(m_path);
+			FollowPath followPath(path, m_layerManager);
+			//followPath.setPath(path);
 
+			/*
 			bool cellAffected = m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion;
 			bool nextCellAffected = m_path.nodes[1]->properties.affectedByExplosion;
 			bool nextCellOnFire = m_path.nodes[1]->properties.affectedByExplosion && (m_path.nodes[1]->properties.timeTillExplosion < timePerCell * 1.1f);
 			bool cellOnFire = m_path.nodes[0]->properties.affectedByExplosion && (m_path.nodes[0]->properties.timeTillExplosion < timePerCell);
-
-			if (cellOnFire || !nextCellOnFire && (cellAffected || !nextCellAffected))
-				followPath.update(entity);
+			*/
+			//if (cellOnFire || !nextCellOnFire && (cellAffected || !nextCellAffected))
+			followPath.update(entity);
 		}
+	}
+
+	if (updateTimer <= 0.f)
+	{
+		updateTimer = 1.f / 30.f;
 	}
 }
 
 void AISystem::visualize()
 {
 	m_pathEngine->visualize();
-	m_pathEngine->visualize(m_path);
+	//m_pathEngine->visualize(m_path);
 }
 
 void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Animation">
@@ -518,6 +518,15 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Checks\AIUtil.h">
+      <Filter>AI\Checks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToItems.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -611,6 +620,15 @@
       <Filter>Utils\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Checks\AIUtil.cpp">
+      <Filter>AI\Checks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToItems.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
   </ItemGroup>
