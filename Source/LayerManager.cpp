@@ -58,6 +58,7 @@ void LayerManager::add(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+		//m_scheduledForPush.push_back(EntityUpdateInfo(entity, cell->x, cell->y, layerComponent->layer));
 	}
 }
 
@@ -82,6 +83,7 @@ void LayerManager::remove(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+		//m_scheduledForRemoval.push_back(EntityUpdateInfo(entity, cell->x, cell->y, layerComponent->layer));
 	}
 		
 }
@@ -91,7 +93,15 @@ void LayerManager::remove(Entity entity)
  */
 void LayerManager::update()
 {
-	
+	for (auto& info : m_scheduledForPush)
+		m_layers[info.layer]->add(info.entity, info.x, info.y);
+
+	for (auto& info : m_scheduledForRemoval)
+		m_layers[info.layer]->remove(info.entity, info.x, info.y);
+
+	m_scheduledForPush.clear();
+	m_scheduledForRemoval.clear();
+
 	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
 	{
 		auto layerComponent = entity.component<LayerComponent>();

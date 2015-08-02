@@ -9,7 +9,7 @@
 class AISystem : public entityx::System<AISystem>
 {
 public:
-	AISystem(PathEngine* pathEngine, LayerManager* layerManager);
+	AISystem(LayerManager* layerManager);
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	void visualize();
@@ -18,7 +18,8 @@ public:
 
 	void getCloseEnemies(Entity self, std::vector<Entity>& outEnemies);
 
+	void init();
 private:
-	PathEngine* m_pathEngine;
+	std::unique_ptr<PathEngine> m_pathEngine;
 	LayerManager* m_layerManager;
 };

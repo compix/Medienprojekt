@@ -9,6 +9,7 @@
 #include "../Components/LayerComponent.h"
 #include "../Components/PortalMarkerComponent.h"
 #include "../Components/TimerComponent.h"
+#include "../Components/InventoryComponent.h"
 
 
 using namespace entityx;
@@ -163,12 +164,19 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 		default: break;
 		}
 	}*/
-
-
 	
 	//if (!m_layerManager->hasEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, cellX, cellY)){	//Wenn Portal gelegt werden kann
 		if (m_portals.count(entity.id()) < 2){																//Maximal zwei Portale
 			auto portal = GameGlobals::entityFactory->createPortal(cellX, cellY, entity);
+
+			// Save portals in the inventory of the entity
+			assert(entity.has_component<InventoryComponent>());
+			auto inventory = entity.component<InventoryComponent>();
+			if (!inventory->placedPortals.first.valid())
+				inventory->placedPortals.first = portal;
+			else
+				inventory->placedPortals.second = portal;
+
 			m_portals.insert(std::pair<Entity::Id, Entity>(entity.id(), portal));	//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
 			entity.assign<PortalMarkerComponent>(portal.id());
 			if (m_portals.count(entity.id()) == 2)

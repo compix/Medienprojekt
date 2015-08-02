@@ -15,7 +15,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 {
 	IsSafePath isSafePath;
 
-	if (node->valid)
+	if (node->valid && !node->properties.hasPortal) // !node->properties.hasPortal TEMPORARY BECAUSE PORTALS ARE BUGGED
 	{
 		pathEngine->makePath(pathOut, node, taskNum);
 		if (isSafePath(m_entity, pathOut))
@@ -25,8 +25,10 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 			float bombExploTime = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 2.f;
 			bool spotAffectedByExplosion = node->properties.affectedByExplosion;
 
-			if (!pathEngine->getGraph()->inLine<BlockComponent>(node->x, node->y, 7)) // TODO replace the range
-				return false;
+			//if (!pathEngine->getGraph()->inLine<BlockComponent>(node->x, node->y, 7)) // TODO replace the range
+				//return false;
+
+			
 
 			pathEngine->getSimGraph()->placeBomb(node->x, node->y, 7, bombExploTime); // TODO replace the range
 

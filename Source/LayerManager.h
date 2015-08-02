@@ -13,6 +13,16 @@ typedef std::map<int, EntityLayerPtr> LayerContainer;
 
 class LayerManager : public entityx::Receiver<LayerManager>
 {
+	struct EntityUpdateInfo
+	{
+		EntityUpdateInfo(entityx::Entity& entity, uint8_t x, uint8_t y, int layer)
+			:entity(entity), x(x), y(y), layer(layer) {}
+
+		entityx::Entity entity;
+		uint8_t x;
+		uint8_t y;
+		int layer;
+	};
 public:
 	EntityLayer* createLayer(int width, int height, int layer);
 	~LayerManager();
@@ -59,12 +69,15 @@ public:
 	bool isFree(int layer, int cellX, int cellY);
 private:
 	LayerContainer m_layers;
+
+	std::vector<EntityUpdateInfo> m_scheduledForRemoval;
+	std::vector<EntityUpdateInfo> m_scheduledForPush;
 };
 
 template <class C>
 bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return true;
 
@@ -74,7 +87,7 @@ bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 template <class C1, class C2, class ... Args>
 bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (hasComponents<C1, C2, Args...>(e))
 			return true;
 
@@ -84,7 +97,7 @@ bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 template <class C>
 bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return true;
 
@@ -100,7 +113,7 @@ bool LayerManager::hasComponents(Entity& e)
 template <class C>
 Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return e;
 
@@ -110,7 +123,7 @@ Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 template <class C1, class C2, class ... Args>
 Entity LayerManager::getEntityWithComponents(int layer, int cellX, int cellY)
 {
-	for (auto& e : getEntities(layer, cellX, cellY))
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (hasComponents<C1, C2, Args...>(e))
 			return e;
 

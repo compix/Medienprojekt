@@ -19,6 +19,8 @@ struct NodeProperties
 
 	bool isItem;
 	bool hasBomb;
+	bool hasPlayer;
+	bool hasPortal;
 };
 
 struct GraphNode

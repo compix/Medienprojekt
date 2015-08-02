@@ -96,9 +96,7 @@
     <ClInclude Include="..\..\Source\AI\Behavior.h" />
     <ClInclude Include="..\..\Source\AI\Checks\AIUtil.h" />
     <ClInclude Include="..\..\Source\AI\Checks\IsSafePath.h" />
-    <ClInclude Include="..\..\Source\AI\Flee.h" />
     <ClInclude Include="..\..\Source\AI\FollowPath.h" />
-    <ClInclude Include="..\..\Source\AI\KickBomb.h" />
     <ClInclude Include="..\..\Source\AI\MoveTo.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
@@ -107,9 +105,12 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToItems.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateEscape.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateItem.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateKickBomb.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
     <ClInclude Include="..\..\Source\AI\PlaceBomb.h" />
+    <ClInclude Include="..\..\Source\AI\UseSkill.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationState.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
     <ClInclude Include="..\..\Source\Animation\Animator.h" />
@@ -263,9 +264,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\Checks\AIUtil.cpp" />
     <ClCompile Include="..\..\Source\AI\Checks\IsSafePath.cpp" />
-    <ClCompile Include="..\..\Source\AI\Flee.cpp" />
     <ClCompile Include="..\..\Source\AI\FollowPath.cpp" />
-    <ClCompile Include="..\..\Source\AI\KickBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\MoveTo.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
@@ -273,9 +272,12 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToItems.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateEscape.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateItem.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateKickBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
     <ClCompile Include="..\..\Source\AI\PlaceBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\UseSkill.cpp" />
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
     <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
     <ClCompile Include="..\..\Source\Animation\IdleState.cpp" />

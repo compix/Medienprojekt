@@ -476,9 +476,6 @@
     <ClInclude Include="..\..\Source\AI\Behavior.h">
       <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AI\KickBomb.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AI\MoveTo.h">
       <Filter>AI</Filter>
     </ClInclude>
@@ -499,9 +496,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h">
       <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Flee.h">
-      <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateEscape.h">
       <Filter>AI\PathRatings</Filter>
@@ -526,6 +520,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.h">
       <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateKickBomb.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\UseSkill.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -583,9 +586,6 @@
     <ClInclude Include="..\..\Source\Systems\AISystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\Source\AI\KickBomb.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AI\MoveTo.cpp">
       <Filter>AI</Filter>
     </ClCompile>
@@ -607,9 +607,6 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Flee.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateEscape.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
@@ -630,6 +627,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp">
       <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateKickBomb.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\UseSkill.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

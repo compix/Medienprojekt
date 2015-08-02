@@ -62,9 +62,6 @@ protected:
 	sf::Vector2f m_mousePos;
 
 	ParticleEmitter* m_particleEmitter;
-
-	std::unique_ptr<PathEngine> m_pathEngine;
-	Path m_path;
 };
 
 enum class CreateGamePlayerType;

@@ -84,7 +84,7 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
 
-	m_pathEngine = std::make_unique<PathEngine>(m_layerManager.get());
+	
 
 	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
@@ -119,8 +119,6 @@ void Game::update(TimeDelta dt)
 	if (!initialized)
 		return;
 
-	m_pathEngine->update(static_cast<float>(dt));
-
 	GameGlobals::input->update();
 	m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
@@ -133,7 +131,7 @@ void Game::update(TimeDelta dt)
 	GameGlobals::window->draw(m_light);
 	GameGlobals::window->draw(*m_particleEmitter);
 
-	m_systems.system<AISystem>()->visualize();
+	//m_systems.system<AISystem>()->visualize();
 }
 
 void Game::refreshView()
@@ -156,9 +154,8 @@ void Game::refreshView()
 
 void LocalGame::addSystems()
 {
-	
 	m_systems.add<BodySystem>();
-	//m_systems.add<SoundSystem>();
+	m_systems.add<SoundSystem>();
 	//m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
@@ -167,12 +164,12 @@ void LocalGame::addSystems()
 	m_systems.add<DamageSystem>(m_layerManager.get());
 	m_systems.add<DestructionSystem>();
 	m_systems.add<ExplosionSystem>(m_layerManager.get());
-	m_systems.add<PortalSystem>(m_layerManager.get()); // <----- Has higher priority now: To fix 1 Frame DamageComponent bug on portal. FIX THIS (explosion on portal has to be duplicated)
+	m_systems.add<PortalSystem>(m_layerManager.get());
 	m_systems.add<BombKickSystem>(m_layerManager.get());
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();
-	m_systems.add<AISystem>(m_pathEngine.get(), m_layerManager.get());
+	m_systems.add<AISystem>(m_layerManager.get());
 	m_systems.add<InputHandleSystem>(m_layerManager.get());
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
@@ -195,8 +192,7 @@ void LocalGame::resetEntities()
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
-	m_pathEngine->getGraph()->init();
-	m_pathEngine->getSimGraph()->init();
+	m_systems.system<AISystem>()->init();
 
 	int i = 0;
 	ComponentHandle<InputComponent> input;

@@ -293,7 +293,7 @@ void PathEngine::insert(GraphNode* newNode, GraphNode* at, uint8_t taskNum)
 	while (cur->next[taskNum]->next[taskNum] && newNode->estimatedTotalCost > cur->next[taskNum]->estimatedTotalCost)
 		cur = cur->next[taskNum];
 
-	while (cur->prev && newNode->estimatedTotalCost < cur->estimatedTotalCost)
+	while (cur->prev[taskNum] && newNode->estimatedTotalCost < cur->estimatedTotalCost)
 		cur = cur->prev[taskNum];
 
 	// found correct position -> place newNode after the current node and adjust pointers accordingly

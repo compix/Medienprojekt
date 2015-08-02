@@ -143,6 +143,30 @@ void Graph::update(float deltaTime)
 		auto cell = item.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
 	}
+
+	for (auto& player : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
+	{
+		auto cell = player.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = true;
+	}
+
+	// Duplicate explosion on portals
+	for (auto& portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
+	{
+		auto cell = portal.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
+
+		if (m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion)
+		{
+			auto portalComponent = portal.component<PortalComponent>();
+			if (portalComponent->otherPortal.valid())
+			{
+				auto otherCell = portalComponent->otherPortal.component<CellComponent>();
+				m_nodeGrid[otherCell->x][otherCell->y].properties.affectedByExplosion = true;
+				m_nodeGrid[otherCell->x][otherCell->y].properties.timeTillExplosion = m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion;
+			}
+		}
+	}
 }
 
 void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime)
@@ -272,6 +296,8 @@ void Graph::resetProperties()
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
 			m_nodeGrid[x][y].properties.isItem = false;
 			m_nodeGrid[x][y].properties.hasBomb = false;
+			m_nodeGrid[x][y].properties.hasPlayer = false;
+			m_nodeGrid[x][y].properties.hasPortal = false;
 			//m_nodeGrid[x][y].properties.marked = false;
 		}
 	}
@@ -468,13 +494,13 @@ bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
 {
 	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, x, y);
-	if (portal)
+	if (portal && m_nodeGrid[x][y].valid)
 	{
 		if (portal.component<PortalComponent>()->otherPortal.valid())
 		{
 			auto otherPortal = portal.component<PortalComponent>()->otherPortal;
 			auto cell = otherPortal.component<CellComponent>();
-			return &m_nodeGrid[cell->x][cell->y];
+			return m_nodeGrid[cell->x][cell->y].valid ? &m_nodeGrid[cell->x][cell->y] : nullptr;
 		}
 	}
 

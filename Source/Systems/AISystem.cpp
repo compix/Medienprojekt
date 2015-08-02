@@ -24,16 +24,28 @@
 #include "../AI/Checks/AIUtil.h"
 #include "../AI/PathRatings/RateDistanceToItems.h"
 #include "../AI/PathRatings/RateDistanceToAffectedBlocks.h"
+#include "../AI/PathRatings/RateKickBomb.h"
+#include "../AI/PathRatings/RatePortalSpot.h"
+#include "../AI/UseSkill.h"
 
-AISystem::AISystem(PathEngine* pathEngine, LayerManager* layerManager)
-	: m_pathEngine(pathEngine), m_layerManager(layerManager)
+AISystem::AISystem(LayerManager* layerManager)
+	: m_layerManager(layerManager)
 {
+	m_pathEngine = std::make_unique<PathEngine>(layerManager);
+}
+
+void AISystem::init()
+{
+	m_pathEngine->getGraph()->init();
+	m_pathEngine->getSimGraph()->init();
 }
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
 	static float updateTimer = 1.f / 30.f;
 	updateTimer -= dt;
+
+	m_pathEngine->update(static_cast<float>(dt));
 
 	Entity player;
 	ComponentHandle<CellComponent> playerCell;
@@ -72,6 +84,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			bool found = false;
 			bool escape = false;
 
+			Path portalPath;
+			m_pathEngine->searchBest(cell->x, cell->y, portalPath, RateCombination<RateSafety, RatePortalSpot>(RateSafety(entity), RatePortalSpot(entity)));
+
 			Path waitPath;
 			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination<RateSafety, RateDistanceToAffectedBlocks>(RateSafety(entity), RateDistanceToAffectedBlocks(entity)));
 
@@ -95,7 +110,15 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				{
 					path = waitPath;
 				} 
-				else
+				else if (portalPath.rating > destroyBlockPath.rating && isSafePath(entity, portalPath))
+				{
+					path = portalPath;
+					if (path.nodeCount == 1)
+					{
+						UseSkill useSkill;
+						useSkill.update(entity);
+					}
+				} else
 				{
 					path = destroyBlockPath;
 					if (path.nodeCount == 1)
@@ -116,6 +139,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				float minExploTime;
 				isSafePath(entity, path, &minExploTime);
 
+				if (path.nodeCount == 0)
+					m_pathEngine->searchBest(cell->x, cell->y, path, RateKickBomb(entity));
+				else
 				if (minExploTime <= timePerCell*0.5f)
 				{
 					m_pathEngine->searchBest(cell->x, cell->y, path, RateDesperateSaveAttempt(entity), 20);
@@ -148,7 +174,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 void AISystem::visualize()
 {
-	m_pathEngine->visualize();
+	//m_pathEngine->visualize();
 	//m_pathEngine->visualize(m_path);
 }
 

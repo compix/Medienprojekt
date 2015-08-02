@@ -8,3 +8,8 @@ enum class Direction : uint8_t
 	LEFT,
 	RIGHT
 };
+
+namespace CommonUtil
+{
+	Direction toDirection(int dirX, int dirY);
+}
