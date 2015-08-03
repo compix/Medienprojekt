@@ -10,7 +10,7 @@
 #include "../GameGlobals.h"
 #include "../Components/DirectionComponent.h"
 #include "../Events/CreatePortalEvent.h"
-
+#include "../Components/PortalComponent.h"
 #include "../Components/BombComponent.h"
 
 InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
@@ -40,7 +40,8 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->skillButtonPressed)
 		{
-			GameGlobals::events->emit<CreatePortalEvent>(entity);
+			if (!inventory->placedPortals.second.valid() && !m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+				GameGlobals::events->emit<CreatePortalEvent>(entity);
 			input->skillButtonPressed = false;
 		}
 

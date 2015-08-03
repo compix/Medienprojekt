@@ -10,6 +10,7 @@
 #include "../Components/PortalMarkerComponent.h"
 #include "../Components/TimerComponent.h"
 #include "../Components/InventoryComponent.h"
+#include "../Components/BombComponent.h"
 
 
 using namespace entityx;
@@ -70,16 +71,23 @@ void PortalSystem::update(entityx::EntityManager& entityManager, entityx::EventM
 
 		for (Entity e : entityCollection)
 		{
-			// Es kann teleportiert werden, wenn es nicht markiert oder das Portal selber ist.
-			if (!e.has_component<PortalMarkerComponent>() && e != portal)
+			// Es kann teleportiert werden, wenn es nicht markiert, kein Portal ist und auf der anderen Seite keine Bombe ist
+			auto cell = linkedPortal.component<CellComponent>();
+			if (!e.has_component<PortalMarkerComponent>() && !e.has_component<PortalComponent>())
 			{
+				if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+				{
+					e.assign<PortalMarkerComponent>(portal.id());
+					continue;
+				}
+					
 				if (e.has_component<BodyComponent>())
 				{
 					e.component <BodyComponent>()->body->SetTransform(fitEntityIntoCell(linkedPortal.component<CellComponent>().get()), 0);
 				}
 				else
 				{
-					auto cell = linkedPortal.component<CellComponent>();
+					
 					e.component<TransformComponent>()->x = GameConstants::CELL_WIDTH * cell->x + GameConstants::CELL_WIDTH*0.5f;
 					e.component<TransformComponent>()->y = GameConstants::CELL_HEIGHT * cell->y + GameConstants::CELL_HEIGHT*0.5f;
 				}
@@ -94,7 +102,10 @@ void PortalSystem::receive(const TimeoutEvent& timeoutEvent)
 {
 	auto entity = timeoutEvent.affectedEntity;
 	if (entity.has_component<PortalComponent>())
+	{
 		entity.destroy();
+		GameGlobals::entityFactory->destroyEntity(entity);
+	}
 }
 
 void PortalSystem::receive(const CreatePortalEvent& event)

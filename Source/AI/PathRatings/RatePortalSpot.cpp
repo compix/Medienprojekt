@@ -9,6 +9,10 @@ RatePortalSpot::RatePortalSpot(entityx::Entity& entity)
 
 bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
 {
+	// Can't place a portal on a portal
+	if (node->properties.hasPortal)
+		return false;
+
 	auto inventory = m_entity.component<InventoryComponent>();
 
 	auto firstPortal = inventory->placedPortals.first;
@@ -21,14 +25,15 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& p
 	}
 
 	auto cell = firstPortal.component<CellComponent>();
+
+	// Don't place a portal if the other portal is affected by an explosion
 	if (pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
 		return false;
 
 	auto secondPortal = inventory->placedPortals.second;
 	if (!secondPortal.valid())
 	{
-		// Higher distance between portals = good spot. I guess.
-			
+		// Higher distance between portals = good spot. I guess.	
 		float distance = abs(cell->x - node->x) + abs(cell->y - node->y);
 		if (distance < 5)
 			return false;

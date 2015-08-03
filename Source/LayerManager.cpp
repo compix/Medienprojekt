@@ -93,6 +93,7 @@ void LayerManager::remove(Entity entity)
  */
 void LayerManager::update()
 {
+	/*
 	for (auto& info : m_scheduledForPush)
 		m_layers[info.layer]->add(info.entity, info.x, info.y);
 
@@ -101,6 +102,7 @@ void LayerManager::update()
 
 	m_scheduledForPush.clear();
 	m_scheduledForRemoval.clear();
+	*/
 
 	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
 	{
