@@ -44,6 +44,7 @@
 #include <sstream>
 #include "Components/PortalComponent.h"
 #include "Components/PlayerComponent.h"
+#include "Components/ColorComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -84,15 +85,19 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	{
 	case 1:
 		isA = BodyFactory::PLAYER_1;
+		entity->assign<ColorComponent>(RGB::Blue);
 		break;
 	case 2:
 		isA = BodyFactory::PLAYER_2;
+		entity->assign<ColorComponent>(RGB::Red);
 		break;
 	case 3:
 		isA = BodyFactory::PLAYER_3;
+		entity->assign<ColorComponent>(RGB::Green);
 		break;
 	case 4:
 		isA = BodyFactory::PLAYER_4;
+		entity->assign<ColorComponent>(RGB::Yellow);
 		break;
 	default:
 		isA = BodyFactory::PLAYER_1;
@@ -111,8 +116,8 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 	entity->assign<InputComponent>();
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity->assign<InventoryComponent>();
 	entity->assign<DynamicComponent>();
+	entity->assign<InventoryComponent>();
 	entity->assign<HealthComponent>(1);
 	entity->assign<PlayerComponent>(playerIndex);
 
@@ -254,6 +259,10 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 {
+	RGB ownerColor;
+	if (owner.has_component<ColorComponent>())
+		ownerColor = owner.component<ColorComponent>()->color;
+
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
@@ -279,6 +288,19 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 		entity.assign<ParticleComponent>();
 		entity.component<ParticleComponent>()->emitter = emitter;
 
+		emitter->spawnTime(0.005f)
+			.maxLifetime(1.f)
+			.speedModifier(2.2f)
+			.velocityFunction([](float t) { t = t * 2.f - 1.f; return sf::Vector2f(t, sinf(t)*50.f); })
+			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.15f))
+			.sizeFunction(Gradient3<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(5, 5), sf::Vector2f(30, 15), sf::Vector2f(5, 5)))
+			//.spawnDuration(5.f)
+			.transparencyFunction([](float t) { t = t * 2.f - 1.f; return 250 + t*100.f; })
+			.colorFunction(Gradient<RGB>(GradientType::SMOOTH, RGB(170, 255, 255), ownerColor))
+			.position((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f
+			);
+
+		/*
 		emitter->spawnTime(0.01f)
 			.maxLifetime(5.f)
 			.speedModifier(1.f)
@@ -291,7 +313,7 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 			.transparencyFunction(Gradient<float>(GradientType::REGRESS, 255, 0))
 			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 150, 252), RGB(0, 255, 252)))
 			.position((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f
-			);
+			);*/
 	}
 
 	m_layerManager->add(entity);

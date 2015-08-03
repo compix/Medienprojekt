@@ -124,6 +124,7 @@
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
     <ClInclude Include="..\..\Source\Components\BombComponent.h" />
     <ClInclude Include="..\..\Source\Components\CellComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ColorComponent.h" />
     <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
     <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />

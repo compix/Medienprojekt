@@ -1,5 +1,6 @@
 #pragma once
 #include "entityx/entityx.h"
+#include <SFML/Graphics/Color.hpp>
 
 struct InventoryComponent
 {

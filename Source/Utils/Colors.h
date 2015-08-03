@@ -1,4 +1,5 @@
 #pragma once
+#include "SFML/Graphics.hpp"
 
 struct RGB;
 struct HSV;
@@ -7,6 +8,8 @@ namespace Convert
 {
 	HSV RGBtoHSV(RGB rgb);
 	RGB HSVtoRGB(HSV hsv);
+
+	RGB sfColorToRGB(sf::Color color);
 }
 
 struct RGB
@@ -21,6 +24,11 @@ struct RGB
 	float r;
 	float g;
 	float b;
+
+	static const RGB Red;
+	static const RGB Green;
+	static const RGB Blue;
+	static const RGB Yellow;
 };
 
 struct HSV

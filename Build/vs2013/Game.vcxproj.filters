@@ -530,6 +530,9 @@
     <ClInclude Include="..\..\Source\AI\UseSkill.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ColorComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">

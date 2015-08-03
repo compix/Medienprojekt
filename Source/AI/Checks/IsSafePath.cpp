@@ -19,7 +19,7 @@ bool IsSafePath::operator()(entityx::Entity& entity, Path& path, float* minExplo
 			float exploTime = node->properties.timeTillExplosion - timePerCell * i;
 			if (minExplosionTime)
 				*minExplosionTime = std::min(*minExplosionTime, exploTime);
-			if (exploTime >= -timePerCell*2.f && exploTime <= timePerCell + updateTime * 2.f)
+			if (exploTime >= -(timePerCell + updateTime * 2.f) && exploTime <= timePerCell + updateTime * 2.f)
 				return false;
 		}
 	}

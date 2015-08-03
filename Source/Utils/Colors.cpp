@@ -1,6 +1,11 @@
 #include "Colors.h"
 #include "Math.h"
 
+const RGB RGB::Red    = RGB(255, 0, 0);
+const RGB RGB::Green  = RGB(0, 255, 0);
+const RGB RGB::Blue   = RGB(0, 0, 255);
+const RGB RGB::Yellow = RGB(255, 255, 0);
+
 HSV Convert::RGBtoHSV(RGB rgb)
 {
 	rgb.r /= 255.f;
@@ -101,4 +106,9 @@ RGB Convert::HSVtoRGB(HSV hsv)
 	rgb.g *= 255.f;
 	rgb.b *= 255.f;
 	return rgb;
+}
+
+RGB Convert::sfColorToRGB(sf::Color color)
+{
+	return RGB(color.r, color.g, color.b);
 }
