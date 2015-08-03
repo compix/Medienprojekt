@@ -259,7 +259,7 @@ void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEv
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
-		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner));
+		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner, false));
 }
 
 void NetClient::onCreateItemMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

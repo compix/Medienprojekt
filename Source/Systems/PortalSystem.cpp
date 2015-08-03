@@ -21,19 +21,14 @@ PortalSystem::PortalSystem(LayerManager* layerManager)
 
 PortalSystem::~PortalSystem()
 {
-	m_portals.clear();
 	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
-	GameGlobals::events->unsubscribe<ComponentAddedEvent<PortalComponent>>(*this);
 	GameGlobals::events->unsubscribe<CreatePortalEvent>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
 }
 
 void PortalSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<TimeoutEvent>(*this);
-	events.subscribe<ComponentAddedEvent<PortalComponent>>(*this);
 	events.subscribe<CreatePortalEvent>(*this);
-	events.subscribe<EntityDestroyedEvent>(*this);
 }
 
 
@@ -68,38 +63,28 @@ void PortalSystem::update(entityx::EntityManager& entityManager, entityx::EventM
 		auto layerComponent = portal.component<LayerComponent>();
 
 		EntityCollection entityCollection = m_layerManager->getEntities(layerComponent->layer, cellComponent->x, cellComponent->y);
+		auto linkedPortal = portal.component<PortalComponent>()->otherPortal;
 
-		if (!entityCollection.empty())
+		if (!linkedPortal.valid())
+			continue;
+
+		for (Entity e : entityCollection)
 		{
-			auto owner = portal.component<OwnerComponent>()->entity;
-
-			std::pair<std::multimap<Entity::Id, Entity>::iterator, std::multimap<Entity::Id, Entity>::iterator> ppp;
-			ppp = m_portals.equal_range(owner.id());
-			for (std::multimap<Entity::Id, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
+			// Es kann teleportiert werden, wenn es nicht markiert oder das Portal selber ist.
+			if (!e.has_component<PortalMarkerComponent>() && e != portal)
 			{
-				if ((*it2).second.id() != portal.id()) //Wenn das gegenstück zum Portal gefunden ist.
+				if (e.has_component<BodyComponent>())
 				{
-					for (Entity e : entityCollection)
-					{
-						if (!e.has_component<PortalMarkerComponent>() && e.id() != portal.id()){ //es kann Teleportiert werden, wenn es nicht markiert oder das Portal selber ist.
-							if (e.has_component<BodyComponent>())
-							{
-								e.component <BodyComponent>()->body->SetTransform(fitEntityIntoCell((*it2).second.component<CellComponent>().get()), 0);
-							}
-							else
-							{
-								uint8_t cellX, cellY;
-								cellX = (*it2).second.component<CellComponent>()->x;
-								cellY = (*it2).second.component<CellComponent>()->y;
-								e.component<TransformComponent>()->x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
-								e.component<TransformComponent>()->y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
-							}
-
-							e.assign<PortalMarkerComponent>((*it2).second.id()); //Marker wird zum gegenstück erstellt, da die Entity sich schon dort befindet.
-						}
-					}
-					break;
+					e.component <BodyComponent>()->body->SetTransform(fitEntityIntoCell(linkedPortal.component<CellComponent>().get()), 0);
 				}
+				else
+				{
+					auto cell = linkedPortal.component<CellComponent>();
+					e.component<TransformComponent>()->x = GameConstants::CELL_WIDTH * cell->x + GameConstants::CELL_WIDTH*0.5f;
+					e.component<TransformComponent>()->y = GameConstants::CELL_HEIGHT * cell->y + GameConstants::CELL_HEIGHT*0.5f;
+				}
+
+				e.assign<PortalMarkerComponent>(linkedPortal.id()); //Marker wird zum gegenstück erstellt, da die Entity sich schon dort befindet.
 			}
 		}
 	}
@@ -112,97 +97,36 @@ void PortalSystem::receive(const TimeoutEvent& timeoutEvent)
 		entity.destroy();
 }
 
-void PortalSystem::receive(const entityx::ComponentAddedEvent<PortalComponent>& event)
-{
-	auto entity = event.entity;
-	assert(entity.has_component<OwnerComponent>());
-}
-
-void PortalSystem::receive(const entityx::EntityDestroyedEvent& event)
-{
-	auto entity = event.entity;
-
-	if (!entity.valid())
-		return;
-
-	if (entity.has_component<PortalComponent>())
-	{
-		auto owner = entity.component<OwnerComponent>()->entity;
-
-		std::pair<std::multimap<Entity::Id, Entity>::iterator, std::multimap<Entity::Id, Entity>::iterator> ppp;
-		ppp = m_portals.equal_range(owner.id());
-		for (std::multimap<Entity::Id, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
-		{
-			if ((*it2).second.id() == entity.id())
-			{
-				m_portals.erase(it2); //entfernt Portal, wenn dieses zerstört wird.
-				break;				//da jedes Portal einmalig, kann auch schon aufgehört werden.
-			}
-		}
-	}
-	GameGlobals::entityFactory->destroyEntity(entity);
-}
-
 void PortalSystem::receive(const CreatePortalEvent& event)
 {
 	auto entity = event.triggerEntity;
-	assert(entity.has_component<CellComponent>());
+	if (!entity.valid())
+		return;
+	assert(entity.has_component<CellComponent>() && entity.has_component<InventoryComponent>());
 
-	uint8_t cellX, cellY;
-	cellX = entity.component<CellComponent>()->x;
-	cellY = entity.component<CellComponent>()->y;
+	auto cell = entity.component<CellComponent>();
+	auto inventory = entity.component<InventoryComponent>();
+	entityx::Entity firstPortal = inventory->placedPortals.first;
+	auto newPortal = GameGlobals::entityFactory->createPortal(cell->x, cell->y, entity, firstPortal.valid());
+	assert(newPortal.has_component<TimerComponent>());
 
-	/**Auskomentierter Code, dient dazu das Portal vor den TriggerEntity zu setzen**/
+	// Save portals in the inventory of the entity
+	if (!inventory->placedPortals.first.valid())
+	{
+		inventory->placedPortals.first = newPortal;
+	}	
+	else
+	{
+		inventory->placedPortals.second = newPortal;
+		firstPortal.remove<TimerComponent>();
+		firstPortal.assign<TimerComponent>(GameConstants::PORTAL_TIMER_LINKED);
 
-	/*if (entity.has_component<DirectionComponent>()){ //Wenn es von einer Entity ausgeht, die eine Richtung hat, dann wird es vor der Entity platziert
-		switch (entity.component<DirectionComponent>()->direction)
-		{
-		case Direction::UP: cellY--; break;
-		case Direction::DOWN: cellY++; break;
-		case Direction::LEFT: cellX--; break;
-		case Direction::RIGHT: cellX++; break;
-		default: break;
-		}
-	}*/
-	
-	//if (!m_layerManager->hasEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, cellX, cellY)){	//Wenn Portal gelegt werden kann
-		if (m_portals.count(entity.id()) < 2){																//Maximal zwei Portale
-			auto portal = GameGlobals::entityFactory->createPortal(cellX, cellY, entity);
+		// Link the portals:
+		firstPortal.component<PortalComponent>()->otherPortal = newPortal;
+		newPortal.component<PortalComponent>()->otherPortal = firstPortal;
 
-			// Save portals in the inventory of the entity
-			assert(entity.has_component<InventoryComponent>());
-			auto inventory = entity.component<InventoryComponent>();
-			if (!inventory->placedPortals.first.valid())
-				inventory->placedPortals.first = portal;
-			else
-				inventory->placedPortals.second = portal;
-
-			m_portals.insert(std::pair<Entity::Id, Entity>(entity.id(), portal));	//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
-			entity.assign<PortalMarkerComponent>(portal.id());
-			if (m_portals.count(entity.id()) == 2)
-			{
-				std::pair<std::multimap<Entity::Id, Entity>::iterator, std::multimap<Entity::Id, Entity>::iterator> ppp;
-				ppp = m_portals.equal_range(entity.id());
-				Entity otherPortal;
-				for (std::multimap<Entity::Id, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
-				{
-					if ((*it2).second.has_component<TimerComponent>())				//TIMER erneuern
-					{
-						(*it2).second.remove<TimerComponent>();
-					}
-					(*it2).second.assign<TimerComponent>(GameConstants::PORTAL_TIMER_LINKED);
-			
-					if ((*it2).second != portal)
-						otherPortal = (*it2).second;
-
-				}
-
-				// Link the portals:
-				otherPortal.component<PortalComponent>()->otherPortal = portal;
-				portal.component<PortalComponent>()->otherPortal = otherPortal;
-			}
-		}
-	//}
+		entity.assign<PortalMarkerComponent>(newPortal.id());
+	}
 }
 
 b2Vec2 PortalSystem::fitEntityIntoCell(CellComponent* cellComponent)

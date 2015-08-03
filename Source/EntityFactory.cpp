@@ -45,6 +45,7 @@
 #include "Components/PortalComponent.h"
 #include "Components/PlayerComponent.h"
 #include "Components/ColorComponent.h"
+#include "Components/PortalMarkerComponent.h"
 
 EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -257,7 +258,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	return *entity;
 }
 
-Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
+Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner, bool linked)
 {
 	RGB ownerColor;
 	if (owner.has_component<ColorComponent>())
@@ -274,7 +275,7 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<OwnerComponent>(owner);
 	entity.assign<PortalComponent>();
-	entity.assign<TimerComponent>(GameConstants::PORTAL_TIMER_NOT_LINKED);
+	entity.assign<TimerComponent>(linked ? GameConstants::PORTAL_TIMER_LINKED : GameConstants::PORTAL_TIMER_NOT_LINKED);
 
 	entity.assign<CellComponent>(cellX, cellY);
 
@@ -395,31 +396,16 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime)
+void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, entityx::Entity::Id portalId)
 {
-	Entity entity = GameGlobals::entities->create();
+	entityx::Entity explosions[4];
+	explosions[0] = createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime);
+	explosions[1] = createExplosion(cellX, cellY, Direction::UP, range, spreadTime);
+	explosions[2] = createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime);
+	explosions[3] = createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
 
-	TransformComponent transformComponent;
-	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
-
-	entity.assign<TransformComponent>(transformComponent);
-	entity.assign<DamageDealerComponent>(1);
-	entity.assign<CellComponent>(cellX, cellY);
-	
-	createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime);
-	createExplosion(cellX, cellY, Direction::UP, range, spreadTime);
-	createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime);
-	createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
-
-	entity.assign<ExplosionComponent>();
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity.assign<DestructionComponent>(0.55f);
-	entity.assign<DynamicComponent>();
-
-	m_layerManager->add(entity);
-
-	return entity;
+	for (auto e : explosions)
+		e.assign<PortalMarkerComponent>(portalId);
 }
 
 Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)

@@ -10,6 +10,7 @@
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
 #include "../Events/SoundEvent.h"
+#include "../Components/PortalMarkerComponent.h"
 
 BombSystem::BombSystem()
 {
@@ -46,6 +47,7 @@ void BombSystem::detonate(entityx::Entity entity)
 	if (!entity.valid())
 		return;
 
+	auto portalMarker = entity.component<PortalMarkerComponent>();
 	if (entity.has_component<BombComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
@@ -57,7 +59,8 @@ void BombSystem::detonate(entityx::Entity entity)
 		GameGlobals::events->emit<SoundEvent>("explosion");
 		assert(cell);
 
-		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime);
+		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, 
+			bomb->explosionRange, bomb->explosionSpreadTime, portalMarker ? portalMarker->portalId : entityx::Entity::Id());
 		GameGlobals::events->emit<BombExplodedEvent>(entity);
 		bomb->exploded = true;
 	}

@@ -21,8 +21,6 @@ public:
 	PortalSystem(LayerManager* layerManager);
 	~PortalSystem();
 	void configure(entityx::EventManager &event_manager) override;
-	void receive(const entityx::ComponentAddedEvent<PortalComponent> &event);
-	void receive(const entityx::EntityDestroyedEvent& event);
 	void receive(const CreatePortalEvent& event);
 	b2Vec2 fitEntityIntoCell(CellComponent* cellComponent);
 	void receive(const TimeoutEvent& timeoutEvent);
@@ -30,5 +28,4 @@ public:
 
 private:
 	LayerManager* m_layerManager;
-	std::multimap<Entity::Id, Entity> m_portals; //erlaubt mehrere Values zu einem Key 
 };
