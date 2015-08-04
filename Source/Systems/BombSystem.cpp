@@ -22,8 +22,8 @@ BombSystem::~BombSystem()
 
 void BombSystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->timeout.connect(this, BombSystem::onTimeout);
-	m_connections += GameGlobals::events->entityGotHit.connect(this, BombSystem::onEntityGotHit);
+	m_connections += GameGlobals::events->timeout.connect(this, &BombSystem::onTimeout);
+	m_connections += GameGlobals::events->entityGotHit.connect(this, &BombSystem::onEntityGotHit);
 }
 
 void BombSystem::update(float dt)

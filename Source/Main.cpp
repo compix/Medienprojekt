@@ -67,11 +67,11 @@ int Main::run()
 	AssetManager assetManager;
 	GameGlobals::assetManager = &assetManager;
 
-	events.exit.connect(this, Main::onExit);
-	events.createGame.connect(this, Main::onCreateGame);
-	events.joinGame.connect(this, Main::onJoinGame);
-	events.forceDisconnect.connect(this, Main::onForceDisconnect);
-	events.preload.connect(this, Main::onPreload);
+	events.exit.connect(this, &Main::onExit);
+	events.createGame.connect(this, &Main::onCreateGame);
+	events.joinGame.connect(this, &Main::onJoinGame);
+	events.forceDisconnect.connect(this, &Main::onForceDisconnect);
+	events.preload.connect(this, &Main::onPreload);
 
 	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
 	sf::View screenView(sf::FloatRect(0, 0, 800, 600));

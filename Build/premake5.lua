@@ -42,6 +42,7 @@ else
 end
 
 flags {"C++11", "nbProjectFolder"}
+defines {"NOMINMAX"}
 
 filter { "system:windows" }
 	defines { "WIN32" }

@@ -22,8 +22,8 @@ ItemSystem::~ItemSystem()
 void ItemSystem::addedToEngine(Engine *engine)
 {
 	IteratingSystem::addedToEngine(engine);
-	m_connections += engine->entityRemoved.connect(this, ItemSystem::onEntityDestroyed);
-	m_connections += GameGlobals::events->itemPickedUp.connect(this, ItemSystem::onItemPickedUp);
+	m_connections += engine->entityRemoved.connect(this, &ItemSystem::onEntityDestroyed);
+	m_connections += GameGlobals::events->itemPickedUp.connect(this, &ItemSystem::onItemPickedUp);
 }
 
 void ItemSystem::processEntity(Entity *item, float deltaTime)

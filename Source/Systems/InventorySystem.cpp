@@ -13,7 +13,7 @@ InventorySystem::~InventorySystem()
 
 void InventorySystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->bombExploded.connect(this, InventorySystem::onBombExploded);
+	m_connections += GameGlobals::events->bombExploded.connect(this, &InventorySystem::onBombExploded);
 }
 
 void InventorySystem::update(float dt)

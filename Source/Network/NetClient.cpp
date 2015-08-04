@@ -15,8 +15,8 @@ using namespace NetCode;
 NetClient::NetClient()
 	: m_messageWriter(1024)
 {
-	m_connections += GameGlobals::events->sendChat.connect(this, NetClient::onSendChat);
-	m_connections += GameGlobals::events->setReady.connect(this, NetClient::onSetReady);
+	m_connections += GameGlobals::events->sendChat.connect(this, &NetClient::onSendChat);
+	m_connections += GameGlobals::events->setReady.connect(this, &NetClient::onSetReady);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::START_GAME, &NetClient::onStartGameMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_READY, &NetClient::onPlayerReadyMessage, this);

@@ -22,9 +22,9 @@ void ParticleSpawnSystem::update(float dt)
 
 void ParticleSpawnSystem::addedToEngine(Engine *engine)
 {
-	GameGlobals::events->death.connect(this, ParticleSpawnSystem::onDeath);
-	GameGlobals::events->explosionCreated.connect(this, ParticleSpawnSystem::onExplosionCreated);
-	GameGlobals::events->itemPickedUp.connect(this, ParticleSpawnSystem::onItemPickedUp);
+	GameGlobals::events->death.connect(this, &ParticleSpawnSystem::onDeath);
+	GameGlobals::events->explosionCreated.connect(this, &ParticleSpawnSystem::onExplosionCreated);
+	GameGlobals::events->itemPickedUp.connect(this, &ParticleSpawnSystem::onItemPickedUp);
 }
 
 void ParticleSpawnSystem::onDeath(Entity *dyingEntity)

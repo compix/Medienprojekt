@@ -55,7 +55,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;STBI_FAILURE_USERMSG;GLEW_STATIC;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;STBI_FAILURE_USERMSG;GLEW_STATIC;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\ThirdParty\SFML\include;..\..\ThirdParty\SFML\src;..\..\ThirdParty\SFML\extlibs\headers;..\..\ThirdParty\SFML\extlibs\headers\AL;..\..\ThirdParty\SFML\extlibs\headers\jpeg;..\..\ThirdParty\SFML\extlibs\headers\libsndfile\windows;..\..\ThirdParty\SFML\extlibs\headers\libfreetype\windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -69,7 +69,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;STBI_FAILURE_USERMSG;GLEW_STATIC;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;STBI_FAILURE_USERMSG;GLEW_STATIC;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\ThirdParty\SFML\include;..\..\ThirdParty\SFML\src;..\..\ThirdParty\SFML\extlibs\headers;..\..\ThirdParty\SFML\extlibs\headers\AL;..\..\ThirdParty\SFML\extlibs\headers\jpeg;..\..\ThirdParty\SFML\extlibs\headers\libsndfile\windows;..\..\ThirdParty\SFML\extlibs\headers\libfreetype\windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

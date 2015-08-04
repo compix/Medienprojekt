@@ -9,7 +9,7 @@ MenuPageLoading::MenuPageLoading(Menu &menu)
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 	createLabel(50, 50, "Loading:");
 
-	m_connections += GameGlobals::events->preload.connect(this, MenuPageLoading::onPreload);
+	m_connections += GameGlobals::events->preload.connect(this, &MenuPageLoading::onPreload);
 	m_loadingBar = createLoadingBar(50, 275, 700, 50, 0, 100);
 	m_section = createLabel(50, 100, "");
 	m_filename = createLabel(50, 150, "");

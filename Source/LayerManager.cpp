@@ -24,7 +24,7 @@ LayerManager::~LayerManager()
 void LayerManager::addedToEngine(Engine *engine)
 {
 	m_dynamicEntities = engine->getEntitiesFor(Family::all<DynamicComponent>().get());
-	m_connections += engine->entityRemoved.connect(this, LayerManager::onEntityRemoved);
+	m_connections += engine->entityRemoved.connect(this, &LayerManager::onEntityRemoved);
 }
 
 void LayerManager::removedFromEngine(Engine *engine)

@@ -145,6 +145,7 @@
             <pElem>../../../ThirdParty/SFML/extlibs/headers/libfreetype/windows</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -167,6 +168,7 @@
             <pElem>../../../ThirdParty/SFML/extlibs/headers/libfreetype/windows</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -289,6 +291,7 @@
             <pElem>../../../ThirdParty/SFML/extlibs/headers/libfreetype/windows</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -312,6 +315,7 @@
             <pElem>../../../ThirdParty/SFML/extlibs/headers/libfreetype/windows</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
             <Elem>SFML_STATIC</Elem>

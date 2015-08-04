@@ -12,7 +12,7 @@ DeathSystem::~DeathSystem()
 
 void DeathSystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->death.connect(this, DeathSystem::onDeath);
+	m_connections += GameGlobals::events->death.connect(this, &DeathSystem::onDeath);
 }
 
 void DeathSystem::update(float dt)

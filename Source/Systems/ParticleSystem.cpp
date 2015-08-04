@@ -17,7 +17,7 @@ ParticleSystem::ParticleSystem()
 void ParticleSystem::addedToEngine(Engine *engine)
 {
 	IteratingSystem::addedToEngine(engine);
-	m_connections += engine->entityRemoved.connect(this, ParticleSystem::onEntityRemoved);
+	m_connections += engine->entityRemoved.connect(this, &ParticleSystem::onEntityRemoved);
 }
 
 void ParticleSystem::removedFromEngine(Engine *engine)

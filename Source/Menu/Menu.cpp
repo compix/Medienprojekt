@@ -8,8 +8,8 @@
 Menu::Menu()
 	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this), m_lobbyPage(*this)
 {
-	m_preloadConnection = GameGlobals::events->preload.connect(this, Menu::onPreload);
-	GameGlobals::events->forceDisconnect.connect(this, Menu::onForceDisconnect);
+	m_preloadConnection = GameGlobals::events->preload.connect(this, &Menu::onPreload);
+	GameGlobals::events->forceDisconnect.connect(this, &Menu::onForceDisconnect);
 
 	pushPage(&m_loadingPage);
 }
@@ -44,7 +44,7 @@ void Menu::onPreload(int progress, int total, string nextSection, const string &
 	{
 		popPage();
 		m_preloadConnection.disconnect();
-		GameGlobals::events->sfml.connect(this, Menu::onSfml);
+		GameGlobals::events->sfml.connect(this, &Menu::onSfml);
 	}
 }
 

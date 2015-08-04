@@ -46,6 +46,7 @@
             <pElem>../../../ThirdParty/enet/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
           </preprocessorList>
@@ -57,6 +58,7 @@
             <pElem>../../../ThirdParty/enet/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
           </preprocessorList>
@@ -98,6 +100,7 @@
             <pElem>../../../ThirdParty/enet/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
           </preprocessorList>
@@ -110,6 +113,7 @@
             <pElem>../../../ThirdParty/enet/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
           </preprocessorList>

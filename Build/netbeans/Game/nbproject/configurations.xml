@@ -243,6 +243,7 @@
             <pElem>../../../ThirdParty/ecstasy/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -264,6 +265,7 @@
             <pElem>../../../ThirdParty/ecstasy/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>DEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -509,6 +511,7 @@
             <pElem>../../../ThirdParty/ecstasy/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
             <Elem>SFML_STATIC</Elem>
@@ -531,6 +534,7 @@
             <pElem>../../../ThirdParty/ecstasy/include</pElem>
           </incDir>
           <preprocessorList>
+            <Elem>NOMINMAX</Elem>
             <Elem>WIN32</Elem>
             <Elem>NDEBUG</Elem>
             <Elem>SFML_STATIC</Elem>

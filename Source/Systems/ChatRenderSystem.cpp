@@ -36,7 +36,7 @@ ChatRenderSystem::~ChatRenderSystem()
 
 void ChatRenderSystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->chat.connect(this, ChatRenderSystem::onChat);
+	m_connections += GameGlobals::events->chat.connect(this, &ChatRenderSystem::onChat);
 }
 void ChatRenderSystem::update(float dt)
 {

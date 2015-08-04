@@ -1,5 +1,6 @@
 #pragma once
 #include "../MenuPage.h"
+#include <stdint.h>
 struct NetPlayerInfo;
 
 class MenuPageChat : public MenuPage

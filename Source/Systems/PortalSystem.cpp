@@ -25,9 +25,9 @@ void PortalSystem::addedToEngine(Engine *engine)
 {
 	m_portalMarkerEntities = engine->getEntitiesFor(Family::all<PortalMarkerComponent, CellComponent, LayerComponent>().get());
 	m_portalEntities = engine->getEntitiesFor(Family::all<PortalComponent, CellComponent, LayerComponent>().get());
-	m_connections += GameGlobals::events->timeout.connect(this, PortalSystem::onTimeout);
-	m_connections += GameGlobals::events->createPortal.connect(this, PortalSystem::onCreatePortal);
-	m_connections += engine->entityRemoved.connect(this, PortalSystem::onEntityDestroyed);
+	m_connections += GameGlobals::events->timeout.connect(this, &PortalSystem::onTimeout);
+	m_connections += GameGlobals::events->createPortal.connect(this, &PortalSystem::onCreatePortal);
+	m_connections += engine->entityRemoved.connect(this, &PortalSystem::onEntityDestroyed);
 }
 
 

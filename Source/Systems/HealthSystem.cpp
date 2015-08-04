@@ -12,7 +12,7 @@ HealthSystem::~HealthSystem()
 
 void HealthSystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->entityGotHit.connect(this, HealthSystem::onEntityGotHit);
+	m_connections += GameGlobals::events->entityGotHit.connect(this, &HealthSystem::onEntityGotHit);
 }
 
 void HealthSystem::update(float dt)

@@ -43,16 +43,16 @@ NetServer::NetServer()
 {
 	m_dynamicEntities = GameGlobals::engine->getEntitiesFor(Family::all<DynamicComponent, TransformComponent, CellComponent>().get());
 	
-	m_connections += GameGlobals::events->sendChat.connect(this, NetServer::onSendChat);
-	m_connections += GameGlobals::events->bombCreated.connect(this, NetServer::onBombCreated);
-	m_connections += GameGlobals::events->explosionCreated.connect(this, NetServer::onExplosionCreated);
-	m_connections += GameGlobals::engine->entityRemoved.connect(this, NetServer::onEntityDestroyed);
-	m_connections += GameGlobals::events->portalCreated.connect(this, NetServer::onPortalCreated);
-	m_connections += GameGlobals::events->itemCreated.connect(this, NetServer::onItemCreated);
-	m_connections += GameGlobals::events->boostEffectCreated.connect(this, NetServer::onBoostEffectCreated);
-	m_connections += GameGlobals::events->smokeCreated.connect(this, NetServer::onSmokeCreated);
-	m_connections += GameGlobals::events->death.connect(this, NetServer::onDeath);
-	m_connections += GameGlobals::events->setReady.connect(this, NetServer::onSetReady);
+	m_connections += GameGlobals::events->sendChat.connect(this, &NetServer::onSendChat);
+	m_connections += GameGlobals::events->bombCreated.connect(this, &NetServer::onBombCreated);
+	m_connections += GameGlobals::events->explosionCreated.connect(this, &NetServer::onExplosionCreated);
+	m_connections += GameGlobals::engine->entityRemoved.connect(this, &NetServer::onEntityDestroyed);
+	m_connections += GameGlobals::events->portalCreated.connect(this, &NetServer::onPortalCreated);
+	m_connections += GameGlobals::events->itemCreated.connect(this, &NetServer::onItemCreated);
+	m_connections += GameGlobals::events->boostEffectCreated.connect(this, &NetServer::onBoostEffectCreated);
+	m_connections += GameGlobals::events->smokeCreated.connect(this, &NetServer::onSmokeCreated);
+	m_connections += GameGlobals::events->death.connect(this, &NetServer::onDeath);
+	m_connections += GameGlobals::events->setReady.connect(this, &NetServer::onSetReady);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);

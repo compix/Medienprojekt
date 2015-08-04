@@ -13,7 +13,7 @@ MenuPageConnecting::MenuPageConnecting(Menu &menu)
 	button->bindCallback(&MenuPageConnecting::onAbort, this, tgui::Button::LeftMouseClicked);
 
 	m_onShowFocus = button.get();
-	m_clientStateConnection = GameGlobals::events->clientState.connect(this, MenuPageConnecting::onClientState);
+	m_clientStateConnection = GameGlobals::events->clientState.connect(this, &MenuPageConnecting::onClientState);
 	m_clientStateConnection.disable();
 }
 

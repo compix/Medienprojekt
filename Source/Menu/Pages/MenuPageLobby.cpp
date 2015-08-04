@@ -59,14 +59,14 @@ void MenuPageLobby::show()
 	}
 
 	m_timer->setText("Starting in: 15");
-	m_connections += GameGlobals::events->chat.connect(this, MenuPageLobby::onChat);
-	m_connections += GameGlobals::events->playerJoin.connect(this, MenuPageLobby::onPlayerJoin);
-	m_connections += GameGlobals::events->lobby.connect(this, MenuPageLobby::onLobby);
-	m_connections += GameGlobals::events->lobbyDisable.connect(this, MenuPageLobby::onLobbyDisable);
-	m_connections += GameGlobals::events->startGame.connect(this, MenuPageLobby::onStartGame);
-	m_connections += GameGlobals::events->ready.connect(this, MenuPageLobby::onReady);
-	m_connections += GameGlobals::events->countdown.connect(this, MenuPageLobby::onCountdown);
-	m_connections += GameGlobals::events->disconnect.connect(this, MenuPageLobby::onDisconnect);
+	m_connections += GameGlobals::events->chat.connect(this, &MenuPageLobby::onChat);
+	m_connections += GameGlobals::events->playerJoin.connect(this, &MenuPageLobby::onPlayerJoin);
+	m_connections += GameGlobals::events->lobby.connect(this, &MenuPageLobby::onLobby);
+	m_connections += GameGlobals::events->lobbyDisable.connect(this, &MenuPageLobby::onLobbyDisable);
+	m_connections += GameGlobals::events->startGame.connect(this, &MenuPageLobby::onStartGame);
+	m_connections += GameGlobals::events->ready.connect(this, &MenuPageLobby::onReady);
+	m_connections += GameGlobals::events->countdown.connect(this, &MenuPageLobby::onCountdown);
+	m_connections += GameGlobals::events->disconnect.connect(this, &MenuPageLobby::onDisconnect);
 }
 
 void MenuPageLobby::hide()

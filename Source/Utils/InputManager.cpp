@@ -25,8 +25,8 @@ static const char *axisNames[] = {
 
 InputManager::InputManager()
 {
-	m_connections += GameGlobals::events->menuShow.connect(this, InputManager::onMenuShow);
-	m_connections += GameGlobals::events->sfml.connect(this, InputManager::onSfml);
+	m_connections += GameGlobals::events->menuShow.connect(this, &InputManager::onMenuShow);
+	m_connections += GameGlobals::events->sfml.connect(this, &InputManager::onSfml);
 
 	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 	{

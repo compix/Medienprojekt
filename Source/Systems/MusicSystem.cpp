@@ -9,8 +9,8 @@ void MusicSystem::update(float dt)
 
 void MusicSystem::addedToEngine(Engine *engine)
 {
-	m_connections += GameGlobals::events->startGame.connect(this, MusicSystem::onStartGame);
-	m_connections += GameGlobals::events->music.connect(this, MusicSystem::onMusic);
+	m_connections += GameGlobals::events->startGame.connect(this, &MusicSystem::onStartGame);
+	m_connections += GameGlobals::events->music.connect(this, &MusicSystem::onMusic);
 }
 
 void MusicSystem::onStartGame()

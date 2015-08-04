@@ -57,7 +57,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;USING_SIGNAL11;USING_ECSTASY;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\ecstasy\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -74,7 +74,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;USING_SIGNAL11;USING_ECSTASY;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\ecstasy\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -136,37 +136,6 @@
     <ClInclude Include="..\..\Source\ContactListener.h" />
     <ClInclude Include="..\..\Source\EntityFactory.h" />
     <ClInclude Include="..\..\Source\EntityLayer.h" />
-    <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ClientStateEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CountdownEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
-    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
-    <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
-    <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ForceDisconnectEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
-    <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
-    <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
-    <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
-    <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
-    <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
-    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
-    <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
-    <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
-    <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
-    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h" />
-    <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
-    <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
-    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\GameGlobals.h" />

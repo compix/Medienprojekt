@@ -6,9 +6,9 @@
 MenuPageChat::MenuPageChat(Menu &menu)
 	:MenuPage(menu)
 {
-	GameGlobals::events->chat.connect(this, MenuPageChat::onChat);
-	GameGlobals::events->playerJoin.connect(this, MenuPageChat::onPlayerJoin);
-	GameGlobals::events->disconnect.connect(this, MenuPageChat::onDisconnect);
+	GameGlobals::events->chat.connect(this, &MenuPageChat::onChat);
+	GameGlobals::events->playerJoin.connect(this, &MenuPageChat::onPlayerJoin);
+	GameGlobals::events->disconnect.connect(this, &MenuPageChat::onDisconnect);
 
 	m_chatBox = createChatBox(20, 20, 760, 500);
 
