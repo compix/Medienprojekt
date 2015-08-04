@@ -63,7 +63,7 @@ void ItemSystem::processEntity(Entity *item, float deltaTime)
 
 void ItemSystem::onEntityDestroyed(Entity *entity)
 {
-	if (!entity->isValid())
+	if (!entity->isValid() || !GameGlobals::entityFactory)
 		return;
 
 	if (entity->has<BlockComponent>())

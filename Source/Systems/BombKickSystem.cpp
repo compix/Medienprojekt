@@ -10,6 +10,7 @@
 #include "../GameConstants.h"
 #include "../Components/SpriteComponent.h"
 #include "../PhysixSystem.h"
+#include <iostream>
 
 
 BombKickSystem::BombKickSystem(LayerManager* layerManager)

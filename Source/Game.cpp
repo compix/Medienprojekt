@@ -53,7 +53,8 @@ Game::Game()
 	GameGlobals::engine = &m_engine;
 }
 
-Game::~Game() { 
+Game::~Game() {
+	GameGlobals::entityFactory = nullptr;
 	m_engine.removeAllEntities();
 	if (m_PhysixSystem)
 		delete m_PhysixSystem;
