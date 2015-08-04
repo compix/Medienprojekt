@@ -12,13 +12,20 @@ bool RateDesperateSaveAttempt::operator()(PathEngine* pathEngine, GraphNode* nod
 
 	float minExploTime;
 	IsSafePath isSafePath;
+	/*
 	if (!isSafePath(m_entity, pathOut, &minExploTime))
 	{		
 		if (pathOut.nodes[0]->properties.affectedByExplosion && pathOut.nodes[0]->properties.timeTillExplosion > 0.2f)
 			return false;
 
 		pathOut.rating = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 3.f;
+	}*/
+
+	if (isSafePath(m_entity, pathOut, &minExploTime))
+	{
+		pathOut.rating = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 3.f;
+		return true;
 	}
 
-	return true;
+	return false;
 }

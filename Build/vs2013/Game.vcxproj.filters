@@ -49,6 +49,9 @@
     <Filter Include="AI\Checks">
       <UniqueIdentifier>{5e3f97bd-73b9-49cf-a800-ce048023fbf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Logging">
+      <UniqueIdentifier>{440d9fbe-f5a5-49bf-b7d0-b8140fea86ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Animation\AnimationState.h">
@@ -533,6 +536,12 @@
     <ClInclude Include="..\..\Source\Components\ColorComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Logging\Logger.h">
+      <Filter>Utils\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\Logging\LoggingService.h">
+      <Filter>Utils\Logging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
@@ -639,6 +648,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\UseSkill.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Logging\Logger.cpp">
+      <Filter>Utils\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\Logging\LoggingService.cpp">
+      <Filter>Utils\Logging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

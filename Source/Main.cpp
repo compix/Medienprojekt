@@ -18,6 +18,7 @@
 #include <format.h>
 #include "Events/ForceDisconnectEvent.h"
 #include "Events/PreloadEvent.h"
+#include "Utils/Logging/Logger.h"
 
 using namespace std;
 
@@ -47,6 +48,9 @@ void changeToGameDir()
 int Main::run()
 {
 	changeToGameDir();
+
+	Logger::run();
+	Logger::showErrors();
 
 	NetCode::init();
 
@@ -125,6 +129,11 @@ int Main::run()
 		else if (m_client)
 			m_client->update(deltaTime.asSeconds());
 	}
+
+	// Shutdown logger
+	Logger::showErrors();
+	Logger::shutdown();
+	Logger::getLogThread().join();
 
 	return EXIT_SUCCESS;
 }

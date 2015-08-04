@@ -252,6 +252,8 @@
     <ClInclude Include="..\..\Source\Utils\Functions.h" />
     <ClInclude Include="..\..\Source\Utils\InputManager.h" />
     <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
+    <ClInclude Include="..\..\Source\Utils\Logging\Logger.h" />
+    <ClInclude Include="..\..\Source\Utils\Logging\LoggingService.h" />
     <ClInclude Include="..\..\Source\Utils\Math.h" />
     <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h" />
     <ClInclude Include="..\..\Source\Utils\PathFinding\GraphNode.h" />
@@ -344,6 +346,8 @@
     <ClCompile Include="..\..\Source\Utils\Functions.cpp" />
     <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Logging\Logger.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Logging\LoggingService.cpp" />
     <ClCompile Include="..\..\Source\Utils\Math.cpp" />
     <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp" />
     <ClCompile Include="..\..\Source\Utils\PathFinding\PathEngine.cpp" />

@@ -169,7 +169,6 @@ void LocalGame::addSystems()
 	m_systems.add<HealthSystem>();
 	m_systems.add<DeathSystem>();
 	m_systems.add<InputSystem>();
-	m_systems.add<AISystem>(m_layerManager.get());
 	m_systems.add<InputHandleSystem>(m_layerManager.get());
 	m_systems.add<AnimationSystem>();
 	m_systems.add<RenderSystem>(m_layerManager.get());
@@ -177,6 +176,8 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();	
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	m_systems.add<ChatRenderSystem>();
+
+	m_systems.add<AISystem>(m_layerManager.get());
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
@@ -194,7 +195,7 @@ void LocalGame::resetEntities()
 
 	m_systems.system<AISystem>()->init();
 
-	int i = 0;
+	uint8_t i = 0;
 	ComponentHandle<InputComponent> input;
 	for (Entity entity : GameGlobals::entities->entities_with_components(input))
 	{
@@ -205,7 +206,7 @@ void LocalGame::resetEntities()
 			switch (m_playerTypes[i])
 			{
 			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
-			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(); break;
+			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(i); break;
 			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
 			}
 			i++;
