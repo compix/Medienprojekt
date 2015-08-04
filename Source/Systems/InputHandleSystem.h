@@ -1,10 +1,12 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
+#include <ecstasy/systems/IteratingSystem.h>
 #include "../EntityFactory.h"
 
-class InputHandleSystem : public EntitySystem<InputHandleSystem>
+class InputHandleSystem : public IteratingSystem<InputHandleSystem>
 {
 public:
-	void update(float dt) override;
+	InputHandleSystem();
+	
+	void processEntity(Entity *entity, float deltaTime) override;
 };
 

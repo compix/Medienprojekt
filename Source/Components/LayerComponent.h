@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct LayerComponent: public ECS::Component<LayerComponent>
+struct LayerComponent: public Component<LayerComponent>
 {
 	int layer = 0;
 	

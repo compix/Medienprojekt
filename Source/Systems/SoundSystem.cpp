@@ -9,10 +9,10 @@ void SoundSystem::update(float dt)
 
 void SoundSystem::addedToEngine(Engine *engine)
 {
-	event_manager.subscribe<SoundEvent>(*this);
+	m_connections += GameGlobals::events->sound.connect(this, SoundSystem::onSound);
 }
 
 void SoundSystem::onSound(const string &name)
 {
-	GameGlobals::assetManager->getSound(name)->play();
+//	GameGlobals::assetManager->getSound(name)->play();
 }

@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 #include <cinttypes>
 
-struct PlayerComponent: public ECS::Component<PlayerComponent>
+struct PlayerComponent: public Component<PlayerComponent>
 {
 	uint8_t index = 0;
 	

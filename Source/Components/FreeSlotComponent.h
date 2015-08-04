@@ -4,7 +4,7 @@
 /**
  * @brief	Serves as a flag.
  */
-struct FreeSlotComponent: public ECS::Component<FreeSlotComponent>
+struct FreeSlotComponent: public Component<FreeSlotComponent>
 {
 	
 };

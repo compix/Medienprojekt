@@ -15,9 +15,9 @@ class ParticleManager
 	typedef std::vector<std::shared_ptr<ParticleEmitter>> EmitterContainer;
 	friend class ParticleEmitter;
 public:
-	ParticleManager(Engine *engine);
-	ParticleManager(Engine *engine, uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters);
-	ParticleManager(Engine *engine, uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters);
+	ParticleManager();
+	ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters);
+	ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters);
 	void update(float deltaTime);
 
 	void setTexture(uint32_t maxParticles);
@@ -26,7 +26,6 @@ public:
 	void createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters);
 
 private:
-	Engine *m_engine;
 	Assets::Texture* m_texture;
 
 	uint32_t m_defaultParticlesPerEmitter;

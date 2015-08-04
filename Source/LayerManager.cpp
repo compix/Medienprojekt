@@ -23,13 +23,12 @@ LayerManager::~LayerManager()
 
 void LayerManager::addedToEngine(Engine *engine)
 {
-	m_engine = engine;
+	m_dynamicEntities = engine->getEntitiesFor(Family::all<DynamicComponent>().get());
 	m_connections += engine->entityRemoved.connect(this, LayerManager::onEntityRemoved);
 }
 
 void LayerManager::removedFromEngine(Engine *engine)
 {
-	m_engine = nullptr;
 	m_connections.removeAll();
 }
 
@@ -98,7 +97,7 @@ void LayerManager::remove(Entity *entity)
 void LayerManager::update()
 {
 	
-	for (auto entity : *m_engine->getEntitiesFor(Family::all<DynamicComponent>().get()))
+	for (auto entity : *m_dynamicEntities)
 	{
 		auto layerComponent = entity->get<LayerComponent>();
 		auto cell = entity->get<CellComponent>();

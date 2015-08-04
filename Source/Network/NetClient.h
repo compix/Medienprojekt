@@ -3,13 +3,19 @@
 #include "../NetCode/Message.h"
 #include "../NetCode/Connection.h"
 #include <map>
+#include <ecstasy/core/Entity.h>
+#include <signal11/Signal.h>
 
 using NetCode::ClientConnection;
 using NetCode::MessageHandler;
 using NetCode::MessageWriter;
 using NetCode::MessageReader;
+using std::string;
 
-using ECS::Entity;
+namespace ECS {
+	class Engine;
+};
+using ECS::Engine;
 
 class NetClient 
 {
@@ -47,15 +53,16 @@ private:
 	void onSendChat(const string &message);
 	void onSetReady(int playerIndex, bool ready);
 	void mapEntity(uint64_t id, Entity *entity);
-	Entity getEntity(uint64_t id);
+	Entity *getEntity(uint64_t id);
 	void send(NetChannel channel, ENetPacket *packet);
 
 private:
 	ClientConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;
-	std::map<uint64_t, Entity> entityMap;
-	Entity m_playerEntity;
+	std::map<uint64_t, Entity *> entityMap;
+	uint64_t m_playerEntityId = 0;
 	uint8_t m_playerIndex = 0;
 	float m_nextSend = 0;
+	ConnectionScope m_connections;
 };

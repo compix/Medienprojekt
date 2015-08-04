@@ -3,6 +3,7 @@
 
 #include <SFML/Window/Joystick.hpp>
 #include "../GameConstants.h"
+#include <signal11/Signal.h>
 
 namespace sf
 {
@@ -69,6 +70,8 @@ private:
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
 	JoystickConfig m_storedJoystickConfigs[GameConstants::MAX_PLAYERS];
 	JoystickConfig *m_joystickMap[sf::Joystick::Count];
+	ConnectionScope m_connections;
+	bool m_menuVisible;
 
 	bool loadConfigFromJson(const std::string& path);
 	void bindKey(int playerIndex, PlayerButton button, int keyCode);

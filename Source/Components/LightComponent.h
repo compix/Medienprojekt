@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 #include "../Lighting/Light.h"
 
-struct LightComponent: public ECS::Component<LightComponent>
+struct LightComponent: public Component<LightComponent>
 {
 	Light light;
 	

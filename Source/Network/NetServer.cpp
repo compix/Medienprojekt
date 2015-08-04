@@ -41,16 +41,18 @@ using namespace NetCode;
 NetServer::NetServer()
 	: m_messageWriter(1024)
 {
-	GameGlobals::events->subscribe<SendChatEvent>(*this);
-	GameGlobals::events->subscribe<BombCreatedEvent>(*this);
-	GameGlobals::events->subscribe<ExplosionCreatedEvent>(*this);
-	GameGlobals::events->subscribe<EntityDestroyedEvent>(*this);
-	GameGlobals::events->subscribe<PortalCreatedEvent>(*this);
-	GameGlobals::events->subscribe<ItemCreatedEvent>(*this);
-	GameGlobals::events->subscribe<BoostEffectCreatedEvent>(*this);
-	GameGlobals::events->subscribe<SmokeCreatedEvent>(*this);
-	GameGlobals::events->subscribe<DeathEvent>(*this);
-	GameGlobals::events->subscribe<SetReadyEvent>(*this);
+	m_dynamicEntities = GameGlobals::engine->getEntitiesFor(Family::all<DynamicComponent, TransformComponent, CellComponent>().get());
+	
+	m_connections += GameGlobals::events->sendChat.connect(this, NetServer::onSendChat);
+	m_connections += GameGlobals::events->bombCreated.connect(this, NetServer::onBombCreated);
+	m_connections += GameGlobals::events->explosionCreated.connect(this, NetServer::onExplosionCreated);
+	m_connections += GameGlobals::engine->entityRemoved.connect(this, NetServer::onEntityDestroyed);
+	m_connections += GameGlobals::events->portalCreated.connect(this, NetServer::onPortalCreated);
+	m_connections += GameGlobals::events->itemCreated.connect(this, NetServer::onItemCreated);
+	m_connections += GameGlobals::events->boostEffectCreated.connect(this, NetServer::onBoostEffectCreated);
+	m_connections += GameGlobals::events->smokeCreated.connect(this, NetServer::onSmokeCreated);
+	m_connections += GameGlobals::events->death.connect(this, NetServer::onDeath);
+	m_connections += GameGlobals::events->setReady.connect(this, NetServer::onSetReady);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -78,7 +80,7 @@ NetServer::NetServer()
 		enet_peer_disconnect(evt.peer, 0);
 	});
 
-	m_connection.setDisconnectCallback([](ENetEvent &evt)
+	m_connection.setDisconnectCallback([&](ENetEvent &evt)
 	{
 		if (evt.peer->data)
 		{
@@ -89,7 +91,7 @@ NetServer::NetServer()
 			{
 				GameGlobals::events->disconnect.emit("The client disconnected", info);
 				if (info->entity->isValid())
-					info->entity.assign<FreeSlotComponent>();
+					info->entity->add(GameGlobals::engine->createComponent<FreeSlotComponent>());
 			}
 			cout << "A client disconnected!" << endl;
 			evt.peer->data = nullptr;
@@ -100,16 +102,7 @@ NetServer::NetServer()
 
 NetServer::~NetServer()
 {
-	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
-	GameGlobals::events->unsubscribe<BombCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<ExplosionCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
-	GameGlobals::events->unsubscribe<PortalCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<ItemCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<BoostEffectCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<SmokeCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<DeathEvent>(*this);
-	GameGlobals::events->unsubscribe<SetReadyEvent>(*this);
+	m_connections.removeAll();
 
 	// Delete all playerinfos
 	auto host = m_connection.getHost();
@@ -191,7 +184,7 @@ bool NetServer::connect(uint8_t width, uint8_t height, const vector<CreateGamePl
 				m_playerInfos[i].status = NetPlayerStatus::CONNECTED;
 			m_playerInfos[i].name = player.name;
 			makeUniqueName(&m_playerInfos[i]);
-			m_playerInfos[i].entity.invalidate();
+			m_playerInfos[i].entity = nullptr;
 		}
 		m_playerInfos[i].type = player.type;
 		m_playerInfos[i].playerIndex = i;
@@ -266,7 +259,7 @@ void NetServer::onSetReady(int playerIndex, bool ready)
 	if (m_status != ServerStatus::LOBBY)
 		return;
 
-	m_playerInfos[evt.playerIndex].status = ready ? NetPlayerStatus::READY : NetPlayerStatus::CONNECTED;
+	m_playerInfos[playerIndex].status = ready ? NetPlayerStatus::READY : NetPlayerStatus::CONNECTED;
 	broadcastPlayerReady(playerIndex, ready);
 	bool allReady = allPlayersReady();
 	emitLobbyEvent(allReady);
@@ -327,19 +320,18 @@ void NetServer::send(ENetPeer* peer, NetChannel channel, ENetPacket *packet)
 void NetServer::sendStartGame(NetPlayerInfo* info)
 {
 	m_messageWriter.init(MessageType::START_GAME);
-	m_messageWriter.write<uint64_t>(info->entity->isValid() ? info->entity->getId() : Entity::INVALID->getId());
+	m_messageWriter.write<uint64_t>(info->entity->isValid() ? info->entity->getId() : 0);
 	send(info->peer, NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
-Entity NetServer::getFreeSlotEntity()
+Entity *NetServer::getFreeSlotEntity()
 {
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components<FreeSlotComponent>())
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<FreeSlotComponent>().get()))
 	{
 		entity->remove<FreeSlotComponent>();
 		return entity;
 	}
-	return Entity();
+	return nullptr;
 }
 
 void NetServer::emitLobbyEvent(bool disable)
@@ -440,8 +432,8 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 		sendExplosionEntities(evt.peer);
 		sendSmokeEntities(evt.peer);
 
-		Entity playerEntity = getFreeSlotEntity();
-		if (playerEntity->isValid())
+		Entity *playerEntity = getFreeSlotEntity();
+		if (playerEntity && playerEntity->isValid())
 		{
 			info->entity = playerEntity;
 			playerEntity->get<InputComponent>()->packetNumber = 0;
@@ -513,13 +505,11 @@ void NetServer::onInputSkillActivatedMessage(MessageReader<MessageType>& reader,
 template<typename T>
 void NetServer::sendBlockEntities(ENetPeer *peer, MessageType type)
 {
-	ComponentHandle<T> block;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(block, cell))
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<T, CellComponent>().get()))
 	{
 		m_messageWriter.init(type);
 		m_messageWriter.write<uint64_t>(entity->getId());
+		auto cell = entity->get<CellComponent>();
 		m_messageWriter.write<uint8_t>(cell->x);
 		m_messageWriter.write<uint8_t>(cell->y);
 		send(peer, NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
@@ -528,12 +518,11 @@ void NetServer::sendBlockEntities(ENetPeer *peer, MessageType type)
 
 void NetServer::sendPlayerEntities(ENetPeer *peer)
 {
-	ComponentHandle<InputComponent> input;
-	ComponentHandle<TransformComponent> transform;
-	ComponentHandle<PlayerComponent> player;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(input, transform, player))
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<InputComponent, TransformComponent, PlayerComponent>().get())) {
+		auto transform = entity->get<TransformComponent>();
+		auto player = entity->get<PlayerComponent>();
 		send(peer, NetChannel::WORLD_RELIABLE, createPlayerPacket(entity, transform->x, transform->y, player->index));
+	}
 }
 
 ENetPacket *NetServer::createPlayerPacket(Entity *entity, float x, float y, uint8_t playerIndex)
@@ -548,12 +537,11 @@ ENetPacket *NetServer::createPlayerPacket(Entity *entity, float x, float y, uint
 
 void NetServer::broadcastDynamicUpdates()
 {
-	ComponentHandle<DynamicComponent> dynamic;
-	ComponentHandle<TransformComponent> transform;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(dynamic, transform, cell))
+	for (Entity *entity : *m_dynamicEntities) {
+		auto transform = entity->get<TransformComponent>();
+		auto dynamic = entity->get<DynamicComponent>();
 		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y, dynamic->packetNumber++));
+	}
 }
 
 ENetPacket *NetServer::createUpdateDynamicPacket(Entity *entity, float x, float y, uint64_t packetNumber)
@@ -564,7 +552,7 @@ ENetPacket *NetServer::createUpdateDynamicPacket(Entity *entity, float x, float 
 	m_messageWriter.write<float>(x);
 	m_messageWriter.write<float>(y);
 	auto input = entity->get<InputComponent>();
-	if(input->isValid())
+	if(input)
 	{
 		m_messageWriter.write<float>(input->moveX);
 		m_messageWriter.write<float>(input->moveY);
@@ -574,15 +562,14 @@ ENetPacket *NetServer::createUpdateDynamicPacket(Entity *entity, float x, float 
 
 void NetServer::sendBombEntities(ENetPeer *peer)
 {
-	ComponentHandle<BombComponent> bomb;
-	ComponentHandle<OwnerComponent> owner;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(bomb, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, owner->entity));
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<BombComponent, OwnerComponent, CellComponent>().get())) {
+		auto cell = entity->get<CellComponent>();
+		auto owner = entity->get<OwnerComponent>();
+		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, GameGlobals::engine->getEntity(owner->entityId)));
+	}
 }
 
-ENetPacket *NetServer::createBombPacket(Entity *entity, uint8_t x, uint8_t y, Entity owner)
+ENetPacket *NetServer::createBombPacket(Entity *entity, uint8_t x, uint8_t y, Entity *owner)
 {
 	m_messageWriter.init(MessageType::CREATE_BOMB);
 	m_messageWriter.write<uint64_t>(entity->getId());
@@ -594,13 +581,11 @@ ENetPacket *NetServer::createBombPacket(Entity *entity, uint8_t x, uint8_t y, En
 
 void NetServer::sendExplosionEntities(ENetPeer* peer)
 {
-	ComponentHandle<ExplosionComponent> explosion;
-	ComponentHandle<SpreadComponent> spread;
-	ComponentHandle<OwnerComponent> owner;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(explosion, spread, owner, cell))
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<ExplosionComponent, SpreadComponent, OwnerComponent, CellComponent>().get())) {
+		auto spread = entity->get<SpreadComponent>();
+		auto cell = entity->get<CellComponent>();
 		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime));
+	}
 }
 
 ENetPacket *NetServer::createExplosionPacket(Entity *entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
@@ -617,15 +602,14 @@ ENetPacket *NetServer::createExplosionPacket(Entity *entity, uint8_t x, uint8_t 
 
 void NetServer::sendPortalEntities(ENetPeer* peer)
 {
-	ComponentHandle<PortalComponent> portal;
-	ComponentHandle<OwnerComponent> owner;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(portal, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createPortalPacket(entity, cell->x, cell->y, owner->entity));
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<PortalComponent, OwnerComponent, CellComponent>().get())) {
+		auto owner = entity->get<OwnerComponent>();
+		auto cell = entity->get<CellComponent>();
+		send(peer, NetChannel::WORLD_RELIABLE, createPortalPacket(entity, cell->x, cell->y, GameGlobals::engine->getEntity(owner->entityId)));
+	}
 }
 
-ENetPacket *NetServer::createPortalPacket(Entity *entity, uint8_t x, uint8_t y, Entity owner)
+ENetPacket *NetServer::createPortalPacket(Entity *entity, uint8_t x, uint8_t y, Entity *owner)
 {
 	m_messageWriter.init(MessageType::CREATE_PORTAL);
 	m_messageWriter.write<uint64_t>(entity->getId());
@@ -637,11 +621,11 @@ ENetPacket *NetServer::createPortalPacket(Entity *entity, uint8_t x, uint8_t y, 
 
 void NetServer::sendItemEntities(ENetPeer* peer)
 {
-	ComponentHandle<ItemComponent> item;
-	ComponentHandle<CellComponent> cell;
-	using GameGlobals::entities;
-	for (Entity *entity : entities->entities_with_components(item, cell))
+	for (Entity *entity : *GameGlobals::engine->getEntitiesFor(Family::all<ItemComponent, CellComponent>().get())) {
+		auto item = entity->get<ItemComponent>();
+		auto cell = entity->get<CellComponent>();
 		send(peer, NetChannel::WORLD_RELIABLE, createItemPacket(entity, cell->x, cell->y, item->type));
+	}
 }
 
 ENetPacket* NetServer::createItemPacket(Entity *entity, uint8_t x, uint8_t y, ItemType type)
@@ -654,7 +638,7 @@ ENetPacket* NetServer::createItemPacket(Entity *entity, uint8_t x, uint8_t y, It
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
-ENetPacket* NetServer::createBoostEffectPacket(Entity *entity, uint8_t x, uint8_t y, Entity target)
+ENetPacket* NetServer::createBoostEffectPacket(Entity *entity, uint8_t x, uint8_t y, Entity *target)
 {
 	m_messageWriter.init(MessageType::CREATE_BOOST_EFFECT);
 	m_messageWriter.write<uint64_t>(entity->getId());

@@ -23,5 +23,4 @@ private:
 private:
 	ParticleSystem* m_particleSystem;
 	LayerManager* m_layerManager;
-	Engine *m_engine = nullptr;
 };

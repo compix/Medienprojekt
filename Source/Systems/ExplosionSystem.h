@@ -1,13 +1,13 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
+#include <ecstasy/systems/IteratingSystem.h>
 #include "../EntityFactory.h"
 
-class ExplosionSystem : public EntitySystem<ExplosionSystem>
+class ExplosionSystem : public IteratingSystem<ExplosionSystem>
 {
 public:
 	explicit ExplosionSystem(LayerManager* layerManager);
 
-	void update(float dt) override;
+	void processEntity(Entity *entity, float deltaTime) override;
 
 private:
 	LayerManager* m_layerManager;

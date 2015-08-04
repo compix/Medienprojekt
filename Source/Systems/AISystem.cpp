@@ -4,10 +4,15 @@
 #include "../Components/CellComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../Utils/PathFinding/PathEngine.h"
+#include <ecstasy/core/Engine.h>
 
 AISystem::AISystem(PathEngine* pathEngine)
 	: m_pathEngine(pathEngine)
 {
+}
+void AISystem::addedToEngine(Engine *engine) {
+	m_nonAIPlayers = engine->getEntitiesFor(Family::all<InventoryComponent, CellComponent>().exclude<AIComponent>().get());
+	m_AIPlayers = engine->getEntitiesFor(Family::all<AIComponent, CellComponent, InputComponent>().get());
 }
 
 void AISystem::update(float dt)
@@ -20,13 +25,8 @@ void AISystem::update(float dt)
 	//m_pathEngine->visualize();
 	//m_pathEngine->visualize(m_path);
 
-	for (auto p : entityManager.entities_with_components<InventoryComponent, CellComponent>())
-	{
-		if (!p->has<AIComponent>())
-		{
-			player = p;
-			break;
-		}
+	for (Entity *e : *m_nonAIPlayers) {
+		player = e;
 	}
 
 	if (!player)
@@ -34,12 +34,10 @@ void AISystem::update(float dt)
 
 	auto playerCell = player->get<CellComponent>();
 
-	for (auto e : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
-	{
+	for (Entity *e : *m_AIPlayers) {
 		auto inputComponent = e->get<InputComponent>();
 		auto cell = e->get<CellComponent>();
 
-		
 		auto node = m_pathEngine->getNode(playerCell->x, playerCell->y);
 		auto playerNode = node;
 

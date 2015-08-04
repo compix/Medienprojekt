@@ -10,34 +10,33 @@
 #include "../GameGlobals.h"
 #include "../Components/DirectionComponent.h"
 
+InputHandleSystem::InputHandleSystem()
+: IteratingSystem(Family::all<InputComponent, CellComponent, InventoryComponent>().get()) {}
 
-void InputHandleSystem::update(float dt)
+void InputHandleSystem::processEntity(Entity *entity, float deltaTime)
 {
-	for (auto entity : entityManager.entities_with_components<InputComponent, CellComponent, InventoryComponent>())
+	auto input = entity->get<InputComponent>();
+	auto cell = entity->get<CellComponent>();
+	auto inventory = entity->get<InventoryComponent>();
+
+	if (input->bombButtonPressed)
 	{
-		auto input = entity->get<InputComponent>();
-		auto cell = entity->get<CellComponent>();
-		auto inventory = entity->get<InventoryComponent>();
-
-		if (input->bombButtonPressed)
+		if (inventory->bombCount > 0)
 		{
-			if (inventory->bombCount > 0)
-			{
-				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
-				inventory->bombCount--;
-			}
-			
-			input->bombButtonPressed = false;
+			GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
+			inventory->bombCount--;
 		}
 
-		if (input->skillButtonPressed)
-		{
-			GameGlobals::events->createPortal.emit(entity);
-			input->skillButtonPressed = false;
-		}
-
-		auto body = entity->get<BodyComponent>();
-		if (body)
-			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
+		input->bombButtonPressed = false;
 	}
+
+	if (input->skillButtonPressed)
+	{
+		GameGlobals::events->createPortal.emit(entity);
+		input->skillButtonPressed = false;
+	}
+
+	auto body = entity->get<BodyComponent>();
+	if (body)
+		body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
 }

@@ -4,7 +4,7 @@
 /**
  * @brief	Serves as a flag.
  */
-struct SolidBlockComponent: public ECS::Component<SolidBlockComponent>
+struct SolidBlockComponent: public Component<SolidBlockComponent>
 {
 	
 };

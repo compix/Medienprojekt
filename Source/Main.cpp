@@ -26,6 +26,7 @@ namespace GameGlobals
 	sf::RenderWindow *window = nullptr;
 	InputManager *input = nullptr;
 	GameEvents *events = nullptr;
+	Engine *engine = nullptr;
 	EntityFactory *entityFactory = nullptr;
 	AssetManager *assetManager = nullptr;
 	unique_ptr<Game> game;

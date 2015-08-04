@@ -8,15 +8,16 @@
 #include <algorithm>
 #include "../Animation/Animator.h"
 
+void AnimationSystem::addedToEngine(Engine *engine) {
+	m_inputEntities = engine->getEntitiesFor(Family::all<InputComponent, DirectionComponent>().get());
+	m_animationEntities = engine->getEntitiesFor(Family::all<AnimationComponent, SpriteComponent>().get());
+}
+
 void AnimationSystem::update(float dt)
 {
-	ComponentHandle<AnimationComponent> animation;
-	ComponentHandle<SpriteComponent> sprite;
-
-	for (auto entity : entityManager.entities_with_components<InputComponent, DirectionComponent>())
-	{
-		auto input = entity->get<InputComponent>();
-		auto directionComponent = entity->get<DirectionComponent>();
+	for (Entity *e : *m_inputEntities) {
+		auto input = e->get<InputComponent>();
+		auto directionComponent = e->get<DirectionComponent>();
 		if (directionComponent)
 		{
 			if (abs(input->moveX) >= abs(input->moveY))
@@ -36,8 +37,9 @@ void AnimationSystem::update(float dt)
 		}
 	}
 	
-	for (Entity *entity : entityManager.entities_with_components(animation, sprite))
-	{
+	for (Entity *entity : *m_animationEntities) {
+		auto animation = entity->get<AnimationComponent>();
+		auto sprite = entity->get<SpriteComponent>();
 		animation->animator->update(entity, (float)dt);
 
 		int frameWidth = animation->baseRect.width / animation->colCount;

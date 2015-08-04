@@ -31,12 +31,12 @@ void ChatRenderSystem::initText(sf::Text& text)
 
 ChatRenderSystem::~ChatRenderSystem()
 {
-	GameGlobals::events->unsubscribe<ChatEvent>(*this);
+	m_connections.removeAll();
 }
 
 void ChatRenderSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<ChatEvent>(*this);
+	m_connections += GameGlobals::events->chat.connect(this, ChatRenderSystem::onChat);
 }
 void ChatRenderSystem::update(float dt)
 {
@@ -87,7 +87,7 @@ void ChatRenderSystem::renderEntries()
 		if (entry.timeLeft <= 0)
 			return;
 
-		nameColor.a = messageColor.a = 255 * std::min(1.0, entry.timeLeft);
+		nameColor.a = messageColor.a = 255 * std::min(1.0f, entry.timeLeft);
 
 		entry.name.setPosition(x, y);
 		entry.message.setPosition(x + entry.name.getLocalBounds().width, y);

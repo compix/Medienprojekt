@@ -7,12 +7,12 @@
 
 HealthSystem::~HealthSystem()
 {
-	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
+	m_connections.removeAll();
 }
 
 void HealthSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<EntityGotHitEvent>(*this);
+	m_connections += GameGlobals::events->entityGotHit.connect(this, HealthSystem::onEntityGotHit);
 }
 
 void HealthSystem::update(float dt)
@@ -33,7 +33,7 @@ void HealthSystem::onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, i
 		if (health->value <= 0)
 		{
 			GameGlobals::events->death.emit(damagedEntity); // Entity died
-			damagedEntity.remove<HealthComponent>();
+			damagedEntity->remove<HealthComponent>();
 		}		
 	}
 }

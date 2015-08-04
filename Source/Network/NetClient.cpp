@@ -3,21 +3,11 @@
 
 #include <iostream>
 #include "../GameGlobals.h"
-
 #include "../Game.h"
 #include "../Components/InputComponent.h"
-
-
 #include "../Components/LocalInputComponent.h"
-
-
-
-
-
-
-
-
 #include "../Components/DynamicComponent.h"
+#include <ecstasy/core/Engine.h>
 
 using namespace std;
 using namespace NetCode;
@@ -25,8 +15,8 @@ using namespace NetCode;
 NetClient::NetClient()
 	: m_messageWriter(1024)
 {
-	GameGlobals::events->subscribe<SendChatEvent>(*this);
-	GameGlobals::events->subscribe<SetReadyEvent>(*this);
+	m_connections += GameGlobals::events->sendChat.connect(this, NetClient::onSendChat);
+	m_connections += GameGlobals::events->setReady.connect(this, NetClient::onSetReady);
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetClient::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::START_GAME, &NetClient::onStartGameMessage, this);
 	m_handler.setCallback(MessageType::PLAYER_READY, &NetClient::onPlayerReadyMessage, this);
@@ -70,7 +60,7 @@ NetClient::NetClient()
 
 NetClient::~NetClient()
 {
-	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
+	m_connections.removeAll();
 	m_connection.disconnectNow();
 	cout << "Connection closed" << endl;
 }
@@ -78,10 +68,11 @@ NetClient::~NetClient()
 void NetClient::update(float deltaTime)
 {
 	m_nextSend -= deltaTime;
-	if (m_nextSend <= 0 && m_playerEntity->isValid())
+	Entity *playerEntity = GameGlobals::engine->getEntity(m_playerEntityId);
+	if (m_nextSend <= 0 && playerEntity)
 	{
 		m_nextSend = 0.016f;
-		auto input = m_playerEntity->get<InputComponent>();
+		auto input = playerEntity->get<InputComponent>();
 		if (input->bombButtonPressed)
 		{
 			sendInputEventMessage(MessageType::INPUT_BOMB_ACTIVATED);
@@ -175,9 +166,11 @@ void NetClient::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
-	m_playerEntity = getEntity(id);
-	if (m_playerEntity->isValid())
-		m_playerEntity.assign<LocalInputComponent>(0);
+	Entity *playerEntity = getEntity(id);
+	if (playerEntity && playerEntity->isValid()) {
+		playerEntity->add(GameGlobals::engine->createComponent<LocalInputComponent>());
+		m_playerEntityId = playerEntity->getId();
+	}
 
 	GameGlobals::events->startGame.emit();
 }
@@ -235,8 +228,8 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
-	Entity owner = getEntity(ownerId);
-	if (owner->isValid())
+	Entity *owner = getEntity(ownerId);
+	if (owner && owner->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner));
 }
 
@@ -257,8 +250,8 @@ void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEv
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
-	Entity owner = getEntity(ownerId);
-	if (owner->isValid())
+	Entity *owner = getEntity(ownerId);
+	if (owner && owner->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner));
 }
 
@@ -277,8 +270,8 @@ void NetClient::onCreateBoostEffectMessage(MessageReader<MessageType>& reader, E
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t targetId = reader.read<uint64_t>();
-	Entity target = getEntity(targetId);
-	if (target->isValid())
+	Entity *target = getEntity(targetId);
+	if (target && target->isValid())
 		mapEntity(id, GameGlobals::entityFactory->createBoostEffect(x, y, target));
 }
 
@@ -294,7 +287,7 @@ void NetClient::onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& ev
 {
 	uint64_t id = reader.read<uint64_t>();
 	Entity *entity = getEntity(id);
-	if (entity->isValid())
+	if (entity && entity->isValid())
 		GameGlobals::events->death.emit(entity);
 }
 
@@ -302,8 +295,8 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 {
 	uint64_t id = reader.read<uint64_t>();
 	Entity *entity = getEntity(id);
-	if (entity->isValid()) {
-		entity->destroy();
+	if (entity && entity->isValid()) {
+		GameGlobals::engine->removeEntity(entity);
 		entityMap.erase(id);
 	}
 }
@@ -315,21 +308,21 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 	float x = reader.read<float>();
 	float y = reader.read<float>();
 	Entity *entity = getEntity(id);
-	if (entity->isValid())
+	if (entity && entity->isValid())
 	{
 		auto dynamic = entity->get<DynamicComponent>();
 		if (dynamic->packetNumber >= packetNumber)
 			return;
 		dynamic->packetNumber = packetNumber;
 		auto transform = entity->get<TransformComponent>();
-		if(transform->isValid())
+		if(transform)
 		{
 			transform->x = x;
 			transform->y = y;
 		}
-		if(entity != m_playerEntity) {
+		if(entity->getId() != m_playerEntityId) {
 			auto input = entity->get<InputComponent>();
-			if(input->isValid())
+			if(input)
 			{
 				input->moveX = reader.read<float>();
 				input->moveY = reader.read<float>();
@@ -348,7 +341,7 @@ void NetClient::onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent&
 	GameGlobals::events->lobbyDisable.emit();
 }
 
-Entity NetClient::getEntity(uint64_t id)
+Entity *NetClient::getEntity(uint64_t id)
 {
 	auto it = entityMap.find(id);
 	if (it == entityMap.end())
@@ -356,7 +349,7 @@ Entity NetClient::getEntity(uint64_t id)
 		// Fixme: Id does not exist, show error, disconnect
 		cerr << "Error: Id does not exist" << endl;
 //		exit(EXIT_FAILURE);
-		return Entity();
+		return nullptr;
 	}
 	return it->second;
 }

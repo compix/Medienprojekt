@@ -1,10 +1,11 @@
 #pragma once
 #include "../Components/BodyComponent.h"
+#include <ecstasy/systems/IteratingSystem.h>
 
-using namespace ECS;
-
-class BodySystem : public EntitySystem<BodySystem>
+class BodySystem : public IteratingSystem<BodySystem>
 {
 public:
-	void update(float dt) override;
+	BodySystem();
+	
+	void processEntity(Entity *entity, float deltaTime) override;
 };

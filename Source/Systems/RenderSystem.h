@@ -3,8 +3,7 @@
 #include "../EntityLayer.h"
 #include "../LayerManager.h"
 #include "../Utils/FpsCalculator.h"
-
-using namespace ECS;
+#include <ecstasy/core/EntitySystem.h>
 
 class RenderSystem : public EntitySystem<RenderSystem>
 {

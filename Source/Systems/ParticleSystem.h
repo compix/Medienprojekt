@@ -1,14 +1,15 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
 #include "../Graphics/ParticleManager.h"
-#include <ecstasy/core/EntitySystem.h>
+#include <ecstasy/core/Engine.h>
+#include <ecstasy/systems/IteratingSystem.h>
 #include <signal11/Signal.h>
 
-class ParticleSystem : public EntitySystem<ParticleSystem>
+class ParticleSystem : public IteratingSystem<ParticleSystem>
 {
 public:
 	ParticleSystem();
 	void update(float dt) override;
+	void processEntity(Entity *entity, float deltaTime) override;
 
 	ParticleManager* getManager(const std::string& textureName);
 
@@ -21,6 +22,6 @@ private:
 
 private:
 	std::unordered_map<std::string, ParticleManager> m_particleManagers;
-	Signal11::ConnectionScope m_connections;
+	ConnectionScope m_connections;
 };
 

@@ -3,7 +3,7 @@
 #include "Network/NetPlayerInfo.h"
 #include <SFML/Audio/Music.hpp>
 #include <signal11/Signal.h>
-#include <ecstasy/core/Entity.h>
+#include <ecstasy/core/Engine.h>
 #include "Utils/Common.h"
 #include "Components/ItemComponent.h"
 #include "GameConstants.h"
@@ -58,8 +58,7 @@ struct LobbyEvent
 	bool enabled[GameConstants::MAX_PLAYERS];
 	bool ready[GameConstants::MAX_PLAYERS];
 };
-using Signal11::Signal;
-using ECS::Entity;
+
 struct GameEvents
 {
 	Signal<void (const sf::Event &evt)> sfml;
@@ -68,8 +67,8 @@ struct GameEvents
 	Signal<void (Entity *entity, uint8_t x, uint8_t y, Entity *target)> boostEffectCreated;
 	Signal<void (const string &message, const string &name)> chat;
 	Signal<void (const string &message, ClientState state)> clientState;
-	Signal<void (const string &message)> connect;
-	Signal<void (const string &name, CreateGamePlayerType type)> countdown;
+	Signal<void ()> connect;
+	Signal<void (const string &message)> countdown;
 	Signal<void (uint8_t width, uint8_t height, const vector<CreateGamePlayerInfo> &players, int port, int maxClients)> createGame;
 	Signal<void (Entity *triggerEntity)> createPortal;
 	Signal<void (Entity *dyingEntity)> death;
@@ -81,7 +80,7 @@ struct GameEvents
 	Signal<void (Entity *entity, uint8_t x, uint8_t y, ItemType type)> itemCreated;
 	Signal<void (Entity *item, Entity *itemReceiver)> itemPickedUp;
 	Signal<void (const string &host, int port, const string &name)> joinGame;
-	Signal<void (LobbyEvent &evt)> lobby;
+	Signal<void (const LobbyEvent &evt)> lobby;
 	Signal<void ()> lobbyDisable;
 	Signal<void (bool visible)> menuShow;
 	Signal<void (const string &name, bool loop)> music;
@@ -102,6 +101,7 @@ namespace GameGlobals
 	extern sf::RenderWindow *window;
 	extern InputManager *input;
 	extern GameEvents *events;
+	extern Engine *engine;
 	extern EntityFactory *entityFactory;
 	extern AssetManager *assetManager;
 	extern unique_ptr<Game> game;

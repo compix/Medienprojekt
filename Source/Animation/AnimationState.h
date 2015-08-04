@@ -2,8 +2,6 @@
 #include "ecstasy/core/Entity.h"
 #include "Animator.h"
 
-using namespace ECS;
-
 class AnimationState
 {
 public:

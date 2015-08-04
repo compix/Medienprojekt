@@ -101,7 +101,8 @@ Entity *EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	entity->add(playerComponent);
 
 	m_layerManager->add(entity);
-
+	
+	m_engine->addEntity(entity);
 	return entity;
 }
 
@@ -150,6 +151,7 @@ Entity *EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	return entity;
 }
 
@@ -192,6 +194,7 @@ Entity *EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	return entity;
 }
 
@@ -265,6 +268,7 @@ Entity *EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity *owner)
 
 	sf::Sprite sprite = entity->get<SpriteComponent>()->sprite;
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->bombCreated.emit(entity, cellX, cellY, owner);
 	return entity;
 }
@@ -322,6 +326,7 @@ Entity *EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity *owner)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->portalCreated.emit(entity, cellX, cellY, owner);
 	return entity;
 }
@@ -410,6 +415,7 @@ Entity *EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction d
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->explosionCreated.emit(entity, cellX, cellY, direction, range, spreadTime);
 	return entity;
 }
@@ -447,6 +453,7 @@ Entity *EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t ran
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	return entity;
 }
 
@@ -474,6 +481,7 @@ Entity *EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	return entity;
 }
 
@@ -523,6 +531,7 @@ Entity *EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->smokeCreated.emit(entity, cellX, cellY);
 	return entity;
 }
@@ -573,6 +582,7 @@ Entity *EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity *t
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->boostEffectCreated.emit(entity, cellX, cellY, target);
 	return entity;
 }
@@ -620,6 +630,7 @@ Entity *EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 
 	m_layerManager->add(entity);
 
+	m_engine->addEntity(entity);
 	GameGlobals::events->itemCreated.emit(entity, cellX, cellY, type);
 	return entity;
 }

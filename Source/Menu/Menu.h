@@ -6,8 +6,6 @@
 #include "Pages/MenuPageChat.h"
 #include "Pages/MenuPageLoading.h"
 #include <signal11/Signal.h>
-using Signal11::ScopedConnectionRef;
-
 
 class Gui : public tgui::Gui
 {

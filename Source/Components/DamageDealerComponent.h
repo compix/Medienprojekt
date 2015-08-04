@@ -5,7 +5,7 @@
  * @brief	Used for entities that can deal damage.
  */
 
-struct DamageDealerComponent: public ECS::Component<DamageDealerComponent>
+struct DamageDealerComponent: public Component<DamageDealerComponent>
 {
 	unsigned int damage = 0;
 	

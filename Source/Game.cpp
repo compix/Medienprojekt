@@ -50,9 +50,11 @@ Game::Game()
 	:m_timer(1.f), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
 	GameGlobals::gameView = &m_view;
+	GameGlobals::engine = &m_engine;
 }
 
 Game::~Game() { 
+	m_engine.removeAllEntities();
 	if (m_PhysixSystem)
 		delete m_PhysixSystem;
 }

@@ -4,7 +4,7 @@
 /**
  * @brief	Serves as a flag.
  */
-struct LocalInputComponent: public ECS::Component<LocalInputComponent>
+struct LocalInputComponent: public Component<LocalInputComponent>
 {
 	int inputIndex = 0;
 	

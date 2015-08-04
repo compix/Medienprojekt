@@ -57,8 +57,6 @@ namespace ECS {
 
 		/// @return true if the entity is scheduled to be removed
 		bool isScheduledForRemoval () const { return scheduledForRemoval; }
-
-		void destroy();
 		
 		/**
 		 * Adds a Component to this Entity. If a Component of the same type already exists, it'll be replaced.

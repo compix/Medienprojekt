@@ -1,10 +1,11 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
-
+#include <ecstasy/core/Engine.h>
+#include <ecstasy/systems/IteratingSystem.h>
+#include <signal11/Signal.h>
 
 class LayerManager;
 
-class ItemSystem : public EntitySystem<ItemSystem>
+class ItemSystem : public IteratingSystem<ItemSystem>
 {
 public:
 	ItemSystem(LayerManager* layerManager);
@@ -12,7 +13,7 @@ public:
 
 	void addedToEngine(Engine *engine) override;
 
-	void update(float dt) override;
+	void processEntity(Entity *entity, float deltaTime) override;
 
 private:
 	void onEntityDestroyed(Entity *entity);
@@ -20,5 +21,6 @@ private:
 
 private:
 	LayerManager* m_layerManager;
+	ConnectionScope m_connections;
 };
 

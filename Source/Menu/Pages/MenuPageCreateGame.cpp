@@ -110,7 +110,7 @@ void MenuPageCreateGame::onSubmit()
 	}
 	else
 	{
-		GameGlobals::events->createGame.emit(width, height, players);
+		GameGlobals::events->createGame.emit(width, height, players, 0, 0);
 		m_menu.popPage();
 		m_menu.popPage();
 	}

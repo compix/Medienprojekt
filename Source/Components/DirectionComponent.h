@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 #include "../Utils/Common.h"
 
-struct DirectionComponent: public ECS::Component<DirectionComponent>
+struct DirectionComponent: public Component<DirectionComponent>
 {
 	Direction direction = Direction::DOWN;
 	

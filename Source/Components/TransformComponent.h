@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct TransformComponent: public ECS::Component<TransformComponent>
+struct TransformComponent: public Component<TransformComponent>
 {
 	float x = 0, y = 0;
 	float rotation = 0;

@@ -7,7 +7,7 @@ enum class ShaderType
 	LIGHTMAP
 };
 
-struct ShaderComponent: public ECS::Component<ShaderComponent>
+struct ShaderComponent: public Component<ShaderComponent>
 {
 	ShaderType type = ShaderType::SFML;
 	

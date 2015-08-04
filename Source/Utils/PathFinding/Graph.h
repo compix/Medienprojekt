@@ -42,4 +42,6 @@ private:
 	uint8_t m_width, m_height;
 	GraphNode** m_nodeGrid;
 	LayerManager* m_layerManager;
+	const std::vector<Entity *> *m_bombEntities;
+	const std::vector<Entity *> *m_explosionEntities;
 };

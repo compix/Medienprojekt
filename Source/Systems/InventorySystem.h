@@ -1,8 +1,7 @@
 #pragma once
+#include <ecstasy/core/Engine.h>
 #include <ecstasy/core/EntitySystem.h>
-using namespace ECS;
-
-
+#include <signal11/Signal.h>
 
 class InventorySystem : public EntitySystem<InventorySystem>
 {
@@ -15,5 +14,6 @@ public:
 
 private:
 	void onBombExploded(Entity *bomb);
+	ConnectionScope m_connections;
 };
 

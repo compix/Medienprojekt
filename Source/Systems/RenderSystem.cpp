@@ -14,7 +14,7 @@ RenderSystem::RenderSystem(LayerManager* layerManager)
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
 		std::cout << "Failed to load font Assets/fonts/DejaVuSans.ttf" << std::endl;
-		GameGlobals::events->.exit.emit();
+		GameGlobals::events->exit.emit();
 	}
 
 	m_fpsText.setFont(m_font);
@@ -36,8 +36,6 @@ void RenderSystem::update(float dt)
 void RenderSystem::render(EntityLayer* layer)
 {
 	EntityGrid grid = layer->getEntityGrid();
-
-	
 
 	for (int y = 0; y < layer->getHeight(); y++)
 	{

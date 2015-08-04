@@ -2,8 +2,6 @@
 #include "../../GameGlobals.h"
 #include "MenuPageChat.h"
 
-
-
 #include <format.h>
 
 
@@ -61,26 +59,19 @@ void MenuPageLobby::show()
 	}
 
 	m_timer->setText("Starting in: 15");
-	GameGlobals::events->subscribe<ChatEvent>(*this);
-	GameGlobals::events->subscribe<PlayerJoinEvent>(*this);
-	GameGlobals::events->subscribe<LobbyEvent>(*this);
-	GameGlobals::events->subscribe<LobbyEventDisable>(*this);
-	GameGlobals::events->subscribe<StartGameEvent>(*this);
-	GameGlobals::events->subscribe<ReadyEvent>(*this);
-	GameGlobals::events->subscribe<CountdownEvent>(*this);
-	GameGlobals::events->subscribe<DisconnectEvent>(*this);
+	m_connections += GameGlobals::events->chat.connect(this, MenuPageLobby::onChat);
+	m_connections += GameGlobals::events->playerJoin.connect(this, MenuPageLobby::onPlayerJoin);
+	m_connections += GameGlobals::events->lobby.connect(this, MenuPageLobby::onLobby);
+	m_connections += GameGlobals::events->lobbyDisable.connect(this, MenuPageLobby::onLobbyDisable);
+	m_connections += GameGlobals::events->startGame.connect(this, MenuPageLobby::onStartGame);
+	m_connections += GameGlobals::events->ready.connect(this, MenuPageLobby::onReady);
+	m_connections += GameGlobals::events->countdown.connect(this, MenuPageLobby::onCountdown);
+	m_connections += GameGlobals::events->disconnect.connect(this, MenuPageLobby::onDisconnect);
 }
 
 void MenuPageLobby::hide()
 {
-	GameGlobals::events->unsubscribe<ChatEvent>(*this);
-	GameGlobals::events->unsubscribe<PlayerJoinEvent>(*this);
-	GameGlobals::events->unsubscribe<LobbyEvent>(*this);
-	GameGlobals::events->unsubscribe<LobbyEventDisable>(*this);
-	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
-	GameGlobals::events->unsubscribe<ReadyEvent>(*this);
-	GameGlobals::events->unsubscribe<CountdownEvent>(*this);
-	GameGlobals::events->unsubscribe<DisconnectEvent>(*this);
+	m_connections.removeAll();
 
 	MenuPage::hide();
 }
@@ -97,7 +88,7 @@ void MenuPageLobby::onSubmit()
 
 void MenuPageLobby::onAbort()
 {
-	GameGlobals::events->forceDisconnect.emit();
+	GameGlobals::events->forceDisconnect.emit("");
 	m_menu.popPage();
 }
 
@@ -166,7 +157,7 @@ void MenuPageLobby::onStartGame()
 	m_menu.popAllPages();
 }
 
-void MenuPageLobby::onCountdown(const string &name, CreateGamePlayerType type)
+void MenuPageLobby::onCountdown(const string &message)
 {
 	m_timer->setText(message);
 }

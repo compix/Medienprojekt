@@ -2,12 +2,11 @@
 #include "../Components/BodyComponent.h"
 #include "../Components/PortalComponent.h"
 
-
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
-
-
-using namespace ECS;
+#include <signal11/Signal.h>
+#include <ecstasy/core/Engine.h>
+#include <ecstasy/core/EntitySystem.h>
 
 class PortalSystem : public EntitySystem<PortalSystem>
 {
@@ -25,5 +24,8 @@ private:
 	
 private:
 	LayerManager* m_layerManager;
-	std::multimap<uint64_t, Entity> m_portals; //erlaubt mehrere Values zu einem Key 
+	std::multimap<uint64_t, Entity*> m_portals; //erlaubt mehrere Values zu einem Key 
+	ConnectionScope m_connections;
+	const std::vector<Entity *> *m_portalMarkerEntities;
+	const std::vector<Entity *> *m_portalEntities;
 };

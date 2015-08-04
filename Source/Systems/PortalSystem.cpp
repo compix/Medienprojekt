@@ -18,26 +18,23 @@ PortalSystem::PortalSystem(LayerManager* layerManager)
 PortalSystem::~PortalSystem()
 {
 	m_portals.clear();
-	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
-	GameGlobals::events->unsubscribe<ComponentAddedEvent<PortalComponent>>(*this);
-	GameGlobals::events->unsubscribe<CreatePortalEvent>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
+	m_connections.removeAll();
 }
 
 void PortalSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<TimeoutEvent>(*this);
-	events.subscribe<ComponentAddedEvent<PortalComponent>>(*this);
-	events.subscribe<CreatePortalEvent>(*this);
-	events.subscribe<EntityDestroyedEvent>(*this);
+	m_portalMarkerEntities = engine->getEntitiesFor(Family::all<PortalMarkerComponent, CellComponent, LayerComponent>().get());
+	m_portalEntities = engine->getEntitiesFor(Family::all<PortalComponent, CellComponent, LayerComponent>().get());
+	m_connections += GameGlobals::events->timeout.connect(this, PortalSystem::onTimeout);
+	m_connections += GameGlobals::events->createPortal.connect(this, PortalSystem::onCreatePortal);
+	m_connections += engine->entityRemoved.connect(this, PortalSystem::onEntityDestroyed);
 }
 
 
 void PortalSystem::update(float dt)
 {
 	// MARKER entfernen falls nötig
-	for (auto markedEntity : entityManager.entities_with_components<PortalMarkerComponent, CellComponent, LayerComponent>())
-	{
+	for (Entity *markedEntity : *m_portalMarkerEntities) {
 		auto mark = markedEntity->get<PortalMarkerComponent>();
 		auto cellComponent = markedEntity->get<CellComponent>();
 		auto layerComponent = markedEntity->get<LayerComponent>();
@@ -48,18 +45,17 @@ void PortalSystem::update(float dt)
 		{
 			if (portal->getId() != mark->portalId)
 			{
-				markedEntity.remove<PortalMarkerComponent>();
+				markedEntity->remove<PortalMarkerComponent>();
 			}
 		}
 		else
 		{
-			markedEntity.remove<PortalMarkerComponent>();
+			markedEntity->remove<PortalMarkerComponent>();
 		}
 	}
 
 	//Teleportation
-	for (auto portal : entityManager.entities_with_components<PortalComponent, CellComponent, LayerComponent>())
-	{
+	for (Entity *portal : *m_portalEntities) {
 		auto cellComponent = portal->get<CellComponent>();
 		auto layerComponent = portal->get<LayerComponent>();
 
@@ -67,20 +63,18 @@ void PortalSystem::update(float dt)
 
 		if (!entityCollection.empty())
 		{
-			auto owner = portal->get<OwnerComponent>()->entity;
-
-			std::pair<std::multimap<uint64_t, Entity>::iterator, std::multimap<uint64_t, Entity>::iterator> ppp;
-			ppp = m_portals.equal_range(owner->getId());
-			for (std::multimap<uint64_t, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
+			std::pair<std::multimap<uint64_t, Entity*>::iterator, std::multimap<uint64_t, Entity*>::iterator> ppp;
+			ppp = m_portals.equal_range(portal->get<OwnerComponent>()->entityId);
+			for (std::multimap<uint64_t, Entity*>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
 			{
 				if ((*it2).second->getId() != portal->getId()) //Wenn das gegenstück zum Portal gefunden ist.
 				{
-					for (Entity e : entityCollection)
+					for (Entity *e : entityCollection)
 					{
 						if (!e->has<PortalMarkerComponent>() && e->getId() != portal->getId()){ //es kann Teleportiert werden, wenn es nicht markiert oder das Portal selber ist.
 							if (e->has<BodyComponent>())
 							{
-								e->get <BodyComponent>()->body->SetTransform(fitEntityIntoCell((*it2).second->get<CellComponent>().get()), 0);
+								e->get <BodyComponent>()->body->SetTransform(fitEntityIntoCell((*it2).second->get<CellComponent>()), 0);
 							}
 							else
 							{
@@ -91,7 +85,9 @@ void PortalSystem::update(float dt)
 								e->get<TransformComponent>()->y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 							}
 
-							e.assign<PortalMarkerComponent>((*it2).second->getId()); //Marker wird zum gegenstück erstellt, da die Entity sich schon dort befindet.
+							auto c = getEngine()->createComponent<PortalMarkerComponent>();
+							c->portalId = (*it2).second->getId();
+							e->add(c); //Marker wird zum gegenstück erstellt, da die Entity sich schon dort befindet.
 						}
 					}
 					break;
@@ -104,7 +100,7 @@ void PortalSystem::update(float dt)
 void PortalSystem::onTimeout(Entity *affectedEntity)
 {
 	if (affectedEntity->has<PortalComponent>())
-		affectedEntity->destroy();
+		getEngine()->removeEntity(affectedEntity);
 }
 
 void PortalSystem::onEntityDestroyed(Entity *entity)
@@ -114,11 +110,9 @@ void PortalSystem::onEntityDestroyed(Entity *entity)
 
 	if (entity->has<PortalComponent>())
 	{
-		auto owner = entity->get<OwnerComponent>()->entity;
-
-		std::pair<std::multimap<uint64_t, Entity>::iterator, std::multimap<uint64_t, Entity>::iterator> ppp;
-		ppp = m_portals.equal_range(owner->getId());
-		for (std::multimap<uint64_t, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
+		std::pair<std::multimap<uint64_t, Entity*>::iterator, std::multimap<uint64_t, Entity*>::iterator> ppp;
+		ppp = m_portals.equal_range(entity->get<OwnerComponent>()->entityId);
+		for (std::multimap<uint64_t, Entity*>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
 		{
 			if ((*it2).second->getId() == entity->getId())
 			{
@@ -155,19 +149,23 @@ void PortalSystem::onCreatePortal(Entity *triggerEntity)
 	//if (!m_layerManager->hasEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, cellX, cellY)){	//Wenn Portal gelegt werden kann
 		if (m_portals.count(triggerEntity->getId()) < 2){																//Maximal zwei Portale
 			auto portal = GameGlobals::entityFactory->createPortal(cellX, cellY, triggerEntity);
-			m_portals.insert(std::pair<uint64_t, Entity>(triggerEntity->getId(), portal));	//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
-			triggerEntity.assign<PortalMarkerComponent>(portal->getId());
+			m_portals.insert(std::pair<uint64_t, Entity*>(triggerEntity->getId(), portal));	//Verbindung zwischen den Portalen wird über die ID des Triggers hergestellt.
+			auto c = getEngine()->createComponent<PortalMarkerComponent>();
+			c->portalId = portal->getId();
+			triggerEntity->add(c);
 			if (m_portals.count(triggerEntity->getId()) == 2)
 			{
-				std::pair<std::multimap<uint64_t, Entity>::iterator, std::multimap<uint64_t, Entity>::iterator> ppp;
+				std::pair<std::multimap<uint64_t, Entity*>::iterator, std::multimap<uint64_t, Entity*>::iterator> ppp;
 				ppp = m_portals.equal_range(triggerEntity->getId());
-				for (std::multimap<uint64_t, Entity>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
+				for (std::multimap<uint64_t, Entity*>::iterator it2 = ppp.first; it2 != ppp.second; ++it2)
 				{
 					if ((*it2).second->has<TimerComponent>())				//TIMER erneuern
 					{
-						(*it2).second.remove<TimerComponent>();
+						(*it2).second->remove<TimerComponent>();
 					}
-					(*it2).second.assign<TimerComponent>(GameConstants::PORTAL_TIMER_LINKED);
+					auto c = getEngine()->createComponent<TimerComponent>();
+					c->seconds = GameConstants::PORTAL_TIMER_LINKED;
+					(*it2).second->add(c);
 				}
 			}
 		}

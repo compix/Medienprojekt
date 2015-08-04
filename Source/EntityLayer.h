@@ -7,7 +7,6 @@
 #include <assert.h>
 
 using std::vector;
-using ECS::Entity;
 
 typedef std::vector<Entity *> EntityCollection; // A collection is needed because more than one entity can be on the same cell
 typedef EntityCollection** EntityGrid;

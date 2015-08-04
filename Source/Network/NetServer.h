@@ -5,6 +5,7 @@
 
 #include "NetPlayerInfo.h"
 #include "../GameConstants.h"
+#include <signal11/Signal.h>
 
 enum class ItemType : uint8_t;
 using NetCode::ServerConnection;
@@ -15,6 +16,11 @@ using std::vector;
 using std::string;
 struct CreateGamePlayerInfo;
 enum class Direction : uint8_t;
+
+namespace ECS {
+	class Engine;
+};
+using ECS::Engine;
 
 class NetServer 
 {
@@ -57,7 +63,7 @@ private:
 	void sendExplosionEntities(ENetPeer* peer);
 	ENetPacket* createExplosionPacket(Entity *entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime);
 	void sendPortalEntities(ENetPeer* peer);
-	ENetPacket* createPortalPacket(Entity *entity, uint8_t x, uint8_t y, Entity owner);
+	ENetPacket* createPortalPacket(Entity *entity, uint8_t x, uint8_t y, Entity *owner);
 	void sendItemEntities(ENetPeer* peer);
 	ENetPacket* createItemPacket(Entity *entity, uint8_t x, uint8_t y, ItemType type);
 	ENetPacket* createBoostEffectPacket(Entity *entity, uint8_t x, uint8_t y, Entity *target);
@@ -66,7 +72,7 @@ private:
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
 	void sendStartGame(NetPlayerInfo* netPlayerInfo);
-	Entity getFreeSlotEntity();
+	Entity *getFreeSlotEntity();
 	void emitLobbyEvent(bool disable);
 	bool allPlayersReady();
 	void forceReady();
@@ -85,4 +91,6 @@ private:
 	uint8_t m_height;
 	float m_countdown = 0;
 	float m_nextBroadcast = 0;
+	ConnectionScope m_connections;
+	const std::vector<Entity *> *m_dynamicEntities;
 };

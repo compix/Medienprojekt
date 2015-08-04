@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct InventoryComponent: public ECS::Component<InventoryComponent>
+struct InventoryComponent: public Component<InventoryComponent>
 {
 	int bombCount = 8;
 	float speedMultiplicator = 1;

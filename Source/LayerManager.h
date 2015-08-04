@@ -35,16 +35,16 @@ public:
 
 	// An invalid entity will be returned if there is no such entity
 	template<class T>
-	Entity getEntityWithComponent(int layer, int cellX, int cellY);
+	Entity *getEntityWithComponent(int layer, int cellX, int cellY);
 	bool isFree(int layer, int cellX, int cellY);
 	
 private:
 	void onEntityRemoved(Entity *entity);
 	
 private:
-	Engine *m_engine = nullptr;
 	LayerContainer m_layers;
-	Signal11::ConnectionScope m_connections;
+	ConnectionScope m_connections;
+	const std::vector<Entity *> *m_dynamicEntities;
 };
 
 template <class T>
@@ -58,11 +58,11 @@ bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 }
 
 template <class T>
-Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
+Entity *LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 {
 	for (auto *e : getEntities(layer, cellX, cellY))
 		if (e->has<T>())
 			return e;
 
-	return Entity();
+	return nullptr;
 }

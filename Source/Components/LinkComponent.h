@@ -3,7 +3,7 @@
 #include <vector>
 #include "ecstasy/core/Entity.h"
 
-struct LinkComponent: public ECS::Component<LinkComponent>
+struct LinkComponent: public Component<LinkComponent>
 {
 	bool dependent = true; // If dependent then links will be destroyed as soon as the owner of this component is destroyed
 	std::vector<uint64_t> links;

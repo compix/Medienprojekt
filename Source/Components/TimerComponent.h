@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct TimerComponent: public ECS::Component<TimerComponent>
+struct TimerComponent: public Component<TimerComponent>
 {
 	float seconds = 0;
 	bool active = true;

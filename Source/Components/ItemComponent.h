@@ -8,7 +8,7 @@ enum class ItemType : uint8_t
 	SPEED_MULTIPLICATOR
 };
 
-struct ItemComponent: public ECS::Component<ItemComponent>
+struct ItemComponent: public Component<ItemComponent>
 {
 	ItemType type = ItemType::BOMB_CAP_BOOST;
 	

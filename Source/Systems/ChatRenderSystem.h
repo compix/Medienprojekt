@@ -2,9 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include "../EntityLayer.h"
 #include "../LayerManager.h"
-
-
-using namespace ECS;
+#include <signal11/Signal.h>
+#include <ecstasy/core/Engine.h>
+#include <ecstasy/core/EntitySystem.h>
 
 struct ChatEntry
 {
@@ -14,6 +14,7 @@ struct ChatEntry
 };
 
 const int MAX_CHAT_LINES = 8;
+using std::string;
 
 class ChatRenderSystem : public EntitySystem<ChatRenderSystem>
 {
@@ -39,5 +40,6 @@ private:
 	int m_oldestEntry = 0;
 	float m_moveUpTime;
 	float m_lineSpacing;
+	ConnectionScope m_connections;
 };
 

@@ -10,57 +10,54 @@
 
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
-	: m_layerManager(layerManager)
+	: IteratingSystem(Family::all<ItemComponent, CellComponent, LayerComponent>().get()), m_layerManager(layerManager)
 {
 }
 
 ItemSystem::~ItemSystem()
 {
-	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
-	GameGlobals::events->unsubscribe<ItemPickedUpEvent>(*this);
+	m_connections.removeAll();
 }
 
 void ItemSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<entityx::EntityDestroyedEvent>(*this);
-	events.subscribe<ItemPickedUpEvent>(*this);
+	IteratingSystem::addedToEngine(engine);
+	m_connections += engine->entityRemoved.connect(this, ItemSystem::onEntityDestroyed);
+	m_connections += GameGlobals::events->itemPickedUp.connect(this, ItemSystem::onItemPickedUp);
 }
 
-void ItemSystem::update(float dt)
+void ItemSystem::processEntity(Entity *item, float deltaTime)
 {
-	for (auto item : entityManager.entities_with_components<ItemComponent, CellComponent, LayerComponent>())
+	if (!item->isValid() || item->has<DestructionComponent>())
+		return;
+
+	auto cellComponent = item->get<CellComponent>();
+	auto layerComponent = item->get<LayerComponent>();
+	auto itemComponent = item->get<ItemComponent>();
+
+	auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
+	if (entityWithInventory && entityWithInventory->isValid())
 	{
-		if (!item->isValid() || item->has<DestructionComponent>())
-			continue;
+		auto inventory = entityWithInventory->get<InventoryComponent>();
 
-		auto cellComponent = item->get<CellComponent>();
-		auto layerComponent = item->get<LayerComponent>();
-		auto itemComponent = item->get<ItemComponent>();
-
-		auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
-		if (entityWithInventory->isValid())
+		switch (itemComponent->type)
 		{
-			auto inventory = entityWithInventory->get<InventoryComponent>();
-
-			switch (itemComponent->type)
-			{
-			case ItemType::BOMB_CAP_BOOST:
-				if (inventory->bombCount < GameConstants::BOMB_CAP)
-					++inventory->bombCount;
-				break;
-			case ItemType::BOMB_KICK_SKILL:
-				if (inventory->bombKick == false)
-					inventory->bombKick = true;
-				break;
-			case ItemType::SPEED_MULTIPLICATOR:
-				if (inventory->speedMultiplicator < GameConstants::SPEED_MULTI_CAP)
-					inventory->speedMultiplicator += GameConstants::SPEED_MULTI_INC;
-				break;
-			default: break;
-			}
-
-			eventManager.emit<ItemPickedUpEvent>(item, entityWithInventory);
+		case ItemType::BOMB_CAP_BOOST:
+			if (inventory->bombCount < GameConstants::BOMB_CAP)
+				++inventory->bombCount;
+			break;
+		case ItemType::BOMB_KICK_SKILL:
+			if (inventory->bombKick == false)
+				inventory->bombKick = true;
+			break;
+		case ItemType::SPEED_MULTIPLICATOR:
+			if (inventory->speedMultiplicator < GameConstants::SPEED_MULTI_CAP)
+				inventory->speedMultiplicator += GameConstants::SPEED_MULTI_INC;
+			break;
+		default: break;
 		}
+
+		GameGlobals::events->itemPickedUp.emit(item, entityWithInventory);
 	}
 }
 
@@ -96,5 +93,5 @@ void ItemSystem::onItemPickedUp(Entity *item, Entity *itemReceiver)
 	if (!item->isValid())
 		return;
 
-	item.assign<DestructionComponent>(0.f);
+	item->add(getEngine()->createComponent<DestructionComponent>());
 }

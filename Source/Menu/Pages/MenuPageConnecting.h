@@ -2,7 +2,6 @@
 #include "../MenuPage.h"
 #include "MenuPageLobby.h"
 #include <signal11/Signal.h>
-using Signal11::ScopedConnectionRef;
 
 enum class ClientState;
 

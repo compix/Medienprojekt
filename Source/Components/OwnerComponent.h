@@ -6,7 +6,7 @@
  * @brief	An entity can own another entity: A character owns a bomb for example.
  */
 
-struct OwnerComponent: public ECS::Component<OwnerComponent>
+struct OwnerComponent: public Component<OwnerComponent>
 {
 	uint64_t entityId = 0;
 	

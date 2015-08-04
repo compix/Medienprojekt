@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 #include "../Graphics/ParticleEmitter.h"
 
-struct ParticleComponent: public ECS::Component<ParticleComponent>
+struct ParticleComponent: public Component<ParticleComponent>
 {
 	ParticleEmitter* emitter = nullptr;
 	

@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 
 // flag
-struct EffectComponent: public ECS::Component<EffectComponent>
+struct EffectComponent: public Component<EffectComponent>
 {
 	
 };

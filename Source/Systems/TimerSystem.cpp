@@ -1,25 +1,26 @@
 #include "TimerSystem.h"
 #include "../Components/TimerComponent.h"
+#include "../GameGlobals.h"
+#include <ecstasy/core/Engine.h>
 
+TimerSystem::TimerSystem() 
+: IteratingSystem(Family::all<TimerComponent>().get()) {}
 
-void TimerSystem::update(float dt)
+void TimerSystem::processEntity(Entity *entity, float deltaTime)
 {
-	for (auto entity : entityManager.entities_with_components<TimerComponent>())
+	if (!entity->isValid())
+		return;
+
+	auto timer = entity->get<TimerComponent>();
+
+	if (timer->active)
 	{
-		if (!entity->isValid())
-			continue;
+		timer->seconds -= (float) deltaTime;
 
-		auto timer = entity->get<TimerComponent>();
-		
-		if (timer->active)
+		if (timer->seconds <= 0.f)
 		{
-			timer->seconds -= (float) dt;
-
-			if (timer->seconds <= 0.f)
-			{
-				entity->remove<TimerComponent>();
-				eventManager.emit<TimeoutEvent>(entity);
-			}
+			entity->remove<TimerComponent>();
+			GameGlobals::events->timeout.emit(entity);
 		}
 	}
 }

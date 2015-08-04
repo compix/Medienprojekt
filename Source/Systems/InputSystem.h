@@ -1,11 +1,11 @@
 #pragma once
 #include "../EntityLayer.h"
+#include <ecstasy/systems/IteratingSystem.h>
 
-using namespace ECS;
-
-class InputSystem : public EntitySystem<InputSystem>
+class InputSystem : public IteratingSystem<InputSystem>
 {
 public:
-	void update(float dt) override;
+	InputSystem();
+	void processEntity(Entity *entity, float deltaTime) override;
 };
 

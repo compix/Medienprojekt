@@ -7,6 +7,7 @@
 #include <ecstasy/core/Entity.h>
 
 ParticleSystem::ParticleSystem()
+:IteratingSystem(Family::all<ParticleComponent, TransformComponent>().get())
 {
 	createManager("light", 500, 500);
 	createManager("block", 500, 500);
@@ -15,6 +16,7 @@ ParticleSystem::ParticleSystem()
 
 void ParticleSystem::addedToEngine(Engine *engine)
 {
+	IteratingSystem::addedToEngine(engine);
 	m_connections += engine->entityRemoved.connect(this, ParticleSystem::onEntityRemoved);
 }
 
@@ -41,28 +43,28 @@ void ParticleSystem::createManager(const std::string& textureName, uint32_t maxP
 	m_particleManagers.insert({ textureName, ParticleManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
 }
 
-void ParticleSystem::update(float dt)
+void ParticleSystem::processEntity(Entity *e, float deltaTime)
 {
-	for (auto e : entityManager.entities_with_components<ParticleComponent, TransformComponent>())
+	auto particleComponent = e->get<ParticleComponent>();
+	auto transform = e->get<TransformComponent>();
+
+	if (particleComponent->emitter->isFollowing())
 	{
-		auto particleComponent = e->get<ParticleComponent>();
-		auto transform = e->get<TransformComponent>();
+		auto target = getEngine()->getEntity(particleComponent->emitter->m_targetId);
 
-		if (particleComponent->emitter->isFollowing())
+		if (target && target->isValid() && target->has<TransformComponent>() && e->has<EffectComponent>())
 		{
-			auto target = particleComponent->emitter->m_target;
-			
-			if (target->isValid() && target->has<TransformComponent>() && e->has<EffectComponent>())
-			{
-				auto targetTransform = target->get<TransformComponent>();
-				transform->x = targetTransform->x;
-				transform->y = targetTransform->y + 1.f; // + 1.f = little hack to force drawing the particle effect on top of the target
-			}
+			auto targetTransform = target->get<TransformComponent>();
+			transform->x = targetTransform->x;
+			transform->y = targetTransform->y + 1.f; // + 1.f = little hack to force drawing the particle effect on top of the target
 		}
-
-		particleComponent->emitter->rotation(transform->rotation);
-		particleComponent->emitter->position(transform->x, transform->y);
 	}
+	particleComponent->emitter->rotation(transform->rotation);
+	particleComponent->emitter->position(transform->x, transform->y);
+}
+
+void ParticleSystem::update(float dt) {
+	IteratingSystem::update(dt);
 
 	for (auto& m : m_particleManagers)
 	{

@@ -2,8 +2,6 @@
 #include <Box2D/Box2D.h>
 #include "ecstasy/core/Entity.h"
 
-using ECS::Entity;
-
 class BodyFactory
 {
 	

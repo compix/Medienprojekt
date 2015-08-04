@@ -7,7 +7,7 @@
  * @brief	Represents the cell in the grid the entity is currently in.
  */
 
-struct CellComponent: public ECS::Component<CellComponent>
+struct CellComponent: public Component<CellComponent>
 {
 	uint8_t x = 0, y = 0;
 	

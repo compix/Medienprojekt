@@ -4,7 +4,7 @@
 /**
  * @brief	Serves as a flag.
  */
-struct BlockComponent: public ECS::Component<BlockComponent>
+struct BlockComponent: public Component<BlockComponent>
 {
 	
 };

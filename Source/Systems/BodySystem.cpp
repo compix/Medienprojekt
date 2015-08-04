@@ -6,17 +6,15 @@
 #include "../GameGlobals.h"
 #include "../EntityFactory.h"
 
-void BodySystem::update(float dt)
-{
-	ComponentHandle<BodyComponent> body;
-	ComponentHandle<TransformComponent> transform;
-	ComponentHandle<SpriteComponent> sprite;
+BodySystem::BodySystem() : IteratingSystem(Family::all<BodyComponent, TransformComponent, SpriteComponent>().get()) {
 	
-	float scale = PhysixSystem::m_Scale;
+}
 
-	for (Entity *entity : entityManager.entities_with_components(body, transform, sprite))
-	{
-		transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
-		transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));
-	}
+void BodySystem::processEntity(Entity *entity, float deltaTime)
+{
+	float scale = PhysixSystem::m_Scale;
+	auto body = entity->get<BodyComponent>();
+	auto transform = entity->get<TransformComponent>();
+	transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
+	transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));
 }

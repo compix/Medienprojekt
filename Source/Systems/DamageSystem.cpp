@@ -7,28 +7,25 @@
 
 
 DamageSystem::DamageSystem(LayerManager* layerManager)
-	:m_layerManager(layerManager)
+	:IteratingSystem(Family::all<DamageDealerComponent, CellComponent, LayerComponent>().get()), m_layerManager(layerManager)
 {
 }
 
-void DamageSystem::update(float dt)
+void DamageSystem::processEntity(Entity *damageDealer, float deltaTime)
 {
-	for (auto damageDealer : entities.entities_with_components<DamageDealerComponent, CellComponent, LayerComponent>())
-	{
-		auto cell = damageDealer->get<CellComponent>();
-		auto ddComponent = damageDealer->get<DamageDealerComponent>();
-		auto layer = damageDealer->get<LayerComponent>();
+	auto cell = damageDealer->get<CellComponent>();
+	auto ddComponent = damageDealer->get<DamageDealerComponent>();
+	auto layer = damageDealer->get<LayerComponent>();
 
-		// damage all other entities with a health component on the same cell
-		for (auto entity : m_layerManager->getEntities(layer->layer, cell->x, cell->y))
+	// damage all other entities with a health component on the same cell
+	for (auto entity : m_layerManager->getEntities(layer->layer, cell->x, cell->y))
+	{
+		if (entity->isValid())
 		{
-			if (entity->isValid())
+			auto health = entity->get<HealthComponent>();
+			if (health)
 			{
-				auto health = entity->get<HealthComponent>();
-				if (health)
-				{
-					GameGlobals::events->entityGotHit.emit(damageDealer, entity, ddComponent->damage);
-				}
+				GameGlobals::events->entityGotHit.emit(damageDealer, entity, ddComponent->damage);
 			}
 		}
 	}

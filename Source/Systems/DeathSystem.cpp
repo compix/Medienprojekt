@@ -7,12 +7,12 @@
 
 DeathSystem::~DeathSystem()
 {
-	GameGlobals::events->unsubscribe<DeathEvent>(*this);
+	m_connections.removeAll();
 }
 
 void DeathSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<DeathEvent>(*this);
+	m_connections += GameGlobals::events->death.connect(this, DeathSystem::onDeath);
 }
 
 void DeathSystem::update(float dt)
@@ -21,8 +21,6 @@ void DeathSystem::update(float dt)
 
 void DeathSystem::onDeath(Entity *dyingEntity)
 {
-	auto dyingEntity = deathEvent.dyingEntity;
-
 	if (!dyingEntity->isValid())
 		return;
 
@@ -30,12 +28,15 @@ void DeathSystem::onDeath(Entity *dyingEntity)
 
 	if (delayComponent)
 	{
-		if (!dyingEntity->has<DestructionComponent>())
-			dyingEntity.assign<DestructionComponent>(delayComponent->seconds);
+		if (!dyingEntity->has<DestructionComponent>()) {
+			auto c = getEngine()->createComponent<DestructionComponent>();
+			c->timeRemaining = delayComponent->seconds;
+			dyingEntity->add(c);
+		}
 	}
 	else
 	{
 		if (!dyingEntity->has<DestructionComponent>())
-			dyingEntity.assign<DestructionComponent>();
+			dyingEntity->add(getEngine()->createComponent<DestructionComponent>());
 	}
 }

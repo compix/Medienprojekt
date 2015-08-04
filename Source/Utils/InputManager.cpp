@@ -25,8 +25,8 @@ static const char *axisNames[] = {
 
 InputManager::InputManager()
 {
-	GameGlobals::events->subscribe<MenuShowEvent>(*this);
-	GameGlobals::events->subscribe<sf::Event>(*this);
+	m_connections += GameGlobals::events->menuShow.connect(this, InputManager::onMenuShow);
+	m_connections += GameGlobals::events->sfml.connect(this, InputManager::onSfml);
 
 	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 	{
@@ -122,6 +122,9 @@ void InputManager::bindKey(int playerIndex, PlayerButton button, int keyCode)
 
 void InputManager::onSfml(const sf::Event &evt)
 {
+	if(m_menuVisible)
+		return;
+	
 	switch (evt.type)
 	{
 	case sf::Event::KeyPressed:
@@ -147,10 +150,7 @@ void InputManager::onSfml(const sf::Event &evt)
 
 void InputManager::onMenuShow(bool visible)
 {
-	if (visible)
-		GameGlobals::events->unsubscribe<sf::Event>(*this);
-	else
-		GameGlobals::events->subscribe<sf::Event>(*this);
+	m_menuVisible = visible;
 }
 
 void InputManager::update()

@@ -8,12 +8,12 @@
 
 InventorySystem::~InventorySystem()
 {
-	GameGlobals::events->unsubscribe<BombExplodedEvent>(*this);
+	m_connections.removeAll();
 }
 
 void InventorySystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<BombExplodedEvent>(*this);
+	m_connections += GameGlobals::events->bombExploded.connect(this, InventorySystem::onBombExploded);
 }
 
 void InventorySystem::update(float dt)
@@ -30,9 +30,9 @@ void InventorySystem::onBombExploded(Entity *bomb)
 	
 	if (ownerComponent)
 	{
-		auto owner = ownerComponent->entity;
+		auto owner = getEngine()->getEntity(ownerComponent->entityId);
 
-		if (!owner->isValid())
+		if (!owner)
 			return;
 
 		auto inventory = owner->get<InventoryComponent>();

@@ -22,7 +22,6 @@ void ParticleSpawnSystem::update(float dt)
 
 void ParticleSpawnSystem::addedToEngine(Engine *engine)
 {
-	m_engine = engine;
 	GameGlobals::events->death.connect(this, ParticleSpawnSystem::onDeath);
 	GameGlobals::events->explosionCreated.connect(this, ParticleSpawnSystem::onExplosionCreated);
 	GameGlobals::events->itemPickedUp.connect(this, ParticleSpawnSystem::onItemPickedUp);
@@ -45,7 +44,7 @@ void ParticleSpawnSystem::onDeath(Entity *dyingEntity)
 
 		if (emitter)
 		{
-			entity->add(m_engine->createComponent<ParticleComponent>());
+			entity->add(getEngine()->createComponent<ParticleComponent>());
 			entity->get<ParticleComponent>()->emitter = emitter;
 
 			emitter->spawnTime(1.f)

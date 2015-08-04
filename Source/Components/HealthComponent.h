@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct HealthComponent: public ECS::Component<HealthComponent>
+struct HealthComponent: public Component<HealthComponent>
 {
 	int value = 0;
 	

@@ -4,7 +4,7 @@
 /**
  * @brief	Serves as a flag.
  */
-struct FloorComponent: public ECS::Component<FloorComponent>
+struct FloorComponent: public Component<FloorComponent>
 {
 	
 };

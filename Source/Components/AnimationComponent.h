@@ -16,7 +16,7 @@ enum PlayMode
 	LOOP_REVERSED
 };
 
-struct AnimationComponent: public ECS::Component<AnimationComponent>
+struct AnimationComponent: public Component<AnimationComponent>
 {
 	sf::IntRect baseRect;
 	uint8_t colCount = 0;

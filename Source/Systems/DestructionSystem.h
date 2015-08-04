@@ -1,10 +1,10 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
+#include <ecstasy/systems/IteratingSystem.h>
 
-
-
-class DestructionSystem : public EntitySystem<DestructionSystem>
+class DestructionSystem : public IteratingSystem<DestructionSystem>
 {
 public:
-	void update(float dt) override;
+	DestructionSystem();
+	
+	void processEntity(Entity *entity, float deltaTime) override;
 };

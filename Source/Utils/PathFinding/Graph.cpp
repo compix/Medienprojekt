@@ -37,8 +37,7 @@ void Graph::update()
 	resetCosts();
 
 	// Go through all bombs and mark danger zones. Note: For correct danger estimations the AI should be considered and every AI should have an own graph like this.
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
-	{
+	for (Entity *bomb : *m_bombEntities) {
 		auto bombComponent = bomb->get<BombComponent>();
 		auto timerComponent = bomb->get<TimerComponent>();
 		auto cell = bomb->get<CellComponent>();
@@ -65,8 +64,7 @@ void Graph::update()
 	}
 
 	// Go through all explosion components and simulate the explosion.
-	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
-	{
+	for (Entity *explosion : *m_explosionEntities) {
 		auto cell = explosion->get<CellComponent>();
 		auto spread = explosion->get<SpreadComponent>();
 
@@ -160,6 +158,9 @@ void Graph::resetPathInfo()
 
 void Graph::init()
 {
+	m_bombEntities = GameGlobals::engine->getEntitiesFor(Family::all<BombComponent, TimerComponent, CellComponent>().get());
+	m_explosionEntities = GameGlobals::engine->getEntitiesFor(Family::all<ExplosionComponent, SpreadComponent, CellComponent>().get());
+
 	auto mainLayer = m_layerManager->getLayer(GameConstants::MAIN_LAYER);
 
 	for (auto x = 0; x < m_width; ++x)

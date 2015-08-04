@@ -17,14 +17,13 @@ BombSystem::BombSystem()
 
 BombSystem::~BombSystem()
 {
-	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
-	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
+	m_connections.removeAll();
 }
 
 void BombSystem::addedToEngine(Engine *engine)
 {
-	events.subscribe<TimeoutEvent>(*this);
-	events.subscribe<EntityGotHitEvent>(*this);
+	m_connections += GameGlobals::events->timeout.connect(this, BombSystem::onTimeout);
+	m_connections += GameGlobals::events->entityGotHit.connect(this, BombSystem::onEntityGotHit);
 }
 
 void BombSystem::update(float dt)

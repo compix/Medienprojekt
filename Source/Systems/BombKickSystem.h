@@ -14,13 +14,16 @@ class BombKickSystem : public EntitySystem<BombKickSystem>
 public:
 	BombKickSystem(LayerManager* layerManager);
 	
+	void addedToEngine(Engine *engine) override;
 	void update(float dt) override;
 
 	void kickBomb(b2Body* sensor, b2Body* notSensor, Direction direction);
 	bool fitIntoCell(SpriteComponent* spriteComponent, TransformComponent* transformComponent, CellComponent* cellComponent);
-	void checkCollisionWithBomb(Entity e, Direction direction);
+	void checkCollisionWithBomb(Entity *e, Direction direction);
 	b2Vec2 fitEntityIntoCell(CellComponent* cellComponent);
 private:
 	LayerManager* m_layerManager;
+	const std::vector<Entity *> *m_inputEntities;
+	const std::vector<Entity *> *m_bombEntities;
 };
 

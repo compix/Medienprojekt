@@ -1,7 +1,7 @@
 #pragma once
 #include <ecstasy/core/Component.h>
 
-struct InputComponent: public ECS::Component<InputComponent>
+struct InputComponent: public Component<InputComponent>
 {
 	float moveX = 0;
 	float moveY = 0;

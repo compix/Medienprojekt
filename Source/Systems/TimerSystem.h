@@ -1,9 +1,10 @@
 #pragma once
-#include <ecstasy/core/EntitySystem.h>
+#include <ecstasy/systems/IteratingSystem.h>
 
-class TimerSystem : public EntitySystem<TimerSystem>
+class TimerSystem : public IteratingSystem<TimerSystem>
 {
 public:
-	void update(float dt) override;
+	TimerSystem();
+	void processEntity(Entity *entity, float deltaTime) override;
 };
 

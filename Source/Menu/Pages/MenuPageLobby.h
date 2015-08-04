@@ -1,11 +1,11 @@
 #pragma once
 #include "../MenuPage.h"
 #include "../../GameConstants.h"
+#include <signal11/Signal.h>
 
-struct LobbyEvent;
-struct LobbyEventDisable;
 struct NetPlayerInfo;
 enum class CreateGamePlayerType;
+struct LobbyEvent;
 
 class MenuPageLobby : public MenuPage
 {
@@ -29,7 +29,7 @@ private:
 	void onDisconnect(const string &reason, NetPlayerInfo *playerInfo);
 	void onReady(uint8_t playerIndex, bool ready);
 	void onStartGame();
-	void onCountdown(const string &name, CreateGamePlayerType type);
+	void onCountdown(const string &message);
 
 private:
 	tgui::Label::Ptr m_name[GameConstants::MAX_PLAYERS];
@@ -38,4 +38,5 @@ private:
 	tgui::EditBox::Ptr m_editBox;
 	tgui::Label::Ptr m_timer;
 	bool m_ignoreChecked = false;
+	ConnectionScope m_connections;
 };

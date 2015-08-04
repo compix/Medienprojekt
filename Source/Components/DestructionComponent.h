@@ -4,7 +4,7 @@
 /**
  * @brief	An entity with this component will be destroyed after the given time in seconds.
  */
-struct DestructionComponent: public ECS::Component<DestructionComponent>
+struct DestructionComponent: public Component<DestructionComponent>
 {
 	float timeRemaining = 0; // in seconds
 	

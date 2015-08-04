@@ -2,7 +2,7 @@
 #include <ecstasy/core/Component.h>
 #include "ecstasy/core/Entity.h"
 
-struct PortalMarkerComponent: public ECS::Component<PortalMarkerComponent>
+struct PortalMarkerComponent: public Component<PortalMarkerComponent>
 {
 	uint64_t portalId = 0;
 	

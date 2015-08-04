@@ -3,7 +3,7 @@
 #include "../Utils/Common.h"
 
 
-struct SpreadComponent: public ECS::Component<SpreadComponent>
+struct SpreadComponent: public Component<SpreadComponent>
 {
 	Direction direction = Direction::DOWN;
 	int range = 0; // how far it can spread in cells
@@ -23,4 +23,4 @@ struct SpreadComponent: public ECS::Component<SpreadComponent>
 /**
  * @brief	Just a flag.
  */
-struct ExplosionComponent: public ECS::Component<ExplosionComponent> {};
+struct ExplosionComponent: public Component<ExplosionComponent> {};
