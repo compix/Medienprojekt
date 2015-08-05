@@ -93,5 +93,5 @@ void ItemSystem::onItemPickedUp(Entity *item, Entity *itemReceiver)
 	if (!item->isValid())
 		return;
 
-	item->add(getEngine()->createComponent<DestructionComponent>());
+	item->assign<DestructionComponent>();
 }

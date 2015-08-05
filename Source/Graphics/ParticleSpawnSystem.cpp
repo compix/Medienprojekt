@@ -44,8 +44,7 @@ void ParticleSpawnSystem::onDeath(Entity *dyingEntity)
 
 		if (emitter)
 		{
-			entity->add(getEngine()->createComponent<ParticleComponent>());
-			entity->get<ParticleComponent>()->emitter = emitter;
+			entity->assign<ParticleComponent>(emitter);
 
 			emitter->spawnTime(1.f)
 				.maxLifetime(1.f)

@@ -3,11 +3,8 @@
 
 struct TimerComponent: public Component<TimerComponent>
 {
-	float seconds = 0;
-	bool active = true;
-	
-	void reset() override {
-		seconds = 0;
-		active = true;
-	}
+	TimerComponent(float seconds) : seconds(seconds), active(true) {}
+
+	float seconds;
+	bool active;
 };

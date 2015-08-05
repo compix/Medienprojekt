@@ -3,9 +3,7 @@
 
 struct LayerComponent: public Component<LayerComponent>
 {
-	int layer = 0;
-	
-	void reset() override {
-		layer = 0;
-	}
+	LayerComponent(int layer) : layer(layer) {}
+
+	int layer;
 };

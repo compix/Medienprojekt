@@ -9,9 +9,8 @@
 
 struct CellComponent: public Component<CellComponent>
 {
-	uint8_t x = 0, y = 0;
-	
-	void reset() override {
-		x = y = 0;
-	}
+	CellComponent(uint8_t x = 0, uint8_t y = 0)
+		: x(x), y(y) {}
+
+	uint8_t x, y;
 };

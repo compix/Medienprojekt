@@ -8,12 +8,4 @@ struct InputComponent: public Component<InputComponent>
 	bool bombButtonPressed = false;
 	bool skillButtonPressed = false;
 	uint64_t packetNumber = 0; // for netcode
-	
-	void reset() override {
-		moveX = 0;
-		moveY = 0;
-		bombButtonPressed = false;
-		skillButtonPressed = false;
-		packetNumber = 0;
-	}
 };

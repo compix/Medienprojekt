@@ -6,9 +6,8 @@
  */
 struct DestructionComponent: public Component<DestructionComponent>
 {
-	float timeRemaining = 0; // in seconds
-	
-	void reset() override {
-		timeRemaining = 0;
-	}
+	DestructionComponent() : timeRemaining(0.f) {}
+	DestructionComponent(float timeRemaining) : timeRemaining(timeRemaining) {}
+
+	float timeRemaining; // in seconds
 };

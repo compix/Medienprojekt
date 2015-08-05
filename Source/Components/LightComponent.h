@@ -4,10 +4,10 @@
 
 struct LightComponent: public Component<LightComponent>
 {
-	Light light;
-	
-	void init(sf::Vector2f center, sf::Color color, float radius, float degree, float rotation)
+	LightComponent(sf::Vector2f center, sf::Color color, float radius, float degree, float rotation)
 	{
 		light.create(center, color, radius, degree, rotation);
 	}
+
+	Light light;
 };

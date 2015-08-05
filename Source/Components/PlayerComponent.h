@@ -4,9 +4,8 @@
 
 struct PlayerComponent: public Component<PlayerComponent>
 {
-	uint8_t index = 0;
-	
-	void reset() override {
-		index = 0;
-	}
+	PlayerComponent(uint8_t index)
+		: index(index) {}
+
+	uint8_t index;
 };

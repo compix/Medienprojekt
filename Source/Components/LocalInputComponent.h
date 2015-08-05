@@ -6,9 +6,6 @@
  */
 struct LocalInputComponent: public Component<LocalInputComponent>
 {
-	int inputIndex = 0;
-	
-	void reset() override {
-		inputIndex = 0;
-	}
+	LocalInputComponent(int inputIndex) : inputIndex(inputIndex) {}
+	int inputIndex;
 };

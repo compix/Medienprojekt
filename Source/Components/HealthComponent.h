@@ -3,9 +3,7 @@
 
 struct HealthComponent: public Component<HealthComponent>
 {
-	int value = 0;
-	
-	void reset() override {
-		value = 0;
-	}
+	HealthComponent(int value) : value(value) {}
+
+	int value;
 };

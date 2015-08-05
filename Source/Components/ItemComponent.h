@@ -10,9 +10,8 @@ enum class ItemType : uint8_t
 
 struct ItemComponent: public Component<ItemComponent>
 {
-	ItemType type = ItemType::BOMB_CAP_BOOST;
-	
-	void reset() override {
-		type = ItemType::BOMB_CAP_BOOST;
-	}
+	ItemComponent() {}
+	ItemComponent(const ItemType& type) : type(type) {}
+
+	ItemType type;
 };

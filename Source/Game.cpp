@@ -205,18 +205,9 @@ void LocalGame::resetEntities()
 		{
 			switch (m_playerTypes[i])
 			{
-			case CreateGamePlayerType::LOCAL:{
-				auto localInput = m_engine.createComponent<LocalInputComponent>();
-				localInput->inputIndex = i;
-				entity->add(localInput);
-				break;
-			}
-			case CreateGamePlayerType::COMPUTER:
-				entity->add(m_engine.createComponent<AIComponent>());
-				break;
-			case CreateGamePlayerType::CLIENT: 
-				entity->add(m_engine.createComponent<FreeSlotComponent>());
-				break;
+			case CreateGamePlayerType::LOCAL: entity->assign<LocalInputComponent>(i); break;
+			case CreateGamePlayerType::COMPUTER: entity->assign<AIComponent>(); break;
+			case CreateGamePlayerType::CLIENT: entity->assign<FreeSlotComponent>(); break;
 			}
 			i++;
 		}

@@ -9,9 +9,8 @@ enum class ShaderType
 
 struct ShaderComponent: public Component<ShaderComponent>
 {
-	ShaderType type = ShaderType::SFML;
-	
-	void reset() override {
-		type = ShaderType::SFML;
-	}
+	ShaderComponent(ShaderType type) : type(type) {}
+	ShaderComponent() : type(ShaderType::SFML) {}
+
+	ShaderType type;
 };

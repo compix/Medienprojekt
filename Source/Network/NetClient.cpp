@@ -168,7 +168,7 @@ void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent
 	uint64_t id = reader.read<uint64_t>();
 	Entity *playerEntity = getEntity(id);
 	if (playerEntity && playerEntity->isValid()) {
-		playerEntity->add(GameGlobals::engine->createComponent<LocalInputComponent>());
+		playerEntity->assign<LocalInputComponent>(0);
 		m_playerEntityId = playerEntity->getId();
 	}
 

@@ -7,9 +7,7 @@
 
 struct DamageDealerComponent: public Component<DamageDealerComponent>
 {
-	unsigned int damage = 0;
-	
-	void reset() override {
-		damage = 0;
-	}
+	DamageDealerComponent(unsigned int damage) : damage(damage) {}
+
+	unsigned int damage;
 };

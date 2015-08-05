@@ -6,9 +6,7 @@
  */
 struct DestructionDelayComponent: public Component<DestructionDelayComponent>
 {
-	float seconds = 0;
-	
-	void reset() override {
-		seconds = 0;
-	}
+	DestructionDelayComponent(float seconds) : seconds(seconds) {}
+
+	float seconds;
 };

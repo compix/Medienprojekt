@@ -8,9 +8,7 @@
 
 struct OwnerComponent: public Component<OwnerComponent>
 {
-	uint64_t entityId = 0;
-	
-	void reset() override {
-		entityId = 0;
-	}
+	OwnerComponent(uint64_t entityId) : entityId(entityId) {}
+
+	uint64_t entityId;
 };

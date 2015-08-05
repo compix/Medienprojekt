@@ -4,12 +4,12 @@
 
 struct BodyComponent: public Component<BodyComponent>
 {
-	b2Body* body = nullptr;
-	
-	void reset() override {
-		if(body) {
-			body->GetWorld()->DestroyBody(body);
-			body = nullptr;
-		}
+	b2Body* body;
+
+	BodyComponent(b2Body* body) : body(body) {}
+
+	~BodyComponent()
+	{
+		body->GetWorld()->DestroyBody(body);
 	}
 };

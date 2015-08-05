@@ -91,7 +91,7 @@ NetServer::NetServer()
 			{
 				GameGlobals::events->disconnect.emit("The client disconnected", info);
 				if (info->entity->isValid())
-					info->entity->add(GameGlobals::engine->createComponent<FreeSlotComponent>());
+					info->entity->assign<FreeSlotComponent>();
 			}
 			cout << "A client disconnected!" << endl;
 			evt.peer->data = nullptr;

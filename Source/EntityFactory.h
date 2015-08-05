@@ -38,8 +38,6 @@ public:
 	Entity *createBoostEffect(uint8_t cellX, uint8_t cellY, Entity *target);
 
 	Entity *createItem(uint8_t cellX, uint8_t cellY, ItemType type);
-
-	Entity* createEntity();
 private:
 	void setSprite(sf::Sprite &sprite, const std::string& textureName);
 private:

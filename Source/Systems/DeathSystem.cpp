@@ -28,15 +28,12 @@ void DeathSystem::onDeath(Entity *dyingEntity)
 
 	if (delayComponent)
 	{
-		if (!dyingEntity->has<DestructionComponent>()) {
-			auto c = getEngine()->createComponent<DestructionComponent>();
-			c->timeRemaining = delayComponent->seconds;
-			dyingEntity->add(c);
-		}
+		if (!dyingEntity->has<DestructionComponent>())
+			dyingEntity->assign<DestructionComponent>(delayComponent->seconds);
 	}
 	else
 	{
 		if (!dyingEntity->has<DestructionComponent>())
-			dyingEntity->add(getEngine()->createComponent<DestructionComponent>());
+			dyingEntity->assign<DestructionComponent>();
 	}
 }

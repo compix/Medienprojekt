@@ -4,9 +4,8 @@
 
 struct DirectionComponent: public Component<DirectionComponent>
 {
-	Direction direction = Direction::DOWN;
-	
-	void reset() override {
-		direction = Direction::DOWN;
-	}
+	DirectionComponent() : direction(Direction::DOWN) {}
+	DirectionComponent(Direction dir) : direction(dir) {}
+
+	Direction direction;
 };

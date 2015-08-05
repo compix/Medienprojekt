@@ -4,9 +4,7 @@
 
 struct PortalMarkerComponent: public Component<PortalMarkerComponent>
 {
-	uint64_t portalId = 0;
-	
-	void reset() override {
-		portalId = 0;
-	}
+	PortalMarkerComponent(uint64_t portalId) : portalId(portalId) {}
+
+	uint64_t portalId;
 };

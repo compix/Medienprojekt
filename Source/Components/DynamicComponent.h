@@ -5,8 +5,4 @@
 struct DynamicComponent: public Component<DynamicComponent>
 {
 	uint64_t packetNumber = 0; // for netcode
-	
-	void reset() override {
-		packetNumber = 0;
-	}
 };

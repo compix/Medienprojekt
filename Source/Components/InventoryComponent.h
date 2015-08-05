@@ -3,13 +3,9 @@
 
 struct InventoryComponent: public Component<InventoryComponent>
 {
-	int bombCount = 8;
-	float speedMultiplicator = 1;
-	bool bombKick = false;
-	
-	void reset() override {
-		bombCount = 8;
-		speedMultiplicator = 1;
-		bombKick = false;
-	}
+	InventoryComponent() : bombCount(8), bombKick(false), speedMultiplicator(1){}
+
+	int bombCount;
+	float speedMultiplicator;
+	bool bombKick;
 };

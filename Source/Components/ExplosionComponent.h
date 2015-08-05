@@ -5,19 +5,14 @@
 
 struct SpreadComponent: public Component<SpreadComponent>
 {
-	Direction direction = Direction::DOWN;
-	int range = 0; // how far it can spread in cells
-	float spreadTime = 0; // in seconds
-	float timeTillNext = 0; // in seconds
-	bool stopped = false;
-	
-	void reset() override {
-		direction = Direction::DOWN;
-		range = 0;
-		spreadTime = 0;
-		timeTillNext = 0;
-		stopped = false;
-	}
+	SpreadComponent(Direction direction, int range, float spreadTime) 
+		: direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime), stopped(false) {}
+
+	Direction direction;
+	int range; // how far it can spread in cells
+	float spreadTime; // in seconds
+	float timeTillNext; // in seconds
+	bool stopped;
 };
 
 /**

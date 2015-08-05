@@ -4,5 +4,8 @@
 
 struct SpriteComponent: public Component<SpriteComponent>
 {
+	SpriteComponent() {}
+	SpriteComponent(const sf::Sprite& sprite) : sprite(sprite) {}
+
 	sf::Sprite sprite;
 };
