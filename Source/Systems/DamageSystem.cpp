@@ -5,7 +5,6 @@
 #include "../Components/HealthComponent.h"
 #include "../GameGlobals.h"
 
-
 DamageSystem::DamageSystem(LayerManager* layerManager)
 	:IteratingSystem(Family::all<DamageDealerComponent, CellComponent, LayerComponent>().get()), m_layerManager(layerManager)
 {
@@ -20,7 +19,7 @@ void DamageSystem::processEntity(Entity *damageDealer, float deltaTime)
 	// damage all other entities with a health component on the same cell
 	for (auto entity : m_layerManager->getEntities(layer->layer, cell->x, cell->y))
 	{
-		if (entity->isValid())
+		if (!entity->isScheduledForRemoval())
 		{
 			auto health = entity->get<HealthComponent>();
 			if (health)

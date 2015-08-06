@@ -6,7 +6,7 @@
 #include "../Utils/Math.h"
 #include <cinttypes>
 #include "../Utils/AssetManagement/TexturePacker.h"
-#include <ecstasy/core/Engine.h>
+#include <ecstasy/core/Entity.h>
 
 struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
@@ -27,8 +27,8 @@ class ParticleEmitter : public sf::Drawable
 	friend class ParticleManager;
 	friend class ParticleSystem;
 public:
-	ParticleEmitter(Engine *engine);
-	ParticleEmitter(Engine *engine, uint32_t maxParticles);
+	ParticleEmitter();
+	ParticleEmitter(uint32_t maxParticles);
 
 	void update(float deltaTime);
 
@@ -73,7 +73,6 @@ private:
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
-	Engine *m_engine;
 	Assets::Texture* m_texture;
 	uint32_t m_numActive;
 

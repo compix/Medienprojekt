@@ -1,9 +1,7 @@
 #include "PortalSystem.h"
-
 #include "../GameGlobals.h"
 #include "../EntityFactory.h"
 #include "../Components/OwnerComponent.h"
-
 #include "../Components/DirectionComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/LayerComponent.h"
@@ -34,7 +32,8 @@ void PortalSystem::addedToEngine(Engine *engine)
 void PortalSystem::update(float dt)
 {
 	// MARKER entfernen falls nötig
-	for (Entity *markedEntity : *m_portalMarkerEntities) {
+	for (Entity *markedEntity : *m_portalMarkerEntities)
+	{
 		auto mark = markedEntity->get<PortalMarkerComponent>();
 		auto cellComponent = markedEntity->get<CellComponent>();
 		auto layerComponent = markedEntity->get<LayerComponent>();
@@ -55,7 +54,8 @@ void PortalSystem::update(float dt)
 	}
 
 	//Teleportation
-	for (Entity *portal : *m_portalEntities) {
+	for (Entity *portal : *m_portalEntities)
+	{
 		auto cellComponent = portal->get<CellComponent>();
 		auto layerComponent = portal->get<LayerComponent>();
 
@@ -103,9 +103,6 @@ void PortalSystem::onTimeout(Entity *affectedEntity)
 
 void PortalSystem::onEntityDestroyed(Entity *entity)
 {
-	if (!entity->isValid())
-		return;
-
 	if (entity->has<PortalComponent>())
 	{
 		std::pair<std::multimap<uint64_t, Entity*>::iterator, std::multimap<uint64_t, Entity*>::iterator> ppp;

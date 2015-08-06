@@ -12,7 +12,8 @@ using NetCode::MessageWriter;
 using NetCode::MessageReader;
 using std::string;
 
-namespace ECS {
+namespace ECS
+{
 	class Engine;
 };
 using ECS::Engine;

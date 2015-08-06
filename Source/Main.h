@@ -1,12 +1,7 @@
-﻿#pragma once
-
-
-
+#pragma once
 #include "Network/NetServer.h"
 #include "Network/NetClient.h"
 #include "LayerManager.h"
-
-
 
 using std::unique_ptr;
 

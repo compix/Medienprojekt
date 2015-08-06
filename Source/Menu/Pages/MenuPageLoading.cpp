@@ -1,5 +1,4 @@
 #include "MenuPageLoading.h"
-
 #include "../../Game.h"
 #include "../../GameGlobals.h"
 

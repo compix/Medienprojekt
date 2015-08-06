@@ -1,15 +1,11 @@
 #include "BombSystem.h"
-
 #include "../Components/BombComponent.h"
 #include "../EntityFactory.h"
 #include "../Components/CellComponent.h"
 #include "../Components/DestructionComponent.h"
-
 #include "../Components/TimerComponent.h"
-
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
-
 
 BombSystem::BombSystem()
 {
@@ -42,7 +38,7 @@ void BombSystem::onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, int
 
 void BombSystem::detonate(Entity *entity)
 {
-	if (!entity->isValid())
+	if (!entity)
 		return;
 
 	if (entity->has<BombComponent>())

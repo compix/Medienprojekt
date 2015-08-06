@@ -1,14 +1,8 @@
 #include "MenuPageLobby.h"
 #include "../../GameGlobals.h"
 #include "MenuPageChat.h"
-
 #include <format.h>
-
-
-
 #include "../Menu.h"
-
-
 #include "../../Network/NetPlayerInfo.h"
 
 MenuPageLobby::MenuPageLobby(Menu &menu)

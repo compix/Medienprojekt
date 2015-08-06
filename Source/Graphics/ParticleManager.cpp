@@ -107,7 +107,7 @@ void ParticleManager::createEmitters(uint32_t maxParticlesPerEmitter, uint16_t m
 	m_activeMap[maxParticlesPerEmitter] = 0;
 
 	for (uint16_t i = 0; i < maxEmitters; ++i)
-		m_emitterContainerMap[maxParticlesPerEmitter][i] = std::make_shared<ParticleEmitter>(GameGlobals::engine, maxParticlesPerEmitter);
+		m_emitterContainerMap[maxParticlesPerEmitter][i] = std::make_shared<ParticleEmitter>(maxParticlesPerEmitter);
 
 	if (m_texture)
 		setTexture(maxParticlesPerEmitter);

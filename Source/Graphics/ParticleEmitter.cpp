@@ -6,13 +6,14 @@
 #include <iostream>
 #include <float.h>
 #include "../Components/TransformComponent.h"
+#include "../GameGlobals.h"
 
-ParticleEmitter::ParticleEmitter(Engine *engine)
-	:ParticleEmitter(engine, 500)
+ParticleEmitter::ParticleEmitter()
+	:ParticleEmitter(500)
 {
 }
 
-ParticleEmitter::ParticleEmitter(Engine *engine, uint32_t maxParticles): m_engine(engine)
+ParticleEmitter::ParticleEmitter(uint32_t maxParticles)
 {
 	m_particles.resize(maxParticles);
 	m_vertices.resize(maxParticles * 4);
@@ -132,8 +133,8 @@ void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, 
 	sf::Vector2f velocity = m_velocityFunction(t);
 	Math::rotate(velocity, p.angle);
 
-	Entity *target = m_engine->getEntity(m_targetId);
-	if (m_following && target->isValid() && target->has<TransformComponent>())
+	Entity *target = GameGlobals::engine->getEntity(m_targetId);
+	if (m_following && target && target->has<TransformComponent>())
 	{
 		auto transform = target->get<TransformComponent>();
 		float dx = transform->x - (p.pos.x + m_pos.x);

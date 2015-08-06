@@ -1,5 +1,4 @@
 #include "AssetLoader.h"
-
 #include "../../Game.h"
 
 bool AssetLoaderBase::loadFromJson(const string& path)

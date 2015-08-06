@@ -5,12 +5,8 @@
 #include "ecstasy/core/Entity.h"
 #include "Components/OwnerComponent.h"
 
-
 void ContactListener::BeginContact(b2Contact* contact)
 {
-
-		
-
 }
 
 void ContactListener::EndContact(b2Contact* contact)

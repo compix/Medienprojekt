@@ -1,7 +1,6 @@
 #pragma once
 #include "../Components/BodyComponent.h"
 #include "../Components/PortalComponent.h"
-
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
 #include <signal11/Signal.h>

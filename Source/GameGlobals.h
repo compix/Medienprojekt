@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Utils/make_unique.h"
 #include "Network/NetPlayerInfo.h"
 #include <SFML/Audio/Music.hpp>

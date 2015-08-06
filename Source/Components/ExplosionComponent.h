@@ -2,7 +2,6 @@
 #include <ecstasy/core/Component.h>
 #include "../Utils/Common.h"
 
-
 struct SpreadComponent: public Component<SpreadComponent>
 {
 	SpreadComponent(Direction direction, int range, float spreadTime) 

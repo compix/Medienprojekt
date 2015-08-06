@@ -1,6 +1,5 @@
 #include "InputHandleSystem.h"
 #include "../Components/TimerComponent.h"
-
 #include "../Components/InputComponent.h"
 #include "../GameConstants.h"
 #include <Box2D/Common/b2Math.h>

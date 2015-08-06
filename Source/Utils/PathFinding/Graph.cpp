@@ -37,7 +37,8 @@ void Graph::update()
 	resetCosts();
 
 	// Go through all bombs and mark danger zones. Note: For correct danger estimations the AI should be considered and every AI should have an own graph like this.
-	for (Entity *bomb : *m_bombEntities) {
+	for (Entity *bomb : *m_bombEntities)
+	{
 		auto bombComponent = bomb->get<BombComponent>();
 		auto timerComponent = bomb->get<TimerComponent>();
 		auto cell = bomb->get<CellComponent>();
@@ -64,7 +65,8 @@ void Graph::update()
 	}
 
 	// Go through all explosion components and simulate the explosion.
-	for (Entity *explosion : *m_explosionEntities) {
+	for (Entity *explosion : *m_explosionEntities)
+	{
 		auto cell = explosion->get<CellComponent>();
 		auto spread = explosion->get<SpreadComponent>();
 

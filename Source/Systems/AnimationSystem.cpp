@@ -15,7 +15,8 @@ void AnimationSystem::addedToEngine(Engine *engine) {
 
 void AnimationSystem::update(float dt)
 {
-	for (Entity *e : *m_inputEntities) {
+	for (Entity *e : *m_inputEntities)
+	{
 		auto input = e->get<InputComponent>();
 		auto directionComponent = e->get<DirectionComponent>();
 		if (directionComponent)
@@ -37,7 +38,8 @@ void AnimationSystem::update(float dt)
 		}
 	}
 	
-	for (Entity *entity : *m_animationEntities) {
+	for (Entity *entity : *m_animationEntities)
+	{
 		auto animation = entity->get<AnimationComponent>();
 		auto sprite = entity->get<SpriteComponent>();
 		animation->animator->update(entity, (float)dt);

@@ -8,7 +8,7 @@ DestructionSystem::DestructionSystem()
 
 void DestructionSystem::processEntity(Entity *entity, float deltaTime)
 {
-	if (!entity->isValid())
+	if (entity->isScheduledForRemoval())
 		return;
 
 	auto destructionComponent = entity->get<DestructionComponent>();
@@ -21,7 +21,8 @@ void DestructionSystem::processEntity(Entity *entity, float deltaTime)
 
 		if (link && link->dependent)
 		{
-			for (auto eId : link->links) {
+			for (auto eId : link->links)
+			{
 				auto e = getEngine()->getEntity(eId);
 				getEngine()->removeEntity(e);
 			}

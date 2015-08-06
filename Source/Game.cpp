@@ -34,12 +34,10 @@
 #include "Systems/AISystem.h"
 #include "Systems/SoundSystem.h"
 #include "Systems/MusicSystem.h"
-
 #include "Systems/BombKickSystem.h"
 #include "Systems/PortalSystem.h"
 #include "Utils/InputManager.h"
 #include "Systems/ChatRenderSystem.h"
-
 #include "Components/InputComponent.h"
 #include "Components/FreeSlotComponent.h"
 #include "Components/LocalInputComponent.h"
@@ -53,7 +51,8 @@ Game::Game()
 	GameGlobals::engine = &m_engine;
 }
 
-Game::~Game() {
+Game::~Game()
+{
 	GameGlobals::entityFactory = nullptr;
 }
 

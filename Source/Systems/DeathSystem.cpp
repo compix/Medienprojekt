@@ -1,5 +1,4 @@
 #include "DeathSystem.h"
-
 #include "../Components/DestructionDelayComponent.h"
 #include "../Components/DestructionComponent.h"
 #include "../Components/BodyComponent.h"
@@ -21,9 +20,6 @@ void DeathSystem::update(float dt)
 
 void DeathSystem::onDeath(Entity *dyingEntity)
 {
-	if (!dyingEntity->isValid())
-		return;
-
 	auto delayComponent = dyingEntity->get<DestructionDelayComponent>();
 
 	if (delayComponent)

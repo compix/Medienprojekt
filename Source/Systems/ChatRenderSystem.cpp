@@ -2,8 +2,6 @@
 #include <iostream>
 #include <format.h>
 #include "../GameGlobals.h"
-
-
 #include "../Utils/Math.h"
 
 ChatRenderSystem::ChatRenderSystem()

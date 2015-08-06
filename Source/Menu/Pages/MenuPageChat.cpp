@@ -1,6 +1,5 @@
 #include "MenuPageChat.h"
 #include "../../GameGlobals.h"
-
 #include "../../Network/NetPlayerInfo.h"
 
 MenuPageChat::MenuPageChat(Menu &menu)

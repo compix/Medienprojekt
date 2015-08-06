@@ -1,6 +1,5 @@
 #include "NetClient.h"
 #include "NetConstants.h"
-
 #include <iostream>
 #include "../GameGlobals.h"
 #include "../Game.h"
@@ -167,7 +166,7 @@ void NetClient::onStartGameMessage(MessageReader<MessageType>& reader, ENetEvent
 {
 	uint64_t id = reader.read<uint64_t>();
 	Entity *playerEntity = getEntity(id);
-	if (playerEntity && playerEntity->isValid()) {
+	if (playerEntity) {
 		playerEntity->assign<LocalInputComponent>(0);
 		m_playerEntityId = playerEntity->getId();
 	}
@@ -229,7 +228,7 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity *owner = getEntity(ownerId);
-	if (owner && owner->isValid())
+	if (owner)
 		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner));
 }
 
@@ -251,7 +250,7 @@ void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEv
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
 	Entity *owner = getEntity(ownerId);
-	if (owner && owner->isValid())
+	if (owner)
 		mapEntity(id, GameGlobals::entityFactory->createPortal(x, y, owner));
 }
 
@@ -271,7 +270,7 @@ void NetClient::onCreateBoostEffectMessage(MessageReader<MessageType>& reader, E
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t targetId = reader.read<uint64_t>();
 	Entity *target = getEntity(targetId);
-	if (target && target->isValid())
+	if (target)
 		mapEntity(id, GameGlobals::entityFactory->createBoostEffect(x, y, target));
 }
 
@@ -287,7 +286,7 @@ void NetClient::onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& ev
 {
 	uint64_t id = reader.read<uint64_t>();
 	Entity *entity = getEntity(id);
-	if (entity && entity->isValid())
+	if (entity)
 		GameGlobals::events->death.emit(entity);
 }
 
@@ -295,7 +294,7 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 {
 	uint64_t id = reader.read<uint64_t>();
 	Entity *entity = getEntity(id);
-	if (entity && entity->isValid()) {
+	if (entity) {
 		GameGlobals::engine->removeEntity(entity);
 		entityMap.erase(id);
 	}
@@ -308,7 +307,7 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 	float x = reader.read<float>();
 	float y = reader.read<float>();
 	Entity *entity = getEntity(id);
-	if (entity && entity->isValid())
+	if (entity)
 	{
 		auto dynamic = entity->get<DynamicComponent>();
 		if (dynamic->packetNumber >= packetNumber)

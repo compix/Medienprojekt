@@ -1,10 +1,7 @@
 #include "InventorySystem.h"
-
 #include "../Components/OwnerComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../GameGlobals.h"
-
-
 
 InventorySystem::~InventorySystem()
 {
@@ -23,7 +20,7 @@ void InventorySystem::update(float dt)
 
 void InventorySystem::onBombExploded(Entity *bomb)
 {
-	if (!bomb->isValid())
+	if (bomb->isScheduledForRemoval())
 		return;
 
 	auto ownerComponent = bomb->get<OwnerComponent>();

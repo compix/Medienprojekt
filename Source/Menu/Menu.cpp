@@ -1,9 +1,6 @@
 #include "Menu.h"
 #include "MenuPage.h"
-
 #include "../GameGlobals.h"
-
-
 
 Menu::Menu()
 	: m_gui(*GameGlobals::window), m_loadingPage(*this), m_rootPage(*this), m_chatPage(*this), m_lobbyPage(*this)

@@ -1,4 +1,4 @@
-﻿#include "PhysixSystem.h"
+#include "PhysixSystem.h"
 
 float PhysixSystem::m_Scale(1.f);
 float PhysixSystem::m_InvScale(1.f / PhysixSystem::m_Scale);

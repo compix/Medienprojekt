@@ -25,7 +25,8 @@ void AISystem::update(float dt)
 	//m_pathEngine->visualize();
 	//m_pathEngine->visualize(m_path);
 
-	for (Entity *e : *m_nonAIPlayers) {
+	for (Entity *e : *m_nonAIPlayers)
+	{
 		player = e;
 	}
 
@@ -34,7 +35,8 @@ void AISystem::update(float dt)
 
 	auto playerCell = player->get<CellComponent>();
 
-	for (Entity *e : *m_AIPlayers) {
+	for (Entity *e : *m_AIPlayers)
+	{
 		auto inputComponent = e->get<InputComponent>();
 		auto cell = e->get<CellComponent>();
 

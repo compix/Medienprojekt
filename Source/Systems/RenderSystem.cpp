@@ -7,7 +7,6 @@
 #include "../Components/ShaderComponent.h"
 #include "../GameGlobals.h"
 
-
 RenderSystem::RenderSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
 {
@@ -46,7 +45,7 @@ void RenderSystem::render(EntityLayer* layer)
 
 			for (auto& e : collection)
 			{
-				if (!e->isValid())
+				if (e->isScheduledForRemoval())
 					continue;
 
 				auto transform = e->get<TransformComponent>();

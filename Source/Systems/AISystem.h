@@ -1,6 +1,4 @@
 #pragma once
-
-#pragma once
 #include <ecstasy/core/EntitySystem.h>
 #include <ecstasy/core/Engine.h>
 #include "../Utils/PathFinding/PathEngine.h"

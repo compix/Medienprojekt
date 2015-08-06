@@ -8,7 +8,6 @@
 #include "../Components/InventoryComponent.h"
 #include "../Components/DestructionComponent.h"
 
-
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: IteratingSystem(Family::all<ItemComponent, CellComponent, LayerComponent>().get()), m_layerManager(layerManager)
 {
@@ -28,7 +27,7 @@ void ItemSystem::addedToEngine(Engine *engine)
 
 void ItemSystem::processEntity(Entity *item, float deltaTime)
 {
-	if (!item->isValid() || item->has<DestructionComponent>())
+	if (item->isScheduledForRemoval() || item->has<DestructionComponent>())
 		return;
 
 	auto cellComponent = item->get<CellComponent>();
@@ -36,7 +35,7 @@ void ItemSystem::processEntity(Entity *item, float deltaTime)
 	auto itemComponent = item->get<ItemComponent>();
 
 	auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
-	if (entityWithInventory && entityWithInventory->isValid())
+	if (entityWithInventory && !entityWithInventory->isScheduledForRemoval())
 	{
 		auto inventory = entityWithInventory->get<InventoryComponent>();
 
@@ -63,7 +62,7 @@ void ItemSystem::processEntity(Entity *item, float deltaTime)
 
 void ItemSystem::onEntityDestroyed(Entity *entity)
 {
-	if (!entity->isValid() || !GameGlobals::entityFactory)
+	if (entity->isScheduledForRemoval() || !GameGlobals::entityFactory)
 		return;
 
 	if (entity->has<BlockComponent>())
@@ -90,7 +89,7 @@ void ItemSystem::onEntityDestroyed(Entity *entity)
 
 void ItemSystem::onItemPickedUp(Entity *item, Entity *itemReceiver)
 {
-	if (!item->isValid())
+	if (item->isScheduledForRemoval())
 		return;
 
 	item->assign<DestructionComponent>();

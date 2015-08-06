@@ -8,7 +8,7 @@ TimerSystem::TimerSystem()
 
 void TimerSystem::processEntity(Entity *entity, float deltaTime)
 {
-	if (!entity->isValid())
+	if (entity->isScheduledForRemoval())
 		return;
 
 	auto timer = entity->get<TimerComponent>();

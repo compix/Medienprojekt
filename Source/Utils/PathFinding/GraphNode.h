@@ -1,7 +1,6 @@
 #pragma once
 #include <stdint.h>
 
-
 // Experimental node costs
 namespace NodeCost
 {

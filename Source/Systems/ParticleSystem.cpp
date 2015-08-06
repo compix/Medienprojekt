@@ -27,9 +27,6 @@ void ParticleSystem::removedFromEngine(Engine *engine)
 
 void ParticleSystem::onEntityRemoved(Entity *entity)
 {
-	if (!entity->isValid())
-		return;
-
 	auto particleComponent = entity->get<ParticleComponent>();
 	if (particleComponent)
 	{
@@ -52,7 +49,7 @@ void ParticleSystem::processEntity(Entity *e, float deltaTime)
 	{
 		auto target = getEngine()->getEntity(particleComponent->emitter->m_targetId);
 
-		if (target && target->isValid() && target->has<TransformComponent>() && e->has<EffectComponent>())
+		if (target && !target->isScheduledForRemoval() && target->has<TransformComponent>() && e->has<EffectComponent>())
 		{
 			auto targetTransform = target->get<TransformComponent>();
 			transform->x = targetTransform->x;
@@ -63,7 +60,8 @@ void ParticleSystem::processEntity(Entity *e, float deltaTime)
 	particleComponent->emitter->position(transform->x, transform->y);
 }
 
-void ParticleSystem::update(float dt) {
+void ParticleSystem::update(float dt)
+{
 	IteratingSystem::update(dt);
 
 	for (auto& m : m_particleManagers)

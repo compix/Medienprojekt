@@ -2,7 +2,6 @@
 #include <string>
 #include "ecstasy/core/Entity.h"
 
-
 enum class NetPlayerStatus
 {
 	DISCONNECTED,
@@ -25,7 +24,7 @@ struct NetPlayerInfo
 {
 	std::string name = "Connecting...";
 	NetPlayerStatus status = NetPlayerStatus::DISCONNECTED;
-	Entity *entity;
+	uint64_t entityId;
 	uint8_t playerIndex;
 	CreateGamePlayerType type;
 	ENetPeer *peer = nullptr;
@@ -35,7 +34,7 @@ struct NetPlayerInfo
 		peer = _peer;
 		name = "Connecting...";
 		status = NetPlayerStatus::CONNECTING;
-		entity = nullptr;
+		entityId = 0;
 	}
 
 	void invalidate()
@@ -43,6 +42,6 @@ struct NetPlayerInfo
 		peer = nullptr;
 		name = "?";
 		status = NetPlayerStatus::DISCONNECTED;
-		entity = nullptr;
+		entityId = 0;
 	}
 };

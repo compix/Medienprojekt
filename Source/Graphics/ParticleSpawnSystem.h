@@ -2,7 +2,6 @@
 #include <ecstasy/core/EntitySystem.h>
 #include <ecstasy/core/Engine.h>
 
-
 enum class Direction : uint8_t;
 class LayerManager;
 class ParticleSystem;

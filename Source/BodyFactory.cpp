@@ -1,7 +1,6 @@
 #include "BodyFactory.h"
 #include "PhysixSystem.h"
 
-
 b2World* BodyFactory::m_World(new b2World(b2Vec2()));
 
 BodyFactory::BodyFactory(b2World b2_world)

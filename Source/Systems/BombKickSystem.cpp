@@ -12,7 +12,6 @@
 #include "../PhysixSystem.h"
 #include <iostream>
 
-
 BombKickSystem::BombKickSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
 
@@ -25,7 +24,8 @@ void BombKickSystem::addedToEngine(Engine *engine) {
 void BombKickSystem::update(float dt)
 {
 	//Check to kick Bombs
-	for (Entity *player : *m_inputEntities) {
+	for (Entity *player : *m_inputEntities)
+	{
 		auto cellComponent = player->get<CellComponent>();
 		auto layerComponent = player->get<LayerComponent>();
 
@@ -42,7 +42,8 @@ void BombKickSystem::update(float dt)
 	}
 
 	//Check to stop kicked Bombs
-	for (Entity *bombs : *m_bombEntities) {
+	for (Entity *bombs : *m_bombEntities)
+	{
 		auto cellComponent = bombs->get<CellComponent>();
 		auto layerComponent = bombs->get<LayerComponent>();
 

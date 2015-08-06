@@ -29,22 +29,17 @@ void ParticleSpawnSystem::addedToEngine(Engine *engine)
 
 void ParticleSpawnSystem::onDeath(Entity *dyingEntity)
 {
-	if (!dyingEntity->isValid())
-		return;
-
-	auto entity = dyingEntity;
-
-	if (entity->has<SpriteComponent>())
-		entity->remove<SpriteComponent>();
+	if (dyingEntity->has<SpriteComponent>())
+		dyingEntity->remove<SpriteComponent>();
 	
-	if (!entity->has<ParticleComponent>())
+	if (!dyingEntity->has<ParticleComponent>())
 	{
 		auto manager = m_particleSystem->getManager("block");
 		auto emitter = manager->spawnEmitter();
 
 		if (emitter)
 		{
-			entity->assign<ParticleComponent>(emitter);
+			dyingEntity->assign<ParticleComponent>(emitter);
 
 			emitter->spawnTime(1.f)
 				.maxLifetime(1.f)
@@ -63,9 +58,6 @@ void ParticleSpawnSystem::onDeath(Entity *dyingEntity)
 
 void ParticleSpawnSystem::onExplosionCreated(Entity *entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
 {
-	if (!entity->isValid())
-		return;
-
 	if (entity->has<ExplosionComponent>() && entity->has<CellComponent>() && entity->has<LayerComponent>())
 	{
 		auto layerComponent = entity->get<LayerComponent>();
@@ -77,9 +69,6 @@ void ParticleSpawnSystem::onExplosionCreated(Entity *entity, uint8_t x, uint8_t 
 
 void ParticleSpawnSystem::onItemPickedUp(Entity *item, Entity *itemReceiver)
 {
-	if (!itemReceiver->isValid())
-		return;
-
 	auto cell = itemReceiver->get<CellComponent>();
 	assert(cell);
 	GameGlobals::entityFactory->createBoostEffect(cell->x, cell->y, itemReceiver);

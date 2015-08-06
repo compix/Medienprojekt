@@ -1,7 +1,5 @@
 #include "HealthSystem.h"
-
 #include "../Components/HealthComponent.h"
-
 #include <iostream>
 #include "../GameGlobals.h"
 
@@ -21,7 +19,7 @@ void HealthSystem::update(float dt)
 
 void HealthSystem::onEntityGotHit(Entity *damageDealer, Entity *damagedEntity, int damage)
 {
-	if (!damagedEntity->isValid() || !damageDealer->isValid())
+	if (damagedEntity->isScheduledForRemoval() || damageDealer->isScheduledForRemoval())
 		return;
 
 	auto health = damagedEntity->get<HealthComponent>();

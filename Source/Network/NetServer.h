@@ -17,7 +17,8 @@ using std::string;
 struct CreateGamePlayerInfo;
 enum class Direction : uint8_t;
 
-namespace ECS {
+namespace ECS
+{
 	class Engine;
 };
 using ECS::Engine;

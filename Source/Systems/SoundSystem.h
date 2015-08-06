@@ -1,7 +1,6 @@
 #pragma once
 #include <ecstasy/core/Engine.h>
 #include <ecstasy/core/EntitySystem.h>
-
 #include <SFML/Audio.hpp>
 #include <signal11/Signal.h>
 

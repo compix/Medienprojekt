@@ -1,11 +1,9 @@
-﻿#pragma once
+#pragma once
 #include <Box2D/Box2D.h>
 #include "SFMLDebugDraw.h"
 
 class PhysixSystem
 {
-	
-
 public:
 	PhysixSystem(int velocityIterations, int positionIteration, float scale);
 	~PhysixSystem();

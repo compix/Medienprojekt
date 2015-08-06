@@ -1,7 +1,6 @@
 #include "AssetManager.h"
 #include "../../Game.h"
 
-
 AssetManager::AssetManager()
 {
 	m_textureLoader.loadFromJson("Assets/json/textures.json");

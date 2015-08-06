@@ -1,5 +1,4 @@
 #include "MenuPageCreateGame.h"
-
 #include <format.h>
 #include "../../GameGlobals.h"
 #include "../Menu.h"
