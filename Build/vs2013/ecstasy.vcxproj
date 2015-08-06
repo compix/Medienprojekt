@@ -86,7 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\Component.h" />
-    <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\ComponentOperations.h" />
+    <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\ComponentAllocator.h" />
     <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\Engine.h" />
     <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\Entity.h" />
     <ClInclude Include="..\..\ThirdParty\ecstasy\include\ecstasy\core\EntityOperations.h" />
@@ -102,9 +102,11 @@
     <ClInclude Include="..\..\ThirdParty\ecstasy\include\signal11\Signal.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\ComponentOperations.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\ComponentAllocator.cpp" />
     <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\Engine.cpp" />
     <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\Entity.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\EntityOperations.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\EntitySystem.cpp" />
     <ClCompile Include="..\..\ThirdParty\ecstasy\source\core\Family.cpp" />
     <ClCompile Include="..\..\ThirdParty\ecstasy\source\utils\Bits.cpp" />
   </ItemGroup>

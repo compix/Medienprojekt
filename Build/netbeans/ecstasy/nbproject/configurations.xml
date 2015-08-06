@@ -6,7 +6,7 @@
         <logicalFolder name="ecstasy" displayName="ecstasy" projectFiles="true">
           <logicalFolder name="core" displayName="core" projectFiles="true">
             <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/Component.h</itemPath>
-            <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentOperations.h</itemPath>
+            <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentAllocator.h</itemPath>
             <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/Engine.h</itemPath>
             <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/Entity.h</itemPath>
             <itemPath>../../../ThirdParty/ecstasy/include/ecstasy/core/EntityOperations.h</itemPath>
@@ -31,9 +31,11 @@
       </logicalFolder>
       <logicalFolder name="source" displayName="source" projectFiles="true">
         <logicalFolder name="core" displayName="core" projectFiles="true">
-          <itemPath>../../../ThirdParty/ecstasy/source/core/ComponentOperations.cpp</itemPath>
+          <itemPath>../../../ThirdParty/ecstasy/source/core/ComponentAllocator.cpp</itemPath>
           <itemPath>../../../ThirdParty/ecstasy/source/core/Engine.cpp</itemPath>
           <itemPath>../../../ThirdParty/ecstasy/source/core/Entity.cpp</itemPath>
+          <itemPath>../../../ThirdParty/ecstasy/source/core/EntityOperations.cpp</itemPath>
+          <itemPath>../../../ThirdParty/ecstasy/source/core/EntitySystem.cpp</itemPath>
           <itemPath>../../../ThirdParty/ecstasy/source/core/Family.cpp</itemPath>
         </logicalFolder>
         <logicalFolder name="utils" displayName="utils" projectFiles="true">
@@ -87,7 +89,7 @@
         </archiverTool>
       </compileType>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Component.h" ex="false" tool="3" flavor2="0"></item>
-      <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentOperations.h" ex="false" tool="3" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentAllocator.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Engine.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Entity.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/EntityOperations.h" ex="false" tool="3" flavor2="0"></item>
@@ -101,9 +103,11 @@
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/utils/Bits.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/utils/Pool.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/signal11/Signal.h" ex="false" tool="3" flavor2="0"></item>
-      <item path="../../../ThirdParty/ecstasy/source/core/ComponentOperations.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/ComponentAllocator.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Engine.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Entity.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/EntityOperations.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/EntitySystem.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Family.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/utils/Bits.cpp" ex="false" tool="1" flavor2="0"></item>
     </conf>
@@ -145,7 +149,7 @@
         </archiverTool>
       </compileType>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Component.h" ex="false" tool="3" flavor2="0"></item>
-      <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentOperations.h" ex="false" tool="3" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/ComponentAllocator.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Engine.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/Entity.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/core/EntityOperations.h" ex="false" tool="3" flavor2="0"></item>
@@ -159,9 +163,11 @@
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/utils/Bits.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/ecstasy/utils/Pool.h" ex="false" tool="3" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/include/signal11/Signal.h" ex="false" tool="3" flavor2="0"></item>
-      <item path="../../../ThirdParty/ecstasy/source/core/ComponentOperations.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/ComponentAllocator.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Engine.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Entity.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/EntityOperations.cpp" ex="false" tool="1" flavor2="0"></item>
+      <item path="../../../ThirdParty/ecstasy/source/core/EntitySystem.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/core/Family.cpp" ex="false" tool="1" flavor2="0"></item>
       <item path="../../../ThirdParty/ecstasy/source/utils/Bits.cpp" ex="false" tool="1" flavor2="0"></item>
     </conf>
