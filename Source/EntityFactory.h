@@ -18,7 +18,7 @@ using entityx::EntityManager;
 class EntityFactory
 {
 public:
-	EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager);
+	EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager);
 
 	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
 
@@ -45,7 +45,7 @@ public:
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:
-	PhysixSystem* m_physixSystem;
+	bool m_isClient;
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
 	entityx::SystemManager* m_systemManager;

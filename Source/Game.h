@@ -38,6 +38,7 @@ public:
 
 	uint8_t getWidth() { return m_width; }
 	uint8_t getHeight() { return m_height; }
+	virtual bool isClient() { return false; }
 
 	void refreshView();
 	inline const sf::View& getView() const { return m_view; }
@@ -102,6 +103,7 @@ public:
 	~ClientGame();
 
 	void receive(const ResetGameEvent &evt);
+	bool isClient() override { return true; }
 
 protected:
 	void addSystems() override;

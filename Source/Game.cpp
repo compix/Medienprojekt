@@ -74,10 +74,12 @@ void Game::init(uint8_t width, uint8_t height)
 	//m_debugDraw.AppendFlags(b2Draw::e_aabbBit);
 
 	/*Setup PhysixSystem*/
-	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
-	m_PhysixSystem->setContactListener(&listener);
-	m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
-	BodyFactory::m_World = m_PhysixSystem->GetWorld();
+	if (!isClient()) {
+		m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+		m_PhysixSystem->setContactListener(&listener);
+		m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
+		BodyFactory::m_World = m_PhysixSystem->GetWorld();
+	}
 	/*Setup PhysixSystem End*/
 
 
@@ -88,7 +90,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	
 
-	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
+	m_entityFactory = std::make_unique<EntityFactory>(isClient(), m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
 
 	addSystems();
@@ -122,7 +124,8 @@ void Game::update(TimeDelta dt)
 		return;
 
 	GameGlobals::input->update();
-	m_PhysixSystem->Update(dt);
+	if (m_PhysixSystem)
+		m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
