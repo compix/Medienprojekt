@@ -88,7 +88,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 	Entity player;
 	ComponentHandle<CellComponent> playerCell;
-	for (auto& entity : entityManager.entities_with_components<InventoryComponent, CellComponent>())
+	for (auto entity : entityManager.entities_with_components<InventoryComponent, CellComponent>())
 	{
 		if (entity.has_component<AIComponent>())
 			continue;
@@ -98,7 +98,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		break;
 	}
 
-	for (auto& entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
+	for (auto entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
 		auto aiComponent = entity.component<AIComponent>();
@@ -239,7 +239,7 @@ void AISystem::visualize()
 void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)
 {
 	outEnemies.clear();
-	for(auto& e : GameGlobals::entities->entities_with_components<InventoryComponent>())
+	for(auto e : GameGlobals::entities->entities_with_components<InventoryComponent>())
 	{
 		if (e != self)
 			outEnemies.push_back(e);
@@ -253,7 +253,7 @@ void AISystem::getCloseEnemies(Entity self, std::vector<Entity>& outEnemies)
 	auto selfCell = self.component<CellComponent>();
 	outEnemies.clear();
 
-	for (auto& e : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
+	for (auto e : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
 	{
 		auto cell = e.component<CellComponent>();
 		uint32_t distance = abs(selfCell->x - cell->x) + abs(selfCell->y - cell->y);

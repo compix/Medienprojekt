@@ -49,7 +49,7 @@ void Graph::timeTravel(float seconds, float t)
 	resetProperties();
 	m_normalBombs.clear();
 
-	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{	
 		auto bombComponent = bomb.component<BombComponent>();
 		auto timerComponent = bomb.component<TimerComponent>();
@@ -62,7 +62,7 @@ void Graph::timeTravel(float seconds, float t)
 	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
 
 	// Go through all explosion components and simulate the explosion.
-	for (auto& explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
+	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
 	{
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
@@ -70,7 +70,7 @@ void Graph::timeTravel(float seconds, float t)
 		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, seconds);
 	}
 
-	for (auto& bomb : m_normalBombs)
+	for (auto bomb : m_normalBombs)
 	{
 		float exploTime = bomb.explosionTime;
 		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
@@ -79,7 +79,7 @@ void Graph::timeTravel(float seconds, float t)
 		placeBomb(bomb.x, bomb.y, bomb.range, exploTime, seconds);
 	}
 
-	for (auto& item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
+	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
 	{
 		auto cell = item.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
@@ -93,7 +93,7 @@ void Graph::update(float deltaTime)
 	m_normalBombs.clear();
 	m_blocksAffectedByExplosion.clear();
 
-	for (auto& dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
+	for (auto dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
 	{
 		if (!dieingBlock.valid())
 			continue;
@@ -103,7 +103,7 @@ void Graph::update(float deltaTime)
 		m_blocksAffectedByExplosion.push_back(dieingBlock);
 	}
 
-	for (auto& bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
 		auto bombComponent = bomb.component<BombComponent>();
 		auto timerComponent = bomb.component<TimerComponent>();
@@ -121,7 +121,7 @@ void Graph::update(float deltaTime)
 	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
 
 	// Go through all explosion components and simulate the explosion.
-	for (auto& explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
+	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
 	{
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
@@ -129,7 +129,7 @@ void Graph::update(float deltaTime)
 		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
 	}
 
-	for (auto& bomb : m_normalBombs)
+	for (auto bomb : m_normalBombs)
 	{
 		float exploTime = bomb.explosionTime;
 		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
@@ -138,20 +138,20 @@ void Graph::update(float deltaTime)
 		placeBomb(bomb.x, bomb.y, bomb.range, exploTime);
 	}
 
-	for (auto& item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
+	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
 	{
 		auto cell = item.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
 	}
 
-	for (auto& player : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
+	for (auto player : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
 	{
 		auto cell = player.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = true;
 	}
 
 	// Duplicate explosion on portals
-	for (auto& portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
+	for (auto portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
 	{
 		auto cell = portal.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
