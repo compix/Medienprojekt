@@ -207,8 +207,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
-	transformComponent.scaleX = 1.5f;
-	transformComponent.scaleY = 1.5f;
+	transformComponent.scaleX = 0.75f;
+	transformComponent.scaleY = 0.75f;
 
 	entity->assign<TransformComponent>(transformComponent);
 	auto texture = createSprite("bomb");
