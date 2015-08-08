@@ -487,7 +487,10 @@ void NetServer::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 	broadcastPlayerReady(info->playerIndex, ready);
 
 	if (allPlayersReady())
+	{
+		GameGlobals::events->emit<LobbyEventDisable>();
 		startCountdown();
+	}
 }
 
 void NetServer::broadcastPlayerReady(uint8_t playerIndex, bool ready)
