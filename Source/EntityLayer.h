@@ -29,7 +29,9 @@ public:
 	EntityLayer(int width, int height, int value);
 	~EntityLayer();
 
-	inline EntityGrid getEntityGrid() const { return m_grid; };
+	void reset();
+
+	inline EntityGrid getEntityGrid() const { return m_grid; }
 
 	template<class T>
 	void sort(T comparator, int cellX, int cellY);

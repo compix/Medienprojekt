@@ -1,6 +1,7 @@
 #pragma once
 #include "Graph.h"
 #include <memory>
+#include <float.h>
 #include "SimulationGraph.h"
 
 struct Path
@@ -33,6 +34,7 @@ enum class NodeType
 	SPOT_FOR_BOMB
 };
 
+class PathEngine;
 // Returns false if the path created with the goal is not valid
 // Otherwise pathOut is set and rated
 typedef std::function < bool(PathEngine* pathEngine, GraphNode* goal, Path& pathOut, uint8_t taskNum) > PathRatingFunction; // Second parameter is an output

@@ -17,6 +17,17 @@ EntityLayer::~EntityLayer()
 	delete[] m_grid;
 }
 
+void EntityLayer::reset()
+{
+	for (int x = 0; x < m_width; x++)
+	{
+		for (int y = 0; y < m_height; y++)
+		{
+			m_grid[x][y].clear();
+		}
+	}
+}
+
 void EntityLayer::add(Entity entity, int cellX, int cellY)
 {
 	if (cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height)

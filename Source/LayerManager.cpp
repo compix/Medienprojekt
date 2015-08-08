@@ -21,6 +21,12 @@ LayerManager::~LayerManager()
 	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
 }
 
+void LayerManager::reset()
+{
+	for (auto& kv : m_layers)
+		kv.second->reset();
+}
+
 void LayerManager::configure(entityx::EventManager& events)
 {
 	events.subscribe<entityx::EntityDestroyedEvent>(*this);

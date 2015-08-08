@@ -25,4 +25,5 @@ namespace GameConstants
 
 	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
 	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
+	const float RESET_GAME_COUNTDOWN = 2; // Seconds to wait after game over to reset the game
 }
