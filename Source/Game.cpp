@@ -40,10 +40,12 @@
 #include "Utils/InputManager.h"
 #include "Systems/ChatRenderSystem.h"
 #include "Events/CreateGameEvent.h"
+#include "Events/GameOverEvent.h"
 #include "Components/InputComponent.h"
 #include "Components/FreeSlotComponent.h"
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
+#include "Events/ResetGameEvent.h"
 
 
 Game::Game()
@@ -72,10 +74,12 @@ void Game::init(uint8_t width, uint8_t height)
 	//m_debugDraw.AppendFlags(b2Draw::e_aabbBit);
 
 	/*Setup PhysixSystem*/
-	m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
-	m_PhysixSystem->setContactListener(&listener);
-	m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
-	BodyFactory::m_World = m_PhysixSystem->GetWorld();
+	if (!isClient()) {
+		m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+		m_PhysixSystem->setContactListener(&listener);
+		m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
+		BodyFactory::m_World = m_PhysixSystem->GetWorld();
+	}
 	/*Setup PhysixSystem End*/
 
 
@@ -86,7 +90,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	
 
-	m_entityFactory = std::make_unique<EntityFactory>(m_PhysixSystem, m_layerManager.get(), &m_shaderManager, &m_systems);
+	m_entityFactory = std::make_unique<EntityFactory>(isClient(), m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();
 
 	addSystems();
@@ -120,7 +124,8 @@ void Game::update(TimeDelta dt)
 		return;
 
 	GameGlobals::input->update();
-	m_PhysixSystem->Update(dt);
+	if (m_PhysixSystem)
+		m_PhysixSystem->Update(dt);
 	m_systems.update_all(dt);
 	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
@@ -150,6 +155,16 @@ void Game::refreshView()
 	m_view.reset(sf::FloatRect(0, 0, screenW * scaleFactor, screenH * scaleFactor));
 	m_view.setCenter(gameW*0.5f, gameH*0.5f);
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
+}
+
+LocalGame::LocalGame()
+{
+	GameGlobals::events->subscribe<GameOverEvent>(*this);
+}
+
+LocalGame::~LocalGame()
+{
+	GameGlobals::events->unsubscribe<GameOverEvent>(*this);
 }
 
 void LocalGame::addSystems()
@@ -190,6 +205,8 @@ void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 void LocalGame::resetEntities()
 {
 	m_entities.reset();
+	m_layerManager->reset();
+	GameGlobals::events->emit<ResetGameEvent>();
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
@@ -213,6 +230,41 @@ void LocalGame::resetEntities()
 		}
 	}
 	GameGlobals::events->emit<StartGameEvent>();
+}
+
+void LocalGame::update(TimeDelta dt)
+{
+	if (m_resetTime > 0)
+	{
+		m_resetTime -= dt;
+		if (m_resetTime <= 0)
+		{
+			m_resetTime = 0;
+			resetEntities();
+		}
+	}
+	Game::update(dt);
+}
+
+void LocalGame::receive(const GameOverEvent& evt)
+{
+	m_resetTime = GameConstants::RESET_GAME_COUNTDOWN;
+}
+
+ClientGame::ClientGame()
+{
+	GameGlobals::events->subscribe<ResetGameEvent>(*this);
+}
+
+ClientGame::~ClientGame()
+{
+	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
+}
+
+void ClientGame::receive(const ResetGameEvent& evt)
+{
+	m_entities.reset();
+	m_layerManager->reset();
 }
 
 void ClientGame::addSystems()

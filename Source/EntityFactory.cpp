@@ -47,14 +47,14 @@
 #include "Components/ColorComponent.h"
 #include "Components/PortalMarkerComponent.h"
 
-EntityFactory::EntityFactory(PhysixSystem* physixSystem, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
-	:m_physixSystem(physixSystem), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
+EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
+	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
 {
 }
 
 Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 {
-	Entity* entity = createEntity(); // createEntity() f�r Entities mit Body benutzen. Ist nicht schlimm, wenn das auch f�r welche ohne gemacht wrid.
+	Entity* entity = createEntity(); // createEntity() f�r Entities mit Body benutzen. Ist nicht schlimm, wennm_physixSystem das auch f�r welche ohne gemacht wrid.
 
 	static int playerId = 0;
 	++playerId;
@@ -104,17 +104,19 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 		isA = BodyFactory::PLAYER_1;
 		break;
 	}
-	
-	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateCircle(entity, 
-						 x, y, 10.f,
-						 b2_dynamicBody,
-						 isA | BodyFactory::PLAYER,
-						 ~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4 & ~BodyFactory::PLAYER);
 
-	bodyComponent.body->SetFixedRotation(true);
-	entity->assign<BodyComponent>(bodyComponent);
+	if (!m_isClient)
+	{
+		BodyComponent bodyComponent;
+		bodyComponent.body = BodyFactory::CreateCircle(entity,
+			x, y, 10.f,
+			b2_dynamicBody,
+			isA | BodyFactory::PLAYER,
+			~BodyFactory::PLAYER_1 & ~BodyFactory::PLAYER_2 & ~BodyFactory::PLAYER_3 & ~BodyFactory::PLAYER_4 & ~BodyFactory::PLAYER);
 
+		bodyComponent.body->SetFixedRotation(true);
+		entity->assign<BodyComponent>(bodyComponent);
+	}
 	entity->assign<InputComponent>();
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity->assign<DynamicComponent>();
@@ -143,18 +145,20 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	entity->assign<CellComponent>(cellX, cellY);
 	entity->assign<HealthComponent>(1);
 
-	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(entity, 
-												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
-												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
-												(float)GameConstants::CELL_WIDTH / 2.f,
-												(float)GameConstants::CELL_HEIGHT / 2.f,
-												b2_staticBody,
-												BodyFactory::CollsionCategory::SOLID_BLOCK,
-												~BodyFactory::CollsionCategory::NOTHING);
+	if (!m_isClient)
+	{
+		BodyComponent bodyComponent;
+		bodyComponent.body = BodyFactory::CreateBox(entity,
+			(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+			(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
+			(float)GameConstants::CELL_WIDTH / 2.f,
+			(float)GameConstants::CELL_HEIGHT / 2.f,
+			b2_staticBody,
+			BodyFactory::CollsionCategory::SOLID_BLOCK,
+			~BodyFactory::CollsionCategory::NOTHING);
 
-	entity->assign<BodyComponent>(bodyComponent);
-
+		entity->assign<BodyComponent>(bodyComponent);
+	}
 
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity->assign<BlockComponent>();
@@ -180,18 +184,21 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 	entity->assign<CellComponent>(cellX, cellY);
 
 
-	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(entity, 
-												(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
-												(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
-												(float)GameConstants::CELL_WIDTH/2.f,
-												(float)GameConstants::CELL_HEIGHT/2.f,
-												b2_staticBody,
-												BodyFactory::CollsionCategory::SOLID_BLOCK,
-												~BodyFactory::CollsionCategory::NOTHING);
+	if (!m_isClient)
+	{
+		BodyComponent bodyComponent;
+		bodyComponent.body = BodyFactory::CreateBox(entity,
+			(float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f,
+			(float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f,
+			(float)GameConstants::CELL_WIDTH / 2.f,
+			(float)GameConstants::CELL_HEIGHT / 2.f,
+			b2_staticBody,
+			BodyFactory::CollsionCategory::SOLID_BLOCK,
+			~BodyFactory::CollsionCategory::NOTHING);
 
 
-	entity->assign<BodyComponent>(bodyComponent);
+		entity->assign<BodyComponent>(bodyComponent);
+	}
 
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 
@@ -224,30 +231,33 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity->assign<DynamicComponent>();
 
 	//Physix
-	auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
+	if (!m_isClient)
+	{
+		auto fixture = owner.component<BodyComponent>()->body->GetFixtureList();
 
-	BodyComponent bodyComponent;
-	bodyComponent.body = BodyFactory::CreateBox(entity, 
-												transformComponent.x,
-												transformComponent.y,
-												texture.getLocalBounds().width-2,
-												texture.getLocalBounds().height-2,
-												b2_kinematicBody,
-												BodyFactory::BOMB,
-												~fixture->GetFilterData().categoryBits);
+		BodyComponent bodyComponent;
+		bodyComponent.body = BodyFactory::CreateBox(entity,
+			transformComponent.x,
+			transformComponent.y,
+			texture.getLocalBounds().width - 2,
+			texture.getLocalBounds().height - 2,
+			b2_kinematicBody,
+			BodyFactory::BOMB,
+			~fixture->GetFilterData().categoryBits);
 
-	bodyComponent.body->SetFixedRotation(true);
-	/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
-	b2FixtureDef fixtureDef;
-	fixtureDef.isSensor = true;
-	fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
-	fixtureDef.filter.maskBits = fixture->GetFilterData().categoryBits;
-	fixtureDef.shape = &dynamicBox;
-	bodyComponent.body->CreateFixture(&fixtureDef);
+		bodyComponent.body->SetFixedRotation(true);
+		/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
+		b2PolygonShape dynamicBox;
+		dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
+		b2FixtureDef fixtureDef;
+		fixtureDef.isSensor = true;
+		fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
+		fixtureDef.filter.maskBits = fixture->GetFilterData().categoryBits;
+		fixtureDef.shape = &dynamicBox;
+		bodyComponent.body->CreateFixture(&fixtureDef);
 
-	entity->assign<BodyComponent>(bodyComponent);
+		entity->assign<BodyComponent>(bodyComponent);
+	}
 	//Physix_END
 
 	m_layerManager->add(*entity);

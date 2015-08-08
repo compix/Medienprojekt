@@ -34,6 +34,8 @@
 #include "../Components/PlayerComponent.h"
 #include "../Events/ReadyEvent.h"
 #include <format.h>
+#include "../Events/GameOverEvent.h"
+#include "../Events/ResetGameEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -51,6 +53,9 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<SmokeCreatedEvent>(*this);
 	GameGlobals::events->subscribe<DeathEvent>(*this);
 	GameGlobals::events->subscribe<SetReadyEvent>(*this);
+	GameGlobals::events->subscribe<GameOverEvent>(*this);
+	GameGlobals::events->subscribe<ResetGameEvent>(*this);
+	GameGlobals::events->subscribe<StartGameEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -274,6 +279,40 @@ void NetServer::receive(const SetReadyEvent& evt)
 		startCountdown();
 }
 
+void NetServer::receive(const GameOverEvent& evt)
+{
+	m_messageWriter.init(MessageType::GAME_OVER);
+	m_messageWriter.write<uint64_t>(evt.lastPlayer.id().id());
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const ResetGameEvent& evt)
+{
+	m_messageWriter.init(MessageType::RESET_GAME);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const StartGameEvent& evt)
+{
+	// Assign entities and send playerids
+	for (int i = 0; i < m_numPlayers; i++)
+	{
+		if (m_playerInfos[i].peer && m_playerInfos[i].status >= NetPlayerStatus::CONNECTED)
+		{
+			m_playerInfos[i].entity = getFreeSlotEntity();
+
+			// Send all blocks:
+			sendBlockEntities<SolidBlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_SOLID_BLOCK);
+			sendBlockEntities<FloorComponent>(m_playerInfos[i].peer, MessageType::CREATE_FLOOR);
+			sendBlockEntities<BlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_BLOCK);
+
+			// Send players
+			sendPlayerEntities(m_playerInfos[i].peer);
+			sendStartGame(&m_playerInfos[i]);
+		}
+	}
+}
+
 void NetServer::startCountdown()
 {
 	if (m_status != ServerStatus::LOBBY)
@@ -293,24 +332,6 @@ void NetServer::startGame()
 
 	auto *game = (LocalGame *)GameGlobals::game.get();
 	game->resetEntities();
-
-	// Assign entities and send playerids
-	for (int i = 0; i < m_numPlayers; i++)
-	{
-		if (m_playerInfos[i].peer && m_playerInfos[i].status >= NetPlayerStatus::CONNECTED)
-		{
-			m_playerInfos[i].entity = getFreeSlotEntity();
-
-			// Send all blocks:
-			sendBlockEntities<SolidBlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_SOLID_BLOCK);
-			sendBlockEntities<FloorComponent>(m_playerInfos[i].peer, MessageType::CREATE_FLOOR);
-			sendBlockEntities<BlockComponent>(m_playerInfos[i].peer, MessageType::CREATE_BLOCK);
-
-			// Send players
-			sendPlayerEntities(m_playerInfos[i].peer);
-			sendStartGame(&m_playerInfos[i]);
-		}
-	}
 	m_status = ServerStatus::INGAME;
 }
 
@@ -466,7 +487,10 @@ void NetServer::onPlayerReadyMessage(MessageReader<MessageType>& reader, ENetEve
 	broadcastPlayerReady(info->playerIndex, ready);
 
 	if (allPlayersReady())
+	{
+		GameGlobals::events->emit<LobbyEventDisable>();
 		startCountdown();
+	}
 }
 
 void NetServer::broadcastPlayerReady(uint8_t playerIndex, bool ready)

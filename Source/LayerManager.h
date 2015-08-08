@@ -26,6 +26,7 @@ class LayerManager : public entityx::Receiver<LayerManager>
 public:
 	EntityLayer* createLayer(int width, int height, int layer);
 	~LayerManager();
+	void reset();
 
 	inline LayerContainer& getLayers() { return m_layers; }
 	inline EntityLayer* getLayer(int layer) { assert(m_layers.count(layer) > 0); return m_layers[layer].get(); }

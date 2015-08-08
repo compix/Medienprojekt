@@ -18,7 +18,7 @@ float RateDistanceToItems::inverseDistanceToItems(GraphNode* node)
 {
 	float invDistance = 0;
 	int itemCount = 0;
-	for (auto& item : GameGlobals::entities->entities_with_components<ItemComponent>())
+	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent>())
 	{
 		++itemCount;
 		auto itemCell = item.component<CellComponent>();

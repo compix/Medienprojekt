@@ -3,6 +3,46 @@
 <configurationDescriptor version="88">
 	<logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
 		<logicalFolder name="sourceFiles" displayName="Source Files" projectFiles="true">
+			<logicalFolder name="AI" displayName="AI" projectFiles="true">
+				<itemPath>../../../Source/AI/Behavior.h</itemPath>
+				<logicalFolder name="Checks" displayName="Checks" projectFiles="true">
+					<itemPath>../../../Source/AI/Checks/AIUtil.cpp</itemPath>
+					<itemPath>../../../Source/AI/Checks/AIUtil.h</itemPath>
+					<itemPath>../../../Source/AI/Checks/IsSafePath.cpp</itemPath>
+					<itemPath>../../../Source/AI/Checks/IsSafePath.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/AI/FollowPath.cpp</itemPath>
+				<itemPath>../../../Source/AI/FollowPath.h</itemPath>
+				<itemPath>../../../Source/AI/MoveTo.cpp</itemPath>
+				<itemPath>../../../Source/AI/MoveTo.h</itemPath>
+				<logicalFolder name="PathRatings" displayName="PathRatings" projectFiles="true">
+					<itemPath>../../../Source/AI/PathRatings/RateCombination.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDestroyBlockSpot.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToItems.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToItems.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateEscape.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateEscape.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateItem.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateItem.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateKickBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateKickBomb.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePortalSpot.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePortalSpot.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateSafety.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateSafety.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateTrapDanger.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateTrapDanger.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/AI/PlaceBomb.cpp</itemPath>
+				<itemPath>../../../Source/AI/PlaceBomb.h</itemPath>
+				<itemPath>../../../Source/AI/UseSkill.cpp</itemPath>
+				<itemPath>../../../Source/AI/UseSkill.h</itemPath>
+			</logicalFolder>
 			<logicalFolder name="Animation" displayName="Animation" projectFiles="true">
 				<itemPath>../../../Source/Animation/AnimationState.h</itemPath>
 				<itemPath>../../../Source/Animation/AnimationType.h</itemPath>
@@ -24,6 +64,7 @@
 				<itemPath>../../../Source/Components/BodyComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BombComponent.h</itemPath>
 				<itemPath>../../../Source/Components/CellComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ColorComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DamageDealerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DestructionComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DestructionDelayComponent.h</itemPath>
@@ -74,6 +115,7 @@
 				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExplosionCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ForceDisconnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/GameOverEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ItemCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ItemPickedUpEvent.h</itemPath>
 				<itemPath>../../../Source/Events/JoinGameEvent.h</itemPath>
@@ -84,6 +126,7 @@
 				<itemPath>../../../Source/Events/PortalCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/PreloadEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ResetGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SmokeCreatedEvent.h</itemPath>
@@ -231,6 +274,12 @@
 				<itemPath>../../../Source/Utils/InputManager.h</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.h</itemPath>
+				<logicalFolder name="Logging" displayName="Logging" projectFiles="true">
+					<itemPath>../../../Source/Utils/Logging/Logger.cpp</itemPath>
+					<itemPath>../../../Source/Utils/Logging/Logger.h</itemPath>
+					<itemPath>../../../Source/Utils/Logging/LoggingService.cpp</itemPath>
+					<itemPath>../../../Source/Utils/Logging/LoggingService.h</itemPath>
+				</logicalFolder>
 				<itemPath>../../../Source/Utils/Math.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Math.h</itemPath>
 				<logicalFolder name="PathFinding" displayName="PathFinding" projectFiles="true">
@@ -239,6 +288,8 @@
 					<itemPath>../../../Source/Utils/PathFinding/GraphNode.h</itemPath>
 					<itemPath>../../../Source/Utils/PathFinding/PathEngine.cpp</itemPath>
 					<itemPath>../../../Source/Utils/PathFinding/PathEngine.h</itemPath>
+					<itemPath>../../../Source/Utils/PathFinding/SimulationGraph.cpp</itemPath>
+					<itemPath>../../../Source/Utils/PathFinding/SimulationGraph.h</itemPath>
 				</logicalFolder>
 				<itemPath>../../../Source/Utils/Random.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
@@ -342,6 +393,24 @@
 			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behavior.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/FollowPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/MoveTo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PlaceBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/UseSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/AIUtil.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/IsSafePath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimationState.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimationType.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/Animator.h" ex="false" tool="3" flavor2="0"></item>
@@ -354,6 +423,7 @@
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ColorComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -396,6 +466,7 @@
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/GameOverEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -406,6 +477,7 @@
 			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ResetGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SmokeCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -476,9 +548,12 @@
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TexturePacker.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/Graph.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/GraphNode.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/PathEngine.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/PathFinding/SimulationGraph.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/ContactListener.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -488,6 +563,22 @@
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/FollowPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/MoveTo.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PlaceBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/UseSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/AIUtil.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/IsSafePath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/Animator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -548,8 +639,11 @@
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TexturePacker.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/Graph.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/PathEngine.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/PathFinding/SimulationGraph.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
 		<conf name="release" type="1">
 			<toolsSet>
@@ -637,6 +731,24 @@
 			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behavior.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/FollowPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/MoveTo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PlaceBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/UseSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/AIUtil.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/IsSafePath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimationState.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimationType.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Animation/Animator.h" ex="false" tool="3" flavor2="0"></item>
@@ -649,6 +761,7 @@
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ColorComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
@@ -691,6 +804,7 @@
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/GameOverEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -701,6 +815,7 @@
 			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ResetGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SmokeCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
@@ -771,9 +886,12 @@
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TexturePacker.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/Graph.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/GraphNode.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/PathEngine.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/PathFinding/SimulationGraph.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/ContactListener.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -783,6 +901,22 @@
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/FollowPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/MoveTo.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PlaceBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/UseSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/AIUtil.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Checks/IsSafePath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/Animator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -843,8 +977,11 @@
 			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/AssetManagement/TexturePacker.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/Graph.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/PathFinding/PathEngine.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/PathFinding/SimulationGraph.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
 	</confs>
 </configurationDescriptor>
