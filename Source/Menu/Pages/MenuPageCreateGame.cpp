@@ -22,9 +22,9 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	auto labelYOffset = 6;
 
 	createLabel(x1, y + labelYOffset, "Size: ");
-	m_width = createSizeComboBox(x2, y, width2 * 0.4, height2, 3, 50, 21);
+	m_width = createSizeComboBox(x2, y, width2 * 0.4, height2, 7, 31, 21);
 	createLabel(x2 + 117, y + labelYOffset + 5, "x");
-	m_height = createSizeComboBox(x2 + width2 * 0.6, y, width2 * 0.4, height2, 3, 50, 21);
+	m_height = createSizeComboBox(x2 + width2 * 0.6, y, width2 * 0.4, height2, 7, 31, 21);
 
 	m_playerCount = createComboBox(x3, y, width3, height2);
 	m_playerCount->addItem("2 Players", 2);
@@ -119,9 +119,9 @@ void MenuPageCreateGame::onSubmit()
 tgui::ComboBox::Ptr MenuPageCreateGame::createSizeComboBox(float x, float y, float width, float height, int from, int to, int selected)
 {
 	tgui::ComboBox::Ptr combo = createComboBox(x, y, width, height);
-	for (int i = from; i<=to; i++)
+	for (int i = from; i<=to; i+=2)
 		combo->addItem(fmt::format("{}", i), i);
-	combo->setSelectedItem(selected - from);
+	combo->setSelectedItem((selected - from)/2);
 	combo->setItemsToDisplay(8);
 	return combo;
 }

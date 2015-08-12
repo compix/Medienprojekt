@@ -13,7 +13,7 @@ LogServiceId Logger::m_idCounter = 0;
 std::thread Logger::m_logThread;
 std::mutex Logger::m_logMutex;
 
-std::atomic<bool> Logger::m_active = false;
+std::atomic<bool> Logger::m_active(false);
 std::vector<std::string> Logger::m_internalErrors;
 
 void Logger::showErrors()

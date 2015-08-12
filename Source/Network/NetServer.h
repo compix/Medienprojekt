@@ -6,7 +6,10 @@
 #include "../Events/ExplosionCreatedEvent.h"
 #include "NetPlayerInfo.h"
 #include "../GameConstants.h"
+#include "../Events/StartGameEvent.h"
 
+struct ResetGameEvent;
+struct GameOverEvent;
 struct SetReadyEvent;
 struct DeathEvent;
 struct SmokeCreatedEvent;
@@ -44,6 +47,9 @@ public:
 	void receive(const SmokeCreatedEvent &evt);
 	void receive(const DeathEvent &evt);
 	void receive(const SetReadyEvent &evt);
+	void receive(const GameOverEvent &evt);
+	void receive(const ResetGameEvent &evt);
+	void receive(const StartGameEvent& evt);
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);

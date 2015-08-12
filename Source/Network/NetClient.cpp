@@ -18,6 +18,8 @@
 #include "../Events/SetReadyEvent.h"
 #include "../Events/StartGameEvent.h"
 #include "../Components/DynamicComponent.h"
+#include "../Events/GameOverEvent.h"
+#include "../Events/ResetGameEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -47,6 +49,8 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
 	m_handler.setCallback(MessageType::COUNTDOWN, &NetClient::onCountdownMessage, this);
 	m_handler.setCallback(MessageType::ALL_READY, &NetClient::onAllReadyMessage, this);
+	m_handler.setCallback(MessageType::GAME_OVER, &NetClient::onGameOverMessage, this);
+	m_handler.setCallback(MessageType::RESET_GAME, &NetClient::onResetGameMessage, this);
 	
 	
 	m_connection.setHandler(&m_handler);
@@ -346,6 +350,18 @@ void NetClient::onCountdownMessage(MessageReader<MessageType>& reader, ENetEvent
 void NetClient::onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	GameGlobals::events->emit<LobbyEventDisable>();
+}
+
+void NetClient::onGameOverMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	GameGlobals::events->emit<GameOverEvent>(getEntity(id));
+}
+
+void NetClient::onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<ResetGameEvent>();
+	entityMap.clear();
 }
 
 Entity NetClient::getEntity(uint64_t id)

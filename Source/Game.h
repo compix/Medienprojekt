@@ -12,9 +12,12 @@
 #include "Utils/PathFinding/PathEngine.h"
 #include "ContactListener.h"
 
+struct ResetGameEvent;
+struct GameOverEvent;
 using entityx::TimeDelta;
 using entityx::EventManager;
 using entityx::SystemManager;
+using entityx::Receiver;
 using std::unique_ptr;
 
 class ParticleEmitter;
@@ -26,7 +29,7 @@ public:
 	virtual ~Game();
 	virtual void init(uint8_t width, uint8_t height);
 
-	void update(TimeDelta dt);
+	virtual void update(TimeDelta dt);
 
 	inline void setMousePos(sf::Vector2i mousePos)
 	{
@@ -35,6 +38,7 @@ public:
 
 	uint8_t getWidth() { return m_width; }
 	uint8_t getHeight() { return m_height; }
+	virtual bool isClient() { return false; }
 
 	void refreshView();
 	inline const sf::View& getView() const { return m_view; }
@@ -67,11 +71,17 @@ protected:
 enum class CreateGamePlayerType;
 struct CreateGamePlayerInfo;
 
-class LocalGame : public Game
+class LocalGame : public Game, public Receiver<LocalGame>
 {
 public:
+	LocalGame();
+	~LocalGame();
+
 	void initPlayers(const vector<CreateGamePlayerInfo> &players);
 	void resetEntities();
+
+	void update(TimeDelta dt) override;
+	void receive(const GameOverEvent &evt);
 
 protected:
 	void addSystems() override;
@@ -79,14 +89,22 @@ protected:
 protected:
 	CreateGamePlayerType m_playerTypes[GameConstants::MAX_PLAYERS];
 	uint8_t m_numPlayers;
+	TimeDelta m_resetTime = 0;
 };
 
 class ServerGame : public LocalGame
 {
 };
 
-class ClientGame : public Game
+class ClientGame : public Game, public Receiver<ClientGame>
 {
+public:
+	ClientGame();
+	~ClientGame();
+
+	void receive(const ResetGameEvent &evt);
+	bool isClient() override { return true; }
+
 protected:
 	void addSystems() override;
 };
