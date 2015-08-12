@@ -46,14 +46,11 @@ void LoggingService::handleRequests()
 {
 	if (!m_active)
 	{
-		// Try if the file can be opened
+		// Check if the file can be opened
 		std::ofstream file(m_filename, std::ios::out | std::ios::app);
-		if (!file.is_open())
-			m_active = false;
-		else
-			m_active = true;
-
+		m_active = file.is_open();
 		file.close();
+
 		m_thread = std::thread(&LoggingService::handleRequestsOnThread, this);
 	}
 }
