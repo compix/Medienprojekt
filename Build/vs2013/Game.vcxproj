@@ -58,14 +58,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\glm-0.9.7.0\glm;..\..\ThirdParty\SFML\extlibs\headers;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\glm-0.9.7.0\glm;..\..\ThirdParty\SFML\extlibs\headers;..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -87,7 +87,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -134,6 +134,8 @@
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
     <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h" />
+    <ClInclude Include="..\..\Source\Components\GLRenderComponent.h" />
+    <ClInclude Include="..\..\Source\Components\GLRenderRequestComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
@@ -191,6 +193,14 @@
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\GameGlobals.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Camera.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Effects\Effect.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\GeometryGenerator.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\GLShaderManager.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Mesh.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\MeshManager.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\ShaderData.h" />
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\TextureManager.h" />
     <ClInclude Include="..\..\Source\Graphics\Particle.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleManager.h" />
@@ -227,6 +237,7 @@
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\GLRenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
@@ -292,6 +303,12 @@
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\Camera.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\Effects\Effect.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\GLShaderManager.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\MeshManager.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\TextureManager.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp" />
@@ -323,6 +340,7 @@
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\GLRenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />

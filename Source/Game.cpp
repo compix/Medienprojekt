@@ -46,6 +46,7 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Events/ResetGameEvent.h"
+#include "Systems/GLRenderSystem.h"
 
 
 Game::Game()
@@ -191,8 +192,9 @@ void LocalGame::addSystems()
 	m_systems.add<LightSystem>();	
 	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	m_systems.add<ChatRenderSystem>();
-
+	
 	m_systems.add<AISystem>(m_layerManager.get());
+	//m_systems.add<GLRenderSystem>();
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)

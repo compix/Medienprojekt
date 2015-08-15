@@ -46,6 +46,7 @@
 #include "Components/PlayerComponent.h"
 #include "Components/ColorComponent.h"
 #include "Components/PortalMarkerComponent.h"
+#include "Components/GLRenderRequestComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -80,6 +81,13 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 	entity->assign<DirectionComponent>();
 	entity->assign<CellComponent>(cellX, cellY);
+
+	entity->assign<GLRenderRequestComponent>(
+		MeshType::BILLBOARD,
+		VertexType::POS,
+		ShaderType::BILLBOARD,
+		"Assets/Textures/player0.png",
+		glm::vec3(0.f, 1.f, 1.f));
 
 	uint16 isA = BodyFactory::PLAYER_1;
 	switch (playerId)
@@ -145,6 +153,13 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	entity->assign<CellComponent>(cellX, cellY);
 	entity->assign<HealthComponent>(1);
 
+	entity->assign<GLRenderRequestComponent>(
+		MeshType::BOX,
+		VertexType::POS_UV,
+		ShaderType::BASIC,
+		"Assets/Textures/brick.png",
+		glm::vec3(1.f, 1.f, 1.f));
+
 	if (!m_isClient)
 	{
 		BodyComponent bodyComponent;
@@ -183,6 +198,12 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 
 	entity->assign<CellComponent>(cellX, cellY);
 
+	entity->assign<GLRenderRequestComponent>(
+		MeshType::BOX,
+		VertexType::POS_UV,
+		ShaderType::BASIC,
+		"Assets/Textures/brick2.png",
+		glm::vec3(1.f, 1.f, 1.f));
 
 	if (!m_isClient)
 	{
@@ -229,6 +250,13 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	entity->assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity->assign<DynamicComponent>();
+
+	entity->assign<GLRenderRequestComponent>(
+		MeshType::BILLBOARD,
+		VertexType::POS,
+		ShaderType::BILLBOARD,
+		"Assets/Textures/Bomb.png",
+		glm::vec3(1.f, 1.f, 1.f));
 
 	//Physix
 	if (!m_isClient)
@@ -540,19 +568,31 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	entity.assign<ItemComponent>(type);
 	entity.assign<HealthComponent>(1);
 
+	std::string texturePath = "";
+
 	switch (type)
 	{
 	case ItemType::BOMB_CAP_BOOST: 
 		entity.assign<SpriteComponent>(createSprite("bombCapBoost"));
+		texturePath = "Assets/Textures/bombCapBoost.png";
 		break;
 	case ItemType::BOMB_KICK_SKILL:
 		entity.assign<SpriteComponent>(createSprite("bomb_kick_skill"));
+		texturePath = "Assets/Textures/bomb_kick_skill.png";
 		break;
 	case ItemType::SPEED_MULTIPLICATOR:
 		entity.assign<SpriteComponent>(createSprite("speed_multiplicator"));
+		texturePath = "Assets/Textures/speed_multiplicator.png";
 		break;
 	default: break;
 	}
+
+	entity.assign<GLRenderRequestComponent>(
+		MeshType::BILLBOARD,
+		VertexType::POS,
+		ShaderType::BILLBOARD,
+		texturePath,
+		glm::vec3(1.f, 1.f, 1.f));
 
 	m_layerManager->add(entity);
 

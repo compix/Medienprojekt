@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -51,6 +51,12 @@
     </Filter>
     <Filter Include="Utils\PathFinding">
       <UniqueIdentifier>{D114E15E-3D2B-DFF4-86A2-6A16F2F7AF7C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL">
+      <UniqueIdentifier>{a0b5d5f1-0e21-498e-9967-8567b9d546ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\OpenGL\Effects">
+      <UniqueIdentifier>{906a13ee-7d2c-4e37-a257-e6942ca8765c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -548,6 +554,39 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Camera.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\GeometryGenerator.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Mesh.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\MeshManager.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\TextureManager.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\GLRenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\GLRenderSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\GLShaderManager.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\Effects\Effect.h">
+      <Filter>Graphics\OpenGL\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\OpenGL\ShaderData.h">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\GLRenderRequestComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\Checks\AIUtil.cpp">
@@ -801,6 +840,27 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\Camera.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\GeometryGenerator.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\MeshManager.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\TextureManager.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\GLRenderSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\GLShaderManager.cpp">
+      <Filter>Graphics\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\OpenGL\Effects\Effect.cpp">
+      <Filter>Graphics\OpenGL\Effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

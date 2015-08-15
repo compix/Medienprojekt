@@ -56,7 +56,14 @@ int Main::run()
 
 	GameGlobals::events = &m_events;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	sf::ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	//settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 0;
+
+	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!", sf::Style::Default, settings);
 
 	GameGlobals::window = &window;
 	
@@ -88,8 +95,12 @@ int Main::run()
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
 				window.close();
-			else if (event.type == sf::Event::Resized)
+				break;
+			}
+
+			if (event.type == sf::Event::Resized)
 			{
 				if (GameGlobals::game)
 					GameGlobals::game->refreshView();
@@ -104,8 +115,12 @@ int Main::run()
 			m_events.emit(event);
 		}
 
+		if (!window.isOpen())
+			break;
+
 		sf::Time deltaTime = clock.restart();
 
+		
 		window.clear();
 		if (GameGlobals::game) {
 			window.setView(GameGlobals::game->getView());
@@ -116,10 +131,10 @@ int Main::run()
 		}
 		else if (!assetManager.preloadsDone())
 			assetManager.preloadNext();
-
+		
 		window.setView(menuView);
 		menu.draw();
-		
+
 		window.display();
 
 		if (m_forceDisconnect)
