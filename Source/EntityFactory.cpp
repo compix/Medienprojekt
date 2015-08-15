@@ -239,8 +239,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 		bodyComponent.body = BodyFactory::CreateBox(entity,
 			transformComponent.x,
 			transformComponent.y,
-			texture.getLocalBounds().width - 2,
-			texture.getLocalBounds().height - 2,
+			GameConstants::CELL_WIDTH * 0.5f,
+			GameConstants::CELL_HEIGHT* 0.5f,
 			b2_kinematicBody,
 			BodyFactory::BOMB,
 			~fixture->GetFilterData().categoryBits);
@@ -248,7 +248,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 		bodyComponent.body->SetFixedRotation(true);
 		/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
 		b2PolygonShape dynamicBox;
-		dynamicBox.SetAsBox(PhysixSystem::toBox2D(texture.getLocalBounds().width), PhysixSystem::toBox2D(texture.getLocalBounds().height));
+		dynamicBox.SetAsBox(PhysixSystem::toBox2D(GameConstants::CELL_WIDTH * 0.5f), PhysixSystem::toBox2D(GameConstants::CELL_HEIGHT * 0.5f));
 		b2FixtureDef fixtureDef;
 		fixtureDef.isSensor = true;
 		fixtureDef.filter.categoryBits = BodyFactory::BOMB_RADAR;
