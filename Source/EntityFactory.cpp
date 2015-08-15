@@ -87,7 +87,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 		VertexType::POS,
 		ShaderType::BILLBOARD,
 		"Assets/Textures/player0.png",
-		glm::vec3(0.f, 1.f, 1.f));
+		glm::vec3(1.f, 1.f, 1.f));
 
 	uint16 isA = BodyFactory::PLAYER_1;
 	switch (playerId)
