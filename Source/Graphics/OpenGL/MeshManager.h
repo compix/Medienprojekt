@@ -33,6 +33,8 @@ class MeshManager
 
 public:
 	Mesh load(MeshType meshType, VertexType vertexType);
+
+	~MeshManager();
 private:
 	MeshData createMeshData(MeshType meshType);
 

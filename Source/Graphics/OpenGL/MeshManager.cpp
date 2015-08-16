@@ -24,6 +24,22 @@ Mesh MeshManager::load(MeshType meshType, VertexType vertexType)
 	return m_meshes[pair];
 }
 
+MeshManager::~MeshManager()
+{
+	for (auto& pair : m_meshes)
+	{
+		Mesh mesh = pair.second;
+		if (mesh.vao)
+			glDeleteVertexArrays(1, &mesh.vao);
+
+		if (mesh.vbo)
+			glDeleteBuffers(1, &mesh.vbo);
+
+		if (mesh.ibo)
+			glDeleteBuffers(1, &mesh.ibo);
+	}
+}
+
 MeshData MeshManager::createMeshData(MeshType meshType)
 {
 	switch (meshType)
@@ -59,10 +75,8 @@ Mesh MeshManager::loadPosUVMesh(MeshType meshType, bool indexed)
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(PosUVVertex), &vertices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(PosUVVertex), 0);
 	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(PosUVVertex), (void*)offsetof(PosUVVertex, uv));
 
 	mesh.vertexCount = data.vertices.size();
@@ -70,6 +84,8 @@ Mesh MeshManager::loadPosUVMesh(MeshType meshType, bool indexed)
 	// Unbind
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	mesh.ibo = 0;
 
 	if (indexed)
 	{
@@ -102,7 +118,6 @@ Mesh MeshManager::loadPosMesh(MeshType meshType, bool indexed)
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(PosVertex), &vertices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(PosVertex), 0);
 
 	mesh.vertexCount = data.vertices.size();
@@ -110,6 +125,8 @@ Mesh MeshManager::loadPosMesh(MeshType meshType, bool indexed)
 	// Unbind
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	mesh.ibo = 0;
 
 	if (indexed)
 	{

@@ -6,6 +6,8 @@ class TextureManager
 {
 public:
 	GLuint loadTexture(const std::string& path);
+
+	~TextureManager();
 private:
 	std::unordered_map<std::string, GLuint> m_textures;
 };

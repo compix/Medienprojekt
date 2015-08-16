@@ -21,3 +21,11 @@ GLuint TextureManager::loadTexture(const std::string& path)
 
 	return texture;
 }
+
+TextureManager::~TextureManager()
+{
+	for (auto& pair : m_textures)
+	{
+		glDeleteTextures(1, &pair.second);
+	}
+}
