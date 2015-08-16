@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 
 /**
 * Use only in combination. It doesn't make sense on its own.
@@ -10,7 +10,7 @@ class RateDistanceToAffectedBlocks
 public:
 	explicit RateDistanceToAffectedBlocks(entityx::Entity& entity);
 
-	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
 
 	float inverseDistanceToAffectedBlocks(Graph* graph, GraphNode* node);
 private:

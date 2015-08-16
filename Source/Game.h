@@ -9,7 +9,6 @@
 #include "Lighting/Light.h"
 #include "Utils/ShaderManager.h"
 #include "GameGlobals.h"
-#include "Utils/PathFinding/PathEngine.h"
 #include "ContactListener.h"
 
 struct ResetGameEvent;

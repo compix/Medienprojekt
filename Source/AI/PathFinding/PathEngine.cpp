@@ -8,6 +8,7 @@
 #include "SimulationGraph.h"
 #include "../../Components/CellComponent.h"
 #include "../../Components/PortalComponent.h"
+#include "AIPath.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -22,7 +23,7 @@ PathEngine::PathEngine(LayerManager* layerManager)
 	m_endDummy.next[1] = nullptr;
 }
 
-void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, Path& pathOut, uint8_t taskNum)
+void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, AIPath& pathOut, uint8_t taskNum)
 {
 	auto goal = m_graph->getNode(endX, endY);
 
@@ -95,7 +96,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 		makePath(pathOut, minNode, taskNum);
 }
 
-void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, Path& pathOut, uint8_t taskNum)
+void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, AIPath& pathOut, uint8_t taskNum)
 {
 	m_simGraph->resetPathInfo(taskNum);
 
@@ -158,10 +159,10 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 		}
 	}
 
-	pathOut.nodeCount = 0;
+	pathOut.nodes.clear();
 }
 
-void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t taskNum)
+void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t taskNum)
 {
 	m_simGraph->resetPathInfo(taskNum);
 
@@ -195,10 +196,10 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, Path& pathOu
 		}
 	}
 
-	pathOut.nodeCount = 0;
+	pathOut.nodes.clear();
 }
 
-void PathEngine::searchBest(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t maxChecks, uint8_t taskNum)
+void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t maxChecks, uint8_t taskNum)
 {
 	assert(maxChecks > 0);
 
@@ -209,8 +210,8 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, Path& pathOut, PathR
 	startNode->prevOnPath[taskNum] = nullptr;
 	processQueue.push(startNode);
 	startNode->state[taskNum] = GraphNode::CLOSED;
-	Path path;
-	Path bestPath;
+	AIPath path;
+	AIPath bestPath;
 
 	while (processQueue.size() > 0)
 	{
@@ -244,9 +245,8 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, Path& pathOut, PathR
 	}
 
 	pathOut.nodes.clear();
-	pathOut.nodeCount = bestPath.nodeCount;
 	pathOut.rating = bestPath.rating;
-	for (int i = 0; i < bestPath.nodeCount; ++i)
+	for (int i = 0; i < bestPath.nodes.size(); ++i)
 		pathOut.nodes.push_back(bestPath.nodes[i]);
 }
 
@@ -255,12 +255,12 @@ void PathEngine::visualize()
 	m_graph->visualize(true, true);
 }
 
-void PathEngine::visualize(Path& path)
+void PathEngine::visualize(AIPath& path)
 {
 	sf::CircleShape circle(20);
 	circle.setOrigin(10, 10);
 
-	for (uint16_t i = 0; i < path.nodeCount; ++i)
+	for (uint16_t i = 0; i < path.nodes.size(); ++i)
 	{
 		uint8_t x = path.nodes[i]->x;
 		uint8_t y = path.nodes[i]->y;
@@ -312,11 +312,10 @@ GraphNode* PathEngine::remove(GraphNode* node, uint8_t taskNum)
 	return node->prev[taskNum];
 }
 
-void PathEngine::makePath(Path& pathOut, GraphNode* goal, uint8_t taskNum)
+void PathEngine::makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum)
 {
 	auto cur = goal;
-
-	pathOut.nodeCount = 0;
+	pathOut.nodes.clear();
 	pathOut.cost = goal->costSoFar;
 
 	// count path nodes to get the correct order
@@ -332,7 +331,6 @@ void PathEngine::makePath(Path& pathOut, GraphNode* goal, uint8_t taskNum)
 	while (cur)
 	{
 		pathOut.nodes[--num] = cur;
-		++pathOut.nodeCount;
 		cur = cur->prevOnPath[taskNum];
 	}
 }

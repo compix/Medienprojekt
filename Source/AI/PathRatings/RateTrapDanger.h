@@ -5,7 +5,7 @@
 class Graph;
 class PathEngine;
 struct GraphNode;
-struct Path;
+struct AIPath;
 
 /**
 * A character is considered trapped if there is no safe path out.
@@ -18,7 +18,7 @@ class RateTrapDanger
 public:
 	explicit RateTrapDanger(entityx::Entity& entity, std::vector<entityx::Entity>& enemies, bool willPlaceBomb = false);
 
-	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
 
 private:
 	int distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy);

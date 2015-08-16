@@ -7,7 +7,7 @@ RatePortalSpot::RatePortalSpot(entityx::Entity& entity)
 {
 }
 
-bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	// Can't place a portal on a portal
 	if (node->properties.hasPortal)
@@ -39,7 +39,7 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& p
 			return false;
 
 		pathEngine->makePath(pathOut, node, taskNum);
-		pathOut.rating = distance*distance / pathOut.nodeCount;
+		pathOut.rating = distance*distance / pathOut.nodes.size();
 		return true;
 	}
 

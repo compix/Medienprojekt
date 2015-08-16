@@ -7,7 +7,7 @@
 #include "Components/LayerComponent.h"
 #include "GameGlobals.h"
 #include "Components/DynamicComponent.h"
-#include "Utils/PathFinding/Graph.h"
+#include "AI/PathFinding/Graph.h"
 
 EntityLayer* LayerManager::createLayer(int width, int height, int layer)
 {

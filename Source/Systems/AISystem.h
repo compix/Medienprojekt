@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/entityx.h>
-#include "../Utils/PathFinding/PathEngine.h"
+#include "../AI/PathFinding/PathEngine.h"
 #include "../Utils/Logging/Logger.h"
 
 enum class AIAction
@@ -35,4 +35,6 @@ private:
 private:
 	std::unique_ptr<PathEngine> m_pathEngine;
 	LayerManager* m_layerManager;
+
+	float m_updateTimer;
 };

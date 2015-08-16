@@ -1,16 +1,16 @@
 #pragma once
 #include <cinttypes>
-#include "../../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 
 struct GraphNode;
-struct Path;
+struct AIPath;
 
 class RateKickBomb
 {
 public:
 	RateKickBomb(entityx::Entity& entity);
 
-	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
 
 private:
 	entityx::Entity m_entity;

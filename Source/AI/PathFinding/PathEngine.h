@@ -3,27 +3,7 @@
 #include <memory>
 #include <float.h>
 #include "SimulationGraph.h"
-
-struct Path
-{
-	Path() : nodeCount(0), cost(0), rating(-FLT_MAX) {}
-
-	inline void attach(Path& path)
-	{
-		for (int i = 0; i < path.nodeCount; ++i)
-			nodes.push_back(path.nodes[i]);
-
-		nodeCount += path.nodeCount;
-		cost += path.cost;
-	}
-
-	std::vector<GraphNode*> nodes;
-	uint16_t nodeCount;
-	uint16_t cost;
-
-	// How good is the path? Higher values = better path
-	float rating;
-};
+#include "AIPath.h"
 
 enum class NodeType
 {
@@ -37,7 +17,7 @@ enum class NodeType
 class PathEngine;
 // Returns false if the path created with the goal is not valid
 // Otherwise pathOut is set and rated
-typedef std::function < bool(PathEngine* pathEngine, GraphNode* goal, Path& pathOut, uint8_t taskNum) > PathRatingFunction; // Second parameter is an output
+typedef std::function < bool(PathEngine* pathEngine, GraphNode* goal, AIPath& pathOut, uint8_t taskNum) > PathRatingFunction; // Second parameter is an output
 
 class PathEngine
 {
@@ -57,24 +37,24 @@ public:
 	PathEngine(LayerManager* layerManager);
 
 	// Computes the path using the A* algorithm and stores it in pathOut.
-	void computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, Path& pathOut, uint8_t taskNum = 0);
+	void computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, AIPath& pathOut, uint8_t taskNum = 0);
 
 	// Finds the shortest path to a node of the given type
-	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, Path& pathOut, uint8_t taskNum = 0);
+	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, AIPath& pathOut, uint8_t taskNum = 0);
 
-	void breadthFirstSearch(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t taskNum = 0);
+	void breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t taskNum = 0);
 
-	void searchBest(uint8_t startX, uint8_t startY, Path& pathOut, PathRatingFunction ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
+	void searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
 
 	void visualize();
-	void visualize(Path& path);
+	void visualize(AIPath& path);
 
 	void update(float deltaTime);
 
 	inline Graph* getGraph() const { return m_graph.get(); }
 	inline SimulationGraph* getSimGraph() const { return m_simGraph.get(); }
 
-	void makePath(Path& pathOut, GraphNode* goal, uint8_t taskNum);
+	void makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum);
 private:
 	uint32_t estimate(GraphNode* node, GraphNode* goal);
 

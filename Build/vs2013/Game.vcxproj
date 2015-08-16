@@ -93,11 +93,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\AI\Behavior.h" />
-    <ClInclude Include="..\..\Source\AI\Checks\AIUtil.h" />
-    <ClInclude Include="..\..\Source\AI\Checks\IsSafePath.h" />
-    <ClInclude Include="..\..\Source\AI\FollowPath.h" />
-    <ClInclude Include="..\..\Source\AI\MoveTo.h" />
+    <ClInclude Include="..\..\Source\AI\AIUtil.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\MoveTo.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
@@ -109,8 +115,6 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
-    <ClInclude Include="..\..\Source\AI\PlaceBomb.h" />
-    <ClInclude Include="..\..\Source\AI\UseSkill.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationState.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
     <ClInclude Include="..\..\Source\Animation\Animator.h" />
@@ -257,20 +261,20 @@
     <ClInclude Include="..\..\Source\Utils\Logging\Logger.h" />
     <ClInclude Include="..\..\Source\Utils\Logging\LoggingService.h" />
     <ClInclude Include="..\..\Source\Utils\Math.h" />
-    <ClInclude Include="..\..\Source\Utils\PathFinding\Graph.h" />
-    <ClInclude Include="..\..\Source\Utils\PathFinding\GraphNode.h" />
-    <ClInclude Include="..\..\Source\Utils\PathFinding\PathEngine.h" />
-    <ClInclude Include="..\..\Source\Utils\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\Utils\Random.h" />
     <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
     <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\AI\Checks\AIUtil.cpp" />
-    <ClCompile Include="..\..\Source\AI\Checks\IsSafePath.cpp" />
-    <ClCompile Include="..\..\Source\AI\FollowPath.cpp" />
-    <ClCompile Include="..\..\Source\AI\MoveTo.cpp" />
+    <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\MoveTo.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp" />
@@ -281,8 +285,6 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
-    <ClCompile Include="..\..\Source\AI\PlaceBomb.cpp" />
-    <ClCompile Include="..\..\Source\AI\UseSkill.cpp" />
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
     <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
     <ClCompile Include="..\..\Source\Animation\IdleState.cpp" />
@@ -351,9 +353,6 @@
     <ClCompile Include="..\..\Source\Utils\Logging\Logger.cpp" />
     <ClCompile Include="..\..\Source\Utils\Logging\LoggingService.cpp" />
     <ClCompile Include="..\..\Source\Utils\Math.cpp" />
-    <ClCompile Include="..\..\Source\Utils\PathFinding\Graph.cpp" />
-    <ClCompile Include="..\..\Source\Utils\PathFinding\PathEngine.cpp" />
-    <ClCompile Include="..\..\Source\Utils\PathFinding\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\Utils\Random.cpp" />
     <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />

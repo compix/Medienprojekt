@@ -1,6 +1,6 @@
 #pragma once
-#include "../Utils/PathFinding/PathEngine.h"
 #include "../Systems/AISystem.h"
+#include "../AI/PathFinding/PathEngine.h"
 
 enum class BehaviorType
 {
@@ -13,6 +13,6 @@ struct AIComponent
 	AIComponent(uint8_t id) : id(id) {}
 
 	AIAction action;
-	Path path;
+	AIPath path;
 	uint8_t id;
 };

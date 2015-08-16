@@ -3,35 +3,33 @@
 #include "../Components/InputComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/InventoryComponent.h"
-#include "../Utils/PathFinding/PathEngine.h"
+#include "../AI/PathFinding/PathEngine.h"
 #include "../GameConstants.h"
 #include "../Utils/Random.h"
-#include "../AI/PlaceBomb.h"
 #include "../Events/ItemPickedUpEvent.h"
 #include "../Game.h"
 #include "../Components/DestructionComponent.h"
 #include "../Components/BlockComponent.h"
-#include "../AI/FollowPath.h"
-#include "../AI/MoveTo.h"
 #include "../AI/PathRatings/RateSafety.h"
 #include "../AI/PathRatings/RateItem.h"
 #include "../AI/PathRatings/RateDestroyBlockSpot.h"
 #include "../AI/PathRatings/RateEscape.h"
 #include "../AI/PathRatings/RateCombination.h"
 #include "../AI/PathRatings/RateTrapDanger.h"
-#include "../AI/Checks/IsSafePath.h"
 #include "../AI/PathRatings/RateDesperateSaveAttempt.h"
-#include "../AI/Checks/AIUtil.h"
 #include "../AI/PathRatings/RateDistanceToItems.h"
 #include "../AI/PathRatings/RateDistanceToAffectedBlocks.h"
 #include "../AI/PathRatings/RateKickBomb.h"
 #include "../AI/PathRatings/RatePortalSpot.h"
-#include "../AI/UseSkill.h"
 #include "../Utils/Logging/Logger.h"
 #include <sstream>
+#include "../AI/AIUtil.h"
+#include "../AI/Behaviors/PlaceBomb.h"
+#include "../AI/Behaviors/UseSkill.h"
+#include "../AI/Behaviors/FollowPath.h"
 
 AISystem::AISystem(LayerManager* layerManager)
-	: m_layerManager(layerManager)
+	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
 }
@@ -81,8 +79,7 @@ void AISystem::logAction(LogServiceId serviceId, AIAction action)
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
-	static float updateTimer = 1.f / 30.f;
-	updateTimer -= dt;
+	m_updateTimer -= dt;
 
 	m_pathEngine->update(static_cast<float>(dt));
 
@@ -117,11 +114,11 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->skillButtonPressed = false;
 
 
-		Path& path = aiComponent->path;
+		AIPath& path = aiComponent->path;
 
-		if (updateTimer <= 0.f)
+		if (m_updateTimer <= 0.f)
 		{
-			GraphNode* lastAIGoal = aiComponent->path.nodeCount > 0 ? aiComponent->path.nodes[aiComponent->path.nodeCount - 1] : nullptr;
+			GraphNode* lastAIGoal = aiComponent->path.nodes.size() > 0 ? aiComponent->path.nodes[aiComponent->path.nodes.size() - 1] : nullptr;
 			AIAction newAction;
 
 			std::vector<Entity> enemies;
@@ -130,21 +127,19 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			bool found = false;
 			bool escape = false;
 
-			Path portalPath;
+			AIPath portalPath;
 			m_pathEngine->searchBest(cell->x, cell->y, portalPath, RateCombination<RateSafety, RatePortalSpot>(RateSafety(entity), RatePortalSpot(entity)));
 
-			Path waitPath;
+			AIPath waitPath;
 			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination<RateSafety, RateDistanceToAffectedBlocks>(RateSafety(entity), RateDistanceToAffectedBlocks(entity)));
 
-			Path itemPath;
+			AIPath itemPath;
 			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(entity), RateTrapDanger(entity, enemies)));
 
-			Path destroyBlockPath;
+			AIPath destroyBlockPath;
 			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath, 
 				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger, RateDistanceToItems>
 				(RateDestroyBlockSpot(entity), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true), RateDistanceToItems(entity)));
-
-			IsSafePath isSafePath;
 
 			if (!escape)
 			{
@@ -153,16 +148,16 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 					path = itemPath;
 					newAction = AIAction::ITEM_PATH;
 				}
-				else if (waitPath.rating > destroyBlockPath.rating && isSafePath(entity, waitPath))
+				else if (waitPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, waitPath))
 				{
 					path = waitPath;
 					newAction = AIAction::WAIT_PATH;
 				} 
-				else if (portalPath.rating > destroyBlockPath.rating && isSafePath(entity, portalPath))
+				else if (portalPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, portalPath))
 				{
 					path = portalPath;
 					newAction = AIAction::PORTAL_PATH;
-					if (path.nodeCount == 1)
+					if (path.nodes.size() == 1)
 					{
 						UseSkill useSkill;
 						useSkill.update(entity);
@@ -172,7 +167,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				{
 					path = destroyBlockPath;
 					newAction = AIAction::DESTROY_BLOCK_PATH;
-					if (path.nodeCount == 1)
+					if (path.nodes.size() == 1)
 					{
 						PlaceBomb placeBomb;
 						placeBomb.update(entity);
@@ -181,7 +176,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				}
 			}
 
-			if (path.nodeCount > 0)
+			if (path.nodes.size() > 0)
 				found = true;
 
 			if (!found && m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
@@ -190,9 +185,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				newAction = AIAction::SAFE_PATH;
 
 				float minExploTime;
-				isSafePath(entity, path, &minExploTime);
+				AIUtil::isSafePath(entity, path, &minExploTime);
 
-				if (path.nodeCount == 0)
+				if (path.nodes.size() == 0)
 				{
 					m_pathEngine->searchBest(cell->x, cell->y, path, RateKickBomb(entity));
 					newAction = AIAction::KICK_BOMB_PATH;
@@ -204,7 +199,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				}
 			}
 			
-			GraphNode* newAIGoal = path.nodeCount > 0 ? path.nodes[path.nodeCount - 1] : nullptr;
+			GraphNode* newAIGoal = path.nodes.size() > 0 ? path.nodes[path.nodes.size() - 1] : nullptr;
 			if (newAIGoal != lastAIGoal || newAction != aiComponent->action)
 			{
 				// Goal of AI changed: Log the action
@@ -214,7 +209,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			aiComponent->action = newAction;
 		}
 
-		if (path.nodeCount > 1)
+		if (path.nodes.size() > 1)
 		{
 			FollowPath followPath(path, m_layerManager);
 			followPath.update(entity);
@@ -223,9 +218,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		m_pathEngine->visualize(aiComponent->path);
 	}
 
-	if (updateTimer <= 0.f)
+	if (m_updateTimer <= 0.f)
 	{
-		updateTimer = 1.f / 30.f;
+		m_updateTimer = GameConstants::AI_UPDATE_TIME;
 	}
 
 	visualize();

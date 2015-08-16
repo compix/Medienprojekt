@@ -3,7 +3,7 @@
 #include <tuple>
 #include <utility>
 #include <type_traits>
-#include "../../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 
 using std::enable_if;
 
@@ -32,16 +32,16 @@ inline typename std::enable_if < num < sizeof...(Ratings), bool>::type evaluateA
 namespace Rate
 {
 	template<std::size_t num = 0, class... Ratings, typename = typename std::enable_if<num == sizeof...(Ratings), bool>::type, int = 0>
-	inline bool evaluateAll(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum, std::tuple<Ratings...>& ratings)
+	inline bool evaluateAll(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum, std::tuple<Ratings...>& ratings)
 	{
 		return true;
 	}
 
 	// num < sizeof...(Ratings) won't work because VS2013 Compiler is bugged
 	template<std::size_t num = 0, class... Ratings, typename = typename std::enable_if<num != sizeof...(Ratings), bool>::type>
-	inline bool evaluateAll(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum, std::tuple<Ratings...>& ratings)
+	inline bool evaluateAll(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum, std::tuple<Ratings...>& ratings)
 	{
-		Path path;
+		AIPath path;
 		bool valid = std::get<num>(ratings)(pathEngine, node, path, taskNum);
 
 		if (valid)
@@ -65,7 +65,7 @@ class RateCombination
 public:
 	RateCombination(T1 rating1, T2 rating2, Args... moreRatings);
 
-	bool operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
 
 private:
 	std::tuple<T1, T2, Args...> m_ratings;
@@ -78,7 +78,7 @@ RateCombination<T1, T2, Args...>::RateCombination(T1 rating1, T2 rating2, Args..
 }
 
 template <class T1, class T2, class ... Args>
-bool RateCombination<T1, T2, Args...>::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateCombination<T1, T2, Args...>::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	pathEngine->makePath(pathOut, node, taskNum);
 	pathOut.rating = 0.f;

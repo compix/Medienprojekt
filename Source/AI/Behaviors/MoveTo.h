@@ -1,7 +1,7 @@
 #pragma once
 #include "Behavior.h"
 #include <stdint.h>
-#include "../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 #include "FollowPath.h"
 
 /**

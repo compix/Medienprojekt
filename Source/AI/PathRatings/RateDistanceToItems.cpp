@@ -7,7 +7,7 @@ RateDistanceToItems::RateDistanceToItems(entityx::Entity& entity)
 {
 }
 
-bool RateDistanceToItems::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateDistanceToItems::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	float valueFactor = 3.f;
 	pathOut.rating = inverseDistanceToItems(node) * valueFactor;

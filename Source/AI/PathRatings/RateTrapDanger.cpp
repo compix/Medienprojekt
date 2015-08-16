@@ -1,16 +1,16 @@
 #include "RateTrapDanger.h"
-#include "../../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 #include "../../Components/CellComponent.h"
-#include "../Checks/IsSafePath.h"
 #include "RateSafety.h"
-#include "../../Utils/PathFinding/SimulationGraph.h"
+#include "../PathFinding/SimulationGraph.h"
+#include "../../Components/DirectionComponent.h"
 
 RateTrapDanger::RateTrapDanger(entityx::Entity& entity, std::vector<entityx::Entity>& enemies, bool willPlaceBomb)
 	:m_entity(entity), m_enemies(enemies), m_willPlaceBomb(willPlaceBomb)
 {
 }
 
-bool RateTrapDanger::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateTrapDanger::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	auto simGraph = pathEngine->getSimGraph();
 	simGraph->resetMarks();
@@ -78,14 +78,13 @@ bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, PathE
 		return true;
 
 	// Distance check not enough. Check the path
-	Path enemyPathToSpot;
+	AIPath enemyPathToSpot;
 	auto enemyCell = closestEnemy.component<CellComponent>();
 	pathEngine->computePath(enemyCell->x, enemyCell->y, startNode->x, startNode->y, enemyPathToSpot, taskNum + 1);
 
-	if (enemyPathToSpot.nodeCount > 5 || enemyPathToSpot.nodeCount == 0)
+	if (enemyPathToSpot.nodes.size() > 5 || enemyPathToSpot.nodes.size() == 0)
 		return true;
 
-	IsSafePath isSafePath;
 	auto simGraph = pathEngine->getSimGraph();
 
 	float bombExploTime = testedNode->properties.affectedByExplosion ? testedNode->properties.timeTillExplosion : 2.f;
@@ -98,9 +97,9 @@ bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, PathE
 		startNode->valid = false;
 	}
 
-	Path safePath;
+	AIPath safePath;
 	pathEngine->breadthFirstSearch(startNode->x, startNode->y, safePath, RateSafety(m_entity), taskNum + 1);
-	bool safe = safePath.nodeCount > 0;
+	bool safe = safePath.nodes.size() > 0;
 
 	// Reset to old state
 	simGraph->resetSimulation();

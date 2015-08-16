@@ -28,7 +28,6 @@
 #include "Animation/AnimatorManager.h"
 #include "Graphics/ParticleSpawnSystem.h"
 #include "Systems/ItemSystem.h"
-#include "Utils/PathFinding/PathEngine.h"
 #include "Components/InventoryComponent.h"
 #include "Components/CellComponent.h"
 #include "Systems/AISystem.h"

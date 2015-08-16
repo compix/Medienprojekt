@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <entityx/entityx.h>
 #include "../../EntityLayer.h"
-#include "../Common.h"
+#include "../../Utils/Common.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <queue>
 #include "../../LayerManager.h"

@@ -1,24 +1,21 @@
 #include "RateDestroyBlockSpot.h"
 #include "../../GameConstants.h"
-#include "../Checks/IsSafePath.h"
 #include "../../Components/BlockComponent.h"
 #include "RateSafety.h"
-#include "../../Utils/PathFinding/SimulationGraph.h"
-#include "../Checks/AIUtil.h"
+#include "../PathFinding/PathEngine.h"
+#include "../AIUtil.h"
 
 RateDestroyBlockSpot::RateDestroyBlockSpot(entityx::Entity& entity)
 	:m_entity(entity)
 {
 }
 
-bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
-	IsSafePath isSafePath;
-
 	if (node->valid && !node->properties.hasPortal) // !node->properties.hasPortal TEMPORARY BECAUSE PORTALS ARE BUGGED
 	{
 		pathEngine->makePath(pathOut, node, taskNum);
-		if (isSafePath(m_entity, pathOut))
+		if (AIUtil::isSafePath(m_entity, pathOut))
 		{
 			bool found = true;
 			float timePerCell = AIUtil::getTimePerCell(m_entity);
@@ -40,26 +37,26 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, P
 
 			if (found)
 			{
-				Path safePath;
+				AIPath safePath;
 				pathEngine->breadthFirstSearch(node->x, node->y, safePath, RateSafety(m_entity), taskNum + 1);
 
-				if (safePath.nodeCount < 2 || !isSafePath(m_entity, safePath))
+				if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(m_entity, safePath))
 					found = false;
 
 				if (found && spotAffectedByExplosion)
 				{
 					// Check the full path to be sure if it's really safe
-					Path fullPath;
+					AIPath fullPath;
 					fullPath.attach(pathOut);
 					fullPath.attach(safePath);
 
-					if (!isSafePath(m_entity, fullPath))
+					if (!AIUtil::isSafePath(m_entity, fullPath))
 						found = false;
 				}
 			}
 
 			if (found)
-				pathOut.rating = node->properties.numOfBlocksAffectedByExplosion - timePerCell * pathOut.nodeCount;
+				pathOut.rating = node->properties.numOfBlocksAffectedByExplosion - timePerCell * pathOut.nodes.size();
 
 			// Reset to the old state
 			pathEngine->getSimGraph()->resetSimulation();

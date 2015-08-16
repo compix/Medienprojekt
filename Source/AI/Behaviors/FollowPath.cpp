@@ -1,11 +1,10 @@
 #include "FollowPath.h"
-#include "../GameConstants.h"
-#include "../Utils/Random.h"
-#include "../Components/CellComponent.h"
-#include "../Components/InputComponent.h"
-#include "../Components/PortalComponent.h"
+#include "../../GameConstants.h"
+#include "../../Components/CellComponent.h"
+#include "../../Components/InputComponent.h"
+#include "../../Components/PortalComponent.h"
 
-FollowPath::FollowPath(Path path, LayerManager* layerManager)
+FollowPath::FollowPath(const AIPath& path, LayerManager* layerManager)
 	:m_path(path), m_layerManager(layerManager)
 {
 }
@@ -18,7 +17,7 @@ void FollowPath::update(entityx::Entity& entity)
 
 	assert(inputComponent && cell && transform);
 
-	if (m_path.nodeCount > 1)
+	if (m_path.nodes.size() > 1)
 	{
 		// Follow path
 		auto n1 = m_path.nodes[0];

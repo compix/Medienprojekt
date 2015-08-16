@@ -1,12 +1,11 @@
 #include "RateKickBomb.h"
-#include "../Checks/AIUtil.h"
 
 RateKickBomb::RateKickBomb(entityx::Entity& entity)
 	:m_entity(entity)
 {
 }
 
-bool RateKickBomb::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateKickBomb::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	auto graph = pathEngine->getGraph();	
 
@@ -29,7 +28,6 @@ bool RateKickBomb::operator()(PathEngine* pathEngine, GraphNode* node, Path& pat
 			{
 				pathEngine->makePath(pathOut, node, taskNum);
 				pathOut.nodes.push_back(neighbor);
-				pathOut.nodeCount++;
 				pathOut.rating = neighbor->properties.hasPlayer ? 0.5f : 1.f;
 				return true;
 			}

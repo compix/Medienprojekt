@@ -1,17 +1,17 @@
 #pragma once
 #include "Behavior.h"
-#include "../Utils/PathFinding/PathEngine.h"
+#include "../PathFinding/PathEngine.h"
 #include <stdint.h>
 
 class FollowPath : public Behavior
 {
 public:
-	explicit FollowPath(Path path, LayerManager* layerManager);
+	explicit FollowPath(const AIPath& path, LayerManager* layerManager);
 
-	inline void setPath(Path path) { m_path = path; }
+	inline void setPath(const AIPath& path) { m_path = path; }
 	void update(entityx::Entity& entity) override;
 
 protected:
-	Path m_path;
+	AIPath m_path;
 	LayerManager* m_layerManager;
 };

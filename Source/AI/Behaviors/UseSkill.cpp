@@ -1,5 +1,5 @@
-#include "../Components/InputComponent.h"
 #include "UseSkill.h"
+#include "../../Components/InputComponent.h"
 
 void UseSkill::update(entityx::Entity& entity)
 {

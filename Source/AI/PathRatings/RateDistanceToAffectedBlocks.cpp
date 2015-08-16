@@ -7,7 +7,7 @@ RateDistanceToAffectedBlocks::RateDistanceToAffectedBlocks(entityx::Entity& enti
 {
 }
 
-bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, GraphNode* node, Path& pathOut, uint8_t taskNum)
+bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
 {
 	if (pathEngine->getGraph()->getAffectedBlocks().size() == 0)
 		return false;

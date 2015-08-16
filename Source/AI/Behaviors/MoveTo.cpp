@@ -1,13 +1,12 @@
 #include "MoveTo.h"
-#include "../GameConstants.h"
-#include "../Components/CellComponent.h"
-#include "../Components/InputComponent.h"
-#include "../Components/InventoryComponent.h"
-#include "../Components/AIComponent.h"
-#include "../Utils/Random.h"
+#include "../../GameConstants.h"
+#include "../../Components/CellComponent.h"
+#include "../../Components/InputComponent.h"
+#include "../../Components/InventoryComponent.h"
+#include "../../Components/AIComponent.h"
 
 MoveTo::MoveTo(PathEngine* pathEngine, LayerManager* layerManager, uint8_t targetX, uint8_t targetY)
-	:FollowPath(Path(), layerManager), m_pathEngine(pathEngine), m_targetX(targetX), m_targetY(targetY)
+	:FollowPath(AIPath(), layerManager), m_pathEngine(pathEngine), m_targetX(targetX), m_targetY(targetY)
 {
 }
 
