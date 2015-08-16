@@ -12,7 +12,7 @@ struct AIComponent
 {
 	AIComponent(uint8_t id) : id(id) {}
 
-	AIAction action;
+	AIActionType action;
 	AIPath path;
 	uint8_t id;
 };

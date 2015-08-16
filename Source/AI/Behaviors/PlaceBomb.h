@@ -1,8 +1,8 @@
 #pragma once
 #include "Behavior.h"
 
-class PlaceBomb : public Behavior
+class PlaceBomb
 {
 public:
-	void update(entityx::Entity& entity) override;
+	void operator ()(entityx::Entity& entity);
 };

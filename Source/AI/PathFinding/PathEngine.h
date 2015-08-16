@@ -4,6 +4,7 @@
 #include <float.h>
 #include "SimulationGraph.h"
 #include "AIPath.h"
+#include "../PathRatings/PathRating.h"
 
 enum class NodeType
 {
@@ -15,9 +16,6 @@ enum class NodeType
 };
 
 class PathEngine;
-// Returns false if the path created with the goal is not valid
-// Otherwise pathOut is set and rated
-typedef std::function < bool(PathEngine* pathEngine, GraphNode* goal, AIPath& pathOut, uint8_t taskNum) > PathRatingFunction; // Second parameter is an output
 
 class PathEngine
 {
@@ -42,9 +40,9 @@ public:
 	// Finds the shortest path to a node of the given type
 	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, AIPath& pathOut, uint8_t taskNum = 0);
 
-	void breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t taskNum = 0);
+	void breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum = 0);
 
-	void searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
+	void searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
 
 	void visualize();
 	void visualize(AIPath& path);

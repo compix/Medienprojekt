@@ -5,12 +5,8 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/AIComponent.h"
 
-MoveTo::MoveTo(PathEngine* pathEngine, LayerManager* layerManager, uint8_t targetX, uint8_t targetY)
+MoveTo::MoveTo(PathEngine* pathEngine, Entity& entity, LayerManager* layerManager, uint8_t targetX, uint8_t targetY)
 	:FollowPath(AIPath(), layerManager), m_pathEngine(pathEngine), m_targetX(targetX), m_targetY(targetY)
-{
-}
-
-void MoveTo::prepare(entityx::Entity& entity)
 {
 	assert(entity.valid() && entity.has_component<CellComponent>());
 

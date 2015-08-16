@@ -4,5 +4,5 @@
 class UseSkill : public Behavior
 {
 public:
-	void update(entityx::Entity& entity) override;
+	void operator ()(entityx::Entity& entity);
 };

@@ -10,9 +10,7 @@
 class MoveTo : public FollowPath
 {
 public:
-	MoveTo(PathEngine* pathEngine, LayerManager* layerManager, uint8_t targetX, uint8_t targetY);
-
-	void prepare(entityx::Entity& entity) override;
+	MoveTo(PathEngine* pathEngine, Entity& entity, LayerManager* layerManager, uint8_t targetX, uint8_t targetY);
 
 private:
 	uint8_t m_targetX, m_targetY;

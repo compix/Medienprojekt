@@ -9,7 +9,7 @@ FollowPath::FollowPath(const AIPath& path, LayerManager* layerManager)
 {
 }
 
-void FollowPath::update(entityx::Entity& entity)
+void FollowPath::operator()(entityx::Entity& entity)
 {
 	auto inputComponent = entity.component<InputComponent>();
 	auto cell = entity.component<CellComponent>();
@@ -35,13 +35,13 @@ void FollowPath::update(entityx::Entity& entity)
 			if (portal.component<PortalComponent>()->otherPortal.valid())
 			{
 				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto protalCell = otherPortal.component<CellComponent>();
-				moveX = protalCell->x - n1->x;
-				moveY = protalCell->y - n1->y;
+				auto portalCell = otherPortal.component<CellComponent>();
+				moveX = portalCell->x - n1->x;
+				moveY = portalCell->y - n1->y;
 			}
 		}
 
-		int leftAvoidance  = (cell->x - static_cast<int>((transform->x - playerRadius) / GameConstants::CELL_WIDTH)) * abs(moveY);
+		int leftAvoidance = (cell->x - static_cast<int>((transform->x - playerRadius) / GameConstants::CELL_WIDTH)) * abs(moveY);
 		int rightAvoidance = (cell->x - static_cast<int>((transform->x + playerRadius) / GameConstants::CELL_WIDTH)) * abs(moveY);
 		int collisionAvoidanceX = leftAvoidance + rightAvoidance;
 
@@ -49,7 +49,7 @@ void FollowPath::update(entityx::Entity& entity)
 		int topAvoidance = (cell->y - static_cast<int>((transform->y + playerRadius) / GameConstants::CELL_HEIGHT)) * abs(moveX);
 		int collisionAvoidanceY = botAvoidance + topAvoidance;
 
-		if ((collisionAvoidanceX-collisionAvoidanceY) == 0)
+		if ((collisionAvoidanceX - collisionAvoidanceY) == 0)
 		{
 			// There won't be any collisions so just move on the path
 			inputComponent->moveX = moveX;

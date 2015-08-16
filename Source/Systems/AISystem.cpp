@@ -40,35 +40,35 @@ void AISystem::init()
 	m_pathEngine->getSimGraph()->init();
 }
 
-void AISystem::logAction(LogServiceId serviceId, AIAction action)
+void AISystem::logAction(LogServiceId serviceId, AIActionType action)
 {
 	switch (action)
 	{
-	case AIAction::PORTAL_PATH:
+	case AIActionType::PORTAL_PATH:
 		Logger::log("Taking path to place portal.", serviceId);
 		break;
-	case AIAction::WAIT_PATH:
+	case AIActionType::WAIT_PATH:
 		Logger::log("Taking path to wait for block destruction.", serviceId);
 		break;
-	case AIAction::ITEM_PATH:
+	case AIActionType::ITEM_PATH:
 		Logger::log("Taking path to get item.", serviceId);
 		break;
-	case AIAction::DESTROY_BLOCK_PATH:
+	case AIActionType::DESTROY_BLOCK_PATH:
 		Logger::log("Taking path to place a bomb to destroy blocks.", serviceId);
 		break;
-	case AIAction::SAFE_PATH:
+	case AIActionType::SAFE_PATH:
 		Logger::log("Taking path to be safe.", serviceId);
 		break;
-	case AIAction::KICK_BOMB_PATH:
+	case AIActionType::KICK_BOMB_PATH:
 		Logger::log("Taking path to kick a bomb to open escape path.", serviceId);
 		break;
-	case AIAction::DESPERATE_SAFE_PATH:
+	case AIActionType::DESPERATE_SAFE_PATH:
 		Logger::log("Desperately trying to survive.", serviceId);
 		break;
-	case AIAction::PLACING_BOMB:
+	case AIActionType::PLACING_BOMB:
 		Logger::log("Placing bomb.", serviceId);
 		break;
-	case AIAction::PLACING_PORTAL:
+	case AIActionType::PLACING_PORTAL:
 		Logger::log("Placing portal.", serviceId);
 		break;
 	default:
@@ -119,7 +119,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		if (m_updateTimer <= 0.f)
 		{
 			GraphNode* lastAIGoal = aiComponent->path.nodes.size() > 0 ? aiComponent->path.nodes[aiComponent->path.nodes.size() - 1] : nullptr;
-			AIAction newAction;
+			AIActionType newAction;
 
 			std::vector<Entity> enemies;
 			getEnemies(entity, enemies);
@@ -128,50 +128,49 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			bool escape = false;
 
 			AIPath portalPath;
-			m_pathEngine->searchBest(cell->x, cell->y, portalPath, RateCombination<RateSafety, RatePortalSpot>(RateSafety(entity), RatePortalSpot(entity)));
+			m_pathEngine->searchBest(cell->x, cell->y, portalPath, RateCombination({ RateSafety(entity), RatePortalSpot(entity) }));
 
 			AIPath waitPath;
-			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination<RateSafety, RateDistanceToAffectedBlocks>(RateSafety(entity), RateDistanceToAffectedBlocks(entity)));
+			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination({ RateSafety(entity), RateDistanceToAffectedBlocks(entity) }));
 
 			AIPath itemPath;
-			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination<RateItem, RateTrapDanger>(RateItem(entity), RateTrapDanger(entity, enemies)));
+			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination({ RateItem(entity), RateTrapDanger(entity, enemies) }));
 
 			AIPath destroyBlockPath;
-			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath, 
-				RateCombination<RateDestroyBlockSpot, RateEscape, RateTrapDanger, RateDistanceToItems>
-				(RateDestroyBlockSpot(entity), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true), RateDistanceToItems(entity)));
+			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath,
+				RateCombination({RateDestroyBlockSpot(entity), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true), RateDistanceToItems(entity)}));
 
 			if (!escape)
 			{
 				if (itemPath.rating > destroyBlockPath.rating)
 				{
 					path = itemPath;
-					newAction = AIAction::ITEM_PATH;
+					newAction = AIActionType::ITEM_PATH;
 				}
 				else if (waitPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, waitPath))
 				{
 					path = waitPath;
-					newAction = AIAction::WAIT_PATH;
+					newAction = AIActionType::WAIT_PATH;
 				} 
 				else if (portalPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, portalPath))
 				{
 					path = portalPath;
-					newAction = AIAction::PORTAL_PATH;
+					newAction = AIActionType::PORTAL_PATH;
 					if (path.nodes.size() == 1)
 					{
 						UseSkill useSkill;
-						useSkill.update(entity);
-						newAction = AIAction::PLACING_PORTAL;
+						useSkill(entity);
+						newAction = AIActionType::PLACING_PORTAL;
 					}
 				} else
 				{
 					path = destroyBlockPath;
-					newAction = AIAction::DESTROY_BLOCK_PATH;
+					newAction = AIActionType::DESTROY_BLOCK_PATH;
 					if (path.nodes.size() == 1)
 					{
 						PlaceBomb placeBomb;
-						placeBomb.update(entity);
-						newAction = AIAction::PLACING_BOMB;
+						placeBomb(entity);
+						newAction = AIActionType::PLACING_BOMB;
 					}
 				}
 			}
@@ -182,7 +181,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			if (!found && m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
 			{
 				m_pathEngine->searchBest(cell->x, cell->y, path, RateSafety(entity));
-				newAction = AIAction::SAFE_PATH;
+				newAction = AIActionType::SAFE_PATH;
 
 				float minExploTime;
 				AIUtil::isSafePath(entity, path, &minExploTime);
@@ -190,12 +189,12 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 				if (path.nodes.size() == 0)
 				{
 					m_pathEngine->searchBest(cell->x, cell->y, path, RateKickBomb(entity));
-					newAction = AIAction::KICK_BOMB_PATH;
+					newAction = AIActionType::KICK_BOMB_PATH;
 				}
 				else if (minExploTime <= timePerCell*0.5f)
 				{
 					m_pathEngine->searchBest(cell->x, cell->y, path, RateDesperateSaveAttempt(entity), 20);
-					newAction = AIAction::DESPERATE_SAFE_PATH;
+					newAction = AIActionType::DESPERATE_SAFE_PATH;
 				}
 			}
 			
@@ -212,7 +211,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		if (path.nodes.size() > 1)
 		{
 			FollowPath followPath(path, m_layerManager);
-			followPath.update(entity);
+			followPath(entity);
 		}
 
 		m_pathEngine->visualize(aiComponent->path);

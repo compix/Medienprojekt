@@ -3,13 +3,13 @@
 #include "../PathFinding/PathEngine.h"
 #include <stdint.h>
 
-class FollowPath : public Behavior
+class FollowPath
 {
 public:
-	explicit FollowPath(const AIPath& path, LayerManager* layerManager);
+	FollowPath(const AIPath& path, LayerManager* layerManager);
 
 	inline void setPath(const AIPath& path) { m_path = path; }
-	void update(entityx::Entity& entity) override;
+	void operator ()(entityx::Entity& entity);
 
 protected:
 	AIPath m_path;

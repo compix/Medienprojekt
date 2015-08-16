@@ -162,7 +162,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 	pathOut.nodes.clear();
 }
 
-void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t taskNum)
+void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum)
 {
 	m_simGraph->resetPathInfo(taskNum);
 
@@ -199,7 +199,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& path
 	pathOut.nodes.clear();
 }
 
-void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRatingFunction ratePath, uint8_t maxChecks, uint8_t taskNum)
+void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks, uint8_t taskNum)
 {
 	assert(maxChecks > 0);
 

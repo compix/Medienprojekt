@@ -93,6 +93,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AI\Action.h" />
     <ClInclude Include="..\..\Source\AI\AIUtil.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
@@ -104,6 +105,7 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
@@ -267,6 +269,7 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\Action.cpp" />
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\MoveTo.cpp" />
@@ -275,6 +278,7 @@
     <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp" />

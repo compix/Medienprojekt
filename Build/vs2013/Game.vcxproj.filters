@@ -54,9 +54,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
@@ -548,6 +545,15 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Action.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp">
@@ -798,6 +804,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
       <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Action.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
+      <Filter>AI\PathRatings</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

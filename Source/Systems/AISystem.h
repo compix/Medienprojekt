@@ -3,7 +3,7 @@
 #include "../AI/PathFinding/PathEngine.h"
 #include "../Utils/Logging/Logger.h"
 
-enum class AIAction
+enum class AIActionType
 {
 	PORTAL_PATH,
 	WAIT_PATH,
@@ -31,7 +31,7 @@ public:
 	void init();
 
 private:
-	void logAction(LogServiceId serviceId, AIAction action);
+	void logAction(LogServiceId serviceId, AIActionType action);
 private:
 	std::unique_ptr<PathEngine> m_pathEngine;
 	LayerManager* m_layerManager;
