@@ -66,6 +66,11 @@ void PhysixSystem::setContactListener(b2ContactListener* listener)
 	m_World.SetContactListener(listener);
 }
 
+b2Vec2 PhysixSystem::toBox2D(float px, float py)
+{
+	return b2Vec2(px / m_Scale, py / m_Scale);
+}
+
 float PhysixSystem::toBox2D(float pixel)
 {
 	return pixel / PhysixSystem::m_Scale;

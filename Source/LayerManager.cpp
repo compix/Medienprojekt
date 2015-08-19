@@ -112,28 +112,7 @@ void LayerManager::update()
 
 	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
 	{
-		auto layerComponent = entity.component<LayerComponent>();
-		auto cell = entity.component<CellComponent>();
-		auto transform = entity.component<TransformComponent>();
-
-		assert(layerComponent && cell && transform);
-
-		if (cell && transform)
-		{
-			int cellX = static_cast<int>(transform->x / GameConstants::CELL_WIDTH);
-			int cellY = static_cast<int>(transform->y / GameConstants::CELL_HEIGHT);
-
-			// If the cell changed then refresh the cell and grid
-			if (cellX != cell->x || cellY != cell->y)
-			{
-				m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
-
-				cell->x = cellX;
-				cell->y = cellY;
-
-				m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
-			}
-		}
+		updateCell(entity);
 	}
 }
 
@@ -146,4 +125,26 @@ EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)
 bool LayerManager::isFree(int layer, int cellX, int cellY)
 {
 	return getEntities(layer, cellX, cellY).size() == 0;
+}
+
+void LayerManager::updateCell(entityx::Entity& entity)
+{
+	auto layerComponent = entity.component<LayerComponent>();
+	auto cell = entity.component<CellComponent>();
+	auto transform = entity.component<TransformComponent>();
+
+	assert(layerComponent && cell && transform);
+	int cellX = static_cast<int>(transform->x / GameConstants::CELL_WIDTH);
+	int cellY = static_cast<int>(transform->y / GameConstants::CELL_HEIGHT);
+
+	// If the cell changed then refresh the cell and grid
+	if (cellX != cell->x || cellY != cell->y)
+	{
+		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+
+		cell->x = cellX;
+		cell->y = cellY;
+
+		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+	}
 }

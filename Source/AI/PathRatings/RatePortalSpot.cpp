@@ -9,11 +9,15 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (!goal->valid)
 		return false;
 
+	// Check if the player can place portals
+	assert(entity.has_component<InventoryComponent>());
+	auto inventory = entity.component<InventoryComponent>();
+	if (!inventory->portalSkill)
+		return false;
+
 	// Can't place a portal on a portal
 	if (goal->properties.hasPortal)
 		return false;
-
-	auto inventory = entity.component<InventoryComponent>();
 
 	auto firstPortal = inventory->placedPortals.first;
 	if (!firstPortal.valid())

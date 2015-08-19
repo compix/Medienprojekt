@@ -44,7 +44,13 @@ public:
 	inline int getWidth() const { return m_width; }
 	inline int getHeight() const { return m_height; }
 
-	inline EntityCollection& get(int cellX, int cellY) { return m_grid[cellX][cellY]; };
+	inline EntityCollection& get(int cellX, int cellY)
+	{
+		assert(inBounds(cellX, cellY));
+		return m_grid[cellX][cellY];
+	};
+
+	inline bool inBounds(int cellX, int cellY) { return cellX >= 0 && cellX < m_width && cellY >= 0 && cellY < m_height; }
 
 	inline void listen(IOnChangeListener* listener) { m_changeListeners.push_back(listener); }
 

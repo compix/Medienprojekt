@@ -38,6 +38,11 @@ public:
 	void remove(Entity entity);
 	void update();
 
+	inline bool inBounds(int layer, int cellX, int cellY) { return m_layers[layer]->inBounds(cellX, cellY); }
+
+	/**
+	* A copy is returned because adding entities during iteration is viable. A reference would cause an exception in this case.
+	*/
 	EntityCollection getEntities(int layer, int cellX, int cellY);
 
 	template<class C>
@@ -49,15 +54,11 @@ public:
 	template<class C>
 	bool hasEntityWithComponents(int layer, int cellX, int cellY);
 
-	//inline bool hasEntityWithComponents(int layer, int cellX, int cellY) { return true; }
-
 	template<class C1, class C2, class... Args>
 	bool hasComponents(Entity& e);
 
 	template<class C>
 	inline bool hasComponents(Entity& e) { return e.valid() && e.has_component<C>(); }
-
-	//inline bool hasComponents(Entity& e) { return true; }
 
 	// An invalid entity will be returned if there is no such entity
 	template<class C>
@@ -68,6 +69,8 @@ public:
 	Entity getEntityWithComponents(int layer, int cellX, int cellY);
 
 	bool isFree(int layer, int cellX, int cellY);
+
+	void updateCell(entityx::Entity& entity);
 private:
 	LayerContainer m_layers;
 

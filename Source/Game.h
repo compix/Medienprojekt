@@ -44,11 +44,15 @@ public:
 protected:
 	virtual void addSystems() = 0;
 
+	template <typename S, typename ... Args>
+	std::shared_ptr<S> addSystem(Args && ... args);
 protected:
 	sf::View m_view;
 	bool initialized = false;
 	EntityManager m_entities;
 	SystemManager m_systems;
+	// Order depends on the order they are added with addSystem()
+	std::vector<std::shared_ptr<entityx::BaseSystem>> m_orderedSystems;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
 	PhysixSystem* m_PhysixSystem;
@@ -66,6 +70,14 @@ protected:
 
 	ParticleEmitter* m_particleEmitter;
 };
+
+template <typename S, typename ... Args>
+std::shared_ptr<S> Game::addSystem(Args&&... args)
+{
+	auto systemPtr = m_systems.add<S>(args...);
+	m_orderedSystems.push_back(systemPtr);
+	return systemPtr;
+}
 
 enum class CreateGamePlayerType;
 struct CreateGamePlayerInfo;

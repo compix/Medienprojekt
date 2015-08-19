@@ -161,11 +161,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			continue;
 		}
 
-		if (!AIUtil::isOnPath(entity, aiComponent->currentAction->path()))
-		{
-			std::cout << "WHY YOU NOT ON PATH?" << std::endl;
-		}
-
 		aiComponent->currentAction->update(entity, static_cast<float>(dt));
 		m_pathEngine->visualize(aiComponent->currentAction->path());
 	}
