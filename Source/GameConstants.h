@@ -23,7 +23,8 @@ namespace GameConstants
 	const int INIT_BOMB_RANGE = 1;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_RANGE_CAP = 7;			//Explosionsreichweite einer Bombe
 	const float KICK_FORCE = 10.f;			//Kraft mit der die Bombe gekickt wird
-	const float EXPLOSION_SPREAD_TIME = 0.06f;
+	const float EXPLOSION_SPREAD_TIME = 0.06f; // Time in seconds the explosion needs to spread to the next cell
+	const float EXPLOSION_TIME = 2.f; // Time in seconds for a bomb to explode
 
 	//Relating to Portals
 	const float PORTAL_TIMER_NOT_LINKED = 30.f;		//Wenn ein Portal noch nicht verbunden ist, bis es verbunden wird.

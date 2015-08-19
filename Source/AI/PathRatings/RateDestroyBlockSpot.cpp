@@ -4,6 +4,7 @@
 #include "RateSafety.h"
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"
+#include "../../Components/InventoryComponent.h"
 
 bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
@@ -16,10 +17,12 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			// Bomb should affect blocks but no items
 			bool found = true;
 			float timePerCell = AIUtil::getTimePerCell(entity);
-			float bombExploTime = goal->properties.affectedByExplosion ? goal->properties.timeTillExplosion : 2.f; // TODO: replace 2.f
+			float bombExploTime = goal->properties.affectedByExplosion ? goal->properties.timeTillExplosion : GameConstants::EXPLOSION_TIME;
 			bool spotAffectedByExplosion = goal->properties.affectedByExplosion;		
 
-			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, 7, bombExploTime); // TODO replace the range
+			assert(entity.has_component<InventoryComponent>());
+			auto inventory = entity.component<InventoryComponent>();
+			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, bombExploTime);
 
 			bool blocksAffected = goal->properties.numOfBlocksAffectedByExplosion > 0;
 			bool itemsAffected = goal->properties.numOfItemsAffectedByExplosion > 0;

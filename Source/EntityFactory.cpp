@@ -222,7 +222,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity->assign<SpriteComponent>(texture);
 	assert(owner.has_component<InventoryComponent>());
 	entity->assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME);
-	entity->assign<TimerComponent>(2.f);
+	entity->assign<TimerComponent>(GameConstants::EXPLOSION_TIME);
 	entity->assign<HealthComponent>(1);
 	entity->assign<OwnerComponent>(owner);
 

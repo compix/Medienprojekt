@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include "Logger.h"
+#include <sstream>
+#include <ctime>
 
 LoggingService::LoggingService(const std::string filename)
 	:m_filename(filename), m_readBuffer(&m_requestBuffer1), m_writeBuffer(&m_requestBuffer2), m_readyForFlip(false), m_active(false), m_thread()
@@ -13,7 +15,13 @@ LoggingService::LoggingService(const std::string filename)
 
 void LoggingService::log(const std::string& msg)
 {
-	m_writeBuffer->push(msg);
+	time_t now = time(0);
+	tm* d = std::localtime(&now);
+	std::stringstream ss;
+	ss << d->tm_hour << ":" << d->tm_min << ":" << d->tm_sec << " "  // Current time
+	   << d->tm_mday << "." << 1 + d->tm_mon << "." << 1900 + d->tm_year << " - "; // Curent date
+	ss << msg;
+	m_writeBuffer->push(ss.str());
 }
 
 void LoggingService::handleRequestsOnThread()
