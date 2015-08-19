@@ -16,6 +16,7 @@ namespace GameConstants
 	const float SPEED_MULTI_CAP = 3.f;		//Grenze des SPEED Multiplikators
 	const float SPEED_MULTI_INC = 0.25f;	//Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
 	const bool INIT_PLAYERS_CAN_KICK = false;//Ob zu beginn Spieler bereits Bomben kicken können 
+	const bool INIT_PORTAL_SKILL = false;   //Ob zu beginn von Spielern Portale gesetzt werden können.
 
 	//Relating to Bombs
 	const int INIT_BOMB_COUNT = 8;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
@@ -41,6 +42,7 @@ namespace GameConstants
 	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
 	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
 	const float RESET_GAME_COUNTDOWN = 2; // Seconds to wait after game over to reset the game
+
 
 	
 }
