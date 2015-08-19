@@ -40,7 +40,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->skillButtonPressed)
 		{
-			if (!inventory->placedPortals.second.valid() && !m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			if (inventory->portalSkill && !inventory->placedPortals.second.valid() && !m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
 				GameGlobals::events->emit<CreatePortalEvent>(entity);
 			input->skillButtonPressed = false;
 		}

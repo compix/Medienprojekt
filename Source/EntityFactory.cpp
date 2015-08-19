@@ -556,6 +556,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::BOMB_RANGE_BOOST:
 		entity.assign<SpriteComponent>(createSprite("bombRangeBoost"));
 		break;
+	case ItemType::PORTAL_SKILL:
+		entity.assign<SpriteComponent>(createSprite("portal_skill"));
+		break;
 	}
 
 	m_layerManager->add(entity);
