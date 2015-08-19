@@ -552,13 +552,16 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::SPEED_MULTIPLICATOR:
 		entity.assign<SpriteComponent>(createSprite("speed_multiplicator"));
 		break;
-	default: break;
 	case ItemType::BOMB_RANGE_BOOST:
 		entity.assign<SpriteComponent>(createSprite("bombRangeBoost"));
 		break;
 	case ItemType::PORTAL_SKILL:
 		entity.assign<SpriteComponent>(createSprite("portal_skill"));
 		break;
+	case ItemType::ANTI_MAGNET_SKILL:
+		entity.assign<SpriteComponent>(createSprite("anti_magnet_skill"));
+		break;
+	default: break;
 	}
 
 	m_layerManager->add(entity);

@@ -15,7 +15,7 @@ public:
 	BombKickSystem(LayerManager* layerManager);
 	
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
-
+	bool hasAntiMagnet(Entity e);
 	void kickBomb(b2Body* sensor, b2Body* notSensor, Direction direction);
 	bool fitIntoCell(SpriteComponent* spriteComponent, TransformComponent* transformComponent, CellComponent* cellComponent);
 	void checkCollisionWithBomb(Entity e, Direction direction);
