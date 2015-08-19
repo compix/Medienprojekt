@@ -162,7 +162,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 	pathOut.nodes.clear();
 }
 
-void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum)
+void PathEngine::breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum)
 {
 	m_simGraph->resetPathInfo(taskNum);
 
@@ -177,7 +177,8 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& path
 		GraphNode* curNode = processQueue.front();
 		processQueue.pop();
 
-		if (ratePath(this, curNode, pathOut, taskNum))
+		makePath(pathOut, curNode, taskNum);
+		if (ratePath(this, pathOut, entity, taskNum))
 			return;
 
 		// Go through all neighbors
@@ -196,10 +197,11 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& path
 		}
 	}
 
+	pathOut.resetRating();
 	pathOut.nodes.clear();
 }
 
-void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks, uint8_t taskNum)
+void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks, uint8_t taskNum)
 {
 	assert(maxChecks > 0);
 
@@ -218,7 +220,8 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 		GraphNode* curNode = processQueue.front();
 		processQueue.pop();
 
-		if (ratePath(this, curNode, path, taskNum))
+		makePath(path, curNode, taskNum);
+		if (ratePath(this, path, entity, taskNum))
 		{		
 			maxChecks--;
 			if (path.rating > bestPath.rating)
@@ -228,11 +231,15 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 		if (maxChecks == 0)
 			break;
 
+		// Don't go through neighbors of invalid nodes (except for the first node)
+		if (curNode != startNode && !curNode->valid)
+			continue;
+
 		// Go through all neighbors
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor->properties.hasBomb && !neighbor->valid)
 				continue;
 
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -252,7 +259,7 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 
 void PathEngine::visualize()
 {
-	m_graph->visualize(true, true);
+	m_simGraph->visualize(true, true);
 }
 
 void PathEngine::visualize(AIPath& path)

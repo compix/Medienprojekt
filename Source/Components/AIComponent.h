@@ -1,6 +1,6 @@
 #pragma once
-#include "../Systems/AISystem.h"
-#include "../AI/PathFinding/PathEngine.h"
+#include "../AI/Actions/ActionType.h"
+#include "../AI/Actions/Action.h"
 
 enum class BehaviorType
 {
@@ -10,9 +10,9 @@ enum class BehaviorType
 
 struct AIComponent
 {
-	AIComponent(uint8_t id) : id(id) {}
+	AIComponent(uint8_t id) : id(id), currentAction(nullptr) {}
 
-	AIActionType action;
-	AIPath path;
+	std::unordered_map<ActionType, ActionPtr, EnumClassHash> actions;
+	IAction* currentAction;
 	uint8_t id;
 };

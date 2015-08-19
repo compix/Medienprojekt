@@ -49,10 +49,7 @@ public:
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
 
-	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime = 0.f);
-	void removeBomb(uint8_t x, uint8_t y, uint8_t range);
-
-	void timeTravel(float seconds, float t);
+	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime);
 
 	template<class T>
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
@@ -64,7 +61,10 @@ protected:
 	void resetCosts();
 	void resetProperties();
 
-	virtual void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime = 0.f);
+	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction);
+
+	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
+
 protected:
 	uint8_t m_width, m_height;
 	GraphNode** m_nodeGrid;

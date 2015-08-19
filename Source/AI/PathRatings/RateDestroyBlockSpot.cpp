@@ -5,58 +5,52 @@
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"
 
-RateDestroyBlockSpot::RateDestroyBlockSpot(entityx::Entity& entity)
-	:m_entity(entity)
+bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
+	auto goal = path.goal();
 
-bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	if (node->valid && !node->properties.hasPortal) // !node->properties.hasPortal TEMPORARY BECAUSE PORTALS ARE BUGGED
+	if (goal->valid && !goal->properties.hasPortal) // !node->properties.hasPortal TEMPORARY BECAUSE PORTALS ARE BUGGED
 	{
-		pathEngine->makePath(pathOut, node, taskNum);
-		if (AIUtil::isSafePath(m_entity, pathOut))
+		if (AIUtil::isSafePath(entity, path))
 		{
+			// Bomb should affect blocks but no items
 			bool found = true;
-			float timePerCell = AIUtil::getTimePerCell(m_entity);
-			float bombExploTime = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 2.f;
-			bool spotAffectedByExplosion = node->properties.affectedByExplosion;
+			float timePerCell = AIUtil::getTimePerCell(entity);
+			float bombExploTime = goal->properties.affectedByExplosion ? goal->properties.timeTillExplosion : 2.f; // TODO: replace 2.f
+			bool spotAffectedByExplosion = goal->properties.affectedByExplosion;		
 
-			//if (!pathEngine->getGraph()->inLine<BlockComponent>(node->x, node->y, 7)) // TODO replace the range
-				//return false;
+			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, 7, bombExploTime); // TODO replace the range
 
-			
-
-			pathEngine->getSimGraph()->placeBomb(node->x, node->y, 7, bombExploTime); // TODO replace the range
-
-			bool blocksAffected = node->properties.numOfBlocksAffectedByExplosion > 0;
-			bool itemsAffected = node->properties.numOfItemsAffectedByExplosion > 0;
+			bool blocksAffected = goal->properties.numOfBlocksAffectedByExplosion > 0;
+			bool itemsAffected = goal->properties.numOfItemsAffectedByExplosion > 0;
 
 			if (!blocksAffected || itemsAffected)
 				found = false;
 
 			if (found)
 			{
+				// Found a potential spot -> check if a safe escape path exists
 				AIPath safePath;
-				pathEngine->breadthFirstSearch(node->x, node->y, safePath, RateSafety(m_entity), taskNum + 1);
+				pathEngine->breadthFirstSearch(entity, goal->x, goal->y, safePath, RateSafety(), taskNum + 1);
 
-				if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(m_entity, safePath))
+				if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(entity, safePath))
 					found = false;
 
 				if (found && spotAffectedByExplosion)
 				{
 					// Check the full path to be sure if it's really safe
 					AIPath fullPath;
-					fullPath.attach(pathOut);
+					fullPath.attach(path);
 					fullPath.attach(safePath);
+					fullPath.curNode = path.curNode;
 
-					if (!AIUtil::isSafePath(m_entity, fullPath))
+					if (!AIUtil::isSafePath(entity, fullPath))
 						found = false;
 				}
 			}
 
 			if (found)
-				pathOut.rating = node->properties.numOfBlocksAffectedByExplosion - timePerCell * pathOut.nodes.size();
+				path.rating = goal->properties.numOfBlocksAffectedByExplosion - timePerCell * path.nodes.size();
 
 			// Reset to the old state
 			pathEngine->getSimGraph()->resetSimulation();

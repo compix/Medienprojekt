@@ -15,13 +15,10 @@ public:
 public:
 	explicit SimulationGraph(LayerManager* layerManager, Graph* realGraph);
 
-	//void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime) override;
-
 	void resetSimulation();
 
 protected:
-	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime = 0.0f) override;
-
+	void setOnFire(uint8_t x, uint8_t y, float explosionTime) override;
 private:
 	Graph* m_realGraph;
 

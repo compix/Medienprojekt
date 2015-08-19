@@ -3,17 +3,13 @@
 #include "../../Components/ItemComponent.h"
 #include "../../Game.h"
 
-RateDistanceToAffectedBlocks::RateDistanceToAffectedBlocks(entityx::Entity& entity)
+bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
-
-bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	if (pathEngine->getGraph()->getAffectedBlocks().size() == 0)
+	if (!path.goal()->valid || pathEngine->getGraph()->getAffectedBlocks().size() == 0)
 		return false;
 
 	float valueFactor = 15.f;
-	pathOut.rating = inverseDistanceToAffectedBlocks(pathEngine->getGraph(), node) * valueFactor;
+	path.rating = inverseDistanceToAffectedBlocks(pathEngine->getGraph(), path.goal()) * valueFactor;
 	return true;
 }
 

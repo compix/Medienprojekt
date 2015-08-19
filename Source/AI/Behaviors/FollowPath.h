@@ -6,10 +6,13 @@
 class FollowPath
 {
 public:
+	FollowPath();
+	explicit FollowPath(LayerManager* layerManager);
 	FollowPath(const AIPath& path, LayerManager* layerManager);
 
 	inline void setPath(const AIPath& path) { m_path = path; }
-	void operator ()(entityx::Entity& entity);
+	inline AIPath& path() { return m_path; }
+	void operator()(entityx::Entity& entity);
 
 protected:
 	AIPath m_path;

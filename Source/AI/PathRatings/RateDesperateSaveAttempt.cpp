@@ -1,15 +1,8 @@
 #include "RateDesperateSaveAttempt.h"
 #include "../AIUtil.h"
 
-RateDesperateSaveAttempt::RateDesperateSaveAttempt(entityx::Entity& entity)
-	:m_entity(entity)
+bool RateDesperateSaveAttempt::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
-
-bool RateDesperateSaveAttempt::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	pathEngine->makePath(pathOut, node, taskNum);
-
 	float minExploTime;
 	/*
 	if (!isSafePath(m_entity, pathOut, &minExploTime))
@@ -20,9 +13,9 @@ bool RateDesperateSaveAttempt::operator()(PathEngine* pathEngine, GraphNode* nod
 		pathOut.rating = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 3.f;
 	}*/
 
-	if (AIUtil::isSafePath(m_entity, pathOut, &minExploTime))
+	if (path.goal()->valid && AIUtil::isSafePath(entity, path, &minExploTime))
 	{
-		pathOut.rating = node->properties.affectedByExplosion ? node->properties.timeTillExplosion : 3.f;
+		path.rating = path.goal()->properties.affectedByExplosion ? path.goal()->properties.timeTillExplosion : 3.f;
 		return true;
 	}
 

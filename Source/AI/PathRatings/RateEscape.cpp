@@ -2,30 +2,27 @@
 #include "../../Components/CellComponent.h"
 #include "../AIUtil.h"
 #include "../PathFinding/PathEngine.h"
+#include "../../Systems/AISystem.h"
 
-RateEscape::RateEscape(entityx::Entity& entity, std::vector<entityx::Entity>& entitiesToAvoid)
-	:m_entitiesToAvoid(entitiesToAvoid), m_entity(entity)
+bool RateEscape::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-	assert(m_entity.valid() && m_entity.has_component<CellComponent>());
-	auto cell = m_entity.component<CellComponent>();
-	m_startDistance = computeDistanceToEnemies(cell->x, cell->y);
-}
+	if (!path.goal()->valid)
+		return false;
 
-bool RateEscape::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	int newDistanceToEnemies = computeDistanceToEnemies(node->x, node->y);
+	AISystem::getEnemies(entity, m_entitiesToAvoid);
+
+	auto goal = path.goal();
+	int newDistanceToEnemies = computeDistanceToEnemies(goal->x, goal->y);
 
 	if (m_entitiesToAvoid.size() == 0)
 	{
-		pathOut.rating = 2.f;
+		path.rating = 2.f;
 		return true;
 	}
 
-	pathEngine->makePath(pathOut, node, taskNum);
-
-	if (AIUtil::isSafePath(m_entity, pathOut))
+	if (AIUtil::isSafePath(entity, path))
 	{
-		pathOut.rating = distanceToClosest(node->x, node->y) > 4 ? 2.f : 0.f;
+		path.rating = distanceToClosest(goal->x, goal->y) > 4 ? 2.f : 0.f;
 		return true;
 	}
 

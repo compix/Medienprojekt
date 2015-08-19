@@ -43,55 +43,26 @@ Graph::~Graph()
 	delete[] m_nodeGrid;
 }
 
-void Graph::timeTravel(float seconds, float t)
-{
-	resetCosts();
-	resetProperties();
-	m_normalBombs.clear();
-
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
-	{	
-		auto bombComponent = bomb.component<BombComponent>();
-		auto timerComponent = bomb.component<TimerComponent>();
-		auto cell = bomb.component<CellComponent>();
-
-		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
-		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
-	}
-
-	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
-
-	// Go through all explosion components and simulate the explosion.
-	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
-	{
-		auto cell = explosion.component<CellComponent>();
-		auto spread = explosion.component<SpreadComponent>();
-
-		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, seconds);
-	}
-
-	for (auto bomb : m_normalBombs)
-	{
-		float exploTime = bomb.explosionTime;
-		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
-			exploTime = m_nodeGrid[bomb.x][bomb.y].properties.timeTillExplosion;
-
-		placeBomb(bomb.x, bomb.y, bomb.range, exploTime, seconds);
-	}
-
-	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
-	{
-		auto cell = item.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
-	}
-}
-
 void Graph::update(float deltaTime)
 {
 	resetCosts();
 	resetProperties();
 	m_normalBombs.clear();
 	m_blocksAffectedByExplosion.clear();
+
+	// Set the other portal
+	for (auto portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
+	{
+		auto cell = portal.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
+
+		auto portalComponent = portal.component<PortalComponent>();
+		if (portalComponent->otherPortal.valid())
+		{
+			auto otherCell = portalComponent->otherPortal.component<CellComponent>();
+			m_nodeGrid[cell->x][cell->y].properties.otherPortal = &m_nodeGrid[otherCell->x][otherCell->y];
+		}
+	}
 
 	for (auto dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
 	{
@@ -103,11 +74,11 @@ void Graph::update(float deltaTime)
 		m_blocksAffectedByExplosion.push_back(dieingBlock);
 	}
 
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	for (auto bombEntity : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
-		auto bombComponent = bomb.component<BombComponent>();
-		auto timerComponent = bomb.component<TimerComponent>();
-		auto cell = bomb.component<CellComponent>();
+		auto bombComponent = bombEntity.component<BombComponent>();
+		auto timerComponent = bombEntity.component<TimerComponent>();
+		auto cell = bombEntity.component<CellComponent>();
 
 		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
@@ -129,7 +100,7 @@ void Graph::update(float deltaTime)
 		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
 	}
 
-	for (auto bomb : m_normalBombs)
+	for (auto& bomb : m_normalBombs)
 	{
 		float exploTime = bomb.explosionTime;
 		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
@@ -149,54 +120,26 @@ void Graph::update(float deltaTime)
 		auto cell = player.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = true;
 	}
-
-	// Duplicate explosion on portals
-	for (auto portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
-	{
-		auto cell = portal.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
-
-		if (m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion)
-		{
-			auto portalComponent = portal.component<PortalComponent>();
-			if (portalComponent->otherPortal.valid())
-			{
-				auto otherCell = portalComponent->otherPortal.component<CellComponent>();
-				m_nodeGrid[otherCell->x][otherCell->y].properties.affectedByExplosion = true;
-				m_nodeGrid[otherCell->x][otherCell->y].properties.timeTillExplosion = m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion;
-			}
-		}
-	}
 }
 
-void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime)
+void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction)
 {
-	float futureExplosionTime = explosionTime + range * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
-
-	if (futureExplosionTime <= 0.f)
-		return;
-
 	auto currentNode = getNode(x, y);
-	float currentExplosionTime = currentNode->properties.timeTillExplosion;
-	futureExplosionTime = explosionTime - futureTime;
-	currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-	currentNode->properties.affectedByExplosion = true;
+	setOnFire(x, y, explosionTime);
 
 	// Simulate the explosion:
 	for (int j = 0; j < range; ++j)
 	{
 		currentNode = getNeighbor(currentNode, direction);
-		futureExplosionTime = explosionTime + (j + 1) * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
-		currentExplosionTime = currentNode->properties.timeTillExplosion;
+		explosionTime += GameConstants::EXPLOSION_SPREAD_TIME;
 
 		if (currentNode->valid)
-		{				
-			currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-			currentNode->properties.affectedByExplosion = true;
-
+		{			
+			setOnFire(currentNode->x, currentNode->y, explosionTime);
 			if (m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
 			{
 				m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+				break; // Items stop explosions.
 			}
 		}
 		else
@@ -206,27 +149,38 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 				if (currentNode->properties.affectedByExplosion)
 					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
 
+				setOnFire(currentNode->x, currentNode->y, explosionTime);
 				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
-				currentNode->properties.affectedByExplosion = true;
 				auto block = m_layerManager->getEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
 				if (block.valid())
 					m_blocksAffectedByExplosion.push_back(block);
-
-				break;
 			}
 
-			if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
-			{
-				currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-				currentNode->properties.affectedByExplosion = true;
-			}
-			else
-				break;
+			// Doesn't really matter what else it is (might be a bomb for example). Just make it burn even if it's a solid block.
+			setOnFire(currentNode->x, currentNode->y, explosionTime);
+
+			// Explosion was stopped so get outta here.
+			break;
 		}
 	}
 }
 
-void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime)
+void Graph::setOnFire(uint8_t x, uint8_t y, float explosionTime)
+{
+	auto& node = m_nodeGrid[x][y];
+	float currentExplosionTime = node.properties.timeTillExplosion;
+	node.properties.timeTillExplosion = node.properties.affectedByExplosion ? std::min(explosionTime, currentExplosionTime) : explosionTime;
+	node.properties.affectedByExplosion = true;
+
+	// Duplicate the explosion on connected portals
+	if (node.properties.otherPortal)
+	{
+		node.properties.otherPortal->properties.timeTillExplosion = node.properties.timeTillExplosion;
+		node.properties.otherPortal->properties.affectedByExplosion = true;
+	}
+}
+
+void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime)
 {	
 	auto currentNode = getNode(x, y);
 	currentNode->properties.numOfBlocksAffectedByExplosion = 0;
@@ -236,30 +190,7 @@ void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, 
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, explosionTime, direction, futureTime);
-	}
-}
-
-void Graph::removeBomb(uint8_t x, uint8_t y, uint8_t range)
-{
-	// Reverse the explosion simulation
-	for (int i = 0; i < 4; ++i) // Go in all directions
-	{
-		Direction currentNeighbor = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		auto currentNode = getNode(x, y);
-		currentNode->properties.affectedByExplosion = false;
-
-		for (int j = 0; j < range; ++j)
-		{
-			currentNode = getNeighbor(currentNode, currentNeighbor);
-
-			if (currentNode->valid)
-			{
-				currentNode->properties.affectedByExplosion = false;
-			}
-			else
-				break;
-		}
+		explosionSpread(x, y, range, explosionTime, direction);
 	}
 }
 
@@ -298,7 +229,7 @@ void Graph::resetProperties()
 			m_nodeGrid[x][y].properties.hasBomb = false;
 			m_nodeGrid[x][y].properties.hasPlayer = false;
 			m_nodeGrid[x][y].properties.hasPortal = false;
-			//m_nodeGrid[x][y].properties.marked = false;
+			m_nodeGrid[x][y].properties.otherPortal = nullptr;
 		}
 	}
 }
@@ -493,6 +424,11 @@ bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 
 GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
 {
+	if (m_nodeGrid[x][y].properties.otherPortal)
+		return m_nodeGrid[x][y].properties.otherPortal;
+
+	return m_nodeGrid[x][y].properties.otherPortal;
+	/*
 	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, x, y);
 	if (portal && m_nodeGrid[x][y].valid)
 	{
@@ -504,5 +440,5 @@ GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
 		}
 	}
 
-	return nullptr;
+	return nullptr;*/
 }

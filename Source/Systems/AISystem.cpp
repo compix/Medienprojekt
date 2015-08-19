@@ -27,9 +27,14 @@
 #include "../AI/Behaviors/PlaceBomb.h"
 #include "../AI/Behaviors/UseSkill.h"
 #include "../AI/Behaviors/FollowPath.h"
+#include "../AI/Behaviors/DoNothing.h"
+#include "../Components/ColorComponent.h"
+#include "../AI/Actions/ActionSelector.h"
+#include "../AI/Actions/GetSafe.h"
+#include "../Components/PortalComponent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
-	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
+	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME), m_invalidPaths(false)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
 }
@@ -38,191 +43,152 @@ void AISystem::init()
 {
 	m_pathEngine->getGraph()->init();
 	m_pathEngine->getSimGraph()->init();
+	
+	for (auto entity : GameGlobals::entities->entities_with_components<AIComponent, CellComponent, InputComponent>())
+	{
+		auto aiComponent = entity.component<AIComponent>();
+
+		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(true), RateDistanceToItems() });
+		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
+
+		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks() });
+		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
+
+		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
+		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
+
+		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
+
+		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot() });
+		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
+	}
 }
 
-void AISystem::logAction(LogServiceId serviceId, AIActionType action)
+void AISystem::logAction(LogServiceId serviceId, ActionType action, AIPath& path)
 {
+	std::stringstream ss;
+
 	switch (action)
 	{
-	case AIActionType::PORTAL_PATH:
-		Logger::log("Taking path to place portal.", serviceId);
+	case ActionType::DESTROY_BLOCK:
+		ss << "Destroying block.";
 		break;
-	case AIActionType::WAIT_PATH:
-		Logger::log("Taking path to wait for block destruction.", serviceId);
+	case ActionType::WAIT:
+		ss << "Waiting for opportunities.";
 		break;
-	case AIActionType::ITEM_PATH:
-		Logger::log("Taking path to get item.", serviceId);
+	case ActionType::GET_ITEM:
+		ss << "Getting item.";
 		break;
-	case AIActionType::DESTROY_BLOCK_PATH:
-		Logger::log("Taking path to place a bomb to destroy blocks.", serviceId);
+	case ActionType::GET_SAFE:
+		ss << "Getting safe.";
 		break;
-	case AIActionType::SAFE_PATH:
-		Logger::log("Taking path to be safe.", serviceId);
+	case ActionType::KICK_BOMB:
+		ss << "Kicking bomb.";
 		break;
-	case AIActionType::KICK_BOMB_PATH:
-		Logger::log("Taking path to kick a bomb to open escape path.", serviceId);
+	case ActionType::TRY_TO_SURVIVE:
+		ss << "Trying to survive.";
 		break;
-	case AIActionType::DESPERATE_SAFE_PATH:
-		Logger::log("Desperately trying to survive.", serviceId);
-		break;
-	case AIActionType::PLACING_BOMB:
-		Logger::log("Placing bomb.", serviceId);
-		break;
-	case AIActionType::PLACING_PORTAL:
-		Logger::log("Placing portal.", serviceId);
+	case ActionType::PLACE_PORTAL:
+		ss << "Placing portal.";
 		break;
 	default:
-		Logger::log("UNKNOWN ACTION.", serviceId);
+		ss << "UNKNOWN ACTION.";
 		break;
 	}
+
+	if (path.goal())
+	{
+		ss << " Goal: x = " << static_cast<int>(path.goal()->x) << " y = " << static_cast<int>(path.goal()->y);
+	}
+
+	Logger::log(ss.str(), serviceId);
 }
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
+
 	m_updateTimer -= dt;
 
 	m_pathEngine->update(static_cast<float>(dt));
-
-	Entity player;
-	ComponentHandle<CellComponent> playerCell;
-	for (auto entity : entityManager.entities_with_components<InventoryComponent, CellComponent>())
-	{
-		if (entity.has_component<AIComponent>())
-			continue;
-
-		player = entity;
-		playerCell = player.component<CellComponent>();
-		break;
-	}
 
 	for (auto entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
 	{
 		auto cell = entity.component<CellComponent>();
 		auto aiComponent = entity.component<AIComponent>();
-
-		std::stringstream ss;
-		ss << "AI/Entity" << static_cast<int>(aiComponent->id) << ".log";
-		LogServiceId logId = Logger::requestService(ss.str());
-
-		float timePerCell = AIUtil::getTimePerCell(entity);
+		auto input = entity.component<InputComponent>();
+		auto color = entity.component<ColorComponent>();
 
 		// Reset inputs
-		auto input = entity.component<InputComponent>();
 		input->moveX = 0.f;
 		input->moveY = 0.f;
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
-
-		AIPath& path = aiComponent->path;
-
-		if (m_updateTimer <= 0.f)
+		if (m_invalidPaths || !aiComponent->currentAction || aiComponent->currentAction->done() || !aiComponent->currentAction->valid(entity))
 		{
-			GraphNode* lastAIGoal = aiComponent->path.nodes.size() > 0 ? aiComponent->path.nodes[aiComponent->path.nodes.size() - 1] : nullptr;
-			AIActionType newAction;
+			ActionPtr bestAction;
+			ActionType bestActionType;
 
-			std::vector<Entity> enemies;
-			getEnemies(entity, enemies);
-
-			bool found = false;
-			bool escape = false;
-
-			AIPath portalPath;
-			m_pathEngine->searchBest(cell->x, cell->y, portalPath, RateCombination({ RateSafety(entity), RatePortalSpot(entity) }));
-
-			AIPath waitPath;
-			m_pathEngine->searchBest(cell->x, cell->y, waitPath, RateCombination({ RateSafety(entity), RateDistanceToAffectedBlocks(entity) }));
-
-			AIPath itemPath;
-			m_pathEngine->searchBest(cell->x, cell->y, itemPath, RateCombination({ RateItem(entity), RateTrapDanger(entity, enemies) }));
-
-			AIPath destroyBlockPath;
-			m_pathEngine->searchBest(cell->x, cell->y, destroyBlockPath,
-				RateCombination({RateDestroyBlockSpot(entity), RateEscape(entity, enemies), RateTrapDanger(entity, enemies, true), RateDistanceToItems(entity)}));
-
-			if (!escape)
+			// Prepare path and choose the best action
+			for (auto& pair : aiComponent->actions)
 			{
-				if (itemPath.rating > destroyBlockPath.rating)
+				auto& action = pair.second;
+				action->preparePath(entity);
+
+				if (!bestAction || bestAction->getRating() < action->getRating())
 				{
-					path = itemPath;
-					newAction = AIActionType::ITEM_PATH;
-				}
-				else if (waitPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, waitPath))
-				{
-					path = waitPath;
-					newAction = AIActionType::WAIT_PATH;
-				} 
-				else if (portalPath.rating > destroyBlockPath.rating && AIUtil::isSafePath(entity, portalPath))
-				{
-					path = portalPath;
-					newAction = AIActionType::PORTAL_PATH;
-					if (path.nodes.size() == 1)
-					{
-						UseSkill useSkill;
-						useSkill(entity);
-						newAction = AIActionType::PLACING_PORTAL;
-					}
-				} else
-				{
-					path = destroyBlockPath;
-					newAction = AIActionType::DESTROY_BLOCK_PATH;
-					if (path.nodes.size() == 1)
-					{
-						PlaceBomb placeBomb;
-						placeBomb(entity);
-						newAction = AIActionType::PLACING_BOMB;
-					}
+					bestAction = action;
+					bestActionType = pair.first;
 				}
 			}
 
-			if (path.nodes.size() > 0)
-				found = true;
+			assert(bestAction);
+			aiComponent->currentAction = bestAction.get();
 
-			if (!found && m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
-			{
-				m_pathEngine->searchBest(cell->x, cell->y, path, RateSafety(entity));
-				newAction = AIActionType::SAFE_PATH;
+			// Logging
+			std::stringstream ss;
+			ss << "AI/Entity" << color->color.str() << ".log";
+			LogServiceId logId = Logger::requestService(ss.str());
 
-				float minExploTime;
-				AIUtil::isSafePath(entity, path, &minExploTime);
+			logAction(logId, bestActionType, aiComponent->currentAction->path());
 
-				if (path.nodes.size() == 0)
-				{
-					m_pathEngine->searchBest(cell->x, cell->y, path, RateKickBomb(entity));
-					newAction = AIActionType::KICK_BOMB_PATH;
-				}
-				else if (minExploTime <= timePerCell*0.5f)
-				{
-					m_pathEngine->searchBest(cell->x, cell->y, path, RateDesperateSaveAttempt(entity), 20);
-					newAction = AIActionType::DESPERATE_SAFE_PATH;
-				}
-			}
-			
-			GraphNode* newAIGoal = path.nodes.size() > 0 ? path.nodes[path.nodes.size() - 1] : nullptr;
-			if (newAIGoal != lastAIGoal || newAction != aiComponent->action)
-			{
-				// Goal of AI changed: Log the action
-				logAction(logId, newAction);
-			}
-
-			aiComponent->action = newAction;
+			m_invalidPaths = false;
 		}
 
-		if (path.nodes.size() > 1)
+		if (aiComponent->currentAction->path().nodes.size() == 0)
 		{
-			FollowPath followPath(path, m_layerManager);
-			followPath(entity);
+			// No viable action
+			continue;
 		}
 
-		m_pathEngine->visualize(aiComponent->path);
+		if (!AIUtil::isOnPath(entity, aiComponent->currentAction->path()))
+		{
+			std::cout << "WHY YOU NOT ON PATH?" << std::endl;
+		}
+
+		aiComponent->currentAction->update(entity, static_cast<float>(dt));
+		m_pathEngine->visualize(aiComponent->currentAction->path());
 	}
 
 	if (m_updateTimer <= 0.f)
-	{
 		m_updateTimer = GameConstants::AI_UPDATE_TIME;
-	}
 
 	visualize();
+}
+
+void AISystem::configure(entityx::EventManager& eventManager)
+{
+	eventManager.subscribe<entityx::EntityDestroyedEvent>(*this);
+}
+
+void AISystem::receive(const entityx::EntityDestroyedEvent& destroyedEvent)
+{
+	auto entity = destroyedEvent.entity;
+	if (entity.has_component<PortalComponent>())
+	{
+		// If portals disappear then paths can become invalid -> easy fix: force a recomputation
+		m_invalidPaths = true;
+	}
 }
 
 void AISystem::visualize()

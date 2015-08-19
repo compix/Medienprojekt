@@ -169,7 +169,7 @@ LocalGame::~LocalGame()
 void LocalGame::addSystems()
 {
 	m_systems.add<BodySystem>();
-	m_systems.add<SoundSystem>();
+	//m_systems.add<SoundSystem>();
 	//m_systems.add<MusicSystem>();
 	m_systems.add<InventorySystem>();
 	m_systems.add<ItemSystem>(m_layerManager.get());
@@ -209,8 +209,6 @@ void LocalGame::resetEntities()
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 
-	m_systems.system<AISystem>()->init();
-
 	uint8_t i = 0;
 	ComponentHandle<InputComponent> input;
 	for (Entity entity : GameGlobals::entities->entities_with_components(input))
@@ -228,6 +226,8 @@ void LocalGame::resetEntities()
 			i++;
 		}
 	}
+
+	m_systems.system<AISystem>()->init();
 	GameGlobals::events->emit<StartGameEvent>();
 }
 

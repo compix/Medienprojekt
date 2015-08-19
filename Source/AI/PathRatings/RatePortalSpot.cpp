@@ -2,25 +2,24 @@
 #include "../../Components/CellComponent.h"
 #include "RatePortalSpot.h"
 
-RatePortalSpot::RatePortalSpot(entityx::Entity& entity)
-	:m_entity(entity)
+bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
+	auto goal = path.goal();
 
-bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	// Can't place a portal on a portal
-	if (node->properties.hasPortal)
+	if (!goal->valid)
 		return false;
 
-	auto inventory = m_entity.component<InventoryComponent>();
+	// Can't place a portal on a portal
+	if (goal->properties.hasPortal)
+		return false;
+
+	auto inventory = entity.component<InventoryComponent>();
 
 	auto firstPortal = inventory->placedPortals.first;
 	if (!firstPortal.valid())
 	{
 		// Doesn't really matter where to place it (no idea what spots are strategically better)
-		pathEngine->makePath(pathOut, node, taskNum);
-		pathOut.rating = 1.f;
+		path.rating = 1.f;
 		return true;
 	}
 
@@ -34,12 +33,11 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, GraphNode* node, AIPath&
 	if (!secondPortal.valid())
 	{
 		// Higher distance between portals = good spot. I guess.	
-		float distance = abs(cell->x - node->x) + abs(cell->y - node->y);
+		float distance = abs(cell->x - goal->x) + abs(cell->y - goal->y);
 		if (distance < 5)
 			return false;
 
-		pathEngine->makePath(pathOut, node, taskNum);
-		pathOut.rating = distance*distance / pathOut.nodes.size();
+		path.rating = distance*distance / path.nodes.size();
 		return true;
 	}
 

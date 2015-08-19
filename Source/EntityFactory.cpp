@@ -62,8 +62,8 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	if (playerId == 5)
 		playerId = 1;
 
-	uint8_t cellX = x / GameConstants::CELL_WIDTH;
-	uint8_t cellY = y / GameConstants::CELL_HEIGHT;
+	uint8_t cellX = static_cast<uint8_t>(x / GameConstants::CELL_WIDTH);
+	uint8_t cellY = static_cast<uint8_t>(y / GameConstants::CELL_HEIGHT);
 
 	TransformComponent transformComponent;
 	transformComponent.x = x;

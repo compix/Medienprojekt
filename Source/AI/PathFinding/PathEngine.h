@@ -40,9 +40,9 @@ public:
 	// Finds the shortest path to a node of the given type
 	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, AIPath& pathOut, uint8_t taskNum = 0);
 
-	void breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum = 0);
+	void breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum = 0);
 
-	void searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
+	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
 
 	void visualize();
 	void visualize(AIPath& path);
@@ -52,8 +52,9 @@ public:
 	inline Graph* getGraph() const { return m_graph.get(); }
 	inline SimulationGraph* getSimGraph() const { return m_simGraph.get(); }
 
-	void makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum);
 private:
+	void makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum);
+
 	uint32_t estimate(GraphNode* node, GraphNode* goal);
 
 	// Inserts the node at the correct position starting at the given node to remain the cost order: lowest -> highest

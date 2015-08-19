@@ -2,15 +2,13 @@
 #include "../../Game.h"
 #include "../../Components/CellComponent.h"
 
-RateDistanceToItems::RateDistanceToItems(entityx::Entity& entity)
-	:m_entity(entity)
+bool RateDistanceToItems::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
+	if (!path.goal()->valid)
+		return false;
 
-bool RateDistanceToItems::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
 	float valueFactor = 3.f;
-	pathOut.rating = inverseDistanceToItems(node) * valueFactor;
+	path.rating = inverseDistanceToItems(path.goal()) * valueFactor;
 	return true;
 }
 

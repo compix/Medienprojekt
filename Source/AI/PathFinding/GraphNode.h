@@ -1,10 +1,12 @@
 #pragma once
 #include <stdint.h>
 
+struct GraphNode;
+
 struct NodeProperties
 {
 	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), 
-		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), isItem(false), hasBomb(false) {}
+		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), isItem(false), hasBomb(false), otherPortal(nullptr) {}
 
 	bool affectedByExplosion;
 	float timeTillExplosion;
@@ -16,6 +18,8 @@ struct NodeProperties
 	uint8_t numOfPlayersAffectedByExplosion;
 
 	uint8_t numOfItemsAffectedByExplosion;
+
+	GraphNode* otherPortal;
 
 	bool isItem;
 	bool hasBomb;

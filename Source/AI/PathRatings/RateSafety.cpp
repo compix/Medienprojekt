@@ -1,21 +1,16 @@
 #include "RateSafety.h"
 #include "../AIUtil.h"
+#include "../../Utils/Math.h"
 
-RateSafety::RateSafety(entityx::Entity& entity)
-	:m_entity(entity)
+bool RateSafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
+	if (!path.goal()->valid)
+		return false;
 
-bool RateSafety::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
-	if (!node->properties.affectedByExplosion)
+	float minExploTime;
+	if (!path.goal()->properties.affectedByExplosion && AIUtil::isSafePath(entity, path, &minExploTime))
 	{
-		pathEngine->makePath(pathOut, node, taskNum);
-
-		float minExploTime;
-		bool safe = AIUtil::isSafePath(m_entity, pathOut, &minExploTime);
-		pathOut.rating = minExploTime + (safe ? 1.f : 0.f);
-
+		path.rating = Math::clamp(minExploTime, 0.f, 1.f);
 		return true;
 	}
 

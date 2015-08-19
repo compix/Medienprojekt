@@ -8,11 +8,7 @@
 class RateDistanceToAffectedBlocks
 {
 public:
-	explicit RateDistanceToAffectedBlocks(entityx::Entity& entity);
-
-	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum);
 
 	float inverseDistanceToAffectedBlocks(Graph* graph, GraphNode* node);
-private:
-	entityx::Entity m_entity;
 };

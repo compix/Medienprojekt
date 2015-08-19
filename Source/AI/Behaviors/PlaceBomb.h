@@ -4,5 +4,5 @@
 class PlaceBomb
 {
 public:
-	void operator ()(entityx::Entity& entity);
+	void operator()(entityx::Entity& entity);
 };

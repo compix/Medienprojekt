@@ -15,7 +15,7 @@ class RateCombination
 public:
 	RateCombination(std::initializer_list<PathRating> ratings);
 
-	bool operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum);
 
 private:
 	std::vector<PathRating> m_pathRatings;

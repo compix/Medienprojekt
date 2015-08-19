@@ -93,11 +93,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\AI\Action.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\Action.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\ActionType.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h" />
     <ClInclude Include="..\..\Source\AI\AIUtil.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
-    <ClInclude Include="..\..\Source\AI\Behaviors\MoveTo.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
@@ -115,6 +118,7 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateItem.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateKickBomb.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationState.h" />
@@ -269,12 +273,14 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\AI\Action.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\Action.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
-    <ClCompile Include="..\..\Source\AI\Behaviors\MoveTo.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
@@ -287,6 +293,7 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RateItem.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateKickBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />

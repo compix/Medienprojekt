@@ -52,6 +52,9 @@
     <Filter Include="AI\PathFinding">
       <UniqueIdentifier>{082eaa69-1bbd-4734-9f0d-b1cd66103a68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI\Actions">
+      <UniqueIdentifier>{001a2a62-c53b-45af-ac57-9d5423f01ef1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h">
@@ -521,9 +524,6 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\MoveTo.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
@@ -545,14 +545,29 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Action.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
       <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\Action.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\ActionType.h">
+      <Filter>AI\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -787,9 +802,6 @@
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\MoveTo.cpp">
-      <Filter>AI\Behaviors</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
@@ -805,11 +817,23 @@
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
       <Filter>AI\PathFinding</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Action.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
       <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp">
+      <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\Action.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp">
+      <Filter>AI\Actions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
