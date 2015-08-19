@@ -5,6 +5,8 @@
 #include "../Components/SpriteComponent.h"
 #include "../GameGlobals.h"
 #include "../EntityFactory.h"
+#include "../Components/InventoryComponent.h"
+#include "../BodyFactory.h"
 
 using namespace entityx;
 

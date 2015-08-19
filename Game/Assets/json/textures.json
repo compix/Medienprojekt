@@ -17,5 +17,6 @@
     "bombRangeBoost": "BombRangeBoost.png",
     "bomb_kick_skill": "bomb_kick_skill.png",
     "speed_multiplicator": "speed_multiplicator.png",
-    "portal_skill": "portal_skill.png"
+    "portal_skill": "portal_skill.png",
+    "anti_magnet_skill":"anti_magnet_skill.png" 
 }

@@ -17,9 +17,10 @@ namespace GameConstants
 	const float SPEED_MULTI_INC = 0.25f;	//Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
 	const bool INIT_PLAYERS_CAN_KICK = false;//Ob zu beginn Spieler bereits Bomben kicken können 
 	const bool INIT_PORTAL_SKILL = false;   //Ob zu beginn von Spielern Portale gesetzt werden können.
+	const bool INIT_ANTI_MAGNET = false;	//Ob gekickte Bomben von Beginn an von Spielern abprallen.
 
 	//Relating to Bombs
-	const int INIT_BOMB_COUNT = 8;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
+	const int INIT_BOMB_COUNT = 1;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
 	const int INIT_BOMB_RANGE = 1;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_RANGE_CAP = 7;			//Explosionsreichweite einer Bombe
