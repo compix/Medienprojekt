@@ -56,6 +56,10 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 				if (inventory->speedMultiplicator < GameConstants::SPEED_MULTI_CAP)
 					inventory->speedMultiplicator += GameConstants::SPEED_MULTI_INC;
 				break;
+			case ItemType::BOMB_RANGE_BOOST:
+				if (inventory->explosionRange < GameConstants::BOMB_RANGE_CAP)
+					++inventory->explosionRange;
+				break;
 			default: break;
 			}
 
@@ -76,19 +80,23 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 		auto cell = entity.component<CellComponent>();
 		assert(cell);
 
-		if (Random::getInt(1, 100) <= 33) // 33% Chance to spawn an item
+		if (Random::getInt(1, 100) <= 25) // 25% Chance to spawn an item
 		{
 			// TODO: Create random items taking rarity and minimum spawn number into consideration, 
 			// assigning ItemComponents with blocks during Level creation might be a good idea
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_CAP_BOOST);
 		} 
-		else if (Random::getInt(1, 100) <= 33)
+		else if (Random::getInt(1, 100) <= 25)
 		{
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_KICK_SKILL);
 		}
-		else if (Random::getInt(1, 100) <= 33)
+		else if (Random::getInt(1, 100) <= 25)
 		{
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::SPEED_MULTIPLICATOR);
+		}
+		else if (Random::getInt(1, 100) <= 25)
+		{
+			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_RANGE_BOOST);
 		}
 	}
 }
