@@ -106,6 +106,7 @@ void AISystem::logAction(LogServiceId serviceId, ActionType action, AIPath& path
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
+	return;
 
 	m_updateTimer -= dt;
 
