@@ -220,7 +220,8 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity->assign<TransformComponent>(transformComponent);
 	auto texture = createSprite("bomb");
 	entity->assign<SpriteComponent>(texture);
-	entity->assign<BombComponent>(7, GameConstants::EXPLOSION_SPREAD_TIME);
+	assert(owner.has_component<InventoryComponent>());
+	entity->assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME);
 	entity->assign<TimerComponent>(2.f);
 	entity->assign<HealthComponent>(1);
 	entity->assign<OwnerComponent>(owner);
@@ -552,6 +553,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 		entity.assign<SpriteComponent>(createSprite("speed_multiplicator"));
 		break;
 	default: break;
+	case ItemType::BOMB_RANGE_BOOST:
+		entity.assign<SpriteComponent>(createSprite("bombRangeBoost"));
+		break;
 	}
 
 	m_layerManager->add(entity);

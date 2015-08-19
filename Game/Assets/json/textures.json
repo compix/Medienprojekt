@@ -14,6 +14,7 @@
 	"player3": "player3.png",
 	"smoke": "smoke.png",
 	"bombCapBoost": "bombCapBoost.png",
+    "bombRangeBoost": "BombRangeBoost.png",
     "bomb_kick_skill": "bomb_kick_skill.png",
     "speed_multiplicator": "speed_multiplicator.png"
 }
