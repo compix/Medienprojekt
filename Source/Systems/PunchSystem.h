@@ -22,7 +22,6 @@ public:
 	~PunchSystem();
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const PunchEvent& event);
-	b2Vec2 fitEntityIntoCell(CellComponent* cellComponent);
 	void removeRenderOffset(Entity jumping_entity, ComponentHandle<JumpComponent> jump_comp, ComponentHandle<BodyComponent> body);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt);

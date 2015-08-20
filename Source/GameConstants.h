@@ -8,6 +8,7 @@ namespace GameConstants
 	const int CELL_HEIGHT = 50;
 	const int FLOOR_LAYER = -1;
 	const int MAIN_LAYER = 0;
+	const int JUMP_LAYER = 1;
 
 	//Relating to Players
 	const int MAX_PLAYERS = 4;
@@ -19,6 +20,7 @@ namespace GameConstants
 	const bool INIT_PORTAL_SKILL = false;   //Ob zu beginn von Spielern Portale gesetzt werden können.
 	const bool INIT_ANTI_MAGNET = false;	//Ob gekickte Bomben von Beginn an von Spielern abprallen.
 	const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
+	const int PUNCH_DISTANCE = 2;
 
 	//Relating to Bombs
 	const float EXPLOSION_TIMER_BOMBS = 2.f;//Zeit bis eine Bombe explodiert.
@@ -47,4 +49,5 @@ namespace GameConstants
 	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
 	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
 	const float RESET_GAME_COUNTDOWN = 2; // Seconds to wait after game over to reset the game
+	
 }

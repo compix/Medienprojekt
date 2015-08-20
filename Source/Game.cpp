@@ -86,6 +86,7 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
+	m_layerManager->createLayer(width, height, GameConstants::JUMP_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
 
 	

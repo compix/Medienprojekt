@@ -131,7 +131,6 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 {
-	/*
 	Entity* entity = createEntity();
 
 	TransformComponent transformComponent;
@@ -166,8 +165,8 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(*entity);
 
-	return *entity;*/
-	return Entity();
+	return *entity;
+
 }
 
 entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)

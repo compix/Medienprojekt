@@ -45,7 +45,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		//		GameGlobals::events->emit<CreatePortalEvent>(entity);
 			if (inventory->punchSkill)
 			{
-				GameGlobals::events->emit<PunchEvent>(entity);
+				GameGlobals::events->emit<PunchEvent>(entity, GameConstants::PUNCH_DISTANCE);
 			}
 			input->skillButtonPressed = false;
 		}

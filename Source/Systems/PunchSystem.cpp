@@ -35,23 +35,24 @@ void PunchSystem::receive(const PunchEvent& event)
 		Entity bomb;
 
 		int x = 0, y = 0;
+		int jumpDistance = event.punchDistance;
 		switch (entity.component<DirectionComponent>()->direction)
 		{
 		case Direction::UP:
 			bomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cellComponent->x, cellComponent->y - 1);
-			y = -1;
+			y = -jumpDistance;
 			break;
 		case Direction::DOWN:
 			bomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cellComponent->x, cellComponent->y + 1);
-			y = +1;
+			y = +jumpDistance;
 			break;
 		case Direction::LEFT:
 			bomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cellComponent->x - 1, cellComponent->y);
-			x = -1;
+			x = -jumpDistance;
 			break;
 		case Direction::RIGHT:
 			bomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cellComponent->x + 1, cellComponent->y);
-			x = +1;
+			x = +jumpDistance;
 			break;
 		default: break;
 		}
@@ -63,13 +64,6 @@ void PunchSystem::receive(const PunchEvent& event)
 		bomb.assign<JumpComponent>(entity.component<DirectionComponent>()->direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1,5,4);
 	}
 }
-
-b2Vec2 PunchSystem::fitEntityIntoCell(CellComponent* cellComponent)
-{
-	return b2Vec2_zero;
-}
-
-
 
 void PunchSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
@@ -85,12 +79,11 @@ void PunchSystem::update(EntityManager &entityManager, EventManager &eventManage
 
 		if (jumpComp->timePassed == jumpComp->totalTime) //Wenn am Ziel angekommen
 		{
-			
 			activateTimerForBombs(jumpingEntity);
 			activateCollisionForFlyingBodys(body);
 			removeRenderOffset(jumpingEntity, jumpComp, body);
+			jumpingEntity.component<LayerComponent>()->layer = GameConstants::MAIN_LAYER;
 			jumpingEntity.remove<JumpComponent>();
-			
 		}
 	}
 }
@@ -99,10 +92,30 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 {
 	float power = jumpComp->startVelocity, g = GameConstants::EARTH_GRAVITY;
 
+	auto blockingTile = m_layerManager->getEntityWithComponent<BodyComponent>(GameConstants::MAIN_LAYER, jumpComp->toX, jumpComp->toY);
+
+	if (blockingTile) //Reagier auf änderungen des Ziel Tiles (Ob die Bombe etwas höhwer landet oder nicht, wegen Blockierung)
+	{
+		if (jumpComp->targetIsBlocked != true)
+		{
+			jumpComp->targetIsBlocked = true;
+			jumpComp->isDegreeCalculated = false;
+		}
+	} else
+	{
+		if (jumpComp->targetIsBlocked != false)
+		{
+			jumpComp->targetIsBlocked = false;
+			jumpComp->isDegreeCalculated = false;
+		}
+	}
+
 	if (!jumpComp->isDegreeCalculated)
 	{
+		jumpingEntity.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
+
 		float x = -((jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f) - (jumpComp->toX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f));
-		float y = (jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f) - (jumpComp->toY*GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f);
+		float y = (jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f) - (jumpComp->toY*GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / (jumpComp->targetIsBlocked ? 10.f:2.f));
 
 		jumpComp->degreeX = x / (power*jumpComp->totalTime);
 		jumpComp->degreeY = (y + g / 2 * powf(jumpComp->totalTime, 2)) / (power*jumpComp->totalTime);
@@ -118,15 +131,25 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 
 	float x = power * jumpComp->degreeX * jumpComp->timePassed;
 	float y = power * jumpComp->degreeY * jumpComp->timePassed - ((g / 2.f)*powf(jumpComp->timePassed, 2));
-	/*
-	body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f + x),
-		PhysixSystem::toBox2D(jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f - y)),
-		0);
-		*/
+
 
 	if (!jumpingEntity.has_component<RenderOffsetComponent>()) //Ein versatz des Renderings, damit das eigentliche Objekt nicht aus der Map gelangt.
 	{
 		jumpingEntity.assign<RenderOffsetComponent>(x, -y);
+
+		float finalX = power * jumpComp->degreeX * jumpComp->totalTime;
+		float finalY = power * jumpComp->degreeY * jumpComp->totalTime - ((g / 2.f)*powf(jumpComp->totalTime, 2));
+
+		body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f + finalX),
+			PhysixSystem::toBox2D(jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f - finalY)),
+			0);
+
+		if (jumpingEntity.has_component<TransformComponent>())
+		{
+			auto trans = jumpingEntity.component<TransformComponent>();
+			trans->x = jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f + finalX;
+			trans->y = jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f - finalY;
+		}
 	} else
 	{
 		jumpingEntity.component<RenderOffsetComponent>()->xOffset = x;
@@ -184,9 +207,6 @@ void PunchSystem::removeRenderOffset(Entity jumping_entity, ComponentHandle<Jump
 	if (jumping_entity.has_component<RenderOffsetComponent>())
 	{
 		auto roc = jumping_entity.component<RenderOffsetComponent>();
-		body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(jump_comp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f + roc->xOffset),
-			PhysixSystem::toBox2D(jump_comp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f - roc->yOffset)),
-			0);
 		roc->remove = true;
 	}
 }
