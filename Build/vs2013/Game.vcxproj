@@ -93,16 +93,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\AI\Action.h" />
     <ClInclude Include="..\..\Source\AI\AIUtil.h" />
+    <ClInclude Include="..\..\Source\AI\Action.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\MoveTo.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h" />
-    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
@@ -144,6 +144,7 @@
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
     <ClInclude Include="..\..\Source\Components\ItemComponent.h" />
+    <ClInclude Include="..\..\Source\Components\JumpComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="..\..\Source\Components\PlayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
     <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\RenderOffsetComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
     <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PunchEvent.h" />
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\ResetGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
@@ -242,6 +245,7 @@
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\PunchSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
@@ -269,8 +273,8 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\AI\Action.cpp" />
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
+    <ClCompile Include="..\..\Source\AI\Action.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\MoveTo.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
@@ -338,6 +342,7 @@
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\PunchSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />

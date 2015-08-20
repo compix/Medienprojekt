@@ -12,6 +12,7 @@
 #include "../PhysixSystem.h"
 #include "../GameGlobals.h"
 #include "../game.h";
+#include "../Components/JumpComponent.h"
 
 
 BombKickSystem::BombKickSystem(LayerManager* layerManager)
@@ -170,7 +171,7 @@ bool BombKickSystem::fitIntoCell(SpriteComponent* spriteComponent, TransformComp
 void BombKickSystem::checkCollisionWithBomb(Entity e, Direction direction)
 {
 	{
-		if (e && e.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0){
+		if (e && e.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0 && !e.has_component<JumpComponent>()){
 			for (b2ContactEdge* edge = e.component<BodyComponent>()->body->GetContactList(); edge; edge = edge->next)
 			{
 				b2Contact* contact = edge->contact;

@@ -7,6 +7,7 @@
 #include "../Components/ShaderComponent.h"
 #include "../GameGlobals.h"
 #include "../Events/ExitEvent.h"
+#include "../Components/RenderOffsetComponent.h"
 
 RenderSystem::RenderSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
@@ -77,7 +78,19 @@ void RenderSystem::render(EntityLayer* layer)
 
 				if (sprite)
 				{
-					sprite->sprite.setPosition(transform->x, transform->y);
+					if (e.has_component<RenderOffsetComponent>())
+					{
+						auto offset = e.component<RenderOffsetComponent>();
+						sprite->sprite.setPosition(transform->x + offset->xOffset, transform->y + offset->yOffset);
+						if (offset->remove)		//Entfernt die Komponente erst nachdem die Letzte Position gesetzt wurde, verhindert das hin und her springen des Sprite
+						{
+							e.remove<RenderOffsetComponent>();
+						}
+					} else
+					{
+						sprite->sprite.setPosition(transform->x, transform->y);
+					}
+					
 					sprite->sprite.setRotation(transform->rotation);
 					sprite->sprite.setScale(transform->scaleX, transform->scaleY);
 					GameGlobals::window->draw(sprite->sprite, shader);

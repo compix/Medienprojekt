@@ -18,8 +18,10 @@ namespace GameConstants
 	const bool INIT_PLAYERS_CAN_KICK = false;//Ob zu beginn Spieler bereits Bomben kicken können 
 	const bool INIT_PORTAL_SKILL = false;   //Ob zu beginn von Spielern Portale gesetzt werden können.
 	const bool INIT_ANTI_MAGNET = false;	//Ob gekickte Bomben von Beginn an von Spielern abprallen.
+	const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
 
 	//Relating to Bombs
+	const float EXPLOSION_TIMER_BOMBS = 2.f;//Zeit bis eine Bombe explodiert.
 	const int INIT_BOMB_COUNT = 1;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
 	const int INIT_BOMB_RANGE = 1;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
@@ -38,11 +40,11 @@ namespace GameConstants
 	//Relating to AI
 	const float AI_UPDATE_TIME = 1.f / 30.f;
 
+	//Relating to JumpingSystem
+	const float EARTH_GRAVITY = 9.81f;
+
 	//Relating to timing Events
 	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
 	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
 	const float RESET_GAME_COUNTDOWN = 2; // Seconds to wait after game over to reset the game
-
-
-	
 }

@@ -131,6 +131,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 {
+	/*
 	Entity* entity = createEntity();
 
 	TransformComponent transformComponent;
@@ -165,7 +166,8 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(*entity);
 
-	return *entity;
+	return *entity;*/
+	return Entity();
 }
 
 entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
@@ -222,7 +224,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity->assign<SpriteComponent>(texture);
 	assert(owner.has_component<InventoryComponent>());
 	entity->assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME);
-	entity->assign<TimerComponent>(2.f);
+	entity->assign<TimerComponent>(GameConstants::EXPLOSION_TIMER_BOMBS);
 	entity->assign<HealthComponent>(1);
 	entity->assign<OwnerComponent>(owner);
 
