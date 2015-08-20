@@ -14,5 +14,6 @@ struct AIComponent
 
 	std::unordered_map<ActionType, ActionPtr, EnumClassHash> actions;
 	IAction* currentAction;
+	ActionType currentActionType;
 	uint8_t id;
 };

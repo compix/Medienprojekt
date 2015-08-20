@@ -128,7 +128,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 				goalReached = true;
 			break;
 		case NodeType::ITEM:
-			if (curNode->properties.isItem && !curNode->marked)
+			if (curNode->properties.hasItem && !curNode->marked)
 				goalReached = true;
 			break;
 		default:
@@ -257,9 +257,9 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 		pathOut.nodes.push_back(bestPath.nodes[i]);
 }
 
-void PathEngine::visualize()
+void PathEngine::visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties)
 {
-	m_simGraph->visualize(true, true);
+	m_simGraph->visualize(nodes, pathInfo, dangerZones, properties);
 }
 
 void PathEngine::visualize(AIPath& path)
@@ -317,6 +317,12 @@ GraphNode* PathEngine::remove(GraphNode* node, uint8_t taskNum)
 	node->prev[taskNum]->next[taskNum] = node->next[taskNum];
 	node->next[taskNum]->prev[taskNum] = node->prev[taskNum];
 	return node->prev[taskNum];
+}
+
+void PathEngine::reset()
+{
+	m_simGraph->reset();
+	m_graph->reset();
 }
 
 void PathEngine::makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum)

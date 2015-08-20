@@ -208,6 +208,10 @@ void LocalGame::resetEntities()
 	m_entities.reset();
 	m_layerManager->reset();
 	GameGlobals::events->emit<ResetGameEvent>();
+
+	if (m_systems.system<AISystem>())
+		m_systems.system<AISystem>()->reset();
+
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
 

@@ -328,9 +328,9 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner, b
 			);*/
 	}
 
-	m_layerManager->add(entity);
-
 	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
+	m_layerManager->add(entity);
+	
 	return entity;
 }
 

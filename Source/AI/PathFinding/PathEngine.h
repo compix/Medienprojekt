@@ -44,7 +44,7 @@ public:
 
 	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
 
-	void visualize();
+	void visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties);
 	void visualize(AIPath& path);
 
 	void update(float deltaTime);
@@ -52,6 +52,7 @@ public:
 	inline Graph* getGraph() const { return m_graph.get(); }
 	inline SimulationGraph* getSimGraph() const { return m_simGraph.get(); }
 
+	void reset();
 private:
 	void makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum);
 

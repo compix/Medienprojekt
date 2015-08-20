@@ -6,7 +6,8 @@ struct GraphNode;
 struct NodeProperties
 {
 	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), 
-		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), isItem(false), hasBomb(false), otherPortal(nullptr) {}
+		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), numOfItemsAffectedByExplosion(0),
+		hasItem(false), hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr) {}
 
 	bool affectedByExplosion;
 	float timeTillExplosion;
@@ -21,15 +22,16 @@ struct NodeProperties
 
 	GraphNode* otherPortal;
 
-	bool isItem;
+	bool hasItem;
 	bool hasBomb;
 	bool hasPlayer;
 	bool hasPortal;
+	bool hasBlock;
 };
 
 struct GraphNode
 {
-	GraphNode() : cost(1), valid(false), marked(false) { }
+	GraphNode() : cost(1), valid(true), marked(false) { }
 
 	uint8_t x, y;
 	uint32_t cost;

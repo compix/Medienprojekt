@@ -12,6 +12,12 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 
 	if (goal->valid && !goal->properties.hasPortal) // !node->properties.hasPortal TEMPORARY BECAUSE PORTALS ARE BUGGED
 	{
+		// If the AI can't place more bombs then it fails
+		assert(entity.has_component<InventoryComponent>());
+		auto inventory = entity.component<InventoryComponent>();
+		if (inventory->bombCount == 0)
+			return false;
+
 		if (AIUtil::isSafePath(entity, path))
 		{
 			// Bomb should affect blocks but no items
@@ -20,8 +26,6 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			float bombExploTime = goal->properties.affectedByExplosion ? goal->properties.timeTillExplosion : GameConstants::EXPLOSION_TIME;
 			bool spotAffectedByExplosion = goal->properties.affectedByExplosion;		
 
-			assert(entity.has_component<InventoryComponent>());
-			auto inventory = entity.component<InventoryComponent>();
 			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, bombExploTime);
 
 			bool blocksAffected = goal->properties.numOfBlocksAffectedByExplosion > 0;

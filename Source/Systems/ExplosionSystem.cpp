@@ -51,7 +51,7 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				{
 					// Don't create the explosion right away to avoid multiple spreading in one direction in one frame. This fixes a low fps bug with portals.
 					explosionSpreadRequests.push_back(ExplosionSpreadRequest(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime));				
-				}				
+				}
 			}
 			spread->stopped = true;
 		}

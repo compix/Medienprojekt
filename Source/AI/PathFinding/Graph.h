@@ -11,6 +11,7 @@
 #include <queue>
 #include "../../LayerManager.h"
 #include "../../GameConstants.h"
+#include <SFML/Graphics.hpp>
 
 struct NormalBomb
 {
@@ -41,9 +42,7 @@ public:
 
 	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; }
 
-	void init();
-
-	void visualize(bool nodes, bool smells);
+	void visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties);
 
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
@@ -57,9 +56,10 @@ public:
 	void resetMarks();
 
 	inline std::vector<entityx::Entity>& getAffectedBlocks() { return m_blocksAffectedByExplosion; }
+
+	void reset();
 protected:
 	void resetCosts();
-	void resetProperties();
 
 	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction);
 
@@ -72,6 +72,13 @@ protected:
 
 	std::vector<NormalBomb> m_normalBombs;
 	std::vector<entityx::Entity> m_blocksAffectedByExplosion;
+
+private:
+	// For visualization
+	sf::Font m_font;
+	sf::CircleShape m_circle;
+	sf::RectangleShape m_rect;
+	sf::Text m_text;
 };
 
 template <class T>

@@ -10,7 +10,7 @@ bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity&
 	if (!goal->valid)
 		return false;
 
-	if (goal->properties.isItem)
+	if (goal->properties.hasItem)
 	{
 		// TODO: Consider item rarity/value
 		float timePerCell = AIUtil::getTimePerCell(entity);
