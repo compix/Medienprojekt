@@ -3,7 +3,6 @@
 #include "../../Components/CellComponent.h"
 #include "RateSafety.h"
 #include "../PathFinding/SimulationGraph.h"
-#include "../../Components/DirectionComponent.h"
 #include "../../Systems/AISystem.h"
 
 RateTrapDanger::RateTrapDanger(bool willPlaceBomb)

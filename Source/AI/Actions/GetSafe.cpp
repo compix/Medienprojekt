@@ -4,7 +4,6 @@
 #include "../PathRatings/RateCombination.h"
 #include "../PathRatings/RateKickBomb.h"
 #include "../PathRatings/RateDesperateSaveAttempt.h"
-#include "ActionType.h"
 #include "../../Components/CellComponent.h"
 #include "../AIUtil.h"
 #include "../PathRatings/RateRiskySafety.h"

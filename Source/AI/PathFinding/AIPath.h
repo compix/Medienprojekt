@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "GraphNode.h"
-#include <assert.h>
 
 struct AIPath
 {

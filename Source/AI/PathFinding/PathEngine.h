@@ -1,7 +1,6 @@
 #pragma once
 #include "Graph.h"
 #include <memory>
-#include <float.h>
 #include "SimulationGraph.h"
 #include "AIPath.h"
 #include "../PathRatings/PathRating.h"
@@ -43,9 +42,6 @@ public:
 	void breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum = 0);
 
 	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
-
-	void visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties);
-	void visualize(AIPath& path);
 
 	void update(float deltaTime);
 

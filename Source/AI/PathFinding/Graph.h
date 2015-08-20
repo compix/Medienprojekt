@@ -1,17 +1,12 @@
 #pragma once
 #include "GraphNode.h"
 #include <vector>
-#include <SFML/System/Vector2.hpp>
 #include <stdint.h>
-#include <assert.h>
 #include <entityx/entityx.h>
 #include "../../EntityLayer.h"
 #include "../../Utils/Common.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <queue>
 #include "../../LayerManager.h"
 #include "../../GameConstants.h"
-#include <SFML/Graphics.hpp>
 
 struct NormalBomb
 {
@@ -26,6 +21,7 @@ struct NormalBomb
 class Graph : public EntityLayer::IOnChangeListener
 {
 	friend class PathEngine;
+	friend class AIVisualizer;
 public:
 	Graph(LayerManager* layerManager);
 	virtual ~Graph();
@@ -41,9 +37,6 @@ public:
 	void resetPathInfo(uint8_t taskNum);
 
 	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; }
-
-	void visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties);
-
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
@@ -60,9 +53,7 @@ public:
 	void reset();
 protected:
 	void resetCosts();
-
 	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction);
-
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
 protected:
@@ -72,13 +63,6 @@ protected:
 
 	std::vector<NormalBomb> m_normalBombs;
 	std::vector<entityx::Entity> m_blocksAffectedByExplosion;
-
-private:
-	// For visualization
-	sf::Font m_font;
-	sf::CircleShape m_circle;
-	sf::RectangleShape m_rect;
-	sf::Text m_text;
 };
 
 template <class T>

@@ -1,13 +1,7 @@
 #include "PathEngine.h"
 #include <queue>
-#include <unordered_map>
-#include <set>
 #include "../../Game.h"
-#include "../../Components/BombComponent.h"
-#include "../../Components/BlockComponent.h"
 #include "SimulationGraph.h"
-#include "../../Components/CellComponent.h"
-#include "../../Components/PortalComponent.h"
 #include "AIPath.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
@@ -255,28 +249,6 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 	pathOut.rating = bestPath.rating;
 	for (int i = 0; i < bestPath.nodes.size(); ++i)
 		pathOut.nodes.push_back(bestPath.nodes[i]);
-}
-
-void PathEngine::visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties)
-{
-	m_simGraph->visualize(nodes, pathInfo, dangerZones, properties);
-}
-
-void PathEngine::visualize(AIPath& path)
-{
-	sf::CircleShape circle(20);
-	circle.setOrigin(10, 10);
-
-	for (uint16_t i = 0; i < path.nodes.size(); ++i)
-	{
-		uint8_t x = path.nodes[i]->x;
-		uint8_t y = path.nodes[i]->y;
-
-		circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 5.f);
-		circle.setFillColor(sf::Color(0, 0, 255, 50));
-
-		GameGlobals::window->draw(circle);
-	}
 }
 
 void PathEngine::update(float deltaTime)

@@ -6,14 +6,10 @@
 #include "../../Components/SolidBlockComponent.h"
 #include "../../Components/CellComponent.h"
 #include "../../Components/BombComponent.h"
-#include "../../Components/LayerComponent.h"
-#include "../../Components/FloorComponent.h"
 #include "../../Components/TimerComponent.h"
 #include "../../Components/InventoryComponent.h"
-#include "../../Components/HealthComponent.h"
 #include "../../Components/PortalComponent.h"
 #include "../../Components/DestructionComponent.h"
-#include "../../Events/ExitEvent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -32,17 +28,6 @@ Graph::Graph(LayerManager* layerManager)
 
 	mainLayer->listen(this);
 	reset();
-
-	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
-	{
-		std::cout << "Failed to load font Assets/fonts/DejaVuSans.ttf" << std::endl;
-		GameGlobals::events->emit<ExitEvent>();
-		return;
-	}
-
-	m_text.setFont(m_font);
-	m_text.setCharacterSize(16);
-	m_text.setColor(sf::Color::White);
 }
 
 Graph::~Graph()
@@ -299,7 +284,8 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 
 	if (entity.has_component<InventoryComponent>())
 	{
-		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = false;
+		// There could be another player so just setting to false isn't enough
+		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = m_layerManager->hasEntityWithComponent<InventoryComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y);
 		return;
 	}
 
@@ -341,176 +327,6 @@ void Graph::resetPathInfo(uint8_t taskNum)
 		for (auto y = 0; y < m_height; ++y)
 		{
 			m_nodeGrid[x][y].state[taskNum] = GraphNode::UNVISITED;
-		}
-	}
-}
-
-void Graph::visualize(bool nodes, bool pathInfo, bool dangerZones, bool properties)
-{
-	if (!nodes && !pathInfo && !dangerZones && !properties)
-		return;
-
-	m_circle.setRadius(20.f);
-	m_circle.setOrigin(10, 10);
-	m_circle.setFillColor(sf::Color(0, 255, 0, 50));
-
-	if (properties)
-	{
-		// Draw the legend
-		m_rect.setRotation(0.f);
-		m_rect.setSize(sf::Vector2f(10, 10));
-
-		m_rect.setFillColor(sf::Color(255, 0, 0));
-		m_rect.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH, 25);
-		m_text.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH + 12, 25);
-		m_text.setString("Bomb");
-		GameGlobals::window->draw(m_rect);
-		GameGlobals::window->draw(m_text);
-
-		m_rect.setFillColor(sf::Color(0, 255, 0));
-		m_text.setString("Item");
-		m_rect.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH, 50);
-		m_text.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH + 12, 50);
-		GameGlobals::window->draw(m_rect);
-		GameGlobals::window->draw(m_text);
-
-		m_rect.setFillColor(sf::Color(0, 0, 255));
-		m_text.setString("Player");
-		m_rect.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH, 75);
-		m_text.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH + 12, 75);
-		GameGlobals::window->draw(m_rect);
-		GameGlobals::window->draw(m_text);
-
-		m_rect.setFillColor(sf::Color(255, 255, 0));
-		m_text.setString("Portal");
-		m_rect.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH, 100);
-		m_text.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH + 12, 100);
-		GameGlobals::window->draw(m_rect);
-		GameGlobals::window->draw(m_text);
-
-		m_rect.setFillColor(sf::Color(139, 69, 19));
-		m_text.setString("Block");
-		m_rect.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH, 125);
-		m_text.setPosition(m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH + 12, 125);
-		GameGlobals::window->draw(m_rect);
-		GameGlobals::window->draw(m_text);
-	}
-
-	for (auto x = 1; x < m_width - 1; ++x)
-	{
-		for (auto y = 1; y < m_height - 1; ++y)
-		{
-			auto& node = m_nodeGrid[x][y];
-
-			m_circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
-
-			if (nodes && node.valid)
-			{
-				m_circle.setFillColor(sf::Color(0, 255, 0, 40));
-				GameGlobals::window->draw(m_circle);
-			}
-
-			m_circle.setFillColor(sf::Color(0, 255, 0, 50));
-
-			if (pathInfo && node.valid)
-			{
-				switch (node.state[0])
-				{
-				case GraphNode::UNVISITED:
-					m_circle.setFillColor(sf::Color(0, 255, 0, 50));
-					break;
-				case GraphNode::OPEN:
-					m_circle.setFillColor(sf::Color(255, 255, 0, 50));
-					break;
-				case GraphNode::CLOSED:
-					m_circle.setFillColor(sf::Color(255, 0, 255, 50));
-					break;
-				default: break;
-				}
-
-				m_rect.setSize(sf::Vector2f(2, GameConstants::CELL_HEIGHT));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 13.f);
-
-				if (hasNeighbor(&node, Direction::LEFT))
-				{
-					m_rect.setRotation(90);
-					GameGlobals::window->draw(m_rect);
-				}
-
-				if (hasNeighbor(&node, Direction::RIGHT))
-				{
-					m_rect.setRotation(-90);
-					GameGlobals::window->draw(m_rect);
-				}
-
-				if (hasNeighbor(&node, Direction::UP))
-				{
-					m_rect.setRotation(180);
-					GameGlobals::window->draw(m_rect);
-				}
-
-				if (hasNeighbor(&node, Direction::DOWN))
-				{
-					m_rect.setRotation(0);
-					GameGlobals::window->draw(m_rect);
-				}
-
-				GameGlobals::window->draw(m_circle);
-			}
-
-
-			if (dangerZones && node.properties.affectedByExplosion)
-			{
-				m_circle.setFillColor(sf::Color(100 * node.properties.timeTillExplosion, 0, 0, 150));
-				GameGlobals::window->draw(m_circle);
-			}
-
-			if (properties)
-			{
-				m_rect.setRotation(0.f);
-
-				int propertyNum = 0;
-				m_rect.setSize(sf::Vector2f(5, GameConstants::CELL_HEIGHT));
-				if (node.properties.hasBomb)
-				{	
-					m_rect.setFillColor(sf::Color(255, 0, 0));
-					m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
-					GameGlobals::window->draw(m_rect);
-					propertyNum++;
-				}
-
-				if (node.properties.hasItem)
-				{
-					m_rect.setFillColor(sf::Color(0, 255, 0));
-					m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
-					GameGlobals::window->draw(m_rect);
-					propertyNum++;
-				}
-
-				if (node.properties.hasPlayer)
-				{
-					m_rect.setFillColor(sf::Color(0, 0, 255));
-					m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
-					GameGlobals::window->draw(m_rect);
-					propertyNum++;
-				}
-
-				if (node.properties.hasPortal)
-				{
-					m_rect.setFillColor(sf::Color(255, 255, 0));
-					m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
-					GameGlobals::window->draw(m_rect);
-					propertyNum++;
-				}
-
-				if (node.properties.hasBlock)
-				{
-					m_rect.setFillColor(sf::Color(139, 69, 19));
-					m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
-					GameGlobals::window->draw(m_rect);
-					propertyNum++;
-				}
-			}
 		}
 	}
 }

@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\Source\AI\Actions\ActionType.h" />
     <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h" />
     <ClInclude Include="..\..\Source\AI\AIUtil.h" />
+    <ClInclude Include="..\..\Source\AI\AIVisualizer.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp" />
     <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
+    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />

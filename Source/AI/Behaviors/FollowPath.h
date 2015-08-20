@@ -1,7 +1,6 @@
 #pragma once
 #include "Behavior.h"
 #include "../PathFinding/PathEngine.h"
-#include <stdint.h>
 
 class FollowPath
 {

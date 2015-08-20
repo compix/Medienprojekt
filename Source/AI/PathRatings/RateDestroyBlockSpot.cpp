@@ -1,6 +1,5 @@
 #include "RateDestroyBlockSpot.h"
 #include "../../GameConstants.h"
-#include "../../Components/BlockComponent.h"
 #include "RateSafety.h"
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"

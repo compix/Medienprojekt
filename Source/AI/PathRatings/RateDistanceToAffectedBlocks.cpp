@@ -1,6 +1,5 @@
 #include "RateDistanceToAffectedBlocks.h"
 #include "../../Components/CellComponent.h"
-#include "../../Components/ItemComponent.h"
 #include "../../Game.h"
 
 bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)

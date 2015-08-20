@@ -1,5 +1,4 @@
 #pragma once
-#include <cinttypes>
 #include <entityx/Entity.h>
 
 struct AIPath;

@@ -569,6 +569,9 @@
     <ClInclude Include="..\..\Source\AI\Actions\ActionType.h">
       <Filter>AI\Actions</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\AIVisualizer.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp">
@@ -834,6 +837,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp">
       <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

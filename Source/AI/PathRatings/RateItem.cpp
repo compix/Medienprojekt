@@ -1,5 +1,4 @@
 #include "RateItem.h"
-#include "../../GameConstants.h"
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <cinttypes>
 #include "../PathFinding/PathEngine.h"
 
 struct GraphNode;

@@ -1,8 +1,4 @@
 #include "SimulationGraph.h"
-#include "../../Components/ItemComponent.h"
-#include "../../Components/BlockComponent.h"
-#include "../../Components/HealthComponent.h"
-#include "../../Components/BombComponent.h"
 
 void SimulationGraph::update(float deltaTime)
 {
