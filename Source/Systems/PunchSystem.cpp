@@ -9,7 +9,8 @@
 #include "../PhysixSystem.h"
 #include "../Components/TimerComponent.h"
 #include "../Components/RenderOffsetComponent.h"
-#include "../Components/BlockComponent.h"
+#include "../GameGlobals.h"
+#include "../Game.h"
 
 PunchSystem::PunchSystem(LayerManager* layerManager)
 {
@@ -126,7 +127,7 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 	bool targetBlocked = false;
 	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
 	{
-		if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){
+		if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){ //Wenn ein Hindernis auﬂer die Bombe selbst es Blockiert
 			targetBlocked = true;
 			break;
 		}
@@ -135,15 +136,25 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 	if (!entitiesOnTarget.empty() && targetBlocked) //Reagier auf ‰nderungen des Ziel Tiles (Ob die Bombe etwas hˆher landet oder nicht, wegen Blockierung)
 	{
 			jumpComp->targetIsBlocked = true;
-			jumpComp->isDegreeCalculated = false;
+			if (jumpComp->targetIsBlocked != jumpComp->targetWasBlocked)
+			{
+				jumpComp->targetWasBlocked = jumpComp->targetIsBlocked;
+				jumpComp->isDegreeCalculated = false;
+			}
+			
 		
 	} else
 	{
 			jumpComp->targetIsBlocked = false;
-			jumpComp->isDegreeCalculated = false;
+			if (jumpComp->targetIsBlocked != jumpComp->targetWasBlocked)
+			{
+				jumpComp->targetWasBlocked = jumpComp->targetIsBlocked;
+				jumpComp->isDegreeCalculated = false;
+			}
 	}
-	int i = 0;
- 	if (true)
+
+
+	if (!jumpComp->isDegreeCalculated)
 	{
 		//jumpingEntity.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
 
@@ -173,21 +184,46 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 		float finalX = power * jumpComp->degreeX * jumpComp->totalTime;
 		float finalY = power * jumpComp->degreeY * jumpComp->totalTime - ((g / 2.f)*powf(jumpComp->totalTime, 2));
 
-		float xPos = jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f + finalX;
-		float yPos = jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f + finalY;
-
-			body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(xPos),
-			PhysixSystem::toBox2D(yPos)),
-			0);
-
-		if (jumpingEntity.has_component<TransformComponent>())
-		{
-			auto trans = jumpingEntity.component<TransformComponent>();
-			trans->x = xPos;
-			trans->y = yPos;
-		}
+		
 	} else
 	{
+		if (jumpComp->timePassed > jumpComp->totalTime/2.f)
+		{
+			if (jumpComp->toX >= GameGlobals::game->getWidth() - 1){
+				jumpComp->toX = 1;
+				jumpComp->fromX = 0;
+			}
+
+			if (jumpComp->toX <= 0){
+				jumpComp->toX = GameGlobals::game->getWidth() - 2;
+				jumpComp->fromX = GameGlobals::game->getWidth() - 1;
+			}
+
+			if (jumpComp->toY >= GameGlobals::game->getHeight() - 1){
+				jumpComp->toY = 1;
+				jumpComp->fromY = 0;
+			}
+
+			if (jumpComp->toY <= 0){
+				jumpComp->toY = GameGlobals::game->getHeight() - 2;
+				jumpComp->fromY = GameGlobals::game->getHeight() - 1;
+			}
+
+			float xPos = jumpComp->toX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f;
+			float yPos = jumpComp->toY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f;
+
+			body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(xPos),
+				PhysixSystem::toBox2D(yPos)),
+				0);
+
+			if (jumpingEntity.has_component<TransformComponent>())
+			{
+				auto trans = jumpingEntity.component<TransformComponent>();
+				trans->x = xPos;
+				trans->y = yPos;
+			}
+		}
+
 		jumpingEntity.component<RenderOffsetComponent>()->xOffset = x;
 		jumpingEntity.component<RenderOffsetComponent>()->yOffset = -y;
 	}

@@ -48,13 +48,10 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		auto cellComponent = bombs.component<CellComponent>();
 		auto layerComponent = bombs.component<LayerComponent>();
 
-		const int cellDistance = 1;
 
-		Entity leftWall;
-		Entity downWall;
-		Entity rightWall;
-		Entity upWall;
-		if (cellComponent->x != 0){
+
+
+		/*if (cellComponent->x != 0){
 			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
 		}
 		if (cellComponent->y < GameGlobals::game->getHeight()){
@@ -65,12 +62,22 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		}
 		if (cellComponent->y != 0){
 			upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
-		}
+		}*/
 
 		b2Body* body = bombs.component<BodyComponent>()->body;
 		b2Vec2 velo = body->GetLinearVelocity();
 
 		if (velo.Length() != 0){ // Wenn Geschwindigkeits Vektorlänge nicht null ist, also sich bewegt.
+
+			const int cellDistance = 1;
+			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
+
+			auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + cellDistance);
+
+			auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + cellDistance, cellComponent->y);
+
+			auto upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
+
 			if (velo.y < 0)
 			{
 				if (hasAntiMagnet(upWall))
