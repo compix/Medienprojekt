@@ -1,14 +1,10 @@
 #pragma once
 #include "GraphNode.h"
 #include <vector>
-#include <SFML/System/Vector2.hpp>
 #include <stdint.h>
-#include <assert.h>
 #include <entityx/entityx.h>
 #include "../../EntityLayer.h"
 #include "../../Utils/Common.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <queue>
 #include "../../LayerManager.h"
 #include "../../GameConstants.h"
 
@@ -25,6 +21,7 @@ struct NormalBomb
 class Graph : public EntityLayer::IOnChangeListener
 {
 	friend class PathEngine;
+	friend class AIVisualizer;
 public:
 	Graph(LayerManager* layerManager);
 	virtual ~Graph();
@@ -40,19 +37,11 @@ public:
 	void resetPathInfo(uint8_t taskNum);
 
 	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; }
-
-	void init();
-
-	void visualize(bool nodes, bool smells);
-
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
 
-	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime = 0.f);
-	void removeBomb(uint8_t x, uint8_t y, uint8_t range);
-
-	void timeTravel(float seconds, float t);
+	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime);
 
 	template<class T>
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
@@ -60,11 +49,13 @@ public:
 	void resetMarks();
 
 	inline std::vector<entityx::Entity>& getAffectedBlocks() { return m_blocksAffectedByExplosion; }
+
+	void reset();
 protected:
 	void resetCosts();
-	void resetProperties();
+	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction);
+	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
-	virtual void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime = 0.f);
 protected:
 	uint8_t m_width, m_height;
 	GraphNode** m_nodeGrid;

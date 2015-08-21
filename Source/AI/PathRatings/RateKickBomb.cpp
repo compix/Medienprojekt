@@ -1,37 +1,33 @@
 #include "RateKickBomb.h"
+#include "../../Components/InventoryComponent.h"
 
-RateKickBomb::RateKickBomb(entityx::Entity& entity)
-	:m_entity(entity)
+bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
-}
-
-bool RateKickBomb::operator()(PathEngine* pathEngine, GraphNode* node, AIPath& pathOut, uint8_t taskNum)
-{
+	auto goal = path.goal();
 	auto graph = pathEngine->getGraph();	
 
-	// Check if the neighbor has a bomb and if the bomb can be kicked in that direction
-	for (int i = 0; i < 4; ++i)
+	if (!goal->properties.hasBomb || path.nodes.size() < 2)
+		return false;
+
+	auto inventory = entity.component<InventoryComponent>();
+	assert(inventory);
+	if (!inventory->bombKick)
+		return false;
+
+	// Check if the the bomb can be kicked
+	auto prevNode = path.nodes[path.nodes.size() - 2];
+	int dx = static_cast<int>(goal->x) - static_cast<int>(prevNode->x);
+	int dy = static_cast<int>(goal->y) - static_cast<int>(prevNode->y);
+
+	Direction kickDirection = CommonUtil::toDirection(dx, dy);
+
+	auto neighbor = graph->getNeighbor(goal, kickDirection);
+
+	if (neighbor && neighbor->valid && !neighbor->properties.hasPlayer)
 	{
-		Direction dir = static_cast<Direction>(i);
-		auto neighbor = graph->getNeighbor(node, dir);
-
-		if (neighbor->properties.hasBomb)
-		{
-			int dx = static_cast<int>(neighbor->x) - static_cast<int>(node->x);
-			int dy = static_cast<int>(neighbor->y) - static_cast<int>(node->y);
-
-			Direction kickDirection = CommonUtil::toDirection(dx, dy);
-
-			auto neighborOfNeighbor = graph->getNeighbor(neighbor, kickDirection);
-
-			if (neighborOfNeighbor->valid && !neighborOfNeighbor->properties.hasPlayer)
-			{
-				pathEngine->makePath(pathOut, node, taskNum);
-				pathOut.nodes.push_back(neighbor);
-				pathOut.rating = neighbor->properties.hasPlayer ? 0.5f : 1.f;
-				return true;
-			}
-		}
+		// Kicking a bomb with a player on it is risky -> he could move to make kicking the bomb impossible
+		path.rating = goal->properties.hasPlayer ? 0.5f : 1.f;
+		return true;
 	}
 
 	return false;

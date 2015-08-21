@@ -75,27 +75,35 @@ void PortalSystem::update(entityx::EntityManager& entityManager, entityx::EventM
 			auto cell = linkedPortal.component<CellComponent>();
 			if (!e.has_component<PortalMarkerComponent>() && !e.has_component<PortalComponent>())
 			{
+				// There is a bomb on the other portal -> teleportation not possible so add a marker
 				if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
 				{
 					e.assign<PortalMarkerComponent>(portal.id());
 					continue;
 				}
 					
-				if (e.has_component<BodyComponent>())
-				{
-					e.component <BodyComponent>()->body->SetTransform(fitEntityIntoCell(linkedPortal.component<CellComponent>().get()), 0);
-				}
-				else
-				{
-					
-					e.component<TransformComponent>()->x = GameConstants::CELL_WIDTH * cell->x + GameConstants::CELL_WIDTH*0.5f;
-					e.component<TransformComponent>()->y = GameConstants::CELL_HEIGHT * cell->y + GameConstants::CELL_HEIGHT*0.5f;
-				}
-
-				e.assign<PortalMarkerComponent>(linkedPortal.id()); //Marker wird zum gegenstück erstellt, da die Entity sich schon dort befindet.
+				teleport(e, cell->x, cell->y);
+				e.assign<PortalMarkerComponent>(linkedPortal.id()); // Marker wird zum Gegenstück erstellt, da die Entity sich schon dort befindet.
 			}
 		}
 	}
+}
+
+void PortalSystem::teleport(entityx::Entity& entity, uint8_t cellX, uint8_t cellY)
+{
+	assert(entity.has_component<TransformComponent>());
+
+	auto transform = entity.component<TransformComponent>();
+	transform->x = GameConstants::CELL_WIDTH * cellX  + GameConstants::CELL_WIDTH  * 0.5f;
+	transform->y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT * 0.5f;
+
+	if (entity.has_component<BodyComponent>())
+	{
+		auto body = entity.component<BodyComponent>()->body;
+		body->SetTransform(PhysixSystem::toBox2D(transform->x, transform->y), 0);
+	}
+
+	m_layerManager->updateCell(entity);
 }
 
 void PortalSystem::receive(const TimeoutEvent& timeoutEvent)
@@ -139,10 +147,4 @@ void PortalSystem::receive(const CreatePortalEvent& event)
 		entity.assign<PortalMarkerComponent>(newPortal.id());
 	}
 }
-
-b2Vec2 PortalSystem::fitEntityIntoCell(CellComponent* cellComponent)
-{
-	return b2Vec2(PhysixSystem::toBox2D((cellComponent->x + 1)*((float)GameConstants::CELL_WIDTH) - (float)GameConstants::CELL_WIDTH / 2), PhysixSystem::toBox2D((cellComponent->y + 1)*((float)GameConstants::CELL_HEIGHT) - (float)GameConstants::CELL_HEIGHT / 2));
-}
-
 

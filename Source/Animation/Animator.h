@@ -7,18 +7,10 @@
 #include <typeinfo>
 #include <typeindex>
 #include "../Utils/AssetManagement/Assets.h"
+#include "../Utils/Common.h"
 
 enum class AnimationType : uint8_t;
 class AnimationState;
-
-struct EnumClassHash
-{
-    template <typename T>
-    std::size_t operator()(T t) const
-    {
-        return static_cast<std::size_t>(t);
-    }
-};
 
 class AnimationInfo
 {

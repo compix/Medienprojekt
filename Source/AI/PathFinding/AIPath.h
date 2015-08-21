@@ -4,17 +4,18 @@
 
 struct AIPath
 {
-	AIPath() : cost(0), rating(-FLT_MAX) {}
+	AIPath() : cost(0), rating(-FLT_MAX), curNode(0) {}
 
-	inline void attach(AIPath& path)
-	{
-		for (int i = 0; i < nodes.size(); ++i)
-			nodes.push_back(path.nodes[i]);
-		cost += path.cost;
-	}
+	void attach(AIPath& path);
+
+	inline bool reachedGoal() { return curNode == nodes.size() - 1; }
+	inline GraphNode* goal() { return nodes.size() > 0 ? nodes[nodes.size() - 1] : nullptr; }
+	inline GraphNode* first() { return nodes.size() > 0 ? nodes[0] : nullptr; }
+	inline void resetRating() { rating = -FLT_MAX; }
 
 	std::vector<GraphNode*> nodes;
 	uint16_t cost;
+	uint16_t curNode;
 
 	// How good is the path? Higher values = better path
 	float rating;

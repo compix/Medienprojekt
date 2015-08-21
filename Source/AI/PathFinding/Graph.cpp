@@ -6,18 +6,14 @@
 #include "../../Components/SolidBlockComponent.h"
 #include "../../Components/CellComponent.h"
 #include "../../Components/BombComponent.h"
-#include "../../Components/LayerComponent.h"
-#include "../../Components/FloorComponent.h"
 #include "../../Components/TimerComponent.h"
 #include "../../Components/InventoryComponent.h"
-#include "../../Components/HealthComponent.h"
 #include "../../Components/PortalComponent.h"
 #include "../../Components/DestructionComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
 {
-	
 	auto mainLayer = m_layerManager->getLayer(GameConstants::MAIN_LAYER);
 	
 	m_width = mainLayer->getWidth();
@@ -31,6 +27,7 @@ Graph::Graph(LayerManager* layerManager)
 	}
 
 	mainLayer->listen(this);
+	reset();
 }
 
 Graph::~Graph()
@@ -43,55 +40,32 @@ Graph::~Graph()
 	delete[] m_nodeGrid;
 }
 
-void Graph::timeTravel(float seconds, float t)
-{
-	resetCosts();
-	resetProperties();
-	m_normalBombs.clear();
-
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
-	{	
-		auto bombComponent = bomb.component<BombComponent>();
-		auto timerComponent = bomb.component<TimerComponent>();
-		auto cell = bomb.component<CellComponent>();
-
-		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
-		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
-	}
-
-	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
-
-	// Go through all explosion components and simulate the explosion.
-	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
-	{
-		auto cell = explosion.component<CellComponent>();
-		auto spread = explosion.component<SpreadComponent>();
-
-		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, seconds);
-	}
-
-	for (auto bomb : m_normalBombs)
-	{
-		float exploTime = bomb.explosionTime;
-		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
-			exploTime = m_nodeGrid[bomb.x][bomb.y].properties.timeTillExplosion;
-
-		placeBomb(bomb.x, bomb.y, bomb.range, exploTime, seconds);
-	}
-
-	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
-	{
-		auto cell = item.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
-	}
-}
-
 void Graph::update(float deltaTime)
 {
 	resetCosts();
-	resetProperties();
 	m_normalBombs.clear();
 	m_blocksAffectedByExplosion.clear();
+
+	// Reset affectedByExplosion property
+	for (auto x = 1; x < m_width - 1; ++x)
+	{
+		for (auto y = 1; y < m_height - 1; ++y)
+		{
+			m_nodeGrid[x][y].properties.affectedByExplosion = false;
+		}
+	}
+
+	// Link portals
+	for (auto portal : GameGlobals::entities->entities_with_components<CellComponent, PortalComponent>())
+	{	
+		auto portalComponent = portal.component<PortalComponent>();
+		if (portalComponent->otherPortal)
+		{
+			auto cell = portal.component<CellComponent>();
+			auto otherCell = portalComponent->otherPortal.component<CellComponent>();
+			m_nodeGrid[cell->x][cell->y].properties.otherPortal = &m_nodeGrid[otherCell->x][otherCell->y];
+		}
+	}
 
 	for (auto dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
 	{
@@ -103,13 +77,13 @@ void Graph::update(float deltaTime)
 		m_blocksAffectedByExplosion.push_back(dieingBlock);
 	}
 
-	for (auto bomb : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
+	for (auto bombEntity : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
 	{
-		auto bombComponent = bomb.component<BombComponent>();
-		auto timerComponent = bomb.component<TimerComponent>();
-		auto cell = bomb.component<CellComponent>();
+		auto bombComponent = bombEntity.component<BombComponent>();
+		auto timerComponent = bombEntity.component<TimerComponent>();
+		auto cell = bombEntity.component<CellComponent>();
 
-		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
+		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
 	}
 
@@ -129,7 +103,7 @@ void Graph::update(float deltaTime)
 		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
 	}
 
-	for (auto bomb : m_normalBombs)
+	for (auto& bomb : m_normalBombs)
 	{
 		float exploTime = bomb.explosionTime;
 		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
@@ -137,96 +111,70 @@ void Graph::update(float deltaTime)
 
 		placeBomb(bomb.x, bomb.y, bomb.range, exploTime);
 	}
-
-	for (auto item : GameGlobals::entities->entities_with_components<ItemComponent, CellComponent>())
-	{
-		auto cell = item.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.isItem = true;
-	}
-
-	for (auto player : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
-	{
-		auto cell = player.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = true;
-	}
-
-	// Duplicate explosion on portals
-	for (auto portal : GameGlobals::entities->entities_with_components<PortalComponent, CellComponent>())
-	{
-		auto cell = portal.component<CellComponent>();
-		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
-
-		if (m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion)
-		{
-			auto portalComponent = portal.component<PortalComponent>();
-			if (portalComponent->otherPortal.valid())
-			{
-				auto otherCell = portalComponent->otherPortal.component<CellComponent>();
-				m_nodeGrid[otherCell->x][otherCell->y].properties.affectedByExplosion = true;
-				m_nodeGrid[otherCell->x][otherCell->y].properties.timeTillExplosion = m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion;
-			}
-		}
-	}
 }
 
-void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, float futureTime)
+void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction)
 {
-	float futureExplosionTime = explosionTime + range * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
-
-	if (futureExplosionTime <= 0.f)
-		return;
-
 	auto currentNode = getNode(x, y);
-	float currentExplosionTime = currentNode->properties.timeTillExplosion;
-	futureExplosionTime = explosionTime - futureTime;
-	currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-	currentNode->properties.affectedByExplosion = true;
+	setOnFire(x, y, explosionTime);
 
 	// Simulate the explosion:
 	for (int j = 0; j < range; ++j)
 	{
 		currentNode = getNeighbor(currentNode, direction);
-		futureExplosionTime = explosionTime + (j + 1) * GameConstants::EXPLOSION_SPREAD_TIME - futureTime;
-		currentExplosionTime = currentNode->properties.timeTillExplosion;
+		if (!currentNode)
+			continue;
+
+		explosionTime += GameConstants::EXPLOSION_SPREAD_TIME;
 
 		if (currentNode->valid)
-		{				
-			currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-			currentNode->properties.affectedByExplosion = true;
-
-			if (m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+		{			
+			setOnFire(currentNode->x, currentNode->y, explosionTime);
+			if (currentNode->properties.hasItem)
 			{
 				m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+				break; // Items stop explosions.
 			}
 		}
 		else
 		{
-			if (m_layerManager->hasEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
+			if (currentNode->properties.hasBlock)
 			{
 				if (currentNode->properties.affectedByExplosion)
 					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
 
+				setOnFire(currentNode->x, currentNode->y, explosionTime);
 				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
-				currentNode->properties.affectedByExplosion = true;
 				auto block = m_layerManager->getEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
 				if (block.valid())
 					m_blocksAffectedByExplosion.push_back(block);
-
-				break;
 			}
 
-			if (m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y))
-			{
-				currentNode->properties.timeTillExplosion = currentNode->properties.affectedByExplosion ? std::min(futureExplosionTime, currentExplosionTime) : futureExplosionTime;
-				currentNode->properties.affectedByExplosion = true;
-			}
-			else
-				break;
+			// Doesn't really matter what else it is (might be a bomb for example). Just make it burn even if it's a solid block.
+			setOnFire(currentNode->x, currentNode->y, explosionTime);
+
+			// Explosion was stopped so get outta here.
+			break;
 		}
 	}
 }
 
-void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, float futureTime)
+void Graph::setOnFire(uint8_t x, uint8_t y, float explosionTime)
+{
+	auto& node = m_nodeGrid[x][y];
+	float currentExplosionTime = node.properties.timeTillExplosion;
+	node.properties.timeTillExplosion = node.properties.affectedByExplosion ? std::min(explosionTime, currentExplosionTime) : explosionTime;
+	node.properties.affectedByExplosion = true;
+
+	// Duplicate the explosion on connected portals
+	if (node.properties.otherPortal)
+	{
+		node.properties.otherPortal->properties.timeTillExplosion = node.properties.timeTillExplosion;
+		node.properties.otherPortal->properties.affectedByExplosion = true;
+	}
+}
+
+void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime)
 {	
 	auto currentNode = getNode(x, y);
 	currentNode->properties.numOfBlocksAffectedByExplosion = 0;
@@ -236,30 +184,7 @@ void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, 
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, explosionTime, direction, futureTime);
-	}
-}
-
-void Graph::removeBomb(uint8_t x, uint8_t y, uint8_t range)
-{
-	// Reverse the explosion simulation
-	for (int i = 0; i < 4; ++i) // Go in all directions
-	{
-		Direction currentNeighbor = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		auto currentNode = getNode(x, y);
-		currentNode->properties.affectedByExplosion = false;
-
-		for (int j = 0; j < range; ++j)
-		{
-			currentNode = getNeighbor(currentNode, currentNeighbor);
-
-			if (currentNode->valid)
-			{
-				currentNode->properties.affectedByExplosion = false;
-			}
-			else
-				break;
-		}
+		explosionSpread(x, y, range, explosionTime, direction);
 	}
 }
 
@@ -275,6 +200,18 @@ void Graph::resetMarks()
 }
 
 
+void Graph::reset()
+{
+	for (auto x = 0; x < m_width; ++x)
+	{
+		for (auto y = 0; y < m_height; ++y)
+		{
+			m_nodeGrid[x][y] = GraphNode();
+			m_nodeGrid[x][y].x = x;
+			m_nodeGrid[x][y].y = y;
+		}
+	}
+}
 
 void Graph::resetCosts()
 {
@@ -287,26 +224,9 @@ void Graph::resetCosts()
 	}
 }
 
-void Graph::resetProperties()
-{
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			m_nodeGrid[x][y].properties.affectedByExplosion = false;
-			m_nodeGrid[x][y].properties.isItem = false;
-			m_nodeGrid[x][y].properties.hasBomb = false;
-			m_nodeGrid[x][y].properties.hasPlayer = false;
-			m_nodeGrid[x][y].properties.hasPortal = false;
-			//m_nodeGrid[x][y].properties.marked = false;
-		}
-	}
-}
-
 void Graph::addNode(uint8_t x, uint8_t y)
 {
-	if (x < 1 || x > m_width - 2 || y < 1 || y > m_height - 2)
-		return;
+	assert(x < m_width && y < m_height);
 
 	auto& node = m_nodeGrid[x][y];
 	node.valid = true;
@@ -316,37 +236,91 @@ void Graph::addNode(uint8_t x, uint8_t y)
 
 void Graph::removeNode(uint8_t x, uint8_t y)
 {
-	if (x < 1 || x > m_width - 2 ||y < 1 || y > m_height - 2)
-		return;
-
+	assert(x < m_width && y < m_height);
 	m_nodeGrid[x][y].valid = false;
 }
 
 void Graph::onEntityAdded(entityx::Entity& entity)
 {
 	assert(entity.has_component<CellComponent>());
+	auto cell = entity.component<CellComponent>();
+
+	if (entity.has_component<InventoryComponent>())
+	{
+		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = true;
+		return;
+	}
 
 	if (entity.has_component<BombComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
 		removeNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
+		return;
 	}
 
 	if (entity.has_component<ItemComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.hasItem = true;
+		return;
 	}
+
+	if (entity.has_component<PortalComponent>())
+	{
+		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
+	}
+
+	if (entity.has_component<BlockComponent>())
+	{
+		removeNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasBlock = true;
+		return;
+	}
+
+	if (entity.has_component<SolidBlockComponent>())
+		removeNode(cell->x, cell->y);
 }
 
 void Graph::onEntityRemoved(entityx::Entity& entity)
 {
 	assert(entity.has_component<CellComponent>());
+	auto cell = entity.component<CellComponent>();
 
-	if (entity.has_component<BlockComponent>() || entity.has_component<BombComponent>())
+	if (entity.has_component<InventoryComponent>())
 	{
-		auto cell = entity.component<CellComponent>();
-		addNode(cell->x, cell->y);
+		// There could be another player so just setting to false isn't enough
+		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = m_layerManager->hasEntityWithComponent<InventoryComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y);
+		return;
 	}
+
+	if (entity.has_component<BombComponent>())
+	{
+		addNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasBomb = false;
+		return;
+	}
+	
+	if (entity.has_component<ItemComponent>())
+	{
+		m_nodeGrid[cell->x][cell->y].properties.hasItem = false;
+		return;
+	}
+
+	if (entity.has_component<PortalComponent>())
+	{
+		m_nodeGrid[cell->x][cell->y].properties.hasPortal = false;
+		m_nodeGrid[cell->x][cell->y].properties.otherPortal = nullptr;
+		return;
+	}
+
+	if (entity.has_component<BlockComponent>())
+	{
+		addNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasBlock = false;
+		return;
+	}
+
+	if (entity.has_component<SolidBlockComponent>())
+		addNode(cell->x, cell->y);
 }
 
 void Graph::resetPathInfo(uint8_t taskNum)
@@ -360,124 +334,33 @@ void Graph::resetPathInfo(uint8_t taskNum)
 	}
 }
 
-void Graph::init()
-{
-	auto mainLayer = m_layerManager->getLayer(GameConstants::MAIN_LAYER);
-
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			auto& entities = mainLayer->get(x, y);
-			bool free = true;
-			m_nodeGrid[x][y].valid = false;
-			m_nodeGrid[x][y].x = x;
-			m_nodeGrid[x][y].y = y;
-
-			for (auto& e : entities)
-				if (e.component<BlockComponent>() || e.component<SolidBlockComponent>())
-					free = false;
-
-			if (free)
-				addNode(x, y);
-		}
-	}
-}
-
-void Graph::visualize(bool nodes, bool smells)
-{
-	if (nodes)
-	{
-		sf::CircleShape circle(20);
-		circle.setOrigin(10, 10);
-		circle.setFillColor(sf::Color(0, 255, 0, 50));
-
-		sf::RectangleShape rect(sf::Vector2f(2, GameConstants::CELL_HEIGHT));
-		rect.setFillColor(sf::Color(0, 255, 0, 40));
-
-		for (auto x = 0; x < m_width; ++x)
-		{
-			for (auto y = 0; y < m_height; ++y)
-			{
-				auto& node = m_nodeGrid[x][y];
-				if (!node.valid)
-					continue;
-
-				circle.setFillColor(sf::Color(0, 255, 0, 50));
-
-				if (node.properties.affectedByExplosion)
-					circle.setFillColor(sf::Color(100 * node.properties.timeTillExplosion, 0, 0, 100));
-				else
-					continue;
-
-				/*
-				switch (node.state)
-				{
-				case GraphNode::UNVISITED:
-					circle.setFillColor(sf::Color(0, 255, 0, 50));
-					break;
-				case GraphNode::OPEN:
-					circle.setFillColor(sf::Color(255, 255, 0, 50));
-					break;
-				case GraphNode::CLOSED:
-					circle.setFillColor(sf::Color(255, 0, 0, 50));
-					break;
-				default: break;
-				}*/
-
-				
-				circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
-				rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 13.f);
-
-				/*
-				if (hasNeighbor(&node, Direction::LEFT))
-				{
-					rect.setRotation(90);
-					GameGlobals::window->draw(rect);
-				}
-
-				if (hasNeighbor(&node, Direction::RIGHT))
-				{
-					rect.setRotation(-90);
-					GameGlobals::window->draw(rect);
-				}
-
-				if (hasNeighbor(&node, Direction::UP))
-				{
-					rect.setRotation(180);
-					GameGlobals::window->draw(rect);
-				}
-
-				if (hasNeighbor(&node, Direction::DOWN))
-				{
-					rect.setRotation(0);
-					GameGlobals::window->draw(rect);
-				}
-				*/
-
-				GameGlobals::window->draw(circle);
-			}
-		}
-	}
-}
-
 GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
-	assert(node->x > 0 && node->x < m_width - 1 && node->y > 0 && node->y < m_height - 1);
-
 	GraphNode* portalNode;
 	switch (neighbor)
 	{
 	case Direction::LEFT:
+		if (node->x == 0)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x - 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x - 1][node->y];
 	case Direction::RIGHT:
+		if (node->x == m_width - 1)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x + 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x + 1][node->y];
 	case Direction::UP:
+		if (node->y == 0)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x, node->y - 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y - 1];
 	case Direction::DOWN:
+		if (node->y == m_height - 1)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x, node->y + 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
@@ -488,21 +371,14 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 
 bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 {
-	return getNeighbor(node, neighbor)->valid;
+	auto n = getNeighbor(node, neighbor);
+	return n && n->valid;
 }
 
 GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
 {
-	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, x, y);
-	if (portal && m_nodeGrid[x][y].valid)
-	{
-		if (portal.component<PortalComponent>()->otherPortal.valid())
-		{
-			auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-			auto cell = otherPortal.component<CellComponent>();
-			return m_nodeGrid[cell->x][cell->y].valid ? &m_nodeGrid[cell->x][cell->y] : nullptr;
-		}
-	}
+	if (m_nodeGrid[x][y].properties.otherPortal)
+		return m_nodeGrid[x][y].properties.otherPortal;
 
-	return nullptr;
+	return m_nodeGrid[x][y].properties.otherPortal;
 }

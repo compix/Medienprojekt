@@ -127,25 +127,28 @@ void Game::update(TimeDelta dt)
 	GameGlobals::input->update();
 	if (m_PhysixSystem)
 		m_PhysixSystem->Update(dt);
-	m_systems.update_all(dt);
+
+	for (auto& system : m_orderedSystems)
+		system->update(m_entities, *GameGlobals::events, dt);
+
 	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 
 	//m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
 	//m_light.setShader(m_shaderManager.getLightShader());
 
-	GameGlobals::window->draw(m_light);
-	GameGlobals::window->draw(*m_particleEmitter);
+	//GameGlobals::window->draw(m_light);
+	//GameGlobals::window->draw(*m_particleEmitter);
 
 	//m_systems.system<AISystem>()->visualize();
 }
 
 void Game::refreshView()
 {
-	float gameW = GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH;
-	float gameH = GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT;
-	float screenW = GameGlobals::window->getSize().x;
-	float screenH = GameGlobals::window->getSize().y;
+	float gameW = static_cast<float>(GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH);
+	float gameH = static_cast<float>(GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT);
+	float screenW = static_cast<float>(GameGlobals::window->getSize().x);
+	float screenH = static_cast<float>(GameGlobals::window->getSize().y);
 	float screenRatio = screenW / screenH;
 	float viewRatio = gameW / gameH;
 	float scaleFactor;
@@ -170,31 +173,29 @@ LocalGame::~LocalGame()
 
 void LocalGame::addSystems()
 {
-	m_systems.add<BodySystem>();
-	m_systems.add<SoundSystem>();
-	//m_systems.add<MusicSystem>();
-	m_systems.add<InventorySystem>();
-	m_systems.add<ItemSystem>(m_layerManager.get());
-	m_systems.add<TimerSystem>();
-	m_systems.add<BombSystem>();
-	m_systems.add<DamageSystem>(m_layerManager.get());
-	m_systems.add<DestructionSystem>();
-	m_systems.add<ExplosionSystem>(m_layerManager.get());
-	m_systems.add<PortalSystem>(m_layerManager.get());
-	m_systems.add<PunchSystem>(m_layerManager.get());
-	m_systems.add<BombKickSystem>(m_layerManager.get());
-	m_systems.add<HealthSystem>();
-	m_systems.add<DeathSystem>();
-	m_systems.add<InputSystem>();
-	m_systems.add<InputHandleSystem>(m_layerManager.get());
-	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(m_layerManager.get());
-	m_systems.add<ParticleSystem>();
-	m_systems.add<LightSystem>();	
-	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	m_systems.add<ChatRenderSystem>();
-
-	m_systems.add<AISystem>(m_layerManager.get());
+	addSystem<BodySystem>();
+	//addSystem<SoundSystem>();
+	//addSystem<MusicSystem>();
+	addSystem<InventorySystem>();
+	addSystem<ItemSystem>(m_layerManager.get());
+	addSystem<TimerSystem>();
+	addSystem<BombSystem>();
+	addSystem<DamageSystem>(m_layerManager.get());
+	addSystem<DestructionSystem>();
+	addSystem<ExplosionSystem>(m_layerManager.get());
+	addSystem<PortalSystem>(m_layerManager.get());?	addSystem<PunchSystem>(m_layerManager.get());
+	addSystem<BombKickSystem>(m_layerManager.get());
+	addSystem<HealthSystem>();
+	addSystem<DeathSystem>();
+	addSystem<InputSystem>();
+	addSystem<InputHandleSystem>(m_layerManager.get());
+	addSystem<AnimationSystem>();
+	addSystem<RenderSystem>(m_layerManager.get());
+	addSystem<ParticleSystem>();
+	addSystem<LightSystem>();	
+	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	addSystem<ChatRenderSystem>();
+	addSystem<AISystem>(m_layerManager.get());
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
@@ -209,10 +210,12 @@ void LocalGame::resetEntities()
 	m_entities.reset();
 	m_layerManager->reset();
 	GameGlobals::events->emit<ResetGameEvent>();
+
+	if (m_systems.system<AISystem>())
+		m_systems.system<AISystem>()->reset();
+
 	LevelGenerator levelGenerator(m_width, m_height);
 	levelGenerator.generateRandomLevel();
-
-	m_systems.system<AISystem>()->init();
 
 	uint8_t i = 0;
 	ComponentHandle<InputComponent> input;
@@ -231,6 +234,8 @@ void LocalGame::resetEntities()
 			i++;
 		}
 	}
+
+	m_systems.system<AISystem>()->init();
 	GameGlobals::events->emit<StartGameEvent>();
 }
 
@@ -271,11 +276,11 @@ void ClientGame::receive(const ResetGameEvent& evt)
 
 void ClientGame::addSystems()
 {
-	m_systems.add<InputSystem>();
-//	m_systems.add<ClientInputHandleSystem>(); // fixme
-	m_systems.add<AnimationSystem>();
-	m_systems.add<RenderSystem>(m_layerManager.get());
-	m_systems.add<ParticleSystem>();
-	m_systems.add<LightSystem>();
-	m_systems.add<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	addSystem<InputSystem>();
+//	addSystem<ClientInputHandleSystem>(); // fixme
+	addSystem<AnimationSystem>();
+	addSystem<RenderSystem>(m_layerManager.get());
+	addSystem<ParticleSystem>();
+	addSystem<LightSystem>();
+	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 }

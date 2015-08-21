@@ -18,6 +18,8 @@ ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 
 void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
+	std::vector<ExplosionSpreadRequest> explosionSpreadRequests;
+
 	for (auto entity : entities.entities_with_components<ExplosionComponent, CellComponent, LayerComponent>())
 	{
 		auto layer = entity.component<LayerComponent>();
@@ -47,11 +49,15 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				}
 				if (!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
 				{
-					GameGlobals::entityFactory->createExplosion(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime);
-				}				
+					// Don't create the explosion right away to avoid multiple spreading in one direction in one frame. This fixes a low fps bug with portals.
+					explosionSpreadRequests.push_back(ExplosionSpreadRequest(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime));				
+				}
 			}
 			spread->stopped = true;
 		}
-		
 	}
+
+	// Handle explosion spread requests
+	for (auto& r : explosionSpreadRequests)
+		GameGlobals::entityFactory->createExplosion(r.x, r.y, r.direction, r.range, r.spreadTime);
 }

@@ -4,5 +4,5 @@
 class UseSkill : public Behavior
 {
 public:
-	void operator ()(entityx::Entity& entity);
+	void operator()(entityx::Entity& entity);
 };

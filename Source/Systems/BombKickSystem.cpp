@@ -10,8 +10,6 @@
 #include "../GameConstants.h"
 #include "../Components/SpriteComponent.h"
 #include "../PhysixSystem.h"
-#include "../GameGlobals.h"
-#include "../game.h";
 #include "../Components/JumpComponent.h"
 
 

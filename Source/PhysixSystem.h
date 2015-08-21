@@ -26,6 +26,7 @@ public:
 
 	void setContactListener(b2ContactListener* listener);
 
+	static b2Vec2 toBox2D(float px, float py);
 	static float toBox2D(float pixel);
 	static float toWorld(float meters);
 	

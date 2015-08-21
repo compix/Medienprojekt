@@ -9,7 +9,7 @@
 #include "Components/DynamicComponent.h"
 #include "AI/PathFinding/Graph.h"
 
-EntityLayer* LayerManager::createLayer(int width, int height, int layer)
+EntityLayer* LayerManager::createLayer(uint8_t width, uint8_t height, int layer)
 {
 	m_layers[layer] = std::make_shared<EntityLayer>(width, height, layer);
 
@@ -64,7 +64,6 @@ void LayerManager::add(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
-		//m_scheduledForPush.push_back(EntityUpdateInfo(entity, cell->x, cell->y, layerComponent->layer));
 	}
 }
 
@@ -89,9 +88,7 @@ void LayerManager::remove(Entity entity)
 		}
 
 		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
-		//m_scheduledForRemoval.push_back(EntityUpdateInfo(entity, cell->x, cell->y, layerComponent->layer));
 	}
-		
 }
 
 /**
@@ -99,51 +96,63 @@ void LayerManager::remove(Entity entity)
  */
 void LayerManager::update()
 {
-	/*
-	for (auto& info : m_scheduledForPush)
-		m_layers[info.layer]->add(info.entity, info.x, info.y);
-
-	for (auto& info : m_scheduledForRemoval)
-		m_layers[info.layer]->remove(info.entity, info.x, info.y);
-
-	m_scheduledForPush.clear();
-	m_scheduledForRemoval.clear();
-	*/
-
 	for (auto entity : GameGlobals::entities->entities_with_components<DynamicComponent>())
 	{
-		auto layerComponent = entity.component<LayerComponent>();
-		auto cell = entity.component<CellComponent>();
-		auto transform = entity.component<TransformComponent>();
-
-		assert(layerComponent && cell && transform);
-
-		if (cell && transform)
-		{
-			int cellX = static_cast<int>(transform->x / GameConstants::CELL_WIDTH);
-			int cellY = static_cast<int>(transform->y / GameConstants::CELL_HEIGHT);
-
-			// If the cell changed then refresh the cell and grid
-			if (cellX != cell->x || cellY != cell->y)
-			{
-				m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
-
-				cell->x = cellX;
-				cell->y = cellY;
-
-				m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
-			}
-		}
+		updateCell(entity);
 	}
 }
 
-EntityCollection LayerManager::getEntities(int layer, int cellX, int cellY)
+EntityCollection LayerManager::getEntities(int layer, uint8_t cellX, uint8_t cellY)
 {
 	assert(m_layers.count(layer));
 	return m_layers[layer]->get(cellX, cellY);
 }
 
-bool LayerManager::isFree(int layer, int cellX, int cellY)
+bool LayerManager::isInLayer(int layer, entityx::Entity& entity)
+{
+	assert(entity.has_component<CellComponent>());
+	assert(m_layers.count(layer));
+	auto cell = entity.component<CellComponent>();
+	for (auto e : m_layers[layer]->get(cell->x, cell->y))
+		if (e == entity)
+			return true;
+
+	return false;
+}
+
+bool LayerManager::isFree(int layer, uint8_t cellX, uint8_t cellY)
 {
 	return getEntities(layer, cellX, cellY).size() == 0;
+}
+
+void LayerManager::updateCell(entityx::Entity& entity)
+{
+	auto layerComponent = entity.component<LayerComponent>();
+	auto cell = entity.component<CellComponent>();
+	auto transform = entity.component<TransformComponent>();
+
+	assert(layerComponent && cell && transform);
+	assert(m_layers.count(layerComponent->layer));
+	uint8_t cellX = static_cast<uint8_t>(transform->x / GameConstants::CELL_WIDTH);
+	uint8_t cellY = static_cast<uint8_t>(transform->y / GameConstants::CELL_HEIGHT);
+	
+	if (!isInLayer(layerComponent->layer, entity))
+	{
+		// Layer of entity changed -> remove it from old layer
+		for (auto& layerPair : m_layers)
+			layerPair.second->remove(entity, cell->x, cell->y);
+
+		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+	}
+
+	// If the cell changed then refresh the cell and grid
+	if (cellX != cell->x || cellY != cell->y)
+	{
+		m_layers[layerComponent->layer]->remove(entity, cell->x, cell->y);
+
+		cell->x = cellX;
+		cell->y = cellY;
+
+		m_layers[layerComponent->layer]->add(entity, cell->x, cell->y);
+	}
 }

@@ -62,8 +62,8 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	if (playerId == 5)
 		playerId = 1;
 
-	uint8_t cellX = x / GameConstants::CELL_WIDTH;
-	uint8_t cellY = y / GameConstants::CELL_HEIGHT;
+	uint8_t cellX = static_cast<uint8_t>(x / GameConstants::CELL_WIDTH);
+	uint8_t cellY = static_cast<uint8_t>(y / GameConstants::CELL_HEIGHT);
 
 	TransformComponent transformComponent;
 	transformComponent.x = x;
@@ -140,7 +140,7 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	sf::Sprite sprite = createSprite("block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
 	entity->assign<SpriteComponent>(sprite);
-	entity->assign<DestructionDelayComponent>(1);
+	entity->assign<DestructionDelayComponent>(1.f);
 
 	entity->assign<CellComponent>(cellX, cellY);
 	entity->assign<HealthComponent>(1);
@@ -223,7 +223,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity->assign<SpriteComponent>(texture);
 	assert(owner.has_component<InventoryComponent>());
 	entity->assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME);
-	entity->assign<TimerComponent>(GameConstants::EXPLOSION_TIMER_BOMBS);
+	entity->assign<TimerComponent>(GameConstants::EXPLOSION_TIME);
 	entity->assign<HealthComponent>(1);
 	entity->assign<OwnerComponent>(owner);
 
@@ -329,9 +329,9 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner, b
 			);*/
 	}
 
-	m_layerManager->add(entity);
-
 	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
+	m_layerManager->add(entity);
+	
 	return entity;
 }
 
@@ -387,7 +387,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 			.burstTime(0.5f)
 			.spawnWidth(50 - 5)
 			.spawnHeight(50)
-			.spawnDuration(0.3)
+			.spawnDuration(0.3f)
 			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
 	}
 

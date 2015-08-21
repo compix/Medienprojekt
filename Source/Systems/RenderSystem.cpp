@@ -40,8 +40,6 @@ void RenderSystem::render(EntityLayer* layer)
 {
 	EntityGrid grid = layer->getEntityGrid();
 
-	
-
 	for (int y = 0; y < layer->getHeight(); y++)
 	{
 		for (int x = 0; x < layer->getWidth(); x++)

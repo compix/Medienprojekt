@@ -1,13 +1,7 @@
 #include "PathEngine.h"
 #include <queue>
-#include <unordered_map>
-#include <set>
 #include "../../Game.h"
-#include "../../Components/BombComponent.h"
-#include "../../Components/BlockComponent.h"
 #include "SimulationGraph.h"
-#include "../../Components/CellComponent.h"
-#include "../../Components/PortalComponent.h"
 #include "AIPath.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
@@ -57,7 +51,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 		{
 			auto neighbor = m_graph->getNeighbor(minNode, static_cast<Direction>(i));
 
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 
 			switch (neighbor->state[taskNum])
@@ -128,7 +122,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 				goalReached = true;
 			break;
 		case NodeType::ITEM:
-			if (curNode->properties.isItem && !curNode->marked)
+			if (curNode->properties.hasItem && !curNode->marked)
 				goalReached = true;
 			break;
 		default:
@@ -147,7 +141,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 			
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -162,7 +156,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 	pathOut.nodes.clear();
 }
 
-void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum)
+void PathEngine::breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum)
 {
 	m_simGraph->resetPathInfo(taskNum);
 
@@ -177,14 +171,15 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& path
 		GraphNode* curNode = processQueue.front();
 		processQueue.pop();
 
-		if (ratePath(this, curNode, pathOut, taskNum))
+		makePath(pathOut, curNode, taskNum);
+		if (ratePath(this, pathOut, entity, taskNum))
 			return;
 
 		// Go through all neighbors
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -196,10 +191,11 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, AIPath& path
 		}
 	}
 
+	pathOut.resetRating();
 	pathOut.nodes.clear();
 }
 
-void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks, uint8_t taskNum)
+void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks, uint8_t taskNum)
 {
 	assert(maxChecks > 0);
 
@@ -218,7 +214,8 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 		GraphNode* curNode = processQueue.front();
 		processQueue.pop();
 
-		if (ratePath(this, curNode, path, taskNum))
+		makePath(path, curNode, taskNum);
+		if (ratePath(this, path, entity, taskNum))
 		{		
 			maxChecks--;
 			if (path.rating > bestPath.rating)
@@ -228,11 +225,15 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 		if (maxChecks == 0)
 			break;
 
+		// Don't go through neighbors of invalid nodes (except for the first node)
+		if (curNode != startNode && !curNode->valid)
+			continue;
+
 		// Go through all neighbors
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor || (!neighbor->properties.hasBomb && !neighbor->valid))
 				continue;
 
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -246,30 +247,8 @@ void PathEngine::searchBest(uint8_t startX, uint8_t startY, AIPath& pathOut, Pat
 
 	pathOut.nodes.clear();
 	pathOut.rating = bestPath.rating;
-	for (int i = 0; i < bestPath.nodes.size(); ++i)
+	for (uint32_t i = 0; i < bestPath.nodes.size(); ++i)
 		pathOut.nodes.push_back(bestPath.nodes[i]);
-}
-
-void PathEngine::visualize()
-{
-	m_graph->visualize(true, true);
-}
-
-void PathEngine::visualize(AIPath& path)
-{
-	sf::CircleShape circle(20);
-	circle.setOrigin(10, 10);
-
-	for (uint16_t i = 0; i < path.nodes.size(); ++i)
-	{
-		uint8_t x = path.nodes[i]->x;
-		uint8_t y = path.nodes[i]->y;
-
-		circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_WIDTH*0.5f + 5.f);
-		circle.setFillColor(sf::Color(0, 0, 255, 50));
-
-		GameGlobals::window->draw(circle);
-	}
 }
 
 void PathEngine::update(float deltaTime)
@@ -310,6 +289,12 @@ GraphNode* PathEngine::remove(GraphNode* node, uint8_t taskNum)
 	node->prev[taskNum]->next[taskNum] = node->next[taskNum];
 	node->next[taskNum]->prev[taskNum] = node->prev[taskNum];
 	return node->prev[taskNum];
+}
+
+void PathEngine::reset()
+{
+	m_simGraph->reset();
+	m_graph->reset();
 }
 
 void PathEngine::makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum)

@@ -1,5 +1,6 @@
 #include "Colors.h"
 #include "Math.h"
+#include <sstream>
 
 const RGB RGB::Red    = RGB(255, 0, 0);
 const RGB RGB::Green  = RGB(0, 255, 0);
@@ -62,7 +63,7 @@ RGB Convert::HSVtoRGB(HSV hsv)
 	}
 
 	hsv.h /= 60;			// sector 0 to 5
-	i = floor(hsv.h);
+	i = static_cast<int>(floor(hsv.h));
 	f = hsv.h - i;			// factorial part of h
 	p = hsv.v * (1 - hsv.s);
 	q = hsv.v * (1 - hsv.s * f);
@@ -111,4 +112,23 @@ RGB Convert::HSVtoRGB(HSV hsv)
 RGB Convert::sfColorToRGB(sf::Color color)
 {
 	return RGB(color.r, color.g, color.b);
+}
+
+std::string RGB::str()
+{
+	if (Math::nearEq(r, 255) && Math::nearEq(g, 0) && Math::nearEq(b, 0))
+		return "Red";
+
+	if (Math::nearEq(r, 0) && Math::nearEq(g, 255) && Math::nearEq(b, 0))
+		return "Green";
+
+	if (Math::nearEq(r, 0) && Math::nearEq(g, 0) && Math::nearEq(b, 255))
+		return "Blue";
+
+	if (Math::nearEq(r, 255) && Math::nearEq(g, 255) && Math::nearEq(b, 0))
+		return "Yellow";
+
+	std::stringstream ss;
+	ss << "RGB(" << r << ", " << g << ", " << b << ")";
+	return ss.str();
 }

@@ -1,12 +1,11 @@
 #include "EntityLayer.h"
 
-EntityLayer::EntityLayer(int width, int height, int value)
+EntityLayer::EntityLayer(uint8_t width, uint8_t height, int value)
 	: m_width(width), m_height(height), m_value(value)
 {
 	m_grid = new EntityCollection*[width];
 	for (int i = 0; i < width; i++)
 		m_grid[i] = new EntityCollection[height];
-
 }
 
 EntityLayer::~EntityLayer()
@@ -28,9 +27,9 @@ void EntityLayer::reset()
 	}
 }
 
-void EntityLayer::add(Entity entity, int cellX, int cellY)
+void EntityLayer::add(Entity entity, uint8_t cellX, uint8_t cellY)
 {
-	if (cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height)
+	if (!inBounds(cellX, cellY))
 	{
 		std::cout << "Could not add entity. Reason: cell(" << cellX << ", " << cellY << ") is out of bounds." << std::endl;
 		return;
@@ -42,9 +41,9 @@ void EntityLayer::add(Entity entity, int cellX, int cellY)
 		l->onEntityAdded(entity);
 }
 
-void EntityLayer::remove(Entity entity, int cellX, int cellY)
+void EntityLayer::remove(Entity entity, uint8_t cellX, uint8_t cellY)
 {
-	if (cellX < 0 || cellX >= m_width || cellY < 0 || cellY >= m_height)
+	if (!inBounds(cellX, cellY))
 	{
 		std::cout << "Could not remove entity. Reason: cell(" << cellX << ", " << cellY << ") is out of bounds." << std::endl;
 		return;

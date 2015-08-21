@@ -29,6 +29,8 @@ struct RGB
 	static const RGB Green;
 	static const RGB Blue;
 	static const RGB Yellow;
+
+	std::string str();
 };
 
 struct HSV

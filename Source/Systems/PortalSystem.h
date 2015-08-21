@@ -22,9 +22,11 @@ public:
 	~PortalSystem();
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const CreatePortalEvent& event);
-	b2Vec2 fitEntityIntoCell(CellComponent* cellComponent);
 	void receive(const TimeoutEvent& timeoutEvent);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+
+private:
+	void teleport(entityx::Entity& entity, uint8_t cellX, uint8_t cellY);
 
 private:
 	LayerManager* m_layerManager;
