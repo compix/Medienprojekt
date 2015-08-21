@@ -36,7 +36,7 @@ public:
 
 	void resetPathInfo(uint8_t taskNum);
 
-	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x >= 0 && x <= m_width - 1 && y >= 0 && y <= m_height - 1); return &m_nodeGrid[x][y]; }
+	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x < m_width && y < m_height); return &m_nodeGrid[x][y]; }
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);

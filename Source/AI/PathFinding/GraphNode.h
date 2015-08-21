@@ -3,14 +3,14 @@
 
 struct GraphNode;
 
-struct NodeProperties
+struct BombProperties
 {
-	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), 
-		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), numOfItemsAffectedByExplosion(0),
-		hasItem(false), hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr) {}
+	BombProperties(uint8_t explosionRange) : explosionSimulated(false), explosionRange(explosionRange),
+		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), numOfItemsAffectedByExplosion(0) {}
+	BombProperties() : BombProperties(explosionRange) {}
 
-	bool affectedByExplosion;
-	float timeTillExplosion;
+	bool explosionSimulated;
+	uint8_t explosionRange;
 
 	// If there is a bomb on that node, how many destructible blocks will the explosion hit?
 	uint8_t numOfBlocksAffectedByExplosion;
@@ -19,6 +19,14 @@ struct NodeProperties
 	uint8_t numOfPlayersAffectedByExplosion;
 
 	uint8_t numOfItemsAffectedByExplosion;
+};
+
+struct NodeProperties
+{
+	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), hasItem(false), 
+		hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr) {}
+
+	float timeTillExplosion;
 
 	GraphNode* otherPortal;
 
@@ -27,6 +35,8 @@ struct NodeProperties
 	bool hasPlayer;
 	bool hasPortal;
 	bool hasBlock;
+
+	bool affectedByExplosion;
 };
 
 struct GraphNode
@@ -57,6 +67,7 @@ struct GraphNode
 	} state[2];
 
 	NodeProperties properties;
+	BombProperties bombProperties;
 
 	// List information to keep a sorted list.
 	GraphNode* next[2];
