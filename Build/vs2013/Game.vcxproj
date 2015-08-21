@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -93,12 +93,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AI\AIUtil.h" />
+    <ClInclude Include="..\..\Source\AI\AIVisualizer.h" />
     <ClInclude Include="..\..\Source\AI\Actions\Action.h" />
     <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h" />
     <ClInclude Include="..\..\Source\AI\Actions\ActionType.h" />
     <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h" />
-    <ClInclude Include="..\..\Source\AI\AIUtil.h" />
-    <ClInclude Include="..\..\Source\AI\AIVisualizer.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
@@ -278,11 +278,11 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
+    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp" />
     <ClCompile Include="..\..\Source\AI\Actions\Action.cpp" />
     <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp" />
     <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
-    <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
-    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />

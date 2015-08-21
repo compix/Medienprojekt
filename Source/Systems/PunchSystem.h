@@ -4,7 +4,6 @@
 #include "../Events/PunchEvent.h"
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
-#include "../AI/Action.h"
 #include "../Components/JumpComponent.h"
 
 struct TimeoutEvent;

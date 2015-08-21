@@ -23,7 +23,6 @@ namespace GameConstants
 	const int PUNCH_DISTANCE = 2;
 
 	//Relating to Bombs
-	const float EXPLOSION_TIMER_BOMBS = 2.f;//Zeit bis eine Bombe explodiert.
 	const int INIT_BOMB_COUNT = 1;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
 	const int INIT_BOMB_RANGE = 2;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!

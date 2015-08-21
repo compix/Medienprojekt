@@ -65,7 +65,7 @@ void PunchSystem::receive(const PunchEvent& event)
 		if (bomb.has_component<BodyComponent>() && bomb.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0)
 		{
 			auto cpBomb = bomb.component<CellComponent>();
-			bomb.assign<JumpComponent>(entity.component<DirectionComponent>()->direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1,5,10);
+			bomb.assign<JumpComponent>(entity.component<DirectionComponent>()->direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1,5,3);
 		}
 	}
 }
@@ -114,7 +114,7 @@ void PunchSystem::update(EntityManager &entityManager, EventManager &eventManage
 					break;
 				default: break;
 				}
-				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, 6, 10);
+				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, 6, 3);
 				jumpingEntity.component<JumpComponent>()->wasBlocked = true;
 			}
 
@@ -159,13 +159,13 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 
 	if (!jumpComp->isDegreeCalculated)
 	{
-		//jumpingEntity.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
+		jumpingEntity.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
 
 		float x = -((jumpComp->fromX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f) - (jumpComp->toX * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f));
-		float y = (jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f) - (jumpComp->toY*GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / (jumpComp->targetIsBlocked ? 2.f : 2.f));
+		float y = (jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f) - (jumpComp->toY*GameConstants::CELL_HEIGHT + (GameConstants::CELL_HEIGHT / (jumpComp->targetIsBlocked ? 4.f : 2.f)));
 
 		jumpComp->degreeX = x / (power*jumpComp->totalTime);
-		jumpComp->degreeY =  (y + g / 2 * powf(jumpComp->totalTime, 2)) / (power*jumpComp->totalTime);
+		jumpComp->degreeY = (((y + g / 2 * powf(jumpComp->totalTime, 2)) + (GameConstants::CELL_HEIGHT / (jumpComp->wasBlocked ? 4.f : 2.f))) / (power*jumpComp->totalTime));
 
 		jumpComp->isDegreeCalculated = true;
 	}
@@ -182,12 +182,7 @@ void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpCompone
 
 	if (!jumpingEntity.has_component<RenderOffsetComponent>()) //Ein versatz des Renderings, damit das eigentliche Objekt nicht aus der Map gelangt.
 	{
-		jumpingEntity.assign<RenderOffsetComponent>(x, -y);
-
-		float finalX = power * jumpComp->degreeX * jumpComp->totalTime;
-		float finalY = power * jumpComp->degreeY * jumpComp->totalTime - ((g / 2.f)*powf(jumpComp->totalTime, 2));
-
-		
+		jumpingEntity.assign<RenderOffsetComponent>(x, -y);	
 	} else
 	{
 		if (jumpComp->timePassed > jumpComp->totalTime/2.f)

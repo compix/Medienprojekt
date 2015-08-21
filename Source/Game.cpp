@@ -183,7 +183,8 @@ void LocalGame::addSystems()
 	addSystem<DamageSystem>(m_layerManager.get());
 	addSystem<DestructionSystem>();
 	addSystem<ExplosionSystem>(m_layerManager.get());
-	addSystem<PortalSystem>(m_layerManager.get());?	addSystem<PunchSystem>(m_layerManager.get());
+	addSystem<PortalSystem>(m_layerManager.get());
+	addSystem<PunchSystem>(m_layerManager.get());
 	addSystem<BombKickSystem>(m_layerManager.get());
 	addSystem<HealthSystem>();
 	addSystem<DeathSystem>();
