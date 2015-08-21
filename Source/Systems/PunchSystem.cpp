@@ -62,8 +62,11 @@ void PunchSystem::receive(const PunchEvent& event)
 		if (!bomb)
 			return;
 
-		auto cpBomb = bomb.component<CellComponent>();
-		bomb.assign<JumpComponent>(entity.component<DirectionComponent>()->direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1,5,4);
+		if (bomb.has_component<BodyComponent>() && bomb.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0)
+		{
+			auto cpBomb = bomb.component<CellComponent>();
+			bomb.assign<JumpComponent>(entity.component<DirectionComponent>()->direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1,5,10);
+		}
 	}
 }
 
@@ -111,7 +114,7 @@ void PunchSystem::update(EntityManager &entityManager, EventManager &eventManage
 					break;
 				default: break;
 				}
-				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, 5, 4);
+				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, 6, 10);
 				jumpingEntity.component<JumpComponent>()->wasBlocked = true;
 			}
 
