@@ -93,14 +93,14 @@ void RenderSystem::render(EntityLayer* layer)
 						{
 							sprite->sprite.setPosition(transform->x + offset->xOffset, transform->y + offset->yOffset);
 						}
-						if (offset->remove)		//Entfernt die Komponente erst nachdem die Letzte Position gesetzt wurde, verhindert das hin und her springen des Sprite
-						{
-							e.remove<RenderOffsetComponent>();
-						}
 					}
 					else
 					{
 						sprite->sprite.setPosition(transform->x, transform->y);
+					}
+					if (e.has_component<RenderOffsetComponent>() && e.component<RenderOffsetComponent>()->remove)		//Entfernt die Komponente erst nachdem die Letzte Position gesetzt wurde, verhindert das hin und her springen des Sprite
+					{
+						e.remove<RenderOffsetComponent>();
 					}
 					sprite->sprite.setRotation(transform->rotation);
 					sprite->sprite.setScale(transform->scaleX, transform->scaleY);
