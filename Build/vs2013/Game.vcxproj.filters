@@ -1,8 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
       <UniqueIdentifier>{EF725900-DBFE-870B-44AD-880B3058880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Actions">
+      <UniqueIdentifier>{8FBFD54E-7B77-179C-E47E-F0F7D055B28C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Behaviors">
+      <UniqueIdentifier>{C1C75BFA-AD2A-EB9E-56B0-235542F2B621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\PathFinding">
+      <UniqueIdentifier>{4A39F1B7-3607-E5BD-1F9B-55E40B08C122}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\PathRatings">
       <UniqueIdentifier>{A3327241-8F00-6647-7894-D66D640142AC}</UniqueIdentifier>
@@ -46,17 +55,62 @@
     <Filter Include="Utils\Logging">
       <UniqueIdentifier>{8C0201F6-F8C2-7C2C-C1FD-C5A92D7DC108}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AI\Behaviors">
-      <UniqueIdentifier>{d63455e2-c067-4eae-986c-babffbb68e7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\PathFinding">
-      <UniqueIdentifier>{082eaa69-1bbd-4734-9f0d-b1cd66103a68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AI\Actions">
-      <UniqueIdentifier>{001a2a62-c53b-45af-ac57-9d5423f01ef1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AI\AIUtil.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\AIVisualizer.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\Action.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\ActionType.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
+      <Filter>AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h">
+      <Filter>AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h">
+      <Filter>AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h">
+      <Filter>AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h">
+      <Filter>AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
@@ -79,6 +133,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h">
@@ -515,65 +572,47 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AI\AIUtil.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\Action.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\ActionType.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\AIVisualizer.h">
-      <Filter>AI</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\Action.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp">
+      <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp">
+      <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp">
+      <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
+      <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
@@ -596,6 +635,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp">
@@ -621,6 +663,7 @@
     <ClCompile Include="..\..\Source\EntityFactory.cpp" />
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\GameConstants.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -798,48 +841,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp">
-      <Filter>AI\Behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
-      <Filter>AI\Behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp">
-      <Filter>AI\Behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
-      <Filter>AI\PathRatings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp">
-      <Filter>AI\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp">
-      <Filter>AI\PathRatings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Actions\Action.cpp">
-      <Filter>AI\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp">
-      <Filter>AI\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp">
-      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

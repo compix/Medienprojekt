@@ -2,48 +2,45 @@
 
 namespace GameConstants
 {
-	//Relating to Map/Level
-	const float S_SCALE = 32.f;
-	const int CELL_WIDTH = 50;
-	const int CELL_HEIGHT = 50;
-	const int FLOOR_LAYER = -1;
-	const int MAIN_LAYER = 0;
+	// Relating to Map/Level
+	extern const float S_SCALE;
+	extern const int CELL_WIDTH;
+	extern const int CELL_HEIGHT;
+	extern const int FLOOR_LAYER;
+	extern const int MAIN_LAYER;
 
-	//Relating to Players
+	// Relating to Players
 	const int MAX_PLAYERS = 4;
-	const float PLAYER_SPEED = 4.f;			//Normale Geschwindigkeit des Players
-	const float INIT_SPEED_MULTI = 1.f;		//SPEED Multiplikator zu Beginn, !!sollte nicht geringer als 1 sein!!
-	const float SPEED_MULTI_CAP = 3.f;		//Grenze des SPEED Multiplikators
-	const float SPEED_MULTI_INC = 0.25f;	//Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
-	const bool INIT_PLAYERS_CAN_KICK = false;//Ob zu beginn Spieler bereits Bomben kicken können 
-	const bool INIT_PORTAL_SKILL = false;   //Ob zu beginn von Spielern Portale gesetzt werden können.
-	const bool INIT_ANTI_MAGNET = false;	//Ob gekickte Bomben von Beginn an von Spielern abprallen.
+	extern const float PLAYER_SPEED;			// Normale Geschwindigkeit des Players
+	extern const float INIT_SPEED_MULTI;		// SPEED Multiplikator zu Beginn, !!sollte nicht geringer als 1 sein!!
+	extern const float SPEED_MULTI_CAP;			// Grenze des SPEED Multiplikators
+	extern const float SPEED_MULTI_INC;			// Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
+	extern const bool INIT_PLAYERS_CAN_KICK;	// Ob zu beginn Spieler bereits Bomben kicken können 
+	extern const bool INIT_PORTAL_SKILL;		// Ob zu beginn von Spielern Portale gesetzt werden können.
+	extern const bool INIT_ANTI_MAGNET;			// Ob gekickte Bomben von Beginn an von Spielern abprallen.
 
-	//Relating to Bombs
-	const int INIT_BOMB_COUNT = 1;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
-	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
-	const int INIT_BOMB_RANGE = 2;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
-	const int BOMB_RANGE_CAP = 10;			//Explosionsreichweite einer Bombe
-	const float KICK_FORCE = 10.f;			//Kraft mit der die Bombe gekickt wird
-	const float EXPLOSION_SPREAD_TIME = 0.06f; // Time in seconds the explosion needs to spread to the next cell
-	const float EXPLOSION_TIME = 2.f; // Time in seconds for a bomb to explode
+	// Relating to Bombs
+	extern const int INIT_BOMB_COUNT;			// Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
+	extern const int BOMB_CAP;					// Grenze der Bombenanzahl
+	extern const int INIT_BOMB_RANGE;			// Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
+	extern const int BOMB_RANGE_CAP;			// Explosionsreichweite einer Bombe
+	extern const float KICK_FORCE;				// Kraft mit der die Bombe gekickt wird
+	extern const float EXPLOSION_SPREAD_TIME;	// Time in seconds the explosion needs to spread to the next cell
+	extern const float EXPLOSION_TIME;			// Time in seconds for a bomb to explode
 
-	//Relating to Portals
-	const float PORTAL_TIMER_NOT_LINKED = 30.f;		//Wenn ein Portal noch nicht verbunden ist, bis es verbunden wird.
-	const float PORTAL_TIMER_LINKED = 10.f;			//Wenn zwei Portale stehen
+	// Relating to Portals
+	extern const float PORTAL_TIMER_NOT_LINKED;	// Wenn ein Portal noch nicht verbunden ist, bis es verbunden wird.
+	extern const float PORTAL_TIMER_LINKED;		// Wenn zwei Portale stehen
 
-	//Relating to Sounds
-	const bool SOUND = true;
-	const bool MUSIC = true;
+	// Relating to Sounds
+	extern const bool SOUND;
+	extern const bool MUSIC;
 
-	//Relating to AI
-	const float AI_UPDATE_TIME = 1.f / 30.f;
+	// Relating to AI
+	extern const float AI_UPDATE_TIME;
 
-	//Relating to timing Events
-	const float LOBBY_COUNTDOWN = 120; // Seconds to count down before forcing all players ready
-	const float LOBBY_READY_COUNTDOWN = 3; // Seconds to count down before game begins
-	const float RESET_GAME_COUNTDOWN = 2; // Seconds to wait after game over to reset the game
-
-
-	
+	// Relating to timing Events
+	extern const float LOBBY_COUNTDOWN;			// Seconds to count down before forcing all players ready
+	extern const float LOBBY_READY_COUNTDOWN;	// Seconds to count down before game begins
+	extern const float RESET_GAME_COUNTDOWN;	// Seconds to wait after game over to reset the game	
 }
