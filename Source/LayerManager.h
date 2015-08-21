@@ -42,25 +42,62 @@ public:
 	template<class C>
 	bool hasEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY);
 
-	template<class C1, class C2, class... Args>
+	/**
+	* True is returned if an entity in the given layer and cell with all of the specified components exists.
+	*/
+	template<class C1, class... Args>
 	bool hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
 
-	template<class C>
-	bool hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
-
+	/**
+	* True is returned if the entity has all of the specified components.
+	*/
 	template<class C1, class C2, class... Args>
 	bool hasComponents(Entity& e);
 
+	/**
+	* True is returned if the entity has AT LEAST one of the specified components.
+	*/
 	template<class C>
 	inline bool hasComponents(Entity& e) { return e.valid() && e.has_component<C>(); }
 
-	// An invalid entity will be returned if there is no such entity
-	template<class C>
+	/**
+	* Returns the entity in the given layer and cell if it has all of the specified components.
+	* An invalid entity will be returned if there is no such entity
+	*/
+	template<class C1, class... Args>
+	Entity getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
+
+	/**
+	* Returns the entity in the given layer and cell if it has the specified component.
+	* An invalid entity will be returned if there is no such entity
+	*/
+	template <class C>
 	Entity getEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY);
 
-	// An invalid entity will be returned if there is no such entity
+	/**
+	* True is returned if the entity has AT LEAST one of the specified components.
+	*/
 	template<class C1, class C2, class... Args>
-	Entity getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
+	bool hasOneComponent(Entity& e);
+
+	/**
+	* True is returned if the entity has the specified component.
+	*/
+	template<class C1>
+	inline bool hasOneComponent(Entity& e) { assert(e); return e.has_component<C1>(); }
+
+	/**
+	* True is returned if an entity in the given layer and cell with AT LEAST on of the specified components exists.
+	*/
+	template<class C1, class... Args>
+	bool hasEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY);
+
+	/**
+	* Returns the entity in the given layer and cell if it has AT LEAST one of the specified components.
+	* An invalid entity will be returned if there is no such entity
+	*/
+	template<class C1, class... Args>
+	Entity getEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY);
 
 	bool isInLayer(int layer, entityx::Entity& entity);
 
@@ -82,23 +119,12 @@ bool LayerManager::hasEntityWithComponent(int layer, uint8_t cellX, uint8_t cell
 	return false;
 }
 
-template <class C1, class C2, class ... Args>
+template <class C1, class ... Args>
 bool LayerManager::hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
 {
 	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
-		if (hasComponents<C1, C2, Args...>(e))
-			return true;
-
-	return false;
-}
-
-template <class C>
-bool LayerManager::hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
-{
-	assert(m_layers.count(layer));
-	for (auto& e : m_layers[layer]->get(cellX, cellY))
-		if (e.valid() && e.has_component<C>())
+		if (hasComponents<C1, Args...>(e))
 			return true;
 
 	return false;
@@ -107,7 +133,15 @@ bool LayerManager::hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cel
 template <class C1, class C2, class ... Args>
 bool LayerManager::hasComponents(Entity& e)
 {
-	return e.valid() && e.has_component<C1>() && hasComponents<C2, Args...>(e);
+	assert(e);
+	return e.has_component<C1>() && hasComponents<C2, Args...>(e);
+}
+
+template <class C1, class C2, class ... Args>
+bool LayerManager::hasOneComponent(Entity& e)
+{
+	assert(e);
+	return e.has_component<C1>() || hasOneComponent<C2, Args...>(e);
 }
 
 template <class C>
@@ -121,12 +155,34 @@ Entity LayerManager::getEntityWithComponent(int layer, uint8_t cellX, uint8_t ce
 	return Entity();
 }
 
-template <class C1, class C2, class ... Args>
+template <class C1, class ... Args>
 Entity LayerManager::getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
 {
 	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
-		if (hasComponents<C1, C2, Args...>(e))
+		if (hasComponents<C1, Args...>(e))
+			return e;
+
+	return Entity();
+}
+
+template <class C1, class ... Args>
+bool LayerManager::hasEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY)
+{
+	assert(m_layers.count(layer));
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
+		if (hasOneComponent<C1, Args...>(e))
+			return true;
+
+	return false;
+}
+
+template <class C1, class ... Args>
+Entity LayerManager::getEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY)
+{
+	assert(m_layers.count(layer));
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
+		if (hasOneComponent<C1, Args...>(e))
 			return e;
 
 	return Entity();
