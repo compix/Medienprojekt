@@ -7,7 +7,7 @@
 class RateDistanceToItems
 {
 public:
-	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 
 	float inverseDistanceToItems(GraphNode* node);
 };

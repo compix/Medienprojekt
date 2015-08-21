@@ -17,7 +17,7 @@ bool Action::valid(entityx::Entity& entity)
 	return m_followPath.path().nodes.size() > 0 && 
 		  !AIUtil::isBlockedIgnoreLast(m_followPath.path()) && 
 		  AIUtil::isValidPath(m_followPath.path()) && 
-		  m_pathRating(m_pathEngine, m_followPath.path(), entity, 0);
+		  m_pathRating(m_pathEngine, m_followPath.path(), entity);
 }
 
 void Action::update(entityx::Entity& entity, float deltaTime)

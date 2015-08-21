@@ -42,7 +42,6 @@ Graph::~Graph()
 
 void Graph::update(float deltaTime)
 {
-	resetCosts();
 	m_normalBombs.clear();
 	m_blocksAffectedByExplosion.clear();
 
@@ -203,7 +202,6 @@ void Graph::resetMarks()
 	}
 }
 
-
 void Graph::reset()
 {
 	for (auto x = 0; x < m_width; ++x)
@@ -213,17 +211,6 @@ void Graph::reset()
 			m_nodeGrid[x][y] = GraphNode();
 			m_nodeGrid[x][y].x = x;
 			m_nodeGrid[x][y].y = y;
-		}
-	}
-}
-
-void Graph::resetCosts()
-{
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			m_nodeGrid[x][y].cost = 1;
 		}
 	}
 }
@@ -340,17 +327,6 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 		assert(!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
 		if (!m_layerManager->hasEntityWithOneComponent<BombComponent, BlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
 			addNode(cell->x, cell->y);
-	}
-}
-
-void Graph::resetPathInfo(uint8_t taskNum)
-{
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			m_nodeGrid[x][y].state[taskNum] = GraphNode::UNVISITED;
-		}
 	}
 }
 

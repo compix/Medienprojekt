@@ -5,7 +5,7 @@
 #include "../AIUtil.h"
 #include "../../Components/InventoryComponent.h"
 
-bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -37,7 +37,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			{
 				// Found a potential spot -> check if a safe escape path exists
 				AIPath safePath;
-				pathEngine->breadthFirstSearch(entity, goal->x, goal->y, safePath, RateSafety(), taskNum + 1);
+				pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
 
 				if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(entity, safePath))
 					found = false;

@@ -4,5 +4,5 @@
 class RateDesperateSaveAttempt
 {
 public:
-	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 };

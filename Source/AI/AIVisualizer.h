@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Actions/ActionType.h"
+#include "PathFinding/PathEngine.h"
 
 namespace entityx{
 	class Entity;
@@ -20,26 +21,29 @@ class AIVisualizer
 {
 public:
 	AIVisualizer();
-	explicit AIVisualizer(Graph* graph);
+	explicit AIVisualizer(PathEngine* pathEngine);
 
-	inline void setGraph(Graph* graph) { m_graph = graph; }
+	void setPathEngine(PathEngine* pathEngine);
 
 	void visualize(float deltaTime);
+	void visualizePathInfo(uint8_t task);
 
-private:
 	void drawPathInfoLegend();
-	void visualizePathInfo();
 	void visualizeNodeProperties();
 	void visualizeDangerZones();
 	void visualizeNodes();
-	void drawText(const std::string& text, float x, float y, TextShapeType legendShapeType = TextShapeType::NONE, const sf::Color& color = sf::Color());
-
+	
 	void visualize(const AIPath& path);
 
 	void visualizeAction(ActionType actionType, entityx::Entity& entity);
 
 	void showMessage(const std::string& message);
+
 private:
+	void drawText(const std::string& text, float x, float y, TextShapeType legendShapeType = TextShapeType::NONE, const sf::Color& color = sf::Color());
+
+private:
+	PathEngine* m_pathEngine;
 	Graph* m_graph;
 
 	sf::Font m_font;

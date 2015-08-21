@@ -10,7 +10,7 @@ RateTrapDanger::RateTrapDanger(bool willPlaceBomb)
 {
 }
 
-bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -34,7 +34,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 		GraphNode* curNode = processQueue.front();
 		processQueue.pop();
 
-		if (!testNode(startNode, curNode, entity, pathEngine, taskNum))
+		if (!testNode(startNode, curNode, entity, pathEngine))
 			return false;
 
 		// Go through all neighbors
@@ -76,7 +76,7 @@ int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& clo
 	return distance;
 }
 
-bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine, uint8_t taskNum)
+bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine)
 {
 	Entity closestEnemy;
 	int distanceToClosestEnemy = distanceToClosest(testedNode->x, testedNode->y, closestEnemy);
@@ -87,7 +87,7 @@ bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, entit
 	// Distance check not enough. Check the path
 	AIPath enemyPathToSpot;
 	auto enemyCell = closestEnemy.component<CellComponent>();
-	pathEngine->computePath(enemyCell->x, enemyCell->y, startNode->x, startNode->y, enemyPathToSpot, taskNum + 1);
+	pathEngine->computePath(enemyCell->x, enemyCell->y, startNode->x, startNode->y, enemyPathToSpot);
 
 	if (enemyPathToSpot.nodes.size() > 5 || enemyPathToSpot.nodes.size() == 0)
 		return true;
@@ -105,7 +105,7 @@ bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, entit
 	}
 
 	AIPath safePath;
-	pathEngine->breadthFirstSearch(entity, startNode->x, startNode->y, safePath, RateSafety(), taskNum + 1);
+	pathEngine->searchBest(entity, startNode->x, startNode->y, safePath, RateSafety(), 1);
 	bool safe = safePath.nodes.size() > 0;
 
 	// Reset to old state

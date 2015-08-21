@@ -29,6 +29,7 @@ AISystem::AISystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
+	m_visualizer.setPathEngine(m_pathEngine.get());
 }
 
 void AISystem::init()
@@ -152,7 +153,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		aiComponent->currentAction->update(entity, static_cast<float>(dt));
 	}
 
-	m_visualizer.setGraph(m_pathEngine->getSimGraph());
 	m_visualizer.visualize(static_cast<float>(dt));
 
 	if (m_updateTimer <= 0.f)

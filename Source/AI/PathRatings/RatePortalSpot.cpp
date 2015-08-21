@@ -2,7 +2,7 @@
 #include "../../Components/CellComponent.h"
 #include "RatePortalSpot.h"
 
-bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 

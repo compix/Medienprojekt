@@ -41,35 +41,12 @@ struct NodeProperties
 
 struct GraphNode
 {
-	GraphNode() : cost(1), valid(true), marked(false)
-	{
-		state[0] = UNVISITED;
-		state[1] = UNVISITED;
-	}
+	GraphNode() : valid(true), marked(false) {}
 
 	uint8_t x, y;
-	uint32_t cost;
 	bool valid;
-
-	// Path Information
-	GraphNode* prevOnPath[2];
-
-	uint32_t costSoFar;
-	uint32_t estimatedTotalCost;
-
 	bool marked;
-
-	enum State
-	{
-		UNVISITED,
-		OPEN,
-		CLOSED
-	} state[2];
 
 	NodeProperties properties;
 	BombProperties bombProperties;
-
-	// List information to keep a sorted list.
-	GraphNode* next[2];
-	GraphNode* prev[2];
 };

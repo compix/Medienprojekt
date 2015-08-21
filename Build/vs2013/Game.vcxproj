@@ -107,6 +107,7 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\NodePathInfo.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\NodePathInfo.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp" />

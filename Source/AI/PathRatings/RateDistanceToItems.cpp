@@ -2,7 +2,7 @@
 #include "../../Game.h"
 #include "../../Components/CellComponent.h"
 
-bool RateDistanceToItems::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateDistanceToItems::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	if (!path.goal()->valid)
 		return false;
