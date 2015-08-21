@@ -25,7 +25,7 @@ bool AIUtil::isSafePath(entityx::Entity& entity, AIPath& path, float* minExplosi
 	if (minExplosionTime)
 		*minExplosionTime = 2.f;
 
-	for (int i = path.curNode; i < path.nodes.size(); ++i)
+	for (uint32_t i = path.curNode; i < path.nodes.size(); ++i)
 	{
 		auto node = path.nodes[i];
 		if (node->properties.affectedByExplosion)
@@ -46,19 +46,43 @@ bool AIUtil::isOnPath(entityx::Entity& entity, const AIPath& path)
 	assert(entity.has_component<CellComponent>());
 	auto cell = entity.component<CellComponent>();
 	for (auto node : path.nodes)
+	{
 		if (node->x == cell->x && node->y == cell->y)
 			return true;
+
+		auto portal = node->properties.otherPortal;
+		if (portal && portal->x == cell->x && portal->y == cell->y)
+			return true;
+	}
 
 	return false;
 }
 
-bool AIUtil::isBlockedExceptLast(const AIPath& path)
+bool AIUtil::isBlockedIgnoreLast(const AIPath& path)
 {
-	for (int i = path.curNode; i < path.nodes.size() - 1; ++i)
+	for (uint32_t i = path.curNode + 1; i < path.nodes.size() - 1; ++i)
 	{
 		if (!path.nodes[i]->valid)
 			return true;
 	}
 
 	return false;
+}
+
+bool AIUtil::isValidPath(const AIPath& path)
+{
+	for (uint32_t i = path.curNode; i < path.nodes.size() - 1; ++i)
+	{
+		auto n1 = path.nodes[i];
+		auto n2 = path.nodes[i + 1];
+		int distance = abs(n1->x - n2->x) + abs(n1->y - n2->y);
+
+		if (n1 != n2->properties.otherPortal && distance > 1)
+			return false; // portal disappeared, there is a jump in cell distance now
+
+		if (distance == 1 && n1->properties.otherPortal)
+			return false; // a wild linked portal appeared
+	}
+
+	return true;
 }

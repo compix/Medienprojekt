@@ -81,14 +81,14 @@ void FollowPath::operator()(entityx::Entity& entity)
 		int collisionAvoidanceY = botAvoidance * abs(moveX) + topAvoidance * abs(moveX);
 
 		// If there is going to be a collision on the path -> avoid it
-		inputComponent->moveX = moveX + collisionAvoidanceX;
-		inputComponent->moveY = moveY + collisionAvoidanceY;
+		inputComponent->moveX = static_cast<float>(moveX + collisionAvoidanceX);
+		inputComponent->moveY = static_cast<float>(moveY + collisionAvoidanceY);
 	}
 
 	// Try to move to the center of the goal-cell
 	if (m_path.reachedGoal())
 	{
-		inputComponent->moveX = leftAvoidance + rightAvoidance;
-		inputComponent->moveY = botAvoidance + topAvoidance;
+		inputComponent->moveX = static_cast<float>(leftAvoidance + rightAvoidance);
+		inputComponent->moveY = static_cast<float>(botAvoidance + topAvoidance);
 	}
 }

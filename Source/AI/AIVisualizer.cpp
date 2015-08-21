@@ -73,16 +73,6 @@ void AIVisualizer::visualize(float deltaTime)
 	if (m_visualizePathInfo)
 		visualizePathInfo();
 
-	if (m_visualizeActions)
-	{
-		for (auto entity : GameGlobals::entities->entities_with_components<AIComponent>())
-		{
-			auto aiComponent = entity.component<AIComponent>();
-			visualize(aiComponent->currentAction->path());
-			visualizeAction(aiComponent->currentActionType, entity);
-		}
-	}
-
 	if (m_visualizePathInfo)
 		drawPathInfoLegend();
 
@@ -94,6 +84,19 @@ void AIVisualizer::visualize(float deltaTime)
 
 	if (m_visualizeDangerZones)
 		visualizeDangerZones();
+
+	if (m_visualizeActions)
+	{
+		for (auto entity : GameGlobals::entities->entities_with_components<AIComponent>())
+		{
+			auto aiComponent = entity.component<AIComponent>();
+			if (aiComponent && aiComponent->currentAction)
+			{
+				visualize(aiComponent->currentAction->path());
+				visualizeAction(aiComponent->currentActionType, entity);
+			}
+		}
+	}
 
 	if (m_showingMessage)
 	{
@@ -111,7 +114,7 @@ void AIVisualizer::visualize(float deltaTime)
 			float textX = GameConstants::CELL_WIDTH * m_graph->m_width * 0.5f - m_textMessage.getLocalBounds().width * 0.5f;
 			float textY = GameConstants::CELL_HEIGHT * m_graph->m_height * 0.5f - m_textMessage.getLocalBounds().height * 0.5f;
 			m_textMessage.setPosition(textX, textY);
-			m_textMessage.setColor(sf::Color(255, 255, 255, 250 * t));
+			m_textMessage.setColor(sf::Color(255, 255, 255, sf::Uint8(250 * t)));
 			GameGlobals::window->draw(m_textMessage);
 		}
 	}
@@ -127,9 +130,9 @@ void AIVisualizer::showMessage(const std::string& message)
 void AIVisualizer::drawPathInfoLegend()
 {
 	int liNum = 0;
-	drawText("UNVISITED", -100, ++liNum * 25, TextShapeType::CIRCLE, sf::Color(0, 255, 0));
-	drawText("OPEN", -100, ++liNum * 25, TextShapeType::CIRCLE, sf::Color(255, 255, 0));
-	drawText("CLOSED", -100, ++liNum * 25, TextShapeType::CIRCLE, sf::Color(255, 0, 255));
+	drawText("UNVISITED", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(0, 255, 0));
+	drawText("OPEN", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(255, 255, 0));
+	drawText("CLOSED", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(255, 0, 255));
 }
 
 void AIVisualizer::visualizePathInfo()
@@ -137,7 +140,7 @@ void AIVisualizer::visualizePathInfo()
 	m_circle.setRadius(20.f);
 	m_circle.setOrigin(10, 10);
 	m_rect.setFillColor(sf::Color(0, 255, 0, 50));
-	m_rect.setSize(sf::Vector2f(2, GameConstants::CELL_HEIGHT));
+	m_rect.setSize(sf::Vector2f(2.f, float(GameConstants::CELL_HEIGHT)));
 
 	for (auto x = 1; x < m_graph->m_width - 1; ++x)
 	{
@@ -161,7 +164,8 @@ void AIVisualizer::visualizePathInfo()
 			case GraphNode::CLOSED:
 				m_circle.setFillColor(sf::Color(255, 0, 255, 50));
 				break;
-			default: break;
+			default: 
+				break;
 			}
 
 			m_rect.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f + 7.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 13.f);
@@ -202,8 +206,8 @@ void AIVisualizer::visualizeNodeProperties()
 	m_rect.setRotation(0.f);
 	m_rect.setSize(sf::Vector2f(5, 5));
 
-	int liNum = 0;
-	float xText = m_graph->m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH;
+	float liNum = 0;
+	float xText = float(m_graph->m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH);
 	drawText("Bomb", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(255, 0, 0));
 	drawText("Item", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(0, 255, 0));
 	drawText("Player", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(0, 0, 255));
@@ -217,11 +221,11 @@ void AIVisualizer::visualizeNodeProperties()
 			auto& node = m_graph->m_nodeGrid[x][y];
 
 			int propertyNum = 0;
-			m_rect.setSize(sf::Vector2f(5, GameConstants::CELL_HEIGHT));
+			m_rect.setSize(sf::Vector2f(5.f, float(GameConstants::CELL_HEIGHT)));
 			if (node.properties.hasBomb)
 			{
 				m_rect.setFillColor(sf::Color(255, 0, 0));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
+				m_rect.setPosition(float(x * GameConstants::CELL_WIDTH + propertyNum * 5.f), float(y * GameConstants::CELL_HEIGHT));
 				GameGlobals::window->draw(m_rect);
 				propertyNum++;
 			}
@@ -229,7 +233,7 @@ void AIVisualizer::visualizeNodeProperties()
 			if (node.properties.hasItem)
 			{
 				m_rect.setFillColor(sf::Color(0, 255, 0));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
+				m_rect.setPosition(float(x * GameConstants::CELL_WIDTH + propertyNum * 5.f), float(y * GameConstants::CELL_HEIGHT));
 				GameGlobals::window->draw(m_rect);
 				propertyNum++;
 			}
@@ -237,7 +241,7 @@ void AIVisualizer::visualizeNodeProperties()
 			if (node.properties.hasPlayer)
 			{
 				m_rect.setFillColor(sf::Color(0, 0, 255));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
+				m_rect.setPosition(float(x * GameConstants::CELL_WIDTH + propertyNum * 5.f), float(y * GameConstants::CELL_HEIGHT));
 				GameGlobals::window->draw(m_rect);
 				propertyNum++;
 			}
@@ -245,7 +249,7 @@ void AIVisualizer::visualizeNodeProperties()
 			if (node.properties.hasPortal)
 			{
 				m_rect.setFillColor(sf::Color(255, 255, 0));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
+				m_rect.setPosition(float(x * GameConstants::CELL_WIDTH + propertyNum * 5.f), float(y * GameConstants::CELL_HEIGHT));
 				GameGlobals::window->draw(m_rect);
 				propertyNum++;
 			}
@@ -253,7 +257,7 @@ void AIVisualizer::visualizeNodeProperties()
 			if (node.properties.hasBlock)
 			{
 				m_rect.setFillColor(sf::Color(139, 69, 19));
-				m_rect.setPosition(x * GameConstants::CELL_WIDTH + propertyNum * 5, y * GameConstants::CELL_HEIGHT);
+				m_rect.setPosition(float(x * GameConstants::CELL_WIDTH + propertyNum * 5.f), float(y * GameConstants::CELL_HEIGHT));
 				GameGlobals::window->draw(m_rect);
 				propertyNum++;
 			}
@@ -275,7 +279,7 @@ void AIVisualizer::visualizeDangerZones()
 
 			if (node.properties.affectedByExplosion)
 			{
-				m_circle.setFillColor(sf::Color(100 * node.properties.timeTillExplosion, 0, 0, 155));
+				m_circle.setFillColor(sf::Color(sf::Uint8(100 * node.properties.timeTillExplosion), 0, 0, 155));
 				GameGlobals::window->draw(m_circle);
 			}
 		}

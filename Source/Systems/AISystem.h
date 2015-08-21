@@ -5,6 +5,8 @@
 #include "../AI/Actions/ActionType.h"
 #include "../AI/AIVisualizer.h"
 
+struct PortalCreatedEvent;
+
 class AISystem : public entityx::System<AISystem>, public entityx::Receiver<AISystem>
 {
 public:
@@ -12,7 +14,6 @@ public:
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	void configure(entityx::EventManager& eventManager) override;
-	void receive(const entityx::EntityDestroyedEvent& destroyedEvent);
 
 	static void getEnemies(Entity self, std::vector<Entity>& outEnemies);
 
@@ -28,7 +29,6 @@ private:
 	LayerManager* m_layerManager;
 
 	float m_updateTimer;
-	bool m_invalidPaths;
 
 	AIVisualizer m_visualizer;
 };

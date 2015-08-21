@@ -1,4 +1,5 @@
 #include "RateKickBomb.h"
+#include "../../Components/InventoryComponent.h"
 
 bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
 {
@@ -6,6 +7,11 @@ bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Ent
 	auto graph = pathEngine->getGraph();	
 
 	if (!goal->properties.hasBomb || path.nodes.size() < 2)
+		return false;
+
+	auto inventory = entity.component<InventoryComponent>();
+	assert(inventory);
+	if (!inventory->bombKick)
 		return false;
 
 	// Check if the the bomb can be kicked
@@ -17,7 +23,7 @@ bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Ent
 
 	auto neighbor = graph->getNeighbor(goal, kickDirection);
 
-	if (neighbor->valid && !neighbor->properties.hasPlayer)
+	if (neighbor && neighbor->valid && !neighbor->properties.hasPlayer)
 	{
 		// Kicking a bomb with a player on it is risky -> he could move to make kicking the bomb impossible
 		path.rating = goal->properties.hasPlayer ? 0.5f : 1.f;

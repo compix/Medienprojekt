@@ -101,7 +101,7 @@ void ParticleEmitter::update(float deltaTime)
 	// Update particles
 	sf::Color color;
 	sf::Vector2f size;
-	int i = 0;
+	uint32_t i = 0;
 	while (i < m_numActive)
 	{
 		Particle& p = m_particles[i];
@@ -162,10 +162,10 @@ void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, 
 	sizeOut = m_sizeFunction(t);
 	auto rgb = m_colorFunction(t);
 
-	colorOut.r = rgb.r;
-	colorOut.g = rgb.g;
-	colorOut.b = rgb.b;
-	colorOut.a = m_transparencyFunction(t);
+	colorOut.r = static_cast<sf::Uint8>(rgb.r);
+	colorOut.g = static_cast<sf::Uint8>(rgb.g);
+	colorOut.b = static_cast<sf::Uint8>(rgb.b);
+	colorOut.a = static_cast<sf::Uint8>(m_transparencyFunction(t));
 }
 
 ParticleEmitter& ParticleEmitter::spawnTime(float spawnTime)
@@ -193,12 +193,12 @@ void ParticleEmitter::setTexture(Assets::Texture* texture)
 	m_texture = texture;
 
 	auto& rect = texture->getRect();
-	for (int i = 0; i < m_vertices.size(); i += 4)
+	for (uint32_t i = 0; i < m_vertices.size(); i += 4)
 	{
-		m_vertices[i + 0].texCoords = sf::Vector2f(rect.left, rect.top);
-		m_vertices[i + 1].texCoords = sf::Vector2f(rect.left + rect.width, rect.top);
-		m_vertices[i + 2].texCoords = sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
-		m_vertices[i + 3].texCoords = sf::Vector2f(rect.left, rect.top + rect.height);
+		m_vertices[i + 0].texCoords = sf::Vector2f(static_cast<float>(rect.left), static_cast<float>(rect.top));
+		m_vertices[i + 1].texCoords = sf::Vector2f(static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top));
+		m_vertices[i + 2].texCoords = sf::Vector2f(static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height));
+		m_vertices[i + 3].texCoords = sf::Vector2f(static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height));
 	}
 }
 

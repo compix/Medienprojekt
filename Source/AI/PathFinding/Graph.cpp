@@ -122,6 +122,9 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 	for (int j = 0; j < range; ++j)
 	{
 		currentNode = getNeighbor(currentNode, direction);
+		if (!currentNode)
+			continue;
+
 		explosionTime += GameConstants::EXPLOSION_SPREAD_TIME;
 
 		if (currentNode->valid)
@@ -333,21 +336,31 @@ void Graph::resetPathInfo(uint8_t taskNum)
 
 GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
-	assert(node->x > 0 && node->x < m_width - 1 && node->y > 0 && node->y < m_height - 1);
-
 	GraphNode* portalNode;
 	switch (neighbor)
 	{
 	case Direction::LEFT:
+		if (node->x == 0)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x - 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x - 1][node->y];
 	case Direction::RIGHT:
+		if (node->x == m_width - 1)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x + 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x + 1][node->y];
 	case Direction::UP:
+		if (node->y == 0)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x, node->y - 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y - 1];
 	case Direction::DOWN:
+		if (node->y == m_height - 1)
+			return nullptr;
+
 		portalNode = getOtherPortalNode(node->x, node->y + 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
@@ -358,7 +371,8 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 
 bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 {
-	return getNeighbor(node, neighbor)->valid;
+	auto n = getNeighbor(node, neighbor);
+	return n && n->valid;
 }
 
 GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)

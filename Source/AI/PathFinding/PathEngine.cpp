@@ -51,7 +51,7 @@ void PathEngine::computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8
 		{
 			auto neighbor = m_graph->getNeighbor(minNode, static_cast<Direction>(i));
 
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 
 			switch (neighbor->state[taskNum])
@@ -141,7 +141,7 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType tar
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 			
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -179,7 +179,7 @@ void PathEngine::breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uin
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid)
+			if (!neighbor || !neighbor->valid)
 				continue;
 
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -233,7 +233,7 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->properties.hasBomb && !neighbor->valid)
+			if (!neighbor || (!neighbor->properties.hasBomb && !neighbor->valid))
 				continue;
 
 			if (neighbor->state[taskNum] == GraphNode::UNVISITED)
@@ -247,7 +247,7 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 
 	pathOut.nodes.clear();
 	pathOut.rating = bestPath.rating;
-	for (int i = 0; i < bestPath.nodes.size(); ++i)
+	for (uint32_t i = 0; i < bestPath.nodes.size(); ++i)
 		pathOut.nodes.push_back(bestPath.nodes[i]);
 }
 

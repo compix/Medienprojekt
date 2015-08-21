@@ -44,8 +44,8 @@ void TexturePacker::pack(std::vector<std::shared_ptr<sf::Texture>>& uniqueTextur
 
 	std::sort(m_textures.begin(), m_textures.end(), largeToSmall);
 	
-	int textureIndex = 0;
-	int packedIndex = 0;
+	uint32_t textureIndex = 0;
+	uint32_t packedIndex = 0;
 	while (textureIndex < m_textures.size())
 	{	
 		auto packedTexture = m_packedTextures[packedIndex];
@@ -88,7 +88,7 @@ void TexturePacker::pack(std::vector<std::shared_ptr<sf::Texture>>& uniqueTextur
 		{
 			packedTexture->m_textureAreas[t.name] = tested;
 			sf::Sprite sprite(t.texture);
-			sprite.setPosition(tested.left, tested.top);
+			sprite.setPosition(static_cast<float>(tested.left), static_cast<float>(tested.top));
 			packedTexture->m_renderTexture.draw(sprite);
 			m_usedAreas[packedIndex].push_back(tested);
 			++textureIndex;
@@ -109,7 +109,7 @@ void TexturePacker::pack(std::vector<std::shared_ptr<sf::Texture>>& uniqueTextur
 		}
 	}
 
-	for (int i = 0; i < m_packedTextures.size(); ++i)
+	for (uint32_t i = 0; i < m_packedTextures.size(); ++i)
 	{
 		sf::Texture tex = m_packedTextures[i]->getTexture();
 		uniqueTextures.push_back(std::make_shared<sf::Texture>(tex));
@@ -128,7 +128,7 @@ void TexturePacker::render(sf::RenderTarget& renderTarget)
 	float scaleX = 0.2f;
 	float scaleY = 0.2f;
 
-	for (int i = 0; i < m_packedTextures.size(); ++i)
+	for (uint32_t i = 0; i < m_packedTextures.size(); ++i)
 	{
 		const sf::Texture& tex = m_packedTextures[i]->m_renderTexture.getTexture();
 		sf::Sprite sprite = sf::Sprite(tex);

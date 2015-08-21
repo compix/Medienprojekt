@@ -140,7 +140,7 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	sf::Sprite sprite = createSprite("block");
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
 	entity->assign<SpriteComponent>(sprite);
-	entity->assign<DestructionDelayComponent>(1);
+	entity->assign<DestructionDelayComponent>(1.f);
 
 	entity->assign<CellComponent>(cellX, cellY);
 	entity->assign<HealthComponent>(1);
@@ -386,7 +386,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 			.burstTime(0.5f)
 			.spawnWidth(50 - 5)
 			.spawnHeight(50)
-			.spawnDuration(0.3)
+			.spawnDuration(0.3f)
 			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
 	}
 

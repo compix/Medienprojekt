@@ -23,9 +23,10 @@
 #include "../Components/ColorComponent.h"
 #include "../AI/Actions/GetSafe.h"
 #include "../Components/PortalComponent.h"
+#include "../Events/PortalCreatedEvent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
-	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME), m_invalidPaths(false)
+	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
 }
@@ -99,7 +100,7 @@ void AISystem::logAction(LogServiceId serviceId, ActionType action, AIPath& path
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
-	m_updateTimer -= dt;
+	m_updateTimer -= static_cast<float>(dt);
 
 	m_pathEngine->update(static_cast<float>(dt));
 
@@ -115,7 +116,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
-		if (m_updateTimer <= 0.f && (m_invalidPaths || !aiComponent->currentAction || aiComponent->currentAction->done() || !aiComponent->currentAction->valid(entity)))
+		if ((!aiComponent->currentAction || !aiComponent->currentAction->valid(entity) ) || (m_updateTimer <= 0.f && aiComponent->currentAction->done()))
 		{
 			ActionPtr bestAction;
 			ActionType bestActionType;
@@ -142,12 +143,10 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			LogServiceId logId = Logger::requestService(ss.str());
 
 			logAction(logId, bestActionType, aiComponent->currentAction->path());
-
-			m_invalidPaths = false;
 			aiComponent->currentActionType = bestActionType;
 		}
 
-		if (aiComponent->currentAction->path().nodes.size() == 0)
+		if (!aiComponent->currentAction || aiComponent->currentAction->path().nodes.size() == 0)
 			continue; // No viable action
 
 		aiComponent->currentAction->update(entity, static_cast<float>(dt));
@@ -162,17 +161,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 void AISystem::configure(entityx::EventManager& eventManager)
 {
-	eventManager.subscribe<entityx::EntityDestroyedEvent>(*this);
-}
-
-void AISystem::receive(const entityx::EntityDestroyedEvent& destroyedEvent)
-{
-	auto entity = destroyedEvent.entity;
-	if (entity.has_component<PortalComponent>())
-	{
-		// If portals disappear then paths can become invalid -> easy fix: force a recomputation
-		m_invalidPaths = true;
-	}
 }
 
 void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)

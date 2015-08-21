@@ -13,18 +13,8 @@ typedef std::map<int, EntityLayerPtr> LayerContainer;
 
 class LayerManager : public entityx::Receiver<LayerManager>
 {
-	struct EntityUpdateInfo
-	{
-		EntityUpdateInfo(entityx::Entity& entity, uint8_t x, uint8_t y, int layer)
-			:entity(entity), x(x), y(y), layer(layer) {}
-
-		entityx::Entity entity;
-		uint8_t x;
-		uint8_t y;
-		int layer;
-	};
 public:
-	EntityLayer* createLayer(int width, int height, int layer);
+	EntityLayer* createLayer(uint8_t width, uint8_t height, int layer);
 	~LayerManager();
 	void reset();
 
@@ -38,21 +28,25 @@ public:
 	void remove(Entity entity);
 	void update();
 
-	inline bool inBounds(int layer, int cellX, int cellY) { return m_layers[layer]->inBounds(cellX, cellY); }
+	inline bool inBounds(int layer, uint8_t cellX, uint8_t cellY)
+	{
+		assert(m_layers.count(layer));
+		return m_layers[layer]->inBounds(cellX, cellY);
+	}
 
 	/**
 	* A copy is returned because adding entities during iteration is viable. A reference would cause an exception in this case.
 	*/
-	EntityCollection getEntities(int layer, int cellX, int cellY);
+	EntityCollection getEntities(int layer, uint8_t cellX, uint8_t cellY);
 
 	template<class C>
-	bool hasEntityWithComponent(int layer, int cellX, int cellY);
+	bool hasEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY);
 
 	template<class C1, class C2, class... Args>
-	bool hasEntityWithComponents(int layer, int cellX, int cellY);
+	bool hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
 
 	template<class C>
-	bool hasEntityWithComponents(int layer, int cellX, int cellY);
+	bool hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
 
 	template<class C1, class C2, class... Args>
 	bool hasComponents(Entity& e);
@@ -62,25 +56,25 @@ public:
 
 	// An invalid entity will be returned if there is no such entity
 	template<class C>
-	Entity getEntityWithComponent(int layer, int cellX, int cellY);
+	Entity getEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY);
 
 	// An invalid entity will be returned if there is no such entity
 	template<class C1, class C2, class... Args>
-	Entity getEntityWithComponents(int layer, int cellX, int cellY);
+	Entity getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
 
-	bool isFree(int layer, int cellX, int cellY);
+	bool isInLayer(int layer, entityx::Entity& entity);
+
+	bool isFree(int layer, uint8_t cellX, uint8_t cellY);
 
 	void updateCell(entityx::Entity& entity);
 private:
 	LayerContainer m_layers;
-
-	std::vector<EntityUpdateInfo> m_scheduledForRemoval;
-	std::vector<EntityUpdateInfo> m_scheduledForPush;
 };
 
 template <class C>
-bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
+bool LayerManager::hasEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY)
 {
+	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return true;
@@ -89,8 +83,9 @@ bool LayerManager::hasEntityWithComponent(int layer, int cellX, int cellY)
 }
 
 template <class C1, class C2, class ... Args>
-bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
+bool LayerManager::hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
 {
+	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (hasComponents<C1, C2, Args...>(e))
 			return true;
@@ -99,8 +94,9 @@ bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
 }
 
 template <class C>
-bool LayerManager::hasEntityWithComponents(int layer, int cellX, int cellY)
+bool LayerManager::hasEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
 {
+	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return true;
@@ -115,8 +111,9 @@ bool LayerManager::hasComponents(Entity& e)
 }
 
 template <class C>
-Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
+Entity LayerManager::getEntityWithComponent(int layer, uint8_t cellX, uint8_t cellY)
 {
+	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (e.valid() && e.has_component<C>())
 			return e;
@@ -125,8 +122,9 @@ Entity LayerManager::getEntityWithComponent(int layer, int cellX, int cellY)
 }
 
 template <class C1, class C2, class ... Args>
-Entity LayerManager::getEntityWithComponents(int layer, int cellX, int cellY)
+Entity LayerManager::getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY)
 {
+	assert(m_layers.count(layer));
 	for (auto& e : m_layers[layer]->get(cellX, cellY))
 		if (hasComponents<C1, C2, Args...>(e))
 			return e;

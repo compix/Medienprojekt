@@ -31,7 +31,11 @@ struct NodeProperties
 
 struct GraphNode
 {
-	GraphNode() : cost(1), valid(true), marked(false) { }
+	GraphNode() : cost(1), valid(true), marked(false)
+	{
+		state[0] = UNVISITED;
+		state[1] = UNVISITED;
+	}
 
 	uint8_t x, y;
 	uint32_t cost;

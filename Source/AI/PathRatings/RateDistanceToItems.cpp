@@ -20,7 +20,7 @@ float RateDistanceToItems::inverseDistanceToItems(GraphNode* node)
 	{
 		++itemCount;
 		auto itemCell = item.component<CellComponent>();
-		float distance = abs(node->x - itemCell->x) + abs(node->y - itemCell->y);
+		int distance = abs(node->x - itemCell->x) + abs(node->y - itemCell->y);
 
 		if (distance == 0.f)
 			continue;

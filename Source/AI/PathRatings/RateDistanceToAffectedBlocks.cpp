@@ -23,8 +23,8 @@ float RateDistanceToAffectedBlocks::inverseDistanceToAffectedBlocks(Graph* graph
 			continue;
 
 		auto blockCell = block.component<CellComponent>();
-		float distance = abs(node->x - blockCell->x) + abs(node->y - blockCell->y);
-		assert(distance > 0.f); // The entity can never be on the same cell as the block
+		int distance = abs(node->x - blockCell->x) + abs(node->y - blockCell->y);
+		assert(distance > 0); // The entity can never be on the same cell as the block
 
 		// Use the squared distance for a higher evaluation of close blocks and lower evaluation for blocks that are far away
 		invDistance += 1.f / (distance * distance);

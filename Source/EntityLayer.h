@@ -26,7 +26,7 @@ public:
 	/**
      * @param int value Value of the layer for a correct drawing order.
      */
-	EntityLayer(int width, int height, int value);
+	EntityLayer(uint8_t width, uint8_t height, int value);
 	~EntityLayer();
 
 	void reset();
@@ -34,23 +34,23 @@ public:
 	inline EntityGrid getEntityGrid() const { return m_grid; }
 
 	template<class T>
-	void sort(T comparator, int cellX, int cellY);
+	void sort(T comparator, uint8_t cellX, uint8_t cellY);
 
-	void add(Entity entity, int cellX, int cellY);
-	void remove(Entity entity, int cellX, int cellY);
+	void add(Entity entity, uint8_t cellX, uint8_t cellY);
+	void remove(Entity entity, uint8_t cellX, uint8_t cellY);
 
 	inline int getValue() const { return m_value; }
 
 	inline int getWidth() const { return m_width; }
 	inline int getHeight() const { return m_height; }
 
-	inline EntityCollection& get(int cellX, int cellY)
+	inline EntityCollection& get(uint8_t cellX, uint8_t cellY)
 	{
 		assert(inBounds(cellX, cellY));
 		return m_grid[cellX][cellY];
 	};
 
-	inline bool inBounds(int cellX, int cellY) { return cellX >= 0 && cellX < m_width && cellY >= 0 && cellY < m_height; }
+	inline bool inBounds(uint8_t cellX, uint8_t cellY) { return cellX < m_width && cellY < m_height; }
 
 	inline void listen(IOnChangeListener* listener) { m_changeListeners.push_back(listener); }
 
@@ -65,7 +65,7 @@ private:
 };
 
 template <class T>
-void EntityLayer::sort(T comparator, int cellX, int cellY)
+void EntityLayer::sort(T comparator, uint8_t cellX, uint8_t cellY)
 {
 	std::sort(m_grid[cellX][cellY].begin(), m_grid[cellX][cellY].end(), comparator);
 }

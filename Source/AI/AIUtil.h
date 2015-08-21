@@ -12,5 +12,10 @@ namespace AIUtil
 	/**
 	* Checks if the path is blocked. Ignores the last node because there could be a bomb that the AI wants to kick.
 	*/
-	bool isBlockedExceptLast(const AIPath& path);
+	bool isBlockedIgnoreLast(const AIPath& path);
+
+	/**
+	* If portals disappear the path can become invalid. This function checks the path is still valid.
+	*/
+	bool isValidPath(const AIPath& path);
 }

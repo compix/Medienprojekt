@@ -143,10 +143,10 @@ void Game::update(TimeDelta dt)
 
 void Game::refreshView()
 {
-	float gameW = GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH;
-	float gameH = GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT;
-	float screenW = GameGlobals::window->getSize().x;
-	float screenH = GameGlobals::window->getSize().y;
+	float gameW = static_cast<float>(GameGlobals::game->getWidth() * GameConstants::CELL_WIDTH);
+	float gameH = static_cast<float>(GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT);
+	float screenW = static_cast<float>(GameGlobals::window->getSize().x);
+	float screenH = static_cast<float>(GameGlobals::window->getSize().y);
 	float screenRatio = screenW / screenH;
 	float viewRatio = gameW / gameH;
 	float scaleFactor;

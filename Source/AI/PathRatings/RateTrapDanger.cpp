@@ -41,7 +41,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighbor = simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor->valid || neighbor->marked)
+			if (!neighbor || !neighbor->valid || neighbor->marked)
 				continue;
 
 			neighbor->marked = true;
@@ -65,7 +65,7 @@ int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& clo
 		assert(e.valid() && e.has_component<CellComponent>());
 		auto cell = e.component<CellComponent>();
 
-		float newDistance = abs(cell->x - x) + abs(cell->y - y);
+		int newDistance = abs(cell->x - x) + abs(cell->y - y);
 		if (newDistance < distance)
 		{
 			distance = newDistance;

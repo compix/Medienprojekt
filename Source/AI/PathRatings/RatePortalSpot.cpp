@@ -37,11 +37,11 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (!secondPortal.valid())
 	{
 		// Higher distance between portals = good spot. I guess.	
-		float distance = abs(cell->x - goal->x) + abs(cell->y - goal->y);
+		int distance = abs(cell->x - goal->x) + abs(cell->y - goal->y);
 		if (distance < 5)
 			return false;
 
-		path.rating = distance*distance / path.nodes.size();
+		path.rating = float(distance*distance) / path.nodes.size();
 		return true;
 	}
 

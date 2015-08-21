@@ -48,7 +48,7 @@ int RateEscape::computeAccumulatedDistance(AIPath& path)
 {
 	int sum = 0;
 
-	for (int i = 0; i < path.nodes.size(); ++i)
+	for (uint32_t i = 0; i < path.nodes.size(); ++i)
 	{
 		auto node = path.nodes[i];
 		int distance = computeDistanceToEnemies(node->x, node->y);
