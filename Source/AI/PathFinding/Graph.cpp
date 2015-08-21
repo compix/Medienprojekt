@@ -267,6 +267,7 @@ void Graph::onEntityAdded(entityx::Entity& entity)
 	if (entity.has_component<PortalComponent>())
 	{
 		m_nodeGrid[cell->x][cell->y].properties.hasPortal = true;
+		return;
 	}
 
 	if (entity.has_component<BlockComponent>())
@@ -287,26 +288,33 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 
 	if (entity.has_component<InventoryComponent>())
 	{
-		// There could be another player so just setting to false isn't enough
+		// Multiple players on one cell are possible
 		m_nodeGrid[cell->x][cell->y].properties.hasPlayer = m_layerManager->hasEntityWithComponent<InventoryComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y);
 		return;
 	}
 
 	if (entity.has_component<BombComponent>())
 	{
-		addNode(cell->x, cell->y);
-		m_nodeGrid[cell->x][cell->y].properties.hasBomb = false;
+		// Bomb could be on a block or another bomb
+		if (!m_layerManager->hasEntityWithOneComponent<BombComponent, BlockComponent, SolidBlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			addNode(cell->x, cell->y);
+		// Multiple bombs on one cell are possible
+		m_nodeGrid[cell->x][cell->y].properties.hasBomb = m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y);
 		return;
 	}
 	
 	if (entity.has_component<ItemComponent>())
 	{
+		// 2 items on one cell? Shouldn't happen.
+		assert(!m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
 		m_nodeGrid[cell->x][cell->y].properties.hasItem = false;
 		return;
 	}
 
 	if (entity.has_component<PortalComponent>())
 	{
+		// 2 portals on one cell? Shouldn't happen.
+		assert(!m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
 		m_nodeGrid[cell->x][cell->y].properties.hasPortal = false;
 		m_nodeGrid[cell->x][cell->y].properties.otherPortal = nullptr;
 		return;
@@ -314,13 +322,21 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 
 	if (entity.has_component<BlockComponent>())
 	{
-		addNode(cell->x, cell->y);
+		// 2 blocks on one cell? Shouldn't happen.
+		assert(!m_layerManager->hasEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
+		if (!m_layerManager->hasEntityWithOneComponent<BombComponent, SolidBlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			addNode(cell->x, cell->y);
 		m_nodeGrid[cell->x][cell->y].properties.hasBlock = false;
 		return;
 	}
 
 	if (entity.has_component<SolidBlockComponent>())
-		addNode(cell->x, cell->y);
+	{
+		// 2 solid blocks on one cell? Shouldn't happen.
+		assert(!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
+		if (!m_layerManager->hasEntityWithOneComponent<BombComponent, BlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			addNode(cell->x, cell->y);
+	}
 }
 
 void Graph::resetPathInfo(uint8_t taskNum)
