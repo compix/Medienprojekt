@@ -15,9 +15,6 @@ void ContactListener::BeginContact(b2Contact* contact)
 
 void ContactListener::EndContact(b2Contact* contact)
 {
-	#ifdef _DEBUG 
-	 std::cout << "END_CONTACT" << std::endl;
-	#endif
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 	b2Body* sensor;
@@ -44,7 +41,7 @@ void ContactListener::EndContact(b2Contact* contact)
 		Entity* entitySensor = static_cast<Entity*>(sensor->GetUserData());
 
 		if (BodyFactory::contactBetween(contact,BodyFactory::BOMB_RADAR,BodyFactory::PLAYER)){
-			if (entitySensor->component<OwnerComponent>()->entity.id() == entityNotSensor->id()){
+			if (entitySensor->component<OwnerComponent>()->entity.id() == entityNotSensor->id() && sensor->GetFixtureList()->GetNext()->GetFilterData().categoryBits == BodyFactory::BOMB){
 				createCollisionToBomb(sensor, notSensor);
 			}
 		}

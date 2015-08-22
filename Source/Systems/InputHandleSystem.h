@@ -11,7 +11,7 @@ public:
 
 private:
 	bool canPlacePortal(entityx::Entity& entity);
-
+	bool canPunch(entityx::Entity& entity);
 private:
 	LayerManager* m_layerManager;
 };

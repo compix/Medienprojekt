@@ -8,6 +8,7 @@ namespace GameConstants
 	extern const int CELL_HEIGHT;
 	extern const int FLOOR_LAYER;
 	extern const int MAIN_LAYER;
+	extern const int JUMP_LAYER;
 
 	// Relating to Players
 	const int MAX_PLAYERS = 4;
@@ -18,6 +19,15 @@ namespace GameConstants
 	extern const bool INIT_PLAYERS_CAN_KICK;	// Ob zu beginn Spieler bereits Bomben kicken können 
 	extern const bool INIT_PORTAL_SKILL;		// Ob zu beginn von Spielern Portale gesetzt werden können.
 	extern const bool INIT_ANTI_MAGNET;			// Ob gekickte Bomben von Beginn an von Spielern abprallen.
+	extern const bool INIT_PUNCH_SKILL;		//Ob Spieler zu beginn Bomben schlagen können.
+	extern const int PUNCH_DISTANCE;
+
+	//Relating to Punch/Jumping
+	extern const float EARTH_GRAVITY;
+	extern const float PUNCH_JUMPING_SPEED;
+	extern const float BLOCKED_CELL_JUMPING_SPEED;
+	extern const float PUNCH_JUMPING_HEIGHT;
+	extern const float BLOCKED_CELL_JUMPING_HEIGHT;
 
 	// Relating to Bombs
 	extern const int INIT_BOMB_COUNT;			// Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!

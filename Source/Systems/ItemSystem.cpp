@@ -67,6 +67,9 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 				if (inventory->antiMagnet == false)
 					inventory->antiMagnet = true;
 				break;
+			case ItemType::PUNCH_SKILL:
+				inventory->put(SkillType::PUNCH);
+				break;
 			default: break;
 			}
 
@@ -114,6 +117,10 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 		else if (Random::getInt(1, 100) <= spawnChance)
 		{
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::ANTI_MAGNET_SKILL);
+		}
+		else if (Random::getInt(1, 100) <= spawnChance)
+		{
+			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::PUNCH_SKILL);
 		}
 	}
 }

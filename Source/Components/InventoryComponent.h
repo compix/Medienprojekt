@@ -6,7 +6,8 @@
 enum class SkillType
 {
 	NONE,
-	PLACE_PORTAL
+	PLACE_PORTAL,
+	PUNCH
 };
 
 /**
@@ -25,6 +26,9 @@ struct Skill
 			break;
 		case SkillType::PLACE_PORTAL:
 			priority = 10;
+			break;
+		case SkillType::PUNCH:
+			priority = 9;
 			break;
 		default:
 			assert(false);
