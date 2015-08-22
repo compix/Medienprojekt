@@ -17,6 +17,7 @@ namespace GameConstants
 	extern const float SPEED_MULTI_CAP;			// Grenze des SPEED Multiplikators
 	extern const float SPEED_MULTI_INC;			// Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
 	extern const bool INIT_PLAYERS_CAN_KICK;	// Ob zu beginn Spieler bereits Bomben kicken können 
+	extern const bool INIT_PLAYERS_CAN_HOLD_BOMB;
 	extern const bool INIT_PORTAL_SKILL;		// Ob zu beginn von Spielern Portale gesetzt werden können.
 	extern const bool INIT_ANTI_MAGNET;			// Ob gekickte Bomben von Beginn an von Spielern abprallen.
 	extern const bool INIT_PUNCH_SKILL;		//Ob Spieler zu beginn Bomben schlagen können.

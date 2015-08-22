@@ -527,7 +527,7 @@ Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity tar
 Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 {
 	Entity entity = GameGlobals::entities->create();
-
+	
 	TransformComponent transformComponent;
 	transformComponent.x = (float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f + 7.f;
 	transformComponent.y = (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 15.f;
@@ -562,6 +562,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 		break;
 	case ItemType::PUNCH_SKILL:
 		entity.assign<SpriteComponent>(createSprite("punch_skill"));
+		break;
+	case ItemType::HOLD_BOMB_SKILL:
+		entity.assign<SpriteComponent>(createSprite("holding_skill"));
 		break;
 	default: break;
 	}

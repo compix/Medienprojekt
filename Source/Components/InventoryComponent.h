@@ -30,7 +30,7 @@ struct Skill
 			priority = 10;
 			break;
 		case SkillType::PUNCH:
-			priority = 9;
+			priority = 10;
 			break;
 		default:
 			assert(false);
@@ -79,11 +79,13 @@ private:
 
 struct InventoryComponent
 {
-	InventoryComponent() : bombCount(GameConstants::INIT_BOMB_COUNT), 
-		explosionRange(GameConstants::INIT_BOMB_RANGE), 
-		speedMultiplicator(GameConstants::INIT_SPEED_MULTI), 
-		bombKick(GameConstants::INIT_PLAYERS_CAN_KICK), 
-		antiMagnet(GameConstants::INIT_ANTI_MAGNET)
+	InventoryComponent() : bombCount(GameConstants::INIT_BOMB_COUNT),
+		explosionRange(GameConstants::INIT_BOMB_RANGE),
+		speedMultiplicator(GameConstants::INIT_SPEED_MULTI),
+		bombKick(GameConstants::INIT_PLAYERS_CAN_KICK),
+		antiMagnet(GameConstants::INIT_ANTI_MAGNET),
+		isHoldingBomb(false),
+		canHold(GameConstants::INIT_PLAYERS_CAN_HOLD_BOMB)
 	{
 		if (GameConstants::INIT_PORTAL_SKILL)
 			activeSkills.put(SkillType::PLACE_PORTAL);
@@ -94,8 +96,11 @@ struct InventoryComponent
 	float speedMultiplicator;
 	bool bombKick;
 	bool antiMagnet;
+	bool isHoldingBomb;
+	bool canHold;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
 	SkillQueue activeSkills; // Currently active skills with a custom priority order
+	
 
 	inline void put(SkillType skillType) { activeSkills.put(skillType); }
 	inline SkillType activeSkill() { return activeSkills.top().type; }
