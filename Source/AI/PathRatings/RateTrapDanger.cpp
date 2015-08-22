@@ -3,8 +3,7 @@
 #include "../../Components/CellComponent.h"
 #include "../../Systems/AISystem.h"
 
-RateTrapDanger::RateTrapDanger(bool willPlaceBomb)
-	:m_willPlaceBomb(willPlaceBomb)
+RateTrapDanger::RateTrapDanger()
 {
 }
 
@@ -19,7 +18,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	auto graph = pathEngine->getSimGraph();
 	uint8_t range = 2;
 
-	bool trap = isPotentialTrap(pathEngine, goal) ||
+	bool trap = isPotentialTrap(pathEngine, goal, range) ||
 				isPotentialTrap(graph, goal, Direction::DOWN, range) ||
 				isPotentialTrap(graph, goal, Direction::UP, range)   ||
 				isPotentialTrap(graph, goal, Direction::LEFT, range) ||
@@ -33,9 +32,9 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	return true;
 }
 
-bool RateTrapDanger::isPotentialTrap(PathEngine* pathEngine, GraphNode* node)
+bool RateTrapDanger::isPotentialTrap(PathEngine* pathEngine, GraphNode* node, uint8_t range)
 {
-	if (distanceToClosest(node->x, node->y) > 5)
+	if (distanceToClosest(node->x, node->y) > range)
 		return false;
 
 	auto graph = pathEngine->getSimGraph();
@@ -51,13 +50,14 @@ bool RateTrapDanger::isPotentialTrap(PathEngine* pathEngine, GraphNode* node)
 
 bool RateTrapDanger::isPotentialTrap(SimulationGraph* graph, GraphNode* node, Direction direction, uint8_t range)
 {
+	assert(node);
 	if (direction == Direction::LEFT || direction == Direction::RIGHT)
 	{
 		auto curNode = node;
-		for (uint8_t i = 0; curNode && i < range; ++i)
+		for (uint8_t i = 0; graph->hasNeighbor(curNode, direction) && i < range; ++i)
 		{
 			curNode = graph->getNeighbor(curNode, direction);
-			if (distanceToClosest(curNode->x, curNode->y) > 5)
+			if (distanceToClosest(curNode->x, curNode->y) > range)
 				return false;
 
 			if (downUpBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))
@@ -67,10 +67,10 @@ bool RateTrapDanger::isPotentialTrap(SimulationGraph* graph, GraphNode* node, Di
 	else
 	{
 		auto curNode = node;
-		for (uint8_t i = 0; curNode && i < range; ++i)
+		for (uint8_t i = 0; graph->hasNeighbor(curNode, direction) && i < range; ++i)
 		{
 			curNode = graph->getNeighbor(curNode, direction);
-			if (distanceToClosest(curNode->x, curNode->y) > 5)
+			if (distanceToClosest(curNode->x, curNode->y) > range)
 				return false;
 
 			if (leftRightBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))

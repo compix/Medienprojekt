@@ -22,14 +22,15 @@ void LevelGenerator::generateRandomLevel()
 	rules.push_back(&LevelGenerator::indestructibleBlockRule);
 	rules.push_back(&LevelGenerator::characterRule);
 	rules.push_back(&LevelGenerator::emptyRule);
-	
 	rules.push_back(&LevelGenerator::destructibleBlockRule);
 
 	for (int cellY = 0; cellY < m_height; cellY++)
 	{
 		for (int cellX = 0; cellX < m_width; cellX++)
 		{
+			// No rules for the floor layer. Just floor.
 			GameGlobals::entityFactory->createFloor(cellX, cellY);
+
 			for (auto rule : rules)
 				if ((this->*rule)(LevelPosition(cellX, cellY)))
 					break;
@@ -80,7 +81,7 @@ bool LevelGenerator::indestructibleBlockRule(LevelPosition pos)
 
 bool LevelGenerator::destructibleBlockRule(LevelPosition pos)
 {
-	bool condition = Random::getInt(1, 100) <= 35; // 85% chance to spawn a block
+	bool condition = Random::getInt(1, 100) <= 85; // 85% chance to spawn a block
 	if (condition) 
 		GameGlobals::entityFactory->createBlock(pos.cellX, pos.cellY);
 

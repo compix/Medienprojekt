@@ -11,7 +11,7 @@ The level is defined by rules:
 - The horizontal and vertical neighbor tiles of the characters are empty.
 - Destructible blocks at the remaining positions (spawned at a defined probability).
 
-Note: The order of the rules might matter. The order defines the priority thus first rules are considered first.
+Note: The order of the rules matters. Only the first rule that meets the condition applies.
 */
 class LevelGenerator
 {
@@ -38,11 +38,14 @@ private:
 	bool destructibleBlockRule(LevelPosition pos);
 
 	bool neighbors(LevelPosition pos1, LevelPosition pos2);
+
 private:
 	std::vector<LevelPosition> m_characterPositions;
 
 	int m_width;
 	int m_height;
 	int m_playerIndex = 0;
+
+	float m_blockDensity; // In [0, 100]
 };
 

@@ -7,6 +7,7 @@
 #include "../../Components/CellComponent.h"
 #include "../AIUtil.h"
 #include "../PathRatings/RateRiskySafety.h"
+#include "../PathRatings/RateTrapDanger.h"
 
 bool GetSafe::done()
 {
@@ -24,8 +25,7 @@ bool GetSafe::done()
 GetSafe::GetSafe(PathEngine* pathEngine, LayerManager* layerManager)
 	:m_pathEngine(pathEngine), m_waitTime(0.5f), m_waitTimer(0.f)
 {
-	m_getSafeAction = std::make_shared<Action>(pathEngine, RateRiskySafety(), DoNothing(), layerManager);
-	PathRating kickBombRating = RateCombination({ RateSafety(), RateKickBomb() });
+	m_getSafeAction = std::make_shared<Action>(pathEngine, RateCombination({ RateRiskySafety(), RateTrapDanger() }), DoNothing(), layerManager);
 	m_kickBombAction = std::make_shared<Action>(pathEngine, RateKickBomb(), DoNothing(), layerManager);
 	m_tryToSurviveAction = std::make_shared<Action>(pathEngine, RateDesperateSaveAttempt(), DoNothing(), layerManager);
 }

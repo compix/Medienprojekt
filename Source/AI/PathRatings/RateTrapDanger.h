@@ -17,14 +17,14 @@ struct AIPath;
 class RateTrapDanger
 {
 public:
-	explicit RateTrapDanger(bool willPlaceBomb = false);
+	RateTrapDanger();
 
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 
 private:
 	int distanceToClosest(uint8_t x, uint8_t y);
 
-	bool isPotentialTrap(PathEngine* pathEngine, GraphNode* node);
+	bool isPotentialTrap(PathEngine* pathEngine, GraphNode* node, uint8_t range);
 	bool downUpBlocked(SimulationGraph* graph, GraphNode* node);
 	bool leftRightBlocked(SimulationGraph* graph, GraphNode* node);
 
@@ -32,6 +32,4 @@ private:
 
 private:
 	std::vector<entityx::Entity> m_enemies;
-
-	bool m_willPlaceBomb;
 };
