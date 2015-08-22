@@ -41,8 +41,36 @@ struct SkillComparator
 {
 	bool operator()(const Skill& s1, const Skill& s2)
 	{
-		return s1.priority > s2.priority;
+		return s1.priority < s2.priority;
 	}
+};
+
+class SkillQueue
+{
+public:
+	SkillQueue()
+	{
+		m_skills.insert(Skill(SkillType::NONE));
+	}
+
+	void put(SkillType skillType)
+	{
+		// Remove the skill if it's already in the set
+		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
+		{
+			if (it->type == skillType)
+			{
+				m_skills.erase(it);
+				break;
+			}
+		}
+
+		m_skills.insert(Skill(skillType));
+	}
+
+	inline const Skill& top() { return *m_skills.begin(); }
+private:
+	std::set<Skill, SkillComparator> m_skills;
 };
 
 struct InventoryComponent
@@ -53,10 +81,8 @@ struct InventoryComponent
 		bombKick(GameConstants::INIT_PLAYERS_CAN_KICK), 
 		antiMagnet(GameConstants::INIT_ANTI_MAGNET)
 	{
-		activeSkills.push(Skill(SkillType::NONE));
-
 		if (GameConstants::INIT_PORTAL_SKILL)
-			activeSkills.push(Skill(SkillType::PLACE_PORTAL));
+			activeSkills.put(SkillType::PLACE_PORTAL);
 	}
 
 	int bombCount;
@@ -65,20 +91,9 @@ struct InventoryComponent
 	bool bombKick;
 	bool antiMagnet;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
-	std::unordered_map<SkillType, bool, EnumClassHash> ownedSkills;		// All the skills the entity has, only skills that are used with a key/button. Placing bombs excluded.
-	std::priority_queue<Skill, std::vector<Skill>, SkillComparator> activeSkills; // Currently active skills with a custom priority order
+	SkillQueue activeSkills; // Currently active skills with a custom priority order
 
-	inline bool has(SkillType skillType) { return ownedSkills.count(skillType) > 0; }
-
-	void put(SkillType skillType)
-	{
-		if(!has(skillType))
-		{
-			activeSkills.push(Skill(skillType));
-			ownedSkills[skillType] = true;
-		}
-	}
-
-	inline SkillType activeSkill() { assert(activeSkills.size() > 0); return activeSkills.top().type; }
+	inline void put(SkillType skillType) { activeSkills.put(skillType); }
+	inline SkillType activeSkill() { return activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
 };
