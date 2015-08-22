@@ -2,8 +2,7 @@
 #include "../GameConstants.h"
 #include <utility>
 #include <entityx/Entity.h>
-#include <queue>
-#include "../Utils/Common.h"
+#include <algorithm>
 
 enum class SkillType
 {
@@ -54,12 +53,19 @@ class SkillQueue
 public:
 	SkillQueue()
 	{
-		m_skills.insert(Skill(SkillType::NONE));
+		m_skills.push_back(Skill(SkillType::NONE));
 	}
 
 	void put(SkillType skillType)
 	{
-		// Remove the skill if it's already in the set
+		remove(skillType);
+		auto it = std::lower_bound(m_skills.begin(), m_skills.end(), Skill(skillType), SkillComparator());
+		m_skills.insert(it, Skill(skillType));
+	}
+
+	void remove(SkillType skillType)
+	{
+		assert(skillType != SkillType::NONE);
 		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
 		{
 			if (it->type == skillType)
@@ -68,13 +74,13 @@ public:
 				break;
 			}
 		}
-
-		m_skills.insert(Skill(skillType));
 	}
 
+	// Skill set is never empty. If the entity has no skills then SkillType::NONE is returned.
 	inline const Skill& top() { return *m_skills.begin(); }
+
 private:
-	std::set<Skill, SkillComparator> m_skills;
+	std::vector<Skill> m_skills;
 };
 
 struct InventoryComponent
@@ -105,4 +111,5 @@ struct InventoryComponent
 	inline void put(SkillType skillType) { activeSkills.put(skillType); }
 	inline SkillType activeSkill() { return activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
+	inline void removeSkill(SkillType type) { activeSkills.remove(type); }
 };
