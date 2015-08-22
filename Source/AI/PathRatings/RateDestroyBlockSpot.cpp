@@ -5,7 +5,7 @@
 #include "../AIUtil.h"
 #include "../../Components/InventoryComponent.h"
 
-bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -27,8 +27,8 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 
 			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, bombExploTime);
 
-			bool blocksAffected = goal->properties.numOfBlocksAffectedByExplosion > 0;
-			bool itemsAffected = goal->properties.numOfItemsAffectedByExplosion > 0;
+			bool blocksAffected = goal->bombProperties.numOfBlocksAffectedByExplosion > 0;
+			bool itemsAffected = goal->bombProperties.numOfItemsAffectedByExplosion > 0;
 
 			if (!blocksAffected || itemsAffected)
 				found = false;
@@ -37,7 +37,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			{
 				// Found a potential spot -> check if a safe escape path exists
 				AIPath safePath;
-				pathEngine->breadthFirstSearch(entity, goal->x, goal->y, safePath, RateSafety(), taskNum + 1);
+				pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
 
 				if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(entity, safePath))
 					found = false;
@@ -56,7 +56,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			}
 
 			if (found)
-				path.rating = goal->properties.numOfBlocksAffectedByExplosion - timePerCell * path.nodes.size();
+				path.rating = goal->bombProperties.numOfBlocksAffectedByExplosion - timePerCell * path.nodes.size();
 
 			// Reset to the old state
 			pathEngine->getSimGraph()->resetSimulation();

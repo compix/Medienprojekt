@@ -5,12 +5,12 @@ RateCombination::RateCombination(std::initializer_list<PathRating> ratings)
 	m_pathRatings = ratings;
 }
 
-bool RateCombination::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateCombination::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	float totalRating = 0.f;
 	for (auto& rating : m_pathRatings)
 	{
-		bool valid = rating(pathEngine, path, entity, taskNum);
+		bool valid = rating(pathEngine, path, entity);
 
 		if (valid)
 			totalRating += path.rating;

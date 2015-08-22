@@ -2,7 +2,7 @@
 #include "../AIUtil.h"
 #include "../../Utils/Math.h"
 
-bool RateSafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateSafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	if (!path.goal()->valid)
 		return false;

@@ -1,8 +1,9 @@
 #include "RateItem.h"
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"
+#include "RateSafety.h"
 
-bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -20,7 +21,7 @@ bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity&
 		{
 			// Check if the path from that spot will be safe too by checking the full path
 			AIPath safePath;
-			pathEngine->breadthFirstSearch(goal->x, goal->y, NodeType::SAFE, safePath, taskNum + 1);
+			pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
 
 			AIPath fullPath;
 			fullPath.attach(path);

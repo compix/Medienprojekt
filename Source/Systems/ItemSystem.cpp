@@ -61,8 +61,7 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 					++inventory->explosionRange;
 				break;
 			case ItemType::PORTAL_SKILL:
-				if (inventory->portalSkill == false)
-					inventory->portalSkill = true;
+				inventory->put(SkillType::PLACE_PORTAL);
 				break;
 			case ItemType::ANTI_MAGNET_SKILL:
 				if (inventory->antiMagnet == false)

@@ -18,8 +18,12 @@ void LoggingService::log(const std::string& msg)
 	time_t now = time(0);
 	tm* d = std::localtime(&now);
 	std::stringstream ss;
-	ss << d->tm_hour << ":" << d->tm_min << ":" << d->tm_sec << " "  // Current time
-	   << d->tm_mday << "." << 1 + d->tm_mon << "." << 1900 + d->tm_year << " - "; // Curent date
+	ss << (d->tm_hour    < 10 ? "0" : "") << d->tm_hour    << ":" 
+	   << (d->tm_min     < 10 ? "0" : "") << d->tm_min     << ":" 
+	   << (d->tm_sec     < 10 ? "0" : "") << d->tm_sec     << " "
+	   << (d->tm_mday    < 10 ? "0" : "") << d->tm_mday    << "."
+	   << (1 + d->tm_mon < 10 ? "0" : "") << 1 + d->tm_mon << "."
+	   << 1900 + d->tm_year << " - ";
 	ss << msg;
 	m_writeBuffer->push(ss.str());
 }

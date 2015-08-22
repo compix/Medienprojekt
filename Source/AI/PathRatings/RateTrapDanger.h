@@ -18,12 +18,12 @@ class RateTrapDanger
 public:
 	explicit RateTrapDanger(bool willPlaceBomb = false);
 
-	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum);
+	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 
 private:
 	int distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy);
 
-	bool testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine, uint8_t taskNum);
+	bool testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine);
 private:
 	std::vector<entityx::Entity> m_enemies;
 

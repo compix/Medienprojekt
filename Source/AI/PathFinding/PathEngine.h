@@ -5,6 +5,8 @@
 #include "AIPath.h"
 #include "../PathRatings/PathRating.h"
 
+struct NodePathInfo;
+
 enum class NodeType
 {
 	SAFE,
@@ -16,32 +18,25 @@ enum class NodeType
 
 class PathEngine;
 
+typedef std::function<bool(const GraphNode* graphNode)> NodeCondition;
+
+const uint8_t PATH_ENGINE_MAX_TASK_NUM = 5;
+
 class PathEngine
 {
-	struct NodePathInfo
-	{
-		NodePathInfo() : state(UNVISITED) {}
-
-		enum State
-		{
-			UNVISITED,
-			OPEN,
-			CLOSED
-		} state;
-	};
-
+	typedef NodePathInfo** NodePathInfoGrid;
+	friend class AIVisualizer;
 public:
 	PathEngine(LayerManager* layerManager);
+	~PathEngine();
 
 	// Computes the path using the A* algorithm and stores it in pathOut.
-	void computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, AIPath& pathOut, uint8_t taskNum = 0);
+	void computePath(uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY, AIPath& pathOut);
 
 	// Finds the shortest path to a node of the given type
-	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeType targetType, AIPath& pathOut, uint8_t taskNum = 0);
+	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeCondition nodeCondition, AIPath& pathOut);
 
-	void breadthFirstSearch(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t taskNum = 0);
-
-	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5, uint8_t taskNum = 0);
+	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5);
 
 	void update(float deltaTime);
 
@@ -50,21 +45,23 @@ public:
 
 	void reset();
 private:
-	void makePath(AIPath& pathOut, GraphNode* goal, uint8_t taskNum);
+	void resetPathInfo(uint8_t task);
+	
+	void makePath(AIPath& pathOut, NodePathInfo* goal, uint8_t taskNum);
 
-	uint32_t estimate(GraphNode* node, GraphNode* goal);
+	uint32_t estimate(const NodePathInfo& nodeInfo, const NodePathInfo& goal);
 
-	// Inserts the node at the correct position starting at the given node to remain the cost order: lowest -> highest
-	// This is fast because it's a grid and the costs are usually uniform. The open list is small. Updates/relaxations are rarely needed. 
-	// Runtime: Usually O(1) - Theoretical worst case: O(n) where n is the number of nodes in the open list.
-	void insert(GraphNode* newNode, GraphNode* at, uint8_t taskNum);
-	// Runtime: O(1)
-	GraphNode* remove(GraphNode* node, uint8_t taskNum);
+	uint8_t newTask();
+	void freeTask(uint8_t task);
+
+	inline bool inBounds(uint8_t x, uint8_t y) { return x < m_graph->m_width && y < m_graph->m_height; }
 private:
 	std::unique_ptr<Graph> m_graph;
 	std::unique_ptr<SimulationGraph> m_simGraph;
 
 	LayerManager* m_layerManager;
 
-	GraphNode m_startDummy, m_endDummy;
+	NodePathInfoGrid m_nodeInfo[PATH_ENGINE_MAX_TASK_NUM];
+	uint8_t m_freeTasks[PATH_ENGINE_MAX_TASK_NUM];
+	uint8_t m_numOfFreeTasks;
 };

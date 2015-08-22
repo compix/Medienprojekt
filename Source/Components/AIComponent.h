@@ -16,4 +16,7 @@ struct AIComponent
 	IAction* currentAction;
 	ActionType currentActionType;
 	uint8_t id;
+
+	AIPath lastPath;
+	ActionType lastActionType;
 };

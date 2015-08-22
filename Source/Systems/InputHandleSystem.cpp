@@ -12,7 +12,6 @@
 #include "../Events/CreatePortalEvent.h"
 #include "../Components/PortalComponent.h"
 #include "../Components/BombComponent.h"
-#include "../Events/PunchEvent.h"
 
 InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -41,12 +40,8 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->skillButtonPressed)
 		{
-		//	if (inventory->portalSkill && !inventory->placedPortals.second.valid() && !m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
-		//		GameGlobals::events->emit<CreatePortalEvent>(entity);
-			if (inventory->punchSkill)
-			{
-				GameGlobals::events->emit<PunchEvent>(entity, GameConstants::PUNCH_DISTANCE);
-			}
+			if (canPlacePortal(entity))
+				GameGlobals::events->emit<CreatePortalEvent>(entity);
 			input->skillButtonPressed = false;
 		}
 
@@ -54,4 +49,14 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		if (body)
 			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
 	}
+}
+
+bool InputHandleSystem::canPlacePortal(entityx::Entity& entity)
+{
+	auto inventory = entity.component<InventoryComponent>();
+	auto cell = entity.component<CellComponent>();
+	assert(inventory && cell);
+	return inventory->isActive(SkillType::PLACE_PORTAL) && // Portal skill is active
+		   !inventory->placedPortals.second.valid()     && // Didn't place both portals yet
+		   !m_layerManager->hasEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y); // No portal on the current cell
 }

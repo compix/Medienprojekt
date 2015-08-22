@@ -42,16 +42,16 @@ Graph::~Graph()
 
 void Graph::update(float deltaTime)
 {
-	resetCosts();
 	m_normalBombs.clear();
 	m_blocksAffectedByExplosion.clear();
 
-	// Reset affectedByExplosion property
+	// Reset some dynamic properties
 	for (auto x = 1; x < m_width - 1; ++x)
 	{
 		for (auto y = 1; y < m_height - 1; ++y)
 		{
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
+			m_nodeGrid[x][y].bombProperties.explosionSimulated = false;
 		}
 	}
 
@@ -85,14 +85,9 @@ void Graph::update(float deltaTime)
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
+		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
+		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
 	}
-
-	// Sort by explosionTime so that bombs that are affected by an explosion have their explosion time set to the "correct" value
-	// This isn't perfect and should be reworked: 
-	// 1. Get the bomb with the lowest explosion time. 
-	// 2. Simulate the explosion and if it hits another bomb then simulate the explosion of the affected bomb if it's in the list.
-	// 3. Remove the bombs that were already simulated from the list and go to 1. if the list isn't empty.
-	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
 
 	// Go through all explosion components and simulate the explosion.
 	for (auto explosion : GameGlobals::entities->entities_with_components<ExplosionComponent, SpreadComponent, CellComponent>())
@@ -103,13 +98,13 @@ void Graph::update(float deltaTime)
 		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
 	}
 
+	// Sort by explosionTime to simulate the correct explosion chain
+	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
+
 	for (auto& bomb : m_normalBombs)
 	{
-		float exploTime = bomb.explosionTime;
-		if (m_nodeGrid[bomb.x][bomb.y].properties.affectedByExplosion)
-			exploTime = m_nodeGrid[bomb.x][bomb.y].properties.timeTillExplosion;
-
-		placeBomb(bomb.x, bomb.y, bomb.range, exploTime);
+		if (!m_nodeGrid[bomb.x][bomb.y].bombProperties.explosionSimulated)
+			placeBomb(bomb.x, bomb.y, bomb.range, bomb.explosionTime);
 	}
 }
 
@@ -132,7 +127,7 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 			setOnFire(currentNode->x, currentNode->y, explosionTime);
 			if (currentNode->properties.hasItem)
 			{
-				m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+				m_nodeGrid[x][y].bombProperties.numOfItemsAffectedByExplosion++;
 				break; // Items stop explosions.
 			}
 		}
@@ -141,17 +136,24 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 			if (currentNode->properties.hasBlock)
 			{
 				if (currentNode->properties.affectedByExplosion)
-					m_nodeGrid[x][y].properties.numOfItemsAffectedByExplosion++;
+					m_nodeGrid[x][y].bombProperties.numOfItemsAffectedByExplosion++;
 
 				setOnFire(currentNode->x, currentNode->y, explosionTime);
-				m_nodeGrid[x][y].properties.numOfBlocksAffectedByExplosion++;
+				m_nodeGrid[x][y].bombProperties.numOfBlocksAffectedByExplosion++;
 				auto block = m_layerManager->getEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
 				if (block.valid())
 					m_blocksAffectedByExplosion.push_back(block);
 			}
 
-			// Doesn't really matter what else it is (might be a bomb for example). Just make it burn even if it's a solid block.
-			setOnFire(currentNode->x, currentNode->y, explosionTime);
+			if (currentNode->properties.hasBomb)
+			{
+				setOnFire(currentNode->x, currentNode->y, explosionTime);
+				if (!currentNode->bombProperties.explosionSimulated)
+				{
+					// Simulate the explosion chain
+					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime);
+				}
+			}	
 
 			// Explosion was stopped so get outta here.
 			break;
@@ -177,9 +179,11 @@ void Graph::setOnFire(uint8_t x, uint8_t y, float explosionTime)
 void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime)
 {	
 	auto currentNode = getNode(x, y);
-	currentNode->properties.numOfBlocksAffectedByExplosion = 0;
-	currentNode->properties.numOfPlayersAffectedByExplosion = 0;
-	currentNode->properties.numOfItemsAffectedByExplosion = 0;
+	currentNode->bombProperties.numOfBlocksAffectedByExplosion = 0;
+	currentNode->bombProperties.numOfPlayersAffectedByExplosion = 0;
+	currentNode->bombProperties.numOfItemsAffectedByExplosion = 0;
+	currentNode->bombProperties.explosionRange = range;
+	currentNode->bombProperties.explosionSimulated = true;
 
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
@@ -199,7 +203,6 @@ void Graph::resetMarks()
 	}
 }
 
-
 void Graph::reset()
 {
 	for (auto x = 0; x < m_width; ++x)
@@ -209,17 +212,6 @@ void Graph::reset()
 			m_nodeGrid[x][y] = GraphNode();
 			m_nodeGrid[x][y].x = x;
 			m_nodeGrid[x][y].y = y;
-		}
-	}
-}
-
-void Graph::resetCosts()
-{
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			m_nodeGrid[x][y].cost = 1;
 		}
 	}
 }
@@ -339,17 +331,6 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 	}
 }
 
-void Graph::resetPathInfo(uint8_t taskNum)
-{
-	for (auto x = 0; x < m_width; ++x)
-	{
-		for (auto y = 0; y < m_height; ++y)
-		{
-			m_nodeGrid[x][y].state[taskNum] = GraphNode::UNVISITED;
-		}
-	}
-}
-
 GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 {
 	GraphNode* portalNode;
@@ -380,7 +361,7 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 		portalNode = getOtherPortalNode(node->x, node->y + 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
-		assert(false);
+		assert(false); // Invalid neighbor input.
 		return nullptr;
 	}
 }

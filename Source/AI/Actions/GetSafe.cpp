@@ -8,12 +8,25 @@
 #include "../AIUtil.h"
 #include "../PathRatings/RateRiskySafety.h"
 
+bool GetSafe::done()
+{
+	if (ActionSelector::done())
+	{
+		// Wait for the bomb movement to open the path
+		if (m_currentAction == m_kickBombAction.get() && m_currentAction->path().goal()->bombProperties.explosionTime > 1.5f)
+			m_waitTimer = m_waitTime;
+		return true;
+	}
+
+	return false;
+}
+
 GetSafe::GetSafe(PathEngine* pathEngine, LayerManager* layerManager)
-	:m_pathEngine(pathEngine)
+	:m_pathEngine(pathEngine), m_waitTime(0.5f), m_waitTimer(0.f)
 {
 	m_getSafeAction = std::make_shared<Action>(pathEngine, RateRiskySafety(), DoNothing(), layerManager);
 	PathRating kickBombRating = RateCombination({ RateSafety(), RateKickBomb() });
-	m_kickBombAction = std::make_shared<Action>(pathEngine, kickBombRating, DoNothing(), layerManager);
+	m_kickBombAction = std::make_shared<Action>(pathEngine, RateKickBomb(), DoNothing(), layerManager);
 	m_tryToSurviveAction = std::make_shared<Action>(pathEngine, RateDesperateSaveAttempt(), DoNothing(), layerManager);
 }
 
@@ -24,14 +37,16 @@ void GetSafe::preparePath(entityx::Entity& entity)
 	// No need to get safe if already safe...
 	if (m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
 	{
-		m_getSafeAction->preparePath(entity);
-
-		if (m_getSafeAction->path().nodes.size() > 0)
+		AIPath safePath;
+		NodeCondition safeSpotCondition = [](const GraphNode* node) { return !node->properties.affectedByExplosion; };
+		m_pathEngine->breadthFirstSearch(cell->x, cell->y, safeSpotCondition, safePath);
+		if (safePath.nodes.size() > 0)
 		{
-			// If the rating is very low then the AI will most likely die by taking the path.
-			// Instead try to survive by waiting on a cell which is most promising. Wait for a bomb to explode and maybe it will be possible to escape after.
-			float timePerCell = AIUtil::getTimePerCell(entity);
-			if (m_getSafeAction->getRating() < timePerCell * 0.5f)
+			m_getSafeAction->preparePath(entity);
+
+			// If the risky path will certainly lead to death then try to survive by waiting on a cell which is most promising. 
+			// Wait for a bomb to explode and maybe it will be possible to escape after.
+			if (m_getSafeAction->path().nodes.size() == 0)
 			{
 				m_currentAction = m_tryToSurviveAction.get();
 				m_currentAction->preparePath(entity);
@@ -46,5 +61,15 @@ void GetSafe::preparePath(entityx::Entity& entity)
 		// There is no path out so try to kick a bomb to make one
 		m_currentAction = m_kickBombAction.get();
 		m_currentAction->preparePath(entity);
+		return;
 	}
+
+	m_currentAction = nullptr;
+}
+
+void GetSafe::update(entityx::Entity& entity, float deltaTime)
+{
+	m_waitTimer -= deltaTime;
+	if (m_waitTimer <= 0.f)
+		m_currentAction->update(entity, deltaTime);
 }

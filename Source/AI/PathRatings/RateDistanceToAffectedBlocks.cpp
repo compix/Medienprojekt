@@ -2,7 +2,7 @@
 #include "../../Components/CellComponent.h"
 #include "../../Game.h"
 
-bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	if (!path.goal()->valid || pathEngine->getGraph()->getAffectedBlocks().size() == 0)
 		return false;

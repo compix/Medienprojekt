@@ -5,9 +5,15 @@
 #include "../Events/ExitEvent.h"
 #include "PathFinding/AIPath.h"
 #include "../Components/AIComponent.h"
+#include "PathFinding/NodePathInfo.h"
 
 AIVisualizer::AIVisualizer()
-	:m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false), m_visualizeDangerZones(false), m_keyPressed(false), m_visualizeActions(false),
+	:AIVisualizer(nullptr)
+{
+}
+
+AIVisualizer::AIVisualizer(PathEngine* pathEngine)
+	: m_pathEngine(pathEngine), m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false), m_visualizeDangerZones(false), m_keyPressed(false), m_visualizeActions(false),
 	m_messageTime(2.f), m_messageTimer(m_messageTime), m_showingMessage(false)
 {
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
@@ -23,12 +29,16 @@ AIVisualizer::AIVisualizer()
 
 	m_textMessage.setFont(m_font);
 	m_textMessage.setCharacterSize(30);
+
+	if (pathEngine)
+		setPathEngine(pathEngine);
 }
 
-AIVisualizer::AIVisualizer(Graph* graph)
-	:AIVisualizer()
+void AIVisualizer::setPathEngine(PathEngine* pathEngine)
 {
-	m_graph = graph;
+	assert(pathEngine);
+	m_pathEngine = pathEngine; 
+	m_graph = m_pathEngine->getSimGraph();
 }
 
 void AIVisualizer::visualize(float deltaTime)
@@ -71,7 +81,10 @@ void AIVisualizer::visualize(float deltaTime)
 				   sf::Keyboard::isKeyPressed(sf::Keyboard::F5);
 
 	if (m_visualizePathInfo)
-		visualizePathInfo();
+	{
+		visualizePathInfo(0);
+	}
+		
 
 	if (m_visualizePathInfo)
 		drawPathInfoLegend();
@@ -135,34 +148,35 @@ void AIVisualizer::drawPathInfoLegend()
 	drawText("CLOSED", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(255, 0, 255));
 }
 
-void AIVisualizer::visualizePathInfo()
+void AIVisualizer::visualizePathInfo(uint8_t task)
 {
 	m_circle.setRadius(20.f);
 	m_circle.setOrigin(10, 10);
-	m_rect.setFillColor(sf::Color(0, 255, 0, 50));
+	m_rect.setFillColor(sf::Color(0, 255, 0, 100));
 	m_rect.setSize(sf::Vector2f(2.f, float(GameConstants::CELL_HEIGHT)));
 
 	for (auto x = 1; x < m_graph->m_width - 1; ++x)
 	{
 		for (auto y = 1; y < m_graph->m_height - 1; ++y)
 		{
-			auto& node = m_graph->m_nodeGrid[x][y];
+			auto& nodeInfo = m_pathEngine->m_nodeInfo[task][x][y];
+			auto node = m_graph->m_nodeGrid[x][y];
 
 			m_circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
 
 			if (!node.valid)
 				continue;
 
-			switch (node.state[0])
+			switch (nodeInfo.state)
 			{
-			case GraphNode::UNVISITED:
+			case NodeState::UNVISITED:
 				m_circle.setFillColor(sf::Color(0, 255, 0, 50));
 				break;
-			case GraphNode::OPEN:
+			case NodeState::OPEN:
 				m_circle.setFillColor(sf::Color(255, 255, 0, 50));
 				break;
-			case GraphNode::CLOSED:
-				m_circle.setFillColor(sf::Color(255, 0, 255, 50));
+			case NodeState::CLOSED:
+				m_circle.setFillColor(sf::Color(50, 0, 50, 50));
 				break;
 			default: 
 				break;

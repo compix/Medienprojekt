@@ -1,11 +1,13 @@
 #pragma once
 #include <entityx/entityx.h>
 #include "../AI/PathFinding/PathEngine.h"
-#include "../Utils/Logging/Logger.h"
-#include "../AI/Actions/ActionType.h"
 #include "../AI/AIVisualizer.h"
 
+struct BombCreatedEvent;
 struct PortalCreatedEvent;
+struct DeathEvent;
+
+#define AI_LOGGING
 
 class AISystem : public entityx::System<AISystem>, public entityx::Receiver<AISystem>
 {
@@ -14,6 +16,8 @@ public:
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 	void configure(entityx::EventManager& eventManager) override;
+	void receive(const DeathEvent& deathEvent);
+	void receive(const BombCreatedEvent& bombCreatedEvent);
 
 	static void getEnemies(Entity self, std::vector<Entity>& outEnemies);
 
@@ -22,8 +26,8 @@ public:
 	void init();
 	void reset();
 private:
-	void logAction(LogServiceId serviceId, ActionType action, AIPath& path);
-
+	void log(entityx::Entity& entity);
+	void log(entityx::Entity& entity, const std::string& txt);
 private:
 	std::unique_ptr<PathEngine> m_pathEngine;
 	LayerManager* m_layerManager;

@@ -2,7 +2,7 @@
 #include "../../Components/CellComponent.h"
 #include "RatePortalSpot.h"
 
-bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity, uint8_t taskNum)
+bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -12,7 +12,7 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	// Check if the player can place portals
 	assert(entity.has_component<InventoryComponent>());
 	auto inventory = entity.component<InventoryComponent>();
-	if (!inventory->portalSkill)
+	if (!inventory->isActive(SkillType::PLACE_PORTAL))
 		return false;
 
 	// Can't place a portal on a portal

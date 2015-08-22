@@ -131,6 +131,7 @@ void Game::update(TimeDelta dt)
 	for (auto& system : m_orderedSystems)
 		system->update(m_entities, *GameGlobals::events, dt);
 
+
 	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
 

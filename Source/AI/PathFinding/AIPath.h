@@ -11,6 +11,7 @@ struct AIPath
 	inline bool reachedGoal() { return curNode == nodes.size() - 1; }
 	inline GraphNode* goal() { return nodes.size() > 0 ? nodes[nodes.size() - 1] : nullptr; }
 	inline GraphNode* first() { return nodes.size() > 0 ? nodes[0] : nullptr; }
+	inline GraphNode* current() { return curNode < nodes.size() ? nodes[curNode] : nullptr; }
 	inline void resetRating() { rating = -FLT_MAX; }
 
 	std::vector<GraphNode*> nodes;
@@ -19,4 +20,8 @@ struct AIPath
 
 	// How good is the path? Higher values = better path
 	float rating;
+
+	bool operator==(const AIPath& other);
 };
+
+std::ostream& operator<<(std::ostream& stream, const AIPath& path);

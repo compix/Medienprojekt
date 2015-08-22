@@ -22,13 +22,14 @@
 #include "../AI/Behaviors/DoNothing.h"
 #include "../Components/ColorComponent.h"
 #include "../AI/Actions/GetSafe.h"
-#include "../Components/PortalComponent.h"
-#include "../Events/PortalCreatedEvent.h"
+#include "../Events/DeathEvent.h"
+#include "../Events/BombCreatedEvent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
+	m_visualizer.setPathEngine(m_pathEngine.get());
 }
 
 void AISystem::init()
@@ -58,44 +59,62 @@ void AISystem::reset()
 	m_pathEngine->reset();
 }
 
-void AISystem::logAction(LogServiceId serviceId, ActionType action, AIPath& path)
+void AISystem::log(entityx::Entity& entity)
 {
-	std::stringstream ss;
+	auto aiComponent = entity.component<AIComponent>();
+	assert(aiComponent && aiComponent->currentAction);
 
-	switch (action)
+	if (aiComponent->currentActionType == aiComponent->lastActionType && aiComponent->lastPath == aiComponent->currentAction->path())
+		return;
+
+	if (aiComponent->currentAction->path().nodes.size() == 0)
+		log(entity, "No action");
+
+	std::stringstream stream;
+
+	switch (aiComponent->currentActionType)
 	{
 	case ActionType::DESTROY_BLOCK:
-		ss << "Destroying block.";	
+		stream << "Destroying block.";	
 		break;
 	case ActionType::WAIT:
-		ss << "Waiting for opportunities.";
+		stream << "Waiting for opportunities.";
 		break;
 	case ActionType::GET_ITEM:
-		ss << "Getting item.";
+		stream << "Getting item.";
 		break;
 	case ActionType::GET_SAFE:
-		ss << "Getting safe.";
+		stream << "Getting safe.";
 		break;
 	case ActionType::KICK_BOMB:
-		ss << "Kicking bomb.";
+		stream << "Kicking bomb.";
 		break;
 	case ActionType::TRY_TO_SURVIVE:
-		ss << "Trying to survive.";
+		stream << "Trying to survive.";
 		break;
 	case ActionType::PLACE_PORTAL:
-		ss << "Placing portal.";
+		stream << "Placing portal.";
 		break;
 	default:
-		ss << "UNKNOWN ACTION.";
+		stream << "UNKNOWN ACTION.";
 		break;
 	}
 
-	if (path.goal())
-	{
-		ss << " Goal: x = " << static_cast<int>(path.goal()->x) << " y = " << static_cast<int>(path.goal()->y);
-	}
+	stream << " Path: " << aiComponent->currentAction->path();
 
-	Logger::log(ss.str(), serviceId);
+	log(entity, stream.str());
+}
+
+void AISystem::log(entityx::Entity& entity, const std::string& txt)
+{
+	auto color = entity.component<ColorComponent>();
+	assert(color);
+
+	std::stringstream serviceStream;
+	serviceStream << "AI/Entity" << color->color.str() << ".log";
+	LogServiceId serviceId = Logger::requestService(serviceStream.str());
+
+	Logger::log(txt, serviceId);
 }
 
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -108,7 +127,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		auto input = entity.component<InputComponent>();
-		auto color = entity.component<ColorComponent>();
 
 		// Reset inputs
 		input->moveX = 0.f;
@@ -116,7 +134,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
-		if ((!aiComponent->currentAction || !aiComponent->currentAction->valid(entity) ) || (m_updateTimer <= 0.f && aiComponent->currentAction->done()))
+		if (!aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !aiComponent->currentAction->valid(entity))))
 		{
 			ActionPtr bestAction;
 			ActionType bestActionType;
@@ -136,14 +154,14 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 			assert(bestAction);
 			aiComponent->currentAction = bestAction.get();
-
-			// Logging
-			std::stringstream ss;
-			ss << "AI/Entity" << color->color.str() << ".log";
-			LogServiceId logId = Logger::requestService(ss.str());
-
-			logAction(logId, bestActionType, aiComponent->currentAction->path());
 			aiComponent->currentActionType = bestActionType;
+
+#ifdef AI_LOGGING
+			log(entity);
+#endif
+
+			aiComponent->lastActionType = aiComponent->currentActionType;
+			aiComponent->lastPath = aiComponent->currentAction->path();
 		}
 
 		if (!aiComponent->currentAction || aiComponent->currentAction->path().nodes.size() == 0)
@@ -152,7 +170,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		aiComponent->currentAction->update(entity, static_cast<float>(dt));
 	}
 
-	m_visualizer.setGraph(m_pathEngine->getSimGraph());
 	m_visualizer.visualize(static_cast<float>(dt));
 
 	if (m_updateTimer <= 0.f)
@@ -161,6 +178,47 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 void AISystem::configure(entityx::EventManager& eventManager)
 {
+#ifdef AI_LOGGING
+	eventManager.subscribe<DeathEvent>(*this);
+	eventManager.subscribe<BombCreatedEvent>(*this);
+#endif
+}
+
+void AISystem::receive(const DeathEvent& deathEvent)
+{
+	auto entity = deathEvent.dyingEntity;
+	if (entity && entity.has_component<AIComponent>())
+	{
+		auto aiComponent = entity.component<AIComponent>();
+		std::stringstream ss;
+		ss << "DEAD";
+		if (aiComponent->currentAction && aiComponent->currentAction->path().nodes.size() > 0)
+			ss << " Path: " << aiComponent->currentAction->path();
+		else
+			ss << " No last action :(";
+
+		log(entity, ss.str());
+	}
+}
+
+void AISystem::receive(const BombCreatedEvent& bombCreatedEvent)
+{
+	auto bomb = bombCreatedEvent.entity;
+	if (bomb && bomb.has_component<CellComponent>())
+	{
+		auto cell = bomb.component<CellComponent>();
+		for (auto ai : GameGlobals::entities->entities_with_components<AIComponent>())
+		{
+			std::stringstream ss;
+			if (ai == bombCreatedEvent.owner)
+				ss << "I placed a bomb at (";
+			else
+				ss << "Someone placed a bomb at (";
+
+			ss << int(cell->x) << ", " << int(cell->y) << ")";
+			log(ai, ss.str());
+		}
+	}
 }
 
 void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)
