@@ -10,6 +10,9 @@ public:
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
 private:
+	bool canPlacePortal(entityx::Entity& entity);
+
+private:
 	LayerManager* m_layerManager;
 };
 
