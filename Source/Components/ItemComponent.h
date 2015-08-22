@@ -8,7 +8,8 @@ enum class ItemType : uint8_t
 	BOMB_RANGE_BOOST,
 	PORTAL_SKILL,
 	ANTI_MAGNET_SKILL,
-	PUNCH_SKILL
+	PUNCH_SKILL,
+	HOLD_BOMB_SKILL
 };
 
 struct ItemComponent

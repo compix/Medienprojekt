@@ -70,6 +70,11 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 			case ItemType::PUNCH_SKILL:
 				inventory->put(SkillType::PUNCH);
 				break;
+			case ItemType::HOLD_BOMB_SKILL:
+				if (inventory->canHold == false)
+					inventory->canHold = true;
+				break;
+				break;
 			default: break;
 			}
 
@@ -121,6 +126,10 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 		else if (Random::getInt(1, 100) <= spawnChance)
 		{
 			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::PUNCH_SKILL);
+		}
+		else if (Random::getInt(1, 100) <= spawnChance)
+		{
+			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::HOLD_BOMB_SKILL);
 		}
 	}
 }
