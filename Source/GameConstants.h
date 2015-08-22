@@ -22,10 +22,16 @@ namespace GameConstants
 	const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
 	const int PUNCH_DISTANCE = 2;
 
+	//Relating to Punch/Jumping
+	const float PUNCH_JUMPING_SPEED = 8;
+	const float BLOCKED_CELL_JUMPING_SPEED = 8;
+	const float PUNCH_JUMPING_HEIGHT = 6;
+	const float  BLOCKED_CELL_JUMPING_HEIGHT = 6;
+
 	//Relating to Bombs
 	const int INIT_BOMB_COUNT = 1;			//Bombenanzahl zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_CAP = 8;					//Grenze der Bombenanzahl
-	const int INIT_BOMB_RANGE = 2;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
+	const int INIT_BOMB_RANGE = 1;			//Explosionsreichweite einer Bombe zu Beginn, !!sollte nicht geringer als 1 sein!!
 	const int BOMB_RANGE_CAP = 10;			//Explosionsreichweite einer Bombe
 	const float KICK_FORCE = 10.f;			//Kraft mit der die Bombe gekickt wird
 	const float EXPLOSION_SPREAD_TIME = 0.06f; // Time in seconds the explosion needs to spread to the next cell

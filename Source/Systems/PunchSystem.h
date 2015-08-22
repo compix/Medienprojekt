@@ -22,12 +22,26 @@ public:
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const PunchEvent& event);
 	void removeRenderOffset(Entity jumping_entity, ComponentHandle<JumpComponent> jump_comp, ComponentHandle<BodyComponent> body);
+	bool targetIsOutOfBounds(int toX, int toY);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
-	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt);
+private:
+	LayerManager* m_layerManager;
+	void checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked);
+	void calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, EntityManager> jumpComp, float endHeight);
+	void calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle<JumpComponent, EntityManager> jumpComp, float beginHeight);
+	void setBodyAndTransformOfEntityToTarget(Entity jumpingEntity);
 	void deactivateTimerForBombs(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp);
 	void activateTimerForBombs(Entity jumpingEntity);
 	void deactivateCollisionForFlyingBodys(ComponentHandle<BodyComponent, EntityManager> body);
 	void activateCollisionForFlyingBodys(ComponentHandle<BodyComponent, EntityManager> body);
-private:
-	LayerManager* m_layerManager;
+	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt);
+	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction, ComponentHandle<CellComponent> cellComponent, Entity* foundEntity);
+	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction);
+	void adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY);
+	void adjustHeightForBlockedTiles(const bool wasBlocked, const bool targetIsBlocked, float* beginHeight, float* endHeight, const float offHeight);
+	float getDeltaOf(float coord2, float coord1);
+	float getXCenterCoords(int cellX);
+	float getYCenterCoords(int cellY);
+	float getXCoords(int cellX);
+	float getYCoords(int cellY);
 };
