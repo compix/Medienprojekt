@@ -11,8 +11,10 @@ bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	if (!path.goal()->properties.affectedByExplosion)
 	{
 		float timePerCell = AIUtil::getTimePerCell(entity);
-
 		AIUtil::isSafePath(entity, path, &minExploTime);
+		if (minExploTime < timePerCell * 0.5f)
+			return false;
+
 		path.rating = Math::clamp(minExploTime, 0.f, 1.f);
 		return true;
 	}

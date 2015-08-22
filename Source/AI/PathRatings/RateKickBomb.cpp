@@ -1,5 +1,6 @@
 #include "RateKickBomb.h"
 #include "../../Components/InventoryComponent.h"
+#include "../AIUtil.h"
 
 bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
@@ -25,8 +26,10 @@ bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Ent
 
 	if (neighbor && neighbor->valid && !neighbor->properties.hasPlayer)
 	{
+		// Consider bomb explosion time and path length
+		path.rating = goal->bombProperties.explosionTime - path.nodes.size() * AIUtil::getTimePerCell(entity);
 		// Kicking a bomb with a player on it is risky -> he could move to make kicking the bomb impossible
-		path.rating = goal->properties.hasPlayer ? 0.5f : 1.f;
+		path.rating += goal->properties.hasPlayer ? 0.f : 1.5f;
 		return true;
 	}
 

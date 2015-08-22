@@ -19,6 +19,8 @@ struct BombProperties
 	uint8_t numOfPlayersAffectedByExplosion;
 
 	uint8_t numOfItemsAffectedByExplosion;
+
+	float explosionTime;
 };
 
 struct NodeProperties

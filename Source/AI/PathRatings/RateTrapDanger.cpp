@@ -4,6 +4,7 @@
 #include "RateSafety.h"
 #include "../PathFinding/SimulationGraph.h"
 #include "../../Systems/AISystem.h"
+#include <queue>
 
 RateTrapDanger::RateTrapDanger(bool willPlaceBomb)
 	:m_willPlaceBomb(willPlaceBomb)

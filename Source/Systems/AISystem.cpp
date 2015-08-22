@@ -22,9 +22,8 @@
 #include "../AI/Behaviors/DoNothing.h"
 #include "../Components/ColorComponent.h"
 #include "../AI/Actions/GetSafe.h"
-#include "../Components/PortalComponent.h"
-#include "../Events/PortalCreatedEvent.h"
 #include "../Events/DeathEvent.h"
+#include "../Events/BombCreatedEvent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
@@ -63,10 +62,13 @@ void AISystem::reset()
 void AISystem::log(entityx::Entity& entity)
 {
 	auto aiComponent = entity.component<AIComponent>();
-	assert(aiComponent);
+	assert(aiComponent && aiComponent->currentAction);
 
 	if (aiComponent->currentActionType == aiComponent->lastActionType && aiComponent->lastPath == aiComponent->currentAction->path())
 		return;
+
+	if (aiComponent->currentAction->path().nodes.size() == 0)
+		log(entity, "No action");
 
 	std::stringstream stream;
 
@@ -125,7 +127,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		auto input = entity.component<InputComponent>();
-		
 
 		// Reset inputs
 		input->moveX = 0.f;
@@ -133,7 +134,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
-		if ((!aiComponent->currentAction || !aiComponent->currentAction->valid(entity) ) || (m_updateTimer <= 0.f && aiComponent->currentAction->done()))
+		if (!aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !aiComponent->currentAction->valid(entity))))
 		{
 			ActionPtr bestAction;
 			ActionType bestActionType;
@@ -155,7 +156,9 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			aiComponent->currentAction = bestAction.get();
 			aiComponent->currentActionType = bestActionType;
 
+#ifdef AI_LOGGING
 			log(entity);
+#endif
 
 			aiComponent->lastActionType = aiComponent->currentActionType;
 			aiComponent->lastPath = aiComponent->currentAction->path();
@@ -175,23 +178,46 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 void AISystem::configure(entityx::EventManager& eventManager)
 {
+#ifdef AI_LOGGING
 	eventManager.subscribe<DeathEvent>(*this);
+	eventManager.subscribe<BombCreatedEvent>(*this);
+#endif
 }
 
 void AISystem::receive(const DeathEvent& deathEvent)
 {
 	auto entity = deathEvent.dyingEntity;
-	if (entity.has_component<AIComponent>())
+	if (entity && entity.has_component<AIComponent>())
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		std::stringstream ss;
 		ss << "DEAD";
-		if (aiComponent->currentAction)
+		if (aiComponent->currentAction && aiComponent->currentAction->path().nodes.size() > 0)
 			ss << " Path: " << aiComponent->currentAction->path();
 		else
 			ss << " No last action :(";
 
 		log(entity, ss.str());
+	}
+}
+
+void AISystem::receive(const BombCreatedEvent& bombCreatedEvent)
+{
+	auto bomb = bombCreatedEvent.entity;
+	if (bomb && bomb.has_component<CellComponent>())
+	{
+		auto cell = bomb.component<CellComponent>();
+		for (auto ai : GameGlobals::entities->entities_with_components<AIComponent>())
+		{
+			std::stringstream ss;
+			if (ai == bombCreatedEvent.owner)
+				ss << "I placed a bomb at (";
+			else
+				ss << "Someone placed a bomb at (";
+
+			ss << int(cell->x) << ", " << int(cell->y) << ")";
+			log(ai, ss.str());
+		}
 	}
 }
 

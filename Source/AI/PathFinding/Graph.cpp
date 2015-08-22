@@ -86,6 +86,7 @@ void Graph::update(float deltaTime)
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
+		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
 	}
 
 	// Go through all explosion components and simulate the explosion.
