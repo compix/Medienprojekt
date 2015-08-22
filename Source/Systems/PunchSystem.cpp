@@ -105,21 +105,21 @@ void PunchSystem::update(EntityManager &entityManager, EventManager &eventManage
 void PunchSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt)
 {
 
-		int checkX = jumpComp->toX;
-		int checkY = jumpComp->toY;
-		adjustCellsIfOutOfBounds(nullptr, &checkX, nullptr, &checkY);
+		int fromCheckX = jumpComp->fromX;
+		int fromCheckY = jumpComp->fromY;
+		int toCheckX = jumpComp->toX;
+		int toCheckY = jumpComp->toY;
+		adjustCellsIfOutOfBounds(&fromCheckX, &toCheckX, &fromCheckY, &toCheckY);
 
-
-		EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, checkX, checkY);
-	bool targetBlocked = false;
-	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
-	{
-		if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
-			targetBlocked = true;
-			break;
+		EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, toCheckX, toCheckY);
+		bool targetBlocked = false;
+		for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
+		{
+			if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
+				targetBlocked = true;
+				break;
+			}
 		}
-	}
-	
 	checkIfDegreeMustBeRecalculated(jumpComp, targetBlocked);
 
 	float beginHeight = 0, endHeight = 0, offHeight = GameConstants::CELL_HEIGHT / 4.f;
@@ -212,34 +212,26 @@ void PunchSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Dire
 
 void PunchSystem::adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY)
 {
-	int distanceX = abs(&toX - &fromX);
-	int distanceY = abs(&toY - &fromY);
-	if (*toX >= GameGlobals::game->getWidth() - 1){
-		*toX = distanceX;
-		if (fromX != nullptr){
-			*fromX = distanceX-1;
-		}
+	assert(fromX != nullptr || fromY != nullptr || toY != nullptr || toX != nullptr);
+	int deltaX = abs(getDeltaOf(*toX , *fromX));
+	int deltaY = abs(getDeltaOf(*toY , *fromY));
+	
+	if (*toX >= GameGlobals::game->getWidth()){
+		*toX = deltaX-1;
+		*fromX = -1;
 	}
-
-	if (*toX <= 0){
-		*toX = GameGlobals::game->getWidth() - distanceX - 1;
-		if (fromX != nullptr){
-			*fromX = GameGlobals::game->getWidth();
-		}
+	if (*toX < 0){
+		*toX = GameGlobals::game->getWidth() - deltaX;
+		*fromX = GameGlobals::game->getWidth();
 	}
-
-	if (*toY >= GameGlobals::game->getHeight() - 1){
-		*toY = distanceY;
-		if (fromY != nullptr){
-			*fromY = distanceY-1;
-		}
+	if (*toY >= GameGlobals::game->getHeight()){
+		*toY = deltaY - 1;
+		*fromY = -1;
+		
 	}
-
-	if (*toY <= 0){
-		*toY = GameGlobals::game->getHeight() - distanceY-1;
-		if (fromY != nullptr){
-			*fromY = GameGlobals::game->getHeight();
-		}
+	if (*toY < 0){
+		*toY = GameGlobals::game->getHeight() - deltaY;
+		*fromY = GameGlobals::game->getHeight();
 	}
 }
 
