@@ -15,9 +15,6 @@ void ContactListener::BeginContact(b2Contact* contact)
 
 void ContactListener::EndContact(b2Contact* contact)
 {
-	#ifdef _DEBUG 
-	 std::cout << "END_CONTACT" << std::endl;
-	#endif
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 	b2Body* sensor;

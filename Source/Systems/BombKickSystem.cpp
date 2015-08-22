@@ -46,22 +46,6 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		auto cellComponent = bombs.component<CellComponent>();
 		auto layerComponent = bombs.component<LayerComponent>();
 
-
-
-
-		/*if (cellComponent->x != 0){
-			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
-		}
-		if (cellComponent->y < GameGlobals::game->getHeight()){
-			auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + cellDistance);
-		}
-		if (cellComponent->x < GameGlobals::game->getWidth()){
-			auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + cellDistance, cellComponent->y);
-		}
-		if (cellComponent->y != 0){
-			upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
-		}*/
-
 		b2Body* body = bombs.component<BodyComponent>()->body;
 		b2Vec2 velo = body->GetLinearVelocity();
 
@@ -132,9 +116,6 @@ bool BombKickSystem::hasAntiMagnet(Entity e)
 
 void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direction)
 {
-#ifdef _DEBUG 
-	std::cout << "Kick entered." << std::endl;
-#endif
 	bool canKick = false;
 	auto fixture = sensor->GetFixtureList();
 	while (fixture != nullptr)

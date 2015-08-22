@@ -40,8 +40,6 @@
 #include "Components/DestructionDelayComponent.h"
 #include "Components/EffectComponent.h"
 #include "Components/DynamicComponent.h"
-#include "Components/AIComponent.h"
-#include <sstream>
 #include "Components/PortalComponent.h"
 #include "Components/PlayerComponent.h"
 #include "Components/ColorComponent.h"
