@@ -15,5 +15,5 @@ struct JumpComponent
 	float degreeX, degreeY;
 	bool isDegreeCalculated=false;
 	float deltaTimeMultiplikator;		//Einfluﬂ auf die Simulationsgeschwindigkeit, bei hohen werten ist der Sprung schnell
-	bool targetIsBlocked, targetWasBlocked, wasBlocked = false;
+	bool targetIsBlocked, targetWasBlocked, wasBlocked = false; //Die ersten zwei bezihen sich auf das Ziel, wasBlocked bezieht sich auf die Zelle von dem er kommt.
 };

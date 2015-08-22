@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -509,9 +509,6 @@
     <ClInclude Include="..\..\Source\Systems\PortalSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\PunchSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -586,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\JumpSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -794,9 +794,6 @@
     <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\PunchSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -862,6 +859,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\JumpSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -45,7 +45,7 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Events/ResetGameEvent.h"
-#include "Systems/PunchSystem.h"
+#include "Systems/JumpSystem.h"
 
 
 Game::Game()
@@ -185,7 +185,7 @@ void LocalGame::addSystems()
 	addSystem<DestructionSystem>();
 	addSystem<ExplosionSystem>(m_layerManager.get());
 	addSystem<PortalSystem>(m_layerManager.get());
-	addSystem<PunchSystem>(m_layerManager.get());
+	addSystem<JumpSystem>(m_layerManager.get());
 	addSystem<BombKickSystem>(m_layerManager.get());
 	addSystem<HealthSystem>();
 	addSystem<DeathSystem>();

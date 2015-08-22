@@ -8,6 +8,7 @@ namespace GameConstants
 	extern const int CELL_HEIGHT = 50;
 	extern const int FLOOR_LAYER = -1;
 	extern const int MAIN_LAYER = 0;
+	extern const int JUMP_LAYER = 1;
 
 	// Relating to Players
 	extern const float PLAYER_SPEED = 4.f;
@@ -17,6 +18,16 @@ namespace GameConstants
 	extern const bool INIT_PLAYERS_CAN_KICK = false;
 	extern const bool INIT_PORTAL_SKILL = false;
 	extern const bool INIT_ANTI_MAGNET = false;
+	extern const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
+	extern const int PUNCH_DISTANCE = 2;
+
+	//Relating to Punch/Jumping
+	extern const float EARTH_GRAVITY = 9.81f;
+	extern const float PUNCH_JUMPING_SPEED = 8;
+	extern const float BLOCKED_CELL_JUMPING_SPEED = 8;
+	extern const float PUNCH_JUMPING_HEIGHT = 6;
+	extern const float BLOCKED_CELL_JUMPING_HEIGHT = 6;
+
 
 	// Relating to Bombs
 	extern const int INIT_BOMB_COUNT = 1;

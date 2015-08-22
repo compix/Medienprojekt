@@ -562,6 +562,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::ANTI_MAGNET_SKILL:
 		entity.assign<SpriteComponent>(createSprite("anti_magnet_skill"));
 		break;
+	case ItemType::PUNCH_SKILL:
+		entity.assign<SpriteComponent>(createSprite("punch_skill"));
+		break;
 	default: break;
 	}
 

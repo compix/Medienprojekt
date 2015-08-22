@@ -251,7 +251,7 @@
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
-    <ClInclude Include="..\..\Source\Systems\PunchSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\JumpSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
@@ -354,7 +354,7 @@
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
-    <ClCompile Include="..\..\Source\Systems\PunchSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\JumpSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />

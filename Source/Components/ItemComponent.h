@@ -7,7 +7,8 @@ enum class ItemType : uint8_t
 	SPEED_MULTIPLICATOR,
 	BOMB_RANGE_BOOST,
 	PORTAL_SKILL,
-	ANTI_MAGNET_SKILL
+	ANTI_MAGNET_SKILL,
+	PUNCH_SKILL
 };
 
 struct ItemComponent

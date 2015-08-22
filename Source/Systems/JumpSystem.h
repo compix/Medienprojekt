@@ -14,11 +14,11 @@ using entityx::TimeDelta;
 using entityx::Receiver;
 using entityx::ComponentAddedEvent;
 
-class PunchSystem : public System<PunchSystem>, public Receiver<PunchSystem>
+class JumpSystem : public System<JumpSystem>, public Receiver<JumpSystem>
 {
 public:
-	PunchSystem(LayerManager* layerManager);
-	~PunchSystem();
+	JumpSystem(LayerManager* layerManager);
+	~JumpSystem();
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const PunchEvent& event);
 	void removeRenderOffset(Entity jumping_entity, ComponentHandle<JumpComponent> jump_comp, ComponentHandle<BodyComponent> body);
