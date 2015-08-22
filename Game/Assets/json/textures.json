@@ -19,5 +19,6 @@
     "speed_multiplicator": "speed_multiplicator.png",
     "portal_skill": "portal_skill.png",
     "anti_magnet_skill":"anti_magnet_skill.png",
-    "punch_skill": "punch_skill.png"
+    "punch_skill": "punch_skill.png",
+    "holding_skill": "holding_skill.png"
 }

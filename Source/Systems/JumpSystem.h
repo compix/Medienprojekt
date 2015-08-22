@@ -24,6 +24,7 @@ public:
 	void removeRenderOffset(Entity jumping_entity, ComponentHandle<JumpComponent> jump_comp, ComponentHandle<BodyComponent> body);
 	bool targetIsOutOfBounds(int toX, int toY);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
+	static void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction);
 private:
 	LayerManager* m_layerManager;
 	void checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked);
@@ -36,7 +37,6 @@ private:
 	void activateCollisionForFlyingBodys(ComponentHandle<BodyComponent, EntityManager> body);
 	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt);
 	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction, ComponentHandle<CellComponent> cellComponent, Entity* foundEntity);
-	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction);
 	void adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY);
 	void adjustHeightForBlockedTiles(const bool wasBlocked, const bool targetIsBlocked, float* beginHeight, float* endHeight, const float offHeight);
 	float getDeltaOf(float coord2, float coord1);

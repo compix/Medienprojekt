@@ -13,6 +13,8 @@
 #include "../Components/PortalComponent.h"
 #include "../Components/BombComponent.h"
 #include "../Events/PunchEvent.h"
+#include "../Events/HoldingEvent.h"
+#include "../Events/ThrowBombEvent.h"
 
 InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -30,7 +32,16 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->bombButtonPressed)
 		{
-			if (inventory->bombCount > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			Entity belowBomb;
+			if (inventory->canHold && (belowBomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y)) && !inventory->isHoldingBomb)
+			{
+				GameGlobals::events->emit<HoldingEvent>(entity, belowBomb);
+			}
+			else if (inventory->isHoldingBomb)
+			{
+				GameGlobals::events->emit<ThrowBombEvent>(entity);
+			}
+			if (inventory->bombCount > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
 			{
 				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
 				inventory->bombCount--;
