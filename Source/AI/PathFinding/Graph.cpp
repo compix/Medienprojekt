@@ -117,8 +117,9 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 	for (int j = 0; j < range; ++j)
 	{
 		currentNode = getNeighbor(currentNode, direction);
+
 		if (!currentNode)
-			continue;
+			break;
 
 		explosionTime += GameConstants::EXPLOSION_SPREAD_TIME;
 

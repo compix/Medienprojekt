@@ -15,6 +15,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (!goal->valid)
 		return false;
 
+	AISystem::getEnemies(entity, m_enemies);
 	auto graph = pathEngine->getSimGraph();
 	uint8_t range = 2;
 
@@ -22,9 +23,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 				isPotentialTrap(graph, goal, Direction::DOWN, range) ||
 				isPotentialTrap(graph, goal, Direction::UP, range)   ||
 				isPotentialTrap(graph, goal, Direction::LEFT, range) ||
-				isPotentialTrap(graph, goal, Direction::RIGHT, range);
-
-	AISystem::getEnemies(entity, m_enemies);
+				isPotentialTrap(graph, goal, Direction::RIGHT, range);	
 
 	if (trap)
 		path.rating = 0.f;

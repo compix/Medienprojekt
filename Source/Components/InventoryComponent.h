@@ -2,6 +2,7 @@
 #include "../GameConstants.h"
 #include <utility>
 #include <entityx/Entity.h>
+#include <algorithm>
 
 enum class SkillType
 {
@@ -28,7 +29,7 @@ struct Skill
 			priority = 10;
 			break;
 		case SkillType::PUNCH:
-			priority = 9;
+			priority = 10;
 			break;
 		default:
 			assert(false);
@@ -52,13 +53,14 @@ class SkillQueue
 public:
 	SkillQueue()
 	{
-		m_skills.insert(Skill(SkillType::NONE));
+		m_skills.push_back(Skill(SkillType::NONE));
 	}
 
 	void put(SkillType skillType)
 	{
 		remove(skillType);
-		m_skills.insert(Skill(skillType));
+		auto it = std::lower_bound(m_skills.begin(), m_skills.end(), Skill(skillType), SkillComparator());
+		m_skills.insert(it, Skill(skillType));
 	}
 
 	void remove(SkillType skillType)
@@ -78,7 +80,7 @@ public:
 	inline const Skill& top() { return *m_skills.begin(); }
 
 private:
-	std::set<Skill, SkillComparator> m_skills;
+	std::vector<Skill> m_skills;
 };
 
 struct InventoryComponent
