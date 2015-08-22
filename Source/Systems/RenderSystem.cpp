@@ -7,6 +7,9 @@
 #include "../Components/ShaderComponent.h"
 #include "../GameGlobals.h"
 #include "../Events/ExitEvent.h"
+#include "../Components/RenderOffsetComponent.h"
+#include "../Components/JumpComponent.h"
+#include "../GameConstants.h"
 
 RenderSystem::RenderSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_fpsCalculator(200, 100, 16)
@@ -75,7 +78,28 @@ void RenderSystem::render(EntityLayer* layer)
 
 				if (sprite)
 				{
-					sprite->sprite.setPosition(transform->x, transform->y);
+					if (e.has_component<RenderOffsetComponent>() && !e.component<RenderOffsetComponent>()->remove)
+					{
+						auto offset = e.component<RenderOffsetComponent>();
+						if (e.has_component<JumpComponent>())
+						{
+							auto jumpComp = e.component<JumpComponent>();
+
+							sprite->sprite.setPosition(	jumpComp->fromX * GameConstants::CELL_WIDTH  + GameConstants::CELL_WIDTH  / 2.f + offset->xOffset, 
+														jumpComp->fromY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f + offset->yOffset);
+						} else
+						{
+							sprite->sprite.setPosition(transform->x + offset->xOffset, transform->y + offset->yOffset);
+						}
+					}
+					else
+					{
+						sprite->sprite.setPosition(transform->x, transform->y);
+					}
+					if (e.has_component<RenderOffsetComponent>() && e.component<RenderOffsetComponent>()->remove)		//Entfernt die Komponente erst nachdem die Letzte Position gesetzt wurde, verhindert das hin und her springen des Sprite
+					{
+						e.remove<RenderOffsetComponent>();
+					}
 					sprite->sprite.setRotation(transform->rotation);
 					sprite->sprite.setScale(transform->scaleX, transform->scaleY);
 					GameGlobals::window->draw(sprite->sprite, shader);

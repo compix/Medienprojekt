@@ -45,6 +45,7 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Events/ResetGameEvent.h"
+#include "Systems/JumpSystem.h"
 
 
 Game::Game()
@@ -85,6 +86,7 @@ void Game::init(uint8_t width, uint8_t height)
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
+	m_layerManager->createLayer(width, height, GameConstants::JUMP_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
 
 	
@@ -183,6 +185,7 @@ void LocalGame::addSystems()
 	addSystem<DestructionSystem>();
 	addSystem<ExplosionSystem>(m_layerManager.get());
 	addSystem<PortalSystem>(m_layerManager.get());
+	addSystem<JumpSystem>(m_layerManager.get());
 	addSystem<BombKickSystem>(m_layerManager.get());
 	addSystem<HealthSystem>();
 	addSystem<DeathSystem>();

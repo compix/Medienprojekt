@@ -10,6 +10,7 @@
 #include "../GameConstants.h"
 #include "../Components/SpriteComponent.h"
 #include "../PhysixSystem.h"
+#include "../Components/JumpComponent.h"
 
 
 BombKickSystem::BombKickSystem(LayerManager* layerManager)
@@ -45,17 +46,36 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		auto cellComponent = bombs.component<CellComponent>();
 		auto layerComponent = bombs.component<LayerComponent>();
 
-		const int cellDistance = 1;
 
-		auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
-		auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + cellDistance);
-		auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + cellDistance, cellComponent->y);
-		auto upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
+
+
+		/*if (cellComponent->x != 0){
+			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
+		}
+		if (cellComponent->y < GameGlobals::game->getHeight()){
+			auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + cellDistance);
+		}
+		if (cellComponent->x < GameGlobals::game->getWidth()){
+			auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + cellDistance, cellComponent->y);
+		}
+		if (cellComponent->y != 0){
+			upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
+		}*/
 
 		b2Body* body = bombs.component<BodyComponent>()->body;
 		b2Vec2 velo = body->GetLinearVelocity();
 
 		if (velo.Length() != 0){ // Wenn Geschwindigkeits Vektorlänge nicht null ist, also sich bewegt.
+
+			const int cellDistance = 1;
+			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
+
+			auto downWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y + cellDistance);
+
+			auto rightWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x + cellDistance, cellComponent->y);
+
+			auto upWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x, cellComponent->y - cellDistance);
+
 			if (velo.y < 0)
 			{
 				if (hasAntiMagnet(upWall))
@@ -168,7 +188,7 @@ bool BombKickSystem::fitIntoCell(SpriteComponent* spriteComponent, TransformComp
 void BombKickSystem::checkCollisionWithBomb(Entity e, Direction direction)
 {
 	{
-		if (e && e.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0){
+		if (e && e.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0 && !e.has_component<JumpComponent>()){
 			for (b2ContactEdge* edge = e.component<BodyComponent>()->body->GetContactList(); edge; edge = edge->next)
 			{
 				b2Contact* contact = edge->contact;
