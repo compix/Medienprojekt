@@ -4,7 +4,7 @@
 #include "../Components/BombComponent.h"
 #include "../Components/JumpComponent.h"
 #include "../Components/LayerComponent.h"
-#include "../BodyFactory.h";
+#include "../BodyFactory.h"
 #include "../Components/AIComponent.h"
 #include "../PhysixSystem.h"
 #include "../Components/TimerComponent.h"
@@ -71,8 +71,8 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 			bool targetBlocked = jumpingEntity.component<JumpComponent>()->targetIsBlocked;
 			Direction lastDirection = jumpingEntity.component<JumpComponent>()->direction;
 			removeRenderOffset(jumpingEntity, jumpComp, body);
-			float deltaX = getXCoords(getDeltaOf(jumpComp->toX, jumpComp->fromX));
-			float deltaY = getYCoords(getDeltaOf(jumpComp->toY, jumpComp->fromY));
+			float deltaX = getXCoords(static_cast<int>(getDeltaOf(static_cast<float>(jumpComp->toX), static_cast<float>(jumpComp->fromX))));
+			float deltaY = getYCoords(static_cast<int>(getDeltaOf(static_cast<float>(jumpComp->toY), static_cast<float>(jumpComp->fromY))));
 
 			jumpingEntity.remove<JumpComponent>();
 			if (targetBlocked)
@@ -213,8 +213,8 @@ void JumpSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direc
 void JumpSystem::adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY)
 {
 	assert(fromX != nullptr || fromY != nullptr || toY != nullptr || toX != nullptr);
-	int deltaX = abs(getDeltaOf(*toX , *fromX));
-	int deltaY = abs(getDeltaOf(*toY , *fromY));
+	int deltaX = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toX), static_cast<float>(*fromX))));
+	int deltaY = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toY), static_cast<float>(*fromY))));
 	
 	if (*toX >= GameGlobals::game->getWidth()){
 		*toX = deltaX-1;
@@ -270,12 +270,12 @@ float  JumpSystem::getYCenterCoords(int cellY)
 
 float JumpSystem::getXCoords(int cellX)
 {
-	return cellX*GameConstants::CELL_WIDTH;
+	return static_cast<float>(cellX*GameConstants::CELL_WIDTH);
 }
 
 float  JumpSystem::getYCoords(int cellY)
 {
-	return cellY * GameConstants::CELL_HEIGHT;
+	return static_cast<float>(cellY * GameConstants::CELL_HEIGHT);
 }
 
 void JumpSystem::calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, EntityManager> jumpComp, float endHeight)
@@ -283,14 +283,14 @@ void JumpSystem::calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, Entity
 	float deltaX = getDeltaOf(getXCenterCoords(jumpComp->toX), getXCenterCoords(jumpComp->fromX));
 	float deltaY = -getDeltaOf(((jumpComp->toY)*GameConstants::CELL_HEIGHT + (GameConstants::CELL_HEIGHT / 2.f) - endHeight), getYCenterCoords(jumpComp->fromY));
 
-	jumpComp->degreeX = deltaX / (jumpComp->startVelocity*jumpComp->totalTime);
-	jumpComp->degreeY = (((deltaY + GameConstants::EARTH_GRAVITY / 2 * powf(jumpComp->totalTime, 2))) / (jumpComp->startVelocity*jumpComp->totalTime));
+	jumpComp->degreeX = static_cast<float>(deltaX / (jumpComp->startVelocity*static_cast<float>(jumpComp->totalTime)));
+	jumpComp->degreeY = static_cast<float>(((deltaY + GameConstants::EARTH_GRAVITY / 2 * powf(static_cast<float>(jumpComp->totalTime), 2))) / (jumpComp->startVelocity*static_cast<float>(jumpComp->totalTime)));
 }
 
 void JumpSystem::calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle<JumpComponent, EntityManager> jumpComp, float beginHeight)
 {
-	*xPos = jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed;
-	*yPos = beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2));
+	*xPos = static_cast<float>(jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed);
+	*yPos = static_cast<float>(beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2)));
 }
 
 void JumpSystem::checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked)
