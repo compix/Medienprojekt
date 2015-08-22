@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Game</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\Test\</OutDir>
+    <IntDir>..\..\Temp\Game\Debug\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\Game\</OutDir>
+    <IntDir>..\..\Temp\Game\Release\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_DEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>TGUI-s-d.lib;Box2D-s-d.lib;enet-s-d.lib;jsoncpp-s-d.lib;entityx-s-d.lib;cppformat-s-d.lib;SFML-s-d.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;NDEBUG;SFML_STATIC;GLEW_STATIC;HAS_STD_MAKE_UNIQUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\Box2D\Box2D;..\..\ThirdParty\TGUI\include;..\..\ThirdParty\SFML\include;..\..\ThirdParty\enet\include;..\..\ThirdParty\jsoncpp\include;..\..\ThirdParty\cppformat;..\..\ThirdParty\entityx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>TGUI-s.lib;Box2D-s.lib;enet-s.lib;jsoncpp-s.lib;entityx-s.lib;cppformat-s.lib;SFML-s.lib;openal32.lib;sndfile.lib;GLEW.lib;freetype.lib;jpeg.lib;winmm.lib;ws2_32.lib;gdi32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\vs2013;..\..\ThirdParty\SFML\extlibs\libs-msvc\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\AI\AIUtil.h" />
+    <ClInclude Include="..\..\Source\AI\AIVisualizer.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\Action.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\ActionSelector.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\ActionType.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\Behavior.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\NodePathInfo.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
+    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateDistanceToItems.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateEscape.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateItem.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateKickBomb.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
+    <ClInclude Include="..\..\Source\Animation\AnimationState.h" />
+    <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
+    <ClInclude Include="..\..\Source\Animation\Animator.h" />
+    <ClInclude Include="..\..\Source\Animation\AnimatorManager.h" />
+    <ClInclude Include="..\..\Source\Animation\IdleState.h" />
+    <ClInclude Include="..\..\Source\Animation\WalkingState.h" />
+    <ClInclude Include="..\..\Source\BodyFactory.h" />
+    <ClInclude Include="..\..\Source\Components\AIComponent.h" />
+    <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BlockComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BombComponent.h" />
+    <ClInclude Include="..\..\Source\Components\CellComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ColorComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DamageDealerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DestructionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DestructionDelayComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DirectionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\DynamicComponent.h" />
+    <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
+    <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h" />
+    <ClInclude Include="..\..\Source\Components\HealthComponent.h" />
+    <ClInclude Include="..\..\Source\Components\InputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ItemComponent.h" />
+    <ClInclude Include="..\..\Source\Components\JumpComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LightComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LocalInputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PlayerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalComponent.h" />
+    <ClInclude Include="..\..\Source\Components\PortalMarkerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\RenderOffsetComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
+    <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
+    <ClInclude Include="..\..\Source\Components\TransformComponent.h" />
+    <ClInclude Include="..\..\Source\ContactListener.h" />
+    <ClInclude Include="..\..\Source\EntityFactory.h" />
+    <ClInclude Include="..\..\Source\EntityLayer.h" />
+    <ClInclude Include="..\..\Source\Events\BombCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ClientStateEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ConnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CountdownEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreateGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h" />
+    <ClInclude Include="..\..\Source\Events\DeathEvent.h" />
+    <ClInclude Include="..\..\Source\Events\DisconnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\EntityGotHitEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ExitEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ExplosionCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ForceDisconnectEvent.h" />
+    <ClInclude Include="..\..\Source\Events\GameOverEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
+    <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
+    <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
+    <ClInclude Include="..\..\Source\Events\PunchEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\ResetGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
+    <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\TimeoutEvent.h" />
+    <ClInclude Include="..\..\Source\Game.h" />
+    <ClInclude Include="..\..\Source\GameConstants.h" />
+    <ClInclude Include="..\..\Source\GameGlobals.h" />
+    <ClInclude Include="..\..\Source\Graphics\Particle.h" />
+    <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
+    <ClInclude Include="..\..\Source\Graphics\ParticleManager.h" />
+    <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h" />
+    <ClInclude Include="..\..\Source\LayerManager.h" />
+    <ClInclude Include="..\..\Source\Lighting\Light.h" />
+    <ClInclude Include="..\..\Source\Main.h" />
+    <ClInclude Include="..\..\Source\Menu\Menu.h" />
+    <ClInclude Include="..\..\Source\Menu\MenuPage.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageChat.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageConnecting.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLoading.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageRoot.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageSettings.h" />
+    <ClInclude Include="..\..\Source\NetCode\Connection.h" />
+    <ClInclude Include="..\..\Source\NetCode\Message.h" />
+    <ClInclude Include="..\..\Source\Network\NetClient.h" />
+    <ClInclude Include="..\..\Source\Network\NetConstants.h" />
+    <ClInclude Include="..\..\Source\Network\NetPlayerInfo.h" />
+    <ClInclude Include="..\..\Source\Network\NetServer.h" />
+    <ClInclude Include="..\..\Source\PhysixSystem.h" />
+    <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
+    <ClInclude Include="..\..\Source\Systems\AISystem.h" />
+    <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BombKickSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ChatRenderSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InputHandleSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InputSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ItemSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\PunchSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetManager.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\Assets.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\MusicLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\SoundLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TextureLoader.h" />
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\TexturePacker.h" />
+    <ClInclude Include="..\..\Source\Utils\Colors.h" />
+    <ClInclude Include="..\..\Source\Utils\Common.h" />
+    <ClInclude Include="..\..\Source\Utils\Exceptions.h" />
+    <ClInclude Include="..\..\Source\Utils\FpsCalculator.h" />
+    <ClInclude Include="..\..\Source\Utils\Functions.h" />
+    <ClInclude Include="..\..\Source\Utils\InputManager.h" />
+    <ClInclude Include="..\..\Source\Utils\LevelGenerator.h" />
+    <ClInclude Include="..\..\Source\Utils\Logging\Logger.h" />
+    <ClInclude Include="..\..\Source\Utils\Logging\LoggingService.h" />
+    <ClInclude Include="..\..\Source\Utils\Math.h" />
+    <ClInclude Include="..\..\Source\Utils\Random.h" />
+    <ClInclude Include="..\..\Source\Utils\ShaderManager.h" />
+    <ClInclude Include="..\..\Source\Utils\SystemUtils.h" />
+    <ClInclude Include="..\..\Source\Utils\make_unique.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
+    <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\Action.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\NodePathInfo.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToAffectedBlocks.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateDistanceToItems.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateEscape.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateItem.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateKickBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
+    <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
+    <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
+    <ClCompile Include="..\..\Source\Animation\IdleState.cpp" />
+    <ClCompile Include="..\..\Source\Animation\WalkingState.cpp" />
+    <ClCompile Include="..\..\Source\BodyFactory.cpp" />
+    <ClCompile Include="..\..\Source\ContactListener.cpp" />
+    <ClCompile Include="..\..\Source\EntityFactory.cpp" />
+    <ClCompile Include="..\..\Source\EntityLayer.cpp" />
+    <ClCompile Include="..\..\Source\Game.cpp" />
+    <ClCompile Include="..\..\Source\GameConstants.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp" />
+    <ClCompile Include="..\..\Source\LayerManager.cpp" />
+    <ClCompile Include="..\..\Source\Lighting\Light.cpp" />
+    <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Menu.cpp" />
+    <ClCompile Include="..\..\Source\Menu\MenuPage.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageChat.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageConnecting.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLoading.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageRoot.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageSettings.cpp" />
+    <ClCompile Include="..\..\Source\Network\NetClient.cpp" />
+    <ClCompile Include="..\..\Source\Network\NetServer.cpp" />
+    <ClCompile Include="..\..\Source\PhysixSystem.cpp" />
+    <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
+    <ClCompile Include="..\..\Source\Systems\AISystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BombKickSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ChatRenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InputHandleSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InputSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\PunchSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\MusicLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\SoundLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TextureLoader.cpp" />
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\TexturePacker.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Colors.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Common.cpp" />
+    <ClCompile Include="..\..\Source\Utils\FpsCalculator.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Functions.cpp" />
+    <ClCompile Include="..\..\Source\Utils\InputManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\LevelGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Logging\Logger.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Logging\LoggingService.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Math.cpp" />
+    <ClCompile Include="..\..\Source\Utils\Random.cpp" />
+    <ClCompile Include="..\..\Source\Utils\ShaderManager.cpp" />
+    <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
