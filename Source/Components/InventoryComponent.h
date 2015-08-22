@@ -2,8 +2,6 @@
 #include "../GameConstants.h"
 #include <utility>
 #include <entityx/Entity.h>
-#include <queue>
-#include "../Utils/Common.h"
 
 enum class SkillType
 {
@@ -55,7 +53,13 @@ public:
 
 	void put(SkillType skillType)
 	{
-		// Remove the skill if it's already in the set
+		remove(skillType);
+		m_skills.insert(Skill(skillType));
+	}
+
+	void remove(SkillType skillType)
+	{
+		assert(skillType != SkillType::NONE);
 		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
 		{
 			if (it->type == skillType)
@@ -64,11 +68,11 @@ public:
 				break;
 			}
 		}
-
-		m_skills.insert(Skill(skillType));
 	}
 
+	// Skill set is never empty. If the entity has no skills then SkillType::NONE is returned.
 	inline const Skill& top() { return *m_skills.begin(); }
+
 private:
 	std::set<Skill, SkillComparator> m_skills;
 };
@@ -96,4 +100,5 @@ struct InventoryComponent
 	inline void put(SkillType skillType) { activeSkills.put(skillType); }
 	inline SkillType activeSkill() { return activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
+	inline void removeSkill(SkillType type) { activeSkills.remove(type); }
 };

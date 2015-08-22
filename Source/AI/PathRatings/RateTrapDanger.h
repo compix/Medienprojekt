@@ -1,7 +1,8 @@
 #pragma once
-#include <cinttypes>
 #include <entityx/Entity.h>
+#include "../../Utils/Common.h"
 
+class SimulationGraph;
 class Graph;
 class PathEngine;
 struct GraphNode;
@@ -21,9 +22,14 @@ public:
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 
 private:
-	int distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy);
+	int distanceToClosest(uint8_t x, uint8_t y);
 
-	bool testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine);
+	bool isPotentialTrap(PathEngine* pathEngine, GraphNode* node);
+	bool downUpBlocked(SimulationGraph* graph, GraphNode* node);
+	bool leftRightBlocked(SimulationGraph* graph, GraphNode* node);
+
+	bool isPotentialTrap(SimulationGraph* graph, GraphNode* node, Direction direction, uint8_t range);
+
 private:
 	std::vector<entityx::Entity> m_enemies;
 

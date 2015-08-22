@@ -1,10 +1,7 @@
 #include "RateTrapDanger.h"
 #include "../PathFinding/PathEngine.h"
 #include "../../Components/CellComponent.h"
-#include "RateSafety.h"
-#include "../PathFinding/SimulationGraph.h"
 #include "../../Systems/AISystem.h"
-#include <queue>
 
 RateTrapDanger::RateTrapDanger(bool willPlaceBomb)
 	:m_willPlaceBomb(willPlaceBomb)
@@ -18,46 +15,84 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (!goal->valid)
 		return false;
 
-	auto simGraph = pathEngine->getSimGraph();
-	simGraph->resetMarks();
-	uint8_t maxIterations = 10;
+	auto graph = pathEngine->getSimGraph();
+	uint8_t range = 2;
+
+	bool trap = isPotentialTrap(pathEngine, goal) ||
+				isPotentialTrap(graph, goal, Direction::DOWN, range) ||
+				isPotentialTrap(graph, goal, Direction::UP, range)   ||
+				isPotentialTrap(graph, goal, Direction::LEFT, range) ||
+				isPotentialTrap(graph, goal, Direction::RIGHT, range);
 
 	AISystem::getEnemies(entity, m_enemies);
 
-	// Test neighbors in a breadth first search manner
-	std::queue<GraphNode*> processQueue;
-	auto startNode = goal;
-	startNode->marked = true;
-	processQueue.push(startNode);
+	if (trap)
+		path.rating = 0.f;
+	else
+		path.rating = 2.f;
 
-	while (maxIterations > 0 && processQueue.size() > 0) 
-	{
-		GraphNode* curNode = processQueue.front();
-		processQueue.pop();
-
-		if (!testNode(startNode, curNode, entity, pathEngine))
-			return false;
-
-		// Go through all neighbors
-		for (uint8_t i = 0; i < 4; ++i)
-		{
-			GraphNode* neighbor = simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			if (!neighbor || !neighbor->valid || neighbor->marked)
-				continue;
-
-			neighbor->marked = true;
-			processQueue.push(neighbor);
-		}
-
-		--maxIterations;
-	}
-
-	path.rating = 1.f;
 	return true;
 }
 
+bool RateTrapDanger::isPotentialTrap(PathEngine* pathEngine, GraphNode* node)
+{
+	if (distanceToClosest(node->x, node->y) > 5)
+		return false;
 
-int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& closestEnemy)
+	auto graph = pathEngine->getSimGraph();
+
+	bool upBlocked    = !graph->hasNeighbor(node, Direction::UP);
+	bool downBlocked  = !graph->hasNeighbor(node, Direction::DOWN);
+	bool leftBlocked  = !graph->hasNeighbor(node, Direction::LEFT);
+	bool rightBlocked = !graph->hasNeighbor(node, Direction::RIGHT);
+
+	return (upBlocked && downBlocked && (leftBlocked || rightBlocked)) || (leftBlocked && rightBlocked && (upBlocked || downBlocked));
+}
+
+
+bool RateTrapDanger::isPotentialTrap(SimulationGraph* graph, GraphNode* node, Direction direction, uint8_t range)
+{
+	if (direction == Direction::LEFT || direction == Direction::RIGHT)
+	{
+		auto curNode = node;
+		for (uint8_t i = 0; curNode && i < range; ++i)
+		{
+			curNode = graph->getNeighbor(curNode, direction);
+			if (distanceToClosest(curNode->x, curNode->y) > 5)
+				return false;
+
+			if (downUpBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))
+				return true;
+		}
+	}
+	else
+	{
+		auto curNode = node;
+		for (uint8_t i = 0; curNode && i < range; ++i)
+		{
+			curNode = graph->getNeighbor(curNode, direction);
+			if (distanceToClosest(curNode->x, curNode->y) > 5)
+				return false;
+
+			if (leftRightBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))
+				return true;
+		}
+	}
+
+	return false;
+}
+
+bool RateTrapDanger::downUpBlocked(SimulationGraph* graph, GraphNode* node)
+{
+	return !graph->hasNeighbor(node, Direction::UP) && !graph->hasNeighbor(node, Direction::DOWN);
+}
+
+bool RateTrapDanger::leftRightBlocked(SimulationGraph* graph, GraphNode* node)
+{
+	return !graph->hasNeighbor(node, Direction::LEFT) && !graph->hasNeighbor(node, Direction::RIGHT);
+}
+
+int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y)
 {
 	int distance = 500;
 
@@ -70,49 +105,9 @@ int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y, entityx::Entity& clo
 		if (newDistance < distance)
 		{
 			distance = newDistance;
-			closestEnemy = e;
 		}
 	}
 
 	return distance;
 }
 
-bool RateTrapDanger::testNode(GraphNode* startNode, GraphNode* testedNode, entityx::Entity& entity, PathEngine* pathEngine)
-{
-	Entity closestEnemy;
-	int distanceToClosestEnemy = distanceToClosest(testedNode->x, testedNode->y, closestEnemy);
-
-	if (distanceToClosestEnemy > 5)
-		return true;
-
-	// Distance check not enough. Check the path
-	AIPath enemyPathToSpot;
-	auto enemyCell = closestEnemy.component<CellComponent>();
-	pathEngine->computePath(enemyCell->x, enemyCell->y, startNode->x, startNode->y, enemyPathToSpot);
-
-	if (enemyPathToSpot.nodes.size() > 5 || enemyPathToSpot.nodes.size() == 0)
-		return true;
-
-	auto simGraph = pathEngine->getSimGraph();
-
-	float bombExploTime = testedNode->properties.affectedByExplosion ? testedNode->properties.timeTillExplosion : 2.f;
-	simGraph->placeBomb(testedNode->x, testedNode->y, 7, 2.f);
-	testedNode->valid = false;
-
-	if (m_willPlaceBomb)
-	{
-		simGraph->placeBomb(startNode->x, startNode->y, 7, 2.f);
-		startNode->valid = false;
-	}
-
-	AIPath safePath;
-	pathEngine->searchBest(entity, startNode->x, startNode->y, safePath, RateSafety(), 1);
-	bool safe = safePath.nodes.size() > 0;
-
-	// Reset to old state
-	simGraph->resetSimulation();
-	testedNode->valid = true;
-	startNode->valid = true;
-
-	return safe;
-}
