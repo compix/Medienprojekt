@@ -36,6 +36,16 @@ void AnimatorManager::initCharacterAnimator(AnimatorType type, const std::string
 	animator->add(AnimationType::IDLE_LEFT, "char_idle_left", textureName);
 	animator->add(AnimationType::IDLE_RIGHT, "char_idle_right", textureName);
 
+	animator->add(AnimationType::WALK_DOWN_BOMB, "char_walk_down_bomb", textureName);
+	animator->add(AnimationType::WALK_UP_BOMB, "char_walk_up_bomb", textureName);
+	animator->add(AnimationType::WALK_LEFT_BOMB, "char_walk_left_bomb", textureName);
+	animator->add(AnimationType::WALK_RIGHT_BOMB, "char_walk_right_bomb", textureName);
+
+	animator->add(AnimationType::IDLE_DOWN_BOMB, "char_idle_down_bomb", textureName);
+	animator->add(AnimationType::IDLE_UP_BOMB, "char_idle_up_bomb", textureName);
+	animator->add(AnimationType::IDLE_LEFT_BOMB, "char_idle_left_bomb", textureName);
+	animator->add(AnimationType::IDLE_RIGHT_BOMB, "char_idle_right_bomb", textureName);
+
 	animator->add<IdleState>();
 	animator->add<WalkingState>();
 
