@@ -1,6 +1,6 @@
 #pragma once
 #include "entityx/entityx.h"
-#include "Animator.h"
+#include "../Animator.h"
 
 class AnimationState
 {

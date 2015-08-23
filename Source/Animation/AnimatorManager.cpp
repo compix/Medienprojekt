@@ -1,6 +1,6 @@
 #include "AnimatorManager.h"
-#include "WalkingState.h"
-#include "IdleState.h"
+#include "States/WalkingState.h"
+#include "States/IdleState.h"
 
 std::unordered_map<AnimatorType, std::unique_ptr<Animator>, EnumClassHash> AnimatorManager::m_animators;
 

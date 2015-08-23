@@ -38,10 +38,10 @@ void AISystem::init()
 	{
 		auto aiComponent = entity.component<AIComponent>();
 
-		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(true), RateDistanceToItems() });
+		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
 
-		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks() });
+		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks(), RateTrapDanger() });
 		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
 
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
@@ -49,7 +49,7 @@ void AISystem::init()
 
 		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
 
-		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot() });
+		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
 	}
 }

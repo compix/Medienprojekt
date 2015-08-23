@@ -1,7 +1,7 @@
 #include "Animator.h"
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
-#include "AnimationState.h"
+#include "States/AnimationState.h"
 #include "../Components/SpriteComponent.h"
 #include "../Utils/AssetManagement/AnimationLoader.h"
 

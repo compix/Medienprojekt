@@ -1,7 +1,6 @@
 #pragma once
 #include <unordered_map>
 #include "Animator.h"
-#include <typeinfo>
 
 enum class AnimatorType
 {

@@ -14,8 +14,8 @@ public:
 
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
-	void receive(const entityx::EntityDestroyedEvent& e);
-	void receive(const ItemPickedUpEvent& e);
+	void receive(const entityx::EntityDestroyedEvent& destroyedEvent);
+	void receive(const ItemPickedUpEvent& pickedUpEvent);
 
 private:
 	LayerManager* m_layerManager;

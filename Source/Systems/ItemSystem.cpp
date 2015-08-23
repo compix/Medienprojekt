@@ -1,13 +1,13 @@
 #include "ItemSystem.h"
 #include "../Game.h"
 #include "../Components/BlockComponent.h"
-#include "../Utils/Random.h"
 #include "../Components/ItemComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/LayerComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../Components/DestructionComponent.h"
 #include "../Events/ItemPickedUpEvent.h"
+#include "../Components/ItemSpawnerComponent.h"
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
@@ -70,9 +70,6 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 			case ItemType::PUNCH_SKILL:
 				inventory->put(SkillType::PUNCH);
 				break;
-			case ItemType::BLINK_SKILL:
-				inventory->put(SkillType::BLINK);
-				break;
 			case ItemType::HOLD_BOMB_SKILL:
 				if (inventory->canHold == false)
 					inventory->canHold = true;
@@ -86,64 +83,26 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 	}
 }
 
-void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
+void ItemSystem::receive(const entityx::EntityDestroyedEvent& destroyedEvent)
 {
-	if (!e.entity.valid())
+	auto entity = destroyedEvent.entity;
+
+	if (!entity)
 		return;
 
-	if (e.entity.has_component<BlockComponent>())
+	if (entity.has_component<BlockComponent>() && entity.has_component<ItemSpawnerComponent>())
 	{
-		auto entity = e.entity;
-
 		auto cell = entity.component<CellComponent>();
+		auto itemSpawn = entity.component<ItemSpawnerComponent>();
 		assert(cell);
 
-		float spawnChance = 100.f / 6.f; //Divisor ist die gesamte Anzahl an Items
-
-		if (Random::getInt(1, 100) <= spawnChance) // 20% Chance to spawn an item
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BLINK_SKILL);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance) // 20% Chance to spawn an item
-		{
-			// TODO: Create random items taking rarity and minimum spawn number into consideration, 
-			// assigning ItemComponents with blocks during Level creation might be a good idea
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_CAP_BOOST);
-		} 
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_KICK_SKILL);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::SPEED_MULTIPLICATOR);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BOMB_RANGE_BOOST);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::PORTAL_SKILL);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::ANTI_MAGNET_SKILL);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::PUNCH_SKILL);
-		}
-		else if (Random::getInt(1, 100) <= spawnChance)
-		{
-			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::HOLD_BOMB_SKILL);
-		}
+		GameGlobals::entityFactory->createItem(cell->x, cell->y, itemSpawn->itemType);
 	}
 }
 
-void ItemSystem::receive(const ItemPickedUpEvent& e)
+void ItemSystem::receive(const ItemPickedUpEvent& pickedUpEvent)
 {
-	auto item = e.item;
+	auto item = pickedUpEvent.item;
 
 	if (!item.valid())
 		return;

@@ -220,7 +220,7 @@ void LocalGame::resetEntities()
 	if (m_systems.system<AISystem>())
 		m_systems.system<AISystem>()->reset();
 
-	LevelGenerator levelGenerator(m_width, m_height);
+	LevelGenerator levelGenerator(DefaultConfig(m_width, m_height));
 	levelGenerator.generateRandomLevel();
 
 	uint8_t i = 0;
