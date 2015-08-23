@@ -151,6 +151,7 @@
     <ClInclude Include="..\..\Source\Components\InputComponent.h" />
     <ClInclude Include="..\..\Source\Components\InventoryComponent.h" />
     <ClInclude Include="..\..\Source\Components\ItemComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ItemSpawnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\JumpComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />

@@ -23,6 +23,7 @@ public:
 	*/
 	static float getFloat(float start, float end);
 
+	inline static std::mt19937& RNG() { return m_rng; }
 private:
 	static std::mt19937 m_rng;
 };
