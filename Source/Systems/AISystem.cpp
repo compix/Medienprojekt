@@ -15,6 +15,7 @@
 #include "../AI/PathRatings/RateDistanceToItems.h"
 #include "../AI/PathRatings/RateDistanceToAffectedBlocks.h"
 #include "../AI/PathRatings/RatePortalSpot.h"
+#include "../AI/PathRatings/RateAttackEnemy.h"
 #include "../Utils/Logging/Logger.h"
 #include <sstream>
 #include "../AI/Behaviors/PlaceBomb.h"
@@ -40,6 +41,9 @@ void AISystem::init()
 
 		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
+
+		PathRating attackEnemyRating = RateCombination({ RateAttackEnemy(), RateEscape(), RateTrapDanger() });
+		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<Action>(m_pathEngine.get(), attackEnemyRating, PlaceBomb(), m_layerManager);
 
 		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks(), RateTrapDanger() });
 		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
@@ -94,6 +98,9 @@ void AISystem::log(entityx::Entity& entity)
 		break;
 	case ActionType::PLACE_PORTAL:
 		stream << "Placing portal.";
+		break;
+	case ActionType::ATTACK_ENEMY:
+		stream << "Attacking enemy.";
 		break;
 	default:
 		stream << "UNKNOWN ACTION.";

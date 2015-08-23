@@ -1,7 +1,7 @@
 #pragma once
 #include "Action.h"
 
-class ActionSelector : public IAction
+class ActionSelector : public BaseAction
 {
 public:
 	ActionSelector() : m_currentAction(nullptr) {}
@@ -19,5 +19,6 @@ public:
 
 protected:
 	std::vector<ActionPtr> m_actions;
-	IAction* m_currentAction;
+	BaseAction* m_currentAction;
+	AIPath m_emptyPath;
 };

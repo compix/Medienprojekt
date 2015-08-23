@@ -4,7 +4,7 @@
 struct GraphNode;
 struct AIPath;
 
-class RateKickBomb
+class RatePunchBomb
 {
 public:
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);

@@ -29,26 +29,24 @@ void JumpSystem::configure(entityx::EventManager& event_manager)
 void JumpSystem::receive(const PunchEvent& event)
 {
 	auto entity = event.triggerEntity;
-	if (!entity.has_component<AIComponent>()){
-		assert(entity && entity.has_component<InventoryComponent>() && entity.has_component<DirectionComponent>() && entity.has_component<CellComponent>());
+	assert(entity && entity.has_component<InventoryComponent>() && entity.has_component<DirectionComponent>() && entity.has_component<CellComponent>());
 
-		auto cellComponent = entity.component<CellComponent>();
-		auto direction = entity.component<DirectionComponent>()->direction;
+	auto cellComponent = entity.component<CellComponent>();
+	auto direction = entity.component<DirectionComponent>()->direction;
 
-		Entity bomb;
+	Entity bomb;
 
-		int x = 0, y = 0;
-		int jumpDistance = event.punchDistance;
-		adjustXY_RelatingToTheDirection(&x, &y, jumpDistance, direction, cellComponent, &bomb);
+	int x = 0, y = 0;
+	int jumpDistance = event.punchDistance;
+	adjustXY_RelatingToTheDirection(&x, &y, jumpDistance, direction, cellComponent, &bomb);
 
-		if (!bomb)
-			return;
+	if (!bomb)
+		return;
 
-		if (bomb.has_component<BodyComponent>() && bomb.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0) //Wenn Bombe nicht gekickt worden sind
-		{
-			auto cpBomb = bomb.component<CellComponent>();
-			bomb.assign<JumpComponent>(direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
-		}
+	if (bomb.has_component<BodyComponent>() && bomb.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0) //Wenn Bombe nicht gekickt worden sind
+	{
+		auto cpBomb = bomb.component<CellComponent>();
+		bomb.assign<JumpComponent>(direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
 	}
 }
 

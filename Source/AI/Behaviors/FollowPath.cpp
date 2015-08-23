@@ -76,7 +76,6 @@ void FollowPath::operator()(entityx::Entity& entity)
 			}
 		}
 
-		// It's impossible to cancel eachother out so either 1 or -1 will be set.
 		int collisionAvoidanceX = leftAvoidance * abs(moveY) + rightAvoidance * abs(moveY);
 		int collisionAvoidanceY = botAvoidance * abs(moveX) + topAvoidance * abs(moveX);
 

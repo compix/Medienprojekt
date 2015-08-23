@@ -8,6 +8,23 @@
 #include "../../LayerManager.h"
 #include "../../GameConstants.h"
 
+struct AffectedByExplosion
+{
+	AffectedByExplosion() : numOfBlocks(0), numOfItems(0) {}
+
+	uint8_t numOfBlocks;
+	uint8_t numOfItems;
+	std::vector<entityx::Entity> players;
+
+	bool isEnemyAffected(const entityx::Entity& self)
+	{
+		for (auto& e : players)
+			if (e != self)
+				return true;
+		return false;
+	}
+};
+
 struct NormalBomb
 {
 	NormalBomb() : range(1), explosionTime(3.f), x(0), y(0) {}
@@ -39,7 +56,7 @@ public:
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
 
-	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime);
+	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedByExplosion = nullptr);
 
 	template<class T>
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
@@ -50,7 +67,7 @@ public:
 
 	void reset();
 protected:
-	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction);
+	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, AffectedByExplosion* affectedByExplosion = nullptr);
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
 protected:

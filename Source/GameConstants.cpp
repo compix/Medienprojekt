@@ -19,7 +19,7 @@ namespace GameConstants
 	extern const bool INIT_PLAYERS_CAN_HOLD_BOMB = false;
 	extern const bool INIT_PORTAL_SKILL = false;
 	extern const bool INIT_ANTI_MAGNET = false;
-	extern const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
+	extern const bool INIT_PUNCH_SKILL = false;
 	extern const int PUNCH_DISTANCE = 2;
 
 	//Relating to Punch/Jumping

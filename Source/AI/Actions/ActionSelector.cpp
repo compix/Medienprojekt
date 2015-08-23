@@ -30,8 +30,7 @@ float ActionSelector::getRating()
 
 AIPath& ActionSelector::path()
 {
-	assert(m_currentAction);
-	return m_currentAction->path();
+	return m_currentAction ? m_currentAction->path() : m_emptyPath;
 }
 
 void ActionSelector::preparePath(entityx::Entity& entity)

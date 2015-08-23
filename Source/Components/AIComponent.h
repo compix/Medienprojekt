@@ -13,10 +13,13 @@ struct AIComponent
 	AIComponent(uint8_t id) : id(id), currentAction(nullptr) {}
 
 	std::unordered_map<ActionType, ActionPtr, EnumClassHash> actions;
-	IAction* currentAction;
+	BaseAction* currentAction;
 	ActionType currentActionType;
 	uint8_t id;
 
 	AIPath lastPath;
 	ActionType lastActionType;
+
+	// Used for some behavior like punch.
+	GraphNode* behaviorNode;
 };

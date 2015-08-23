@@ -605,6 +605,15 @@
     <ClInclude Include="..\..\Source\Animation\States\WalkingState.h">
       <Filter>Animation\States</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateAttackEnemy.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RatePunchBomb.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\PunchBomb.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -883,6 +892,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Animation\States\WalkingState.cpp">
       <Filter>Animation\States</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RatePunchBomb.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\PunchBomb.cpp">
+      <Filter>AI\Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

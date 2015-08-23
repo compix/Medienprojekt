@@ -61,14 +61,14 @@ public:
 	inline bool hasComponents(Entity& e) { return e.valid() && e.has_component<C>(); }
 
 	/**
-	* Returns the entity in the given layer and cell if it has all of the specified components.
+	* Returns the first entity in the given layer and cell if it has all of the specified components.
 	* An invalid entity will be returned if there is no such entity
 	*/
 	template<class C1, class... Args>
 	Entity getEntityWithComponents(int layer, uint8_t cellX, uint8_t cellY);
 
 	/**
-	* Returns the entity in the given layer and cell if it has the specified component.
+	* Returns the first entity in the given layer and cell if it has the specified component.
 	* An invalid entity will be returned if there is no such entity
 	*/
 	template <class C>
@@ -93,11 +93,23 @@ public:
 	bool hasEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY);
 
 	/**
-	* Returns the entity in the given layer and cell if it has AT LEAST one of the specified components.
+	* Returns the first entity in the given layer and cell if it has AT LEAST one of the specified components.
 	* An invalid entity will be returned if there is no such entity
 	*/
 	template<class C1, class... Args>
 	Entity getEntityWithOneComponent(int layer, uint8_t cellX, uint8_t cellY);
+
+	/**
+	* Returns all entities in the given layer and cell with all of the specified components.
+	*/
+	template<class C1, class... Args>
+	std::vector<Entity> getEntitiesWithComponents(int layer, uint8_t cellX, uint8_t cellY);
+
+	/**
+	* Returns all entities in the given layer and cell with at least one of the specified components.
+	*/
+	template<class C1, class... Args>
+	std::vector<Entity> getEntitiesWithOneComponent(int layer, uint8_t cellX, uint8_t cellY);
 
 	bool isInLayer(int layer, entityx::Entity& entity);
 
@@ -186,4 +198,28 @@ Entity LayerManager::getEntityWithOneComponent(int layer, uint8_t cellX, uint8_t
 			return e;
 
 	return Entity();
+}
+
+template <class C1, class ... Args>
+std::vector<Entity> LayerManager::getEntitiesWithComponents(int layer, uint8_t cellX, uint8_t cellY)
+{
+	assert(m_layers.count(layer));
+	std::vector<Entity> entities;
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
+		if (hasComponents<C1, Args...>(e))
+			entities.push_back(e);
+
+	return entities;
+}
+
+template <class C1, class ... Args>
+std::vector<Entity> LayerManager::getEntitiesWithOneComponent(int layer, uint8_t cellX, uint8_t cellY)
+{
+	assert(m_layers.count(layer));
+	std::vector<Entity> entities;
+	for (auto& e : m_layers[layer]->get(cellX, cellY))
+		if (hasOneComponent<C1, Args...>(e))
+			entities.push_back(e);
+
+	return entities;
 }

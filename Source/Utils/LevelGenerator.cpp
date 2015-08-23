@@ -121,7 +121,6 @@ void LevelGenerator::spawnItems()
 				--num;
 				itemTypes.push(pair.first);
 			}
-
 		}
 	}
 
