@@ -77,7 +77,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	/*Setup PhysixSystem*/
 	if (!isClient()) {
-		m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+		m_PhysixSystem = new PhysixSystem(8, 3, GameConstants::S_SCALE);
 		m_PhysixSystem->setContactListener(&listener);
 		m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
 		BodyFactory::m_World = m_PhysixSystem->GetWorld();

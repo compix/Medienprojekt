@@ -40,8 +40,6 @@ public:
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
 
-	Entity* createEntity();
-	void	destroyEntity(Entity entity);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:
@@ -49,6 +47,5 @@ private:
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
 	entityx::SystemManager* m_systemManager;
-	std::map<Entity::Id, Entity> m_entityMap;
 };
 

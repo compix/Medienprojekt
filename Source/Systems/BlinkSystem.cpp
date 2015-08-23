@@ -6,6 +6,8 @@
 #include "../Components/BlinkComponent.h"
 #include "../Components/LayerComponent.h"
 #include "../Components/InputComponent.h"
+#include "../BodyFactory.h"
+#include "../PhysixSystem.h"
 
 
 BlinkSystem::BlinkSystem(LayerManager* layerManager)
@@ -33,27 +35,47 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 		auto layerComponent = entity.component<LayerComponent>();
 
 		Entity blocks;
+		int x = 0, y = 0;
 		switch (direction->direction)
 		{
 		case Direction::UP:
 			blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x, cell->y - 1);
+			y = -1;
 			break;
 		case Direction::DOWN: 
 			blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x, cell->y + 1);
+			y = 1;
 			break;
 		case Direction::LEFT:
 			blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x - 1, cell->y);
+			x = -1;
 			break;
 		case Direction::RIGHT:
 			blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x + 1, cell->y);
+			x = 1;
 			break;
 		default: break;
 		}
 
 		if (blocks)
 		{
+			auto entites = m_layerManager->getEntities(layerComponent->layer, cell->x, cell->y);
+			bool blocked = false;
+			for (auto it = entites.begin(); it != entites.end(); ++it)
+			{
+				if (it->id() != entity.id() && it->has_component<BodyComponent>()){
+					blocked = true;
+					break;
+				}
+			}
+
+			if (blocked)
+			{
+				body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D((cell->x - x)*GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f), PhysixSystem::toBox2D((cell->y - y)*GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f)), true);
+			}
+			body->body->SetBullet(false);
 			body->body->SetType(b2_dynamicBody);
-			body->body->SetLinearVelocity(b2Vec2_zero);
+		//	body->body->SetLinearVelocity(b2Vec2_zero);
 			entity.remove<BlinkComponent>();
 			if (!entity.has_component<InputComponent>())
 			{
@@ -68,19 +90,25 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 
 			float power = GameConstants::BLINK_SPEED;
 			body->body->SetType(b2_kinematicBody);
+			body->body->SetBullet(true);
+			b2Vec2 choosenPower = b2Vec2_zero;
 			switch (direction->direction)
 			{
 			case Direction::UP:
 				body->body->SetLinearVelocity(b2Vec2(0, -power));
+				choosenPower = b2Vec2(0, -power);
 				break;
 			case Direction::DOWN:
 				body->body->SetLinearVelocity(b2Vec2(0, +power));
+				choosenPower = b2Vec2(0, +power);
 				break;
 			case Direction::LEFT:
 				body->body->SetLinearVelocity(b2Vec2(-power, 0));
+				choosenPower = b2Vec2(-power, 0);
 				break;
 			case Direction::RIGHT:
 				body->body->SetLinearVelocity(b2Vec2(+power, 0));
+				choosenPower = b2Vec2(+power, 0);
 				break;
 			default: break;
 			}

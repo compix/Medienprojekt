@@ -112,7 +112,6 @@ void PortalSystem::receive(const TimeoutEvent& timeoutEvent)
 	if (entity.has_component<PortalComponent>())
 	{
 		entity.destroy();
-		GameGlobals::entityFactory->destroyEntity(entity);
 	}
 }
 
