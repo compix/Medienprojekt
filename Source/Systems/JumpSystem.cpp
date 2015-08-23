@@ -11,6 +11,7 @@
 #include "../Components/RenderOffsetComponent.h"
 #include "../GameGlobals.h"
 #include "../Game.h"
+#include "../Components/PlayerComponent.h"
 
 JumpSystem::JumpSystem(LayerManager* layerManager)
 {
@@ -54,15 +55,23 @@ void JumpSystem::receive(const PunchEvent& event)
 
 void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
-	for (auto jumpingEntity : entityManager.entities_with_components<JumpComponent, BodyComponent, CellComponent>())
+	for (auto jumpingEntity : entityManager.entities_with_components<JumpComponent, CellComponent>())
 	{
 		auto jumpComp = jumpingEntity.component<JumpComponent>();
-		auto body = jumpingEntity.component<BodyComponent>();
 		auto cellComp = jumpingEntity.component<CellComponent>();
 
-		deactivateCollisionForFlyingBodys(body);
+		ComponentHandle<BodyComponent> body;
+		if (jumpingEntity.has_component<BodyComponent>())
+		{
+			 body = jumpingEntity.component<BodyComponent>();
+			 deactivateCollisionForFlyingBodys(body);
+		}
+		
+		
+
+		
 		deactivateTimerForBombs(jumpingEntity, jumpComp);
-		jumpFunction(jumpingEntity, jumpComp, body, dt);
+		jumpFunction(jumpingEntity, jumpComp, dt);
 
 		
 
@@ -70,7 +79,7 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 		{
 			bool targetBlocked = jumpingEntity.component<JumpComponent>()->targetIsBlocked;
 			Direction lastDirection = jumpingEntity.component<JumpComponent>()->direction;
-			removeRenderOffset(jumpingEntity, jumpComp, body);
+			removeRenderOffset(jumpingEntity);
 			float deltaX = getXCoords(static_cast<int>(getDeltaOf(static_cast<float>(jumpComp->toX), static_cast<float>(jumpComp->fromX))));
 			float deltaY = getYCoords(static_cast<int>(getDeltaOf(static_cast<float>(jumpComp->toY), static_cast<float>(jumpComp->fromY))));
 
@@ -85,6 +94,50 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, GameConstants::BLOCKED_CELL_JUMPING_HEIGHT, GameConstants::BLOCKED_CELL_JUMPING_SPEED);
 				jumpingEntity.component<JumpComponent>()->wasBlocked = true;
 
+				auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(GameConstants::MAIN_LAYER, cellComp->x, cellComp->y);
+
+				if (entityWithInventory && !jumpingEntity.has_component<ItemComponent>())
+				{
+					auto inv = entityWithInventory.component<InventoryComponent>();
+					SkillType st = inv->activeSkill();
+					inv->removeSkill(st);
+					Entity item;
+					switch (st){
+					case SkillType::PLACE_PORTAL:
+						item = GameGlobals::entityFactory->createItem(cellComp->x, cellComp->y, ItemType::PORTAL_SKILL);
+						break;
+					case SkillType::PUNCH:
+						item = GameGlobals::entityFactory->createItem(cellComp->x, cellComp->y, ItemType::PUNCH_SKILL);
+						break;
+					case SkillType::BLINK:
+						item = GameGlobals::entityFactory->createItem(cellComp->x, cellComp->y, ItemType::BLINK_SKILL);
+						break;
+					}
+
+					item.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
+					uint8_t direction = (rand() % 3);
+
+					int x = 0, y = 0;
+					switch (static_cast<Direction>(direction))
+					{
+					case Direction::UP: 
+						y = -5;
+						break;
+					case Direction::DOWN: 
+						y = 5;
+						break;
+					case Direction::LEFT: 
+						x = -5;
+						break;
+					case Direction::RIGHT: 
+						x = 5;
+						break;
+					default: break;
+					}
+
+					item.assign<JumpComponent>(static_cast<Direction>(direction), cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
+				}
+
 				auto roc = jumpingEntity.component<RenderOffsetComponent>();
 				float xOffset = roc->xOffset - deltaX;
 				float yOffset = roc->yOffset -deltaY;
@@ -93,7 +146,9 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				jumpingEntity.assign<RenderOffsetComponent>(xOffset, yOffset);
 			}
 			else { // Sachen die wiederhergestellt werden müssen, wenn wirklich am Ziel angekommen ist
-				activateCollisionForFlyingBodys(body);
+				if (body){
+					activateCollisionForFlyingBodys(body);
+				}
 				jumpingEntity.component<LayerComponent>()->layer = GameConstants::MAIN_LAYER;
 				activateTimerForBombs(jumpingEntity);
 			}
@@ -102,7 +157,7 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 	}
 }
 
-void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, ComponentHandle<BodyComponent, EntityManager> body, TimeDelta dt)
+void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt)
 {
 
 		int fromCheckX = jumpComp->fromX;
@@ -115,8 +170,16 @@ void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponen
 		bool targetBlocked = false;
 		for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
 		{
+			if (jumpingEntity.has_component<ItemComponent>())
+			{
+				if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>() && !it->has_component<PlayerComponent>())
+				{
+					targetBlocked = true;
+				}
+			}
+			else
 			if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
-				targetBlocked = true;
+					targetBlocked = true;
 				break;
 			}
 		}
@@ -318,10 +381,13 @@ void JumpSystem::checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, 
 void JumpSystem::setBodyAndTransformOfEntityToTarget(Entity jumpingEntity)
 {
 	auto jumpComp = jumpingEntity.component<JumpComponent>();
-	jumpingEntity.component<BodyComponent>()->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(getXCenterCoords(jumpComp->toX)),
-		PhysixSystem::toBox2D(getYCenterCoords(jumpComp->toY))),
-		0);
 
+	if (jumpingEntity.has_component<BodyComponent>())
+	{
+		jumpingEntity.component<BodyComponent>()->body->SetTransform(b2Vec2(PhysixSystem::toBox2D(getXCenterCoords(jumpComp->toX)),
+			PhysixSystem::toBox2D(getYCenterCoords(jumpComp->toY))),
+			0);
+	}
 	if (jumpingEntity.has_component<TransformComponent>())
 	{
 		auto trans = jumpingEntity.component<TransformComponent>();
@@ -373,7 +439,7 @@ void JumpSystem::activateCollisionForFlyingBodys(ComponentHandle<BodyComponent, 
 	}
 }
 
-void JumpSystem::removeRenderOffset(Entity jumping_entity, ComponentHandle<JumpComponent> jump_comp, ComponentHandle<BodyComponent> body)
+void JumpSystem::removeRenderOffset(Entity jumping_entity)
 {
 	if (jumping_entity.has_component<RenderOffsetComponent>())
 	{
