@@ -3,11 +3,13 @@
 #include "../Components/InputComponent.h"
 #include "../Utils/Math.h"
 #include "WalkingState.h"
+#include "../Components/InventoryComponent.h"
 
 void IdleState::update(Animator* animator, entityx::Entity& entity, float deltaTime)
 {
 	auto directionComponent = entity.component<DirectionComponent>();
 	auto inputComponent = entity.component<InputComponent>();
+	auto inventoryComponent = entity.component<InventoryComponent>();
 
 	if (inputComponent)
 	{
@@ -25,16 +27,36 @@ void IdleState::update(Animator* animator, entityx::Entity& entity, float deltaT
 	switch (directionComponent->direction)
 	{
 	case Direction::UP:
-		animator->updateAnimation(AnimationType::IDLE_UP, entity);
+		if (!inventoryComponent->isHoldingBomb){
+			animator->updateAnimation(AnimationType::IDLE_UP, entity);
+		} else
+		{
+			animator->updateAnimation(AnimationType::IDLE_UP_BOMB, entity);
+		}
 		break;
 	case Direction::DOWN:
-		animator->updateAnimation(AnimationType::IDLE_DOWN, entity);
+		if (!inventoryComponent->isHoldingBomb){
+			animator->updateAnimation(AnimationType::IDLE_DOWN, entity);
+		}
+		else{
+			animator->updateAnimation(AnimationType::IDLE_DOWN_BOMB, entity);
+		}
 		break;
 	case Direction::LEFT:
-		animator->updateAnimation(AnimationType::IDLE_LEFT, entity);
+		if (!inventoryComponent->isHoldingBomb){
+			animator->updateAnimation(AnimationType::IDLE_LEFT, entity);
+		}
+		else{
+			animator->updateAnimation(AnimationType::IDLE_LEFT_BOMB, entity);
+		}
 		break;
 	case Direction::RIGHT:
-		animator->updateAnimation(AnimationType::IDLE_RIGHT, entity);
+		if (!inventoryComponent->isHoldingBomb){
+			animator->updateAnimation(AnimationType::IDLE_RIGHT, entity);
+		}
+		else{
+			animator->updateAnimation(AnimationType::IDLE_RIGHT_BOMB, entity);
+		}
 		break;
 	default: break;
 	}
