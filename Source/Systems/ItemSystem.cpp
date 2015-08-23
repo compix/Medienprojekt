@@ -70,6 +70,9 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 			case ItemType::PUNCH_SKILL:
 				inventory->put(SkillType::PUNCH);
 				break;
+			case ItemType::BLINK_SKILL:
+				inventory->put(SkillType::BLINK);
+				break;
 			case ItemType::HOLD_BOMB_SKILL:
 				if (inventory->canHold == false)
 					inventory->canHold = true;

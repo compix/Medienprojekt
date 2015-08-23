@@ -49,6 +49,7 @@ struct DefaultConfig : LevelConfig
 		itemSpawnProperty(ItemType::PORTAL_SKILL,		 uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::PUNCH_SKILL,		 uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::SPEED_MULTIPLICATOR, uint16_t(itemCount), uint16_t(itemCount));
+		itemSpawnProperty(ItemType::BLINK_SKILL,		 uint16_t(itemCount), uint16_t(itemCount));
 	}
 };
 
