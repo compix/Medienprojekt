@@ -22,6 +22,7 @@ namespace GameConstants
 	extern const bool INIT_ANTI_MAGNET;			// Ob gekickte Bomben von Beginn an von Spielern abprallen.
 	extern const bool INIT_PUNCH_SKILL;		//Ob Spieler zu beginn Bomben schlagen können.
 	extern const int PUNCH_DISTANCE;
+	extern const float BLINK_SPEED;
 
 	//Relating to Punch/Jumping
 	extern const float EARTH_GRAVITY;

@@ -70,6 +70,9 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 			case ItemType::PUNCH_SKILL:
 				inventory->put(SkillType::PUNCH);
 				break;
+			case ItemType::BLINK_SKILL:
+				inventory->put(SkillType::BLINK);
+				break;
 			case ItemType::HOLD_BOMB_SKILL:
 				if (inventory->canHold == false)
 					inventory->canHold = true;
@@ -98,6 +101,10 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& e)
 		float spawnChance = 100.f / 6.f; //Divisor ist die gesamte Anzahl an Items
 
 		if (Random::getInt(1, 100) <= spawnChance) // 20% Chance to spawn an item
+		{
+			GameGlobals::entityFactory->createItem(cell->x, cell->y, ItemType::BLINK_SKILL);
+		}
+		else if (Random::getInt(1, 100) <= spawnChance) // 20% Chance to spawn an item
 		{
 			// TODO: Create random items taking rarity and minimum spawn number into consideration, 
 			// assigning ItemComponents with blocks during Level creation might be a good idea

@@ -47,6 +47,7 @@
 #include "Events/ResetGameEvent.h"
 #include "Systems/JumpSystem.h"
 #include "Systems/HoldingSystem.h"
+#include "Systems/BlinkSystem.h"
 
 
 Game::Game()
@@ -186,6 +187,7 @@ void LocalGame::addSystems()
 	addSystem<HoldingSystem>();
 	addSystem<DestructionSystem>();
 	addSystem<ExplosionSystem>(m_layerManager.get());
+	addSystem<BlinkSystem>(m_layerManager.get());
 	addSystem<PortalSystem>(m_layerManager.get());
 	addSystem<JumpSystem>(m_layerManager.get());
 	addSystem<BombKickSystem>(m_layerManager.get());

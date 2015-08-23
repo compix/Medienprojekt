@@ -15,6 +15,7 @@
 #include "../Events/PunchEvent.h"
 #include "../Events/HoldingEvent.h"
 #include "../Events/ThrowBombEvent.h"
+#include "../Components/BlinkComponent.h"
 
 InputHandleSystem::InputHandleSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -56,11 +57,15 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 				GameGlobals::events->emit<CreatePortalEvent>(entity);
 			if (canPunch(entity))
 				GameGlobals::events->emit<PunchEvent>(entity, GameConstants::PUNCH_DISTANCE);
+			if (canBlink(entity))
+				if (!entity.has_component<BlinkComponent>()){
+					entity.assign<BlinkComponent>();
+				}
 			input->skillButtonPressed = false;
 		}
 
 		auto body = entity.component<BodyComponent>();
-		if (body)
+		if (body && !entity.has_component<BlinkComponent>())
 			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
 	}
 }
@@ -81,4 +86,12 @@ bool InputHandleSystem::canPunch(entityx::Entity& entity)
 	auto cell = entity.component<CellComponent>();
 	assert(inventory && cell);
 	return inventory->isActive(SkillType::PUNCH);
+}
+
+bool InputHandleSystem::canBlink(entityx::Entity& entity)
+{
+	auto inventory = entity.component<InventoryComponent>();
+	auto cell = entity.component<CellComponent>();
+	assert(inventory && cell);
+	return inventory->isActive(SkillType::BLINK);
 }

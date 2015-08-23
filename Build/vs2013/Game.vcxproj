@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\Source\BodyFactory.h" />
     <ClInclude Include="..\..\Source\Components\AIComponent.h" />
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h" />
+    <ClInclude Include="..\..\Source\Components\BlinkComponent.h" />
     <ClInclude Include="..\..\Source\Components\BlockComponent.h" />
     <ClInclude Include="..\..\Source\Components\BodyComponent.h" />
     <ClInclude Include="..\..\Source\Components\BombComponent.h" />
@@ -237,6 +238,7 @@
     <ClInclude Include="..\..\Source\SFMLDebugDraw.h" />
     <ClInclude Include="..\..\Source\Systems\AISystem.h" />
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\BlinkSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BodySystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombKickSystem.h" />
     <ClInclude Include="..\..\Source\Systems\BombSystem.h" />
@@ -341,6 +343,7 @@
     <ClCompile Include="..\..\Source\SFMLDebugDraw.cpp" />
     <ClCompile Include="..\..\Source\Systems\AISystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\BlinkSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombKickSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\BombSystem.cpp" />

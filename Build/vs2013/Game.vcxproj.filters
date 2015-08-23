@@ -172,6 +172,9 @@
     <ClInclude Include="..\..\Source\Components\AnimationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\BlinkComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\BlockComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -467,6 +470,9 @@
     <ClInclude Include="..\..\Source\Systems\AnimationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\BlinkSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\BodySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -753,6 +759,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\AnimationSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\BlinkSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\BodySystem.cpp">

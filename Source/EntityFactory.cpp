@@ -566,6 +566,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	case ItemType::HOLD_BOMB_SKILL:
 		entity.assign<SpriteComponent>(createSprite("holding_skill"));
 		break;
+	case ItemType::BLINK_SKILL:
+		entity.assign<SpriteComponent>(createSprite("blink_skill"));
+		break;
 	default: break;
 	}
 

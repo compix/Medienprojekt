@@ -21,6 +21,7 @@ namespace GameConstants
 	extern const bool INIT_ANTI_MAGNET = false;
 	extern const bool INIT_PUNCH_SKILL = true;		//Ob Spieler zu beginn Bomben schlagen können.
 	extern const int PUNCH_DISTANCE = 2;
+	extern const float BLINK_SPEED = 20.f;
 
 	//Relating to Punch/Jumping
 	extern const float EARTH_GRAVITY = 9.81f;
