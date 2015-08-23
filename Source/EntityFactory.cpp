@@ -231,6 +231,16 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 
+
+	uint16 filter = 0;
+	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, cellX, cellY);
+	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
+	{
+			if (it->has_component<PlayerComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
+				it->has_component<BodyComponent>();
+				filter = filter | ~it->component<BodyComponent>()->body->GetFixtureList()->GetFilterData().categoryBits;
+			}
+	}
 	//Physix
 	if (!m_isClient)
 	{
@@ -244,7 +254,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 			GameConstants::CELL_HEIGHT* 0.5f,
 			b2_kinematicBody,
 			BodyFactory::BOMB,
-			~fixture->GetFilterData().categoryBits);
+			filter);
 
 		bodyComponent.body->SetFixedRotation(true);
 		/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */

@@ -74,7 +74,7 @@ void ContactListener::createCollisionToBomb(b2Body* sensor, b2Body* notSensor)
 	while (fixture != nullptr)
 	{
 		auto filter = fixture->GetFilterData();
-		filter.maskBits = ~BodyFactory::NOTHING;
+		filter.maskBits = filter.maskBits | notSensor->GetFixtureList()->GetFilterData().categoryBits;
 		fixture->SetFilterData(filter);
 		fixture = fixture->GetNext();
 	}
