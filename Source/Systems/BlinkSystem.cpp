@@ -118,10 +118,15 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 				break;
 			default: break;
 			}
-			if (entity.has_component<SpriteComponent>())
+
+			this->afterImageCounter += dt;
+			if (entity.has_component<SpriteComponent>() && this->afterImageCounter >= 0.03)
 			{
+				this->afterImageCounter = 0;
 				GameGlobals::entityFactory->createAfterimage(cell->x, cell->y, transform->x, transform->y, entity.component<SpriteComponent>()->sprite, 1.f);
 			}
+
+
 			
 		}
 	}

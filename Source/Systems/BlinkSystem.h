@@ -14,5 +14,6 @@ public:
 	void update(EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 private:
 	LayerManager* m_layerManager;
+	double afterImageCounter = 0.01;
 
 };
