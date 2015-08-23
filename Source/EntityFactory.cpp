@@ -234,14 +234,16 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 
 	uint16 filter = 0;
-	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, cellX, cellY);
-	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
+	auto entitiesOnTarget = m_layerManager->getEntitiesWithOneComponent<PlayerComponent, AIComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
+	for (auto e : entitiesOnTarget)
 	{
-			if (it->has_component<PlayerComponent>() || it->has_component<AIComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
-				it->has_component<BodyComponent>();
-				filter = filter | ~it->component<BodyComponent>()->body->GetFixtureList()->GetFilterData().categoryBits;
-			}
+		if (e.has_component<BodyComponent>()){
+			filter |= e.component<BodyComponent>()->body->GetFixtureList()->GetFilterData().categoryBits;
+		}
 	}
+
+	filter = ~filter;
+
 	//Physix
 	if (!m_isClient)
 	{
@@ -568,6 +570,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<ItemComponent>(type);
 	entity.assign<HealthComponent>(1);
+	entity.assign<DynamicComponent>();
 
 	switch (type)
 	{

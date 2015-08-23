@@ -55,11 +55,9 @@ void ContactListener::EndContact(b2Contact* contact)
 			sensor = fixtureA->GetBody();
 			notSensor = fixtureB->GetBody();
 	}
-		Entity entityNotSensor = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(notSensor->GetUserData())));
-		Entity entitySensor = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(sensor->GetUserData())));
 
 		if (BodyFactory::contactBetween(contact,BodyFactory::BOMB_RADAR,BodyFactory::PLAYER)){
-			if (entitySensor.component<OwnerComponent>()->entity.id() == entityNotSensor.id() && BodyFactory::isA(sensor->GetFixtureList()->GetNext(), BodyFactory::BOMB)){
+			if (BodyFactory::isA(sensor->GetFixtureList()->GetNext(), BodyFactory::BOMB)){
 				createCollisionToBomb(sensor, notSensor);
 			}
 		}
@@ -92,7 +90,7 @@ void ContactListener::createCollisionToBomb(b2Body* sensor, b2Body* notSensor)
 	while (fixture != nullptr)
 	{
 		auto filter = fixture->GetFilterData();
-		filter.maskBits = filter.maskBits | filterForMask;
+		filter.maskBits |= filterForMask;
 		fixture->SetFilterData(filter);
 		fixture = fixture->GetNext();
 	}

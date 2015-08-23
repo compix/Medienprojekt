@@ -69,7 +69,9 @@ public:
 
 	void remove(SkillType skillType)
 	{
-		assert(skillType != SkillType::NONE);
+		if(skillType == SkillType::NONE) 
+			return;
+
 		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
 		{
 			if (it->type == skillType)
@@ -78,19 +80,6 @@ public:
 				break;
 			}
 		}
-	}
-
-	SkillType getRandom(){
-		unsigned long k;
-		auto begin = m_skills.begin();
-		auto end = m_skills.end();
-		do {
-			const unsigned long n = std::distance(begin, end);
-			const unsigned long divisor = (RAND_MAX + 1) / n;
-			do { k = std::rand() / divisor; } while (k >= n);
-			std::advance(begin, k);
-		} while (begin->type != SkillType::NONE);
-		return begin->type;
 	}
 
 	// Skill set is never empty. If the entity has no skills then SkillType::NONE is returned.
@@ -134,5 +123,4 @@ struct InventoryComponent
 	inline SkillType activeSkill() { return activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
 	inline void removeSkill(SkillType type) { activeSkills.remove(type); }
-	inline SkillType getRandomSkill(){ return activeSkills.getRandom(); };
 };

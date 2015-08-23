@@ -87,7 +87,6 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				int x = 0, y = 0;
 				int jumpDistance = 1;
 				adjustXY_RelatingToTheDirection(&x, &y, jumpDistance, lastDirection);
-				
 
 				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, GameConstants::BLOCKED_CELL_JUMPING_HEIGHT, GameConstants::BLOCKED_CELL_JUMPING_SPEED);
 				jumpingEntity.component<JumpComponent>()->wasBlocked = true;
@@ -111,29 +110,30 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 						item = GameGlobals::entityFactory->createItem(cellComp->x, cellComp->y, ItemType::BLINK_SKILL);
 						break;
 					}
+					if (item){
+						item.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
+						uint8_t direction = (rand() % 4);
 
-					item.component<LayerComponent>()->layer = GameConstants::JUMP_LAYER;
-					uint8_t direction = (rand() % 3);
+						int x = 0, y = 0;
+						switch (static_cast<Direction>(direction))
+						{
+						case Direction::UP:
+							y = -5;
+							break;
+						case Direction::DOWN:
+							y = 5;
+							break;
+						case Direction::LEFT:
+							x = -5;
+							break;
+						case Direction::RIGHT:
+							x = 5;
+							break;
+						default: break;
+						}
 
-					int x = 0, y = 0;
-					switch (static_cast<Direction>(direction))
-					{
-					case Direction::UP: 
-						y = -5;
-						break;
-					case Direction::DOWN: 
-						y = 5;
-						break;
-					case Direction::LEFT: 
-						x = -5;
-						break;
-					case Direction::RIGHT: 
-						x = 5;
-						break;
-					default: break;
+						item.assign<JumpComponent>(static_cast<Direction>(direction), cellComp->x, cellComp->y, cellComp->x + ((rand() % 6) - 5), cellComp->y + ((rand() % 6) - 5), 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
 					}
-
-					item.assign<JumpComponent>(static_cast<Direction>(direction), cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
 				}
 
 				auto roc = jumpingEntity.component<RenderOffsetComponent>();
