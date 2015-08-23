@@ -44,6 +44,7 @@
 #include "Components/PlayerComponent.h"
 #include "Components/ColorComponent.h"
 #include "Components/PortalMarkerComponent.h"
+#include "Components/AfterimageComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -330,6 +331,23 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner, b
 	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
 	m_layerManager->add(entity);
 	
+	return entity;
+}
+
+Entity EntityFactory::createAfterimage(int cellX, int cellY, float posX, float posY, sf::Sprite sprite, float time)
+{
+	Entity entity = GameGlobals::entities->create();
+	TransformComponent transformComponent;
+	transformComponent.x = posX;
+	transformComponent.y = posY;
+
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<SpriteComponent>(sprite);
+	entity.assign<TimerComponent>(time);
+	entity.assign<AfterimageComponent>(time);
+	m_layerManager->add(entity);
 	return entity;
 }
 

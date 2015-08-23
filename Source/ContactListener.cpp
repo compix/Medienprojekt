@@ -11,7 +11,24 @@
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
-	
+	b2Fixture* fixtureA = contact->GetFixtureA();
+	b2Fixture* fixtureB = contact->GetFixtureB();
+	Entity entityA = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(fixtureA->GetBody()->GetUserData())));
+	Entity entityB = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(fixtureB->GetBody()->GetUserData())));
+	Entity withBlink;
+
+	if (entityA.has_component<BlinkComponent>())
+	{
+		withBlink = entityA;
+	}
+	if (entityB.has_component<BlinkComponent>())
+	{
+		withBlink = entityB;
+	}
+
+	if (withBlink){
+		withBlink.component<BodyComponent>()->body->SetLinearVelocity(b2Vec2_zero);
+	}
 }
 
 void ContactListener::EndContact(b2Contact* contact)

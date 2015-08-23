@@ -6,8 +6,10 @@
 #include "../Components/BlinkComponent.h"
 #include "../Components/LayerComponent.h"
 #include "../Components/InputComponent.h"
-#include "../BodyFactory.h"
+#include "../EntityFactory.h"
 #include "../PhysixSystem.h"
+#include "../GameGlobals.h"
+#include "../Components/SpriteComponent.h"
 
 
 BlinkSystem::BlinkSystem(LayerManager* layerManager)
@@ -30,6 +32,7 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 	{
 		auto inventory = entity.component<InventoryComponent>();
 		auto body = entity.component<BodyComponent>();
+		auto transform = entity.component<TransformComponent>();
 		auto cell = entity.component<CellComponent>();
 		auto direction = entity.component<DirectionComponent>();
 		auto layerComponent = entity.component<LayerComponent>();
@@ -75,13 +78,16 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 			}
 			body->body->SetBullet(false);
 			body->body->SetType(b2_dynamicBody);
-		//	body->body->SetLinearVelocity(b2Vec2_zero);
+			body->body->SetLinearVelocity(b2Vec2_zero);
 			entity.remove<BlinkComponent>();
 			if (!entity.has_component<InputComponent>())
 			{
 				entity.assign<InputComponent>();
 			}
-		} else
+
+			body->body->SetTransform(b2Vec2(PhysixSystem::toBox2D((cell->x)*GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f), PhysixSystem::toBox2D((cell->y)*GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f)), true);
+		}
+		else
 		{
 			if (entity.has_component<InputComponent>())
 			{
@@ -89,7 +95,7 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 			}
 
 			float power = GameConstants::BLINK_SPEED;
-			body->body->SetType(b2_kinematicBody);
+			body->body->SetType(b2_dynamicBody);
 			body->body->SetBullet(true);
 			b2Vec2 choosenPower = b2Vec2_zero;
 			switch (direction->direction)
@@ -112,6 +118,11 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 				break;
 			default: break;
 			}
+			if (entity.has_component<SpriteComponent>())
+			{
+				GameGlobals::entityFactory->createAfterimage(cell->x, cell->y, transform->x, transform->y, entity.component<SpriteComponent>()->sprite, 1.f);
+			}
+			
 		}
 	}
 }
