@@ -11,6 +11,8 @@
 #include "../Components/SpriteComponent.h"
 #include "../PhysixSystem.h"
 #include "../Components/JumpComponent.h"
+#include "../GameGlobals.h"
+#include "../EntityFactory.h"
 
 
 BombKickSystem::BombKickSystem(LayerManager* layerManager)
@@ -129,11 +131,11 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 
 	if (canKick)
 	{
-		Entity* entity = static_cast<Entity*>(notSensor->GetUserData());
+		Entity entity = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(notSensor->GetUserData())));
 
-		if (entity != nullptr)
+		if (entity)
 		{
-			if (entity->has_component<InventoryComponent>())
+			if (entity.has_component<InventoryComponent>())
 			{
 				b2Vec2 force(0.f, 0.f);
 				float forcePower = GameConstants::KICK_FORCE;
@@ -145,7 +147,7 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 				case Direction::RIGHT:	force.x = forcePower;	break;
 				default: break;
 				}
-				if (entity->component<InventoryComponent>()->bombKick && entity->component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
+				if (entity.component<InventoryComponent>()->bombKick && entity.component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
 				{
 					sensor->SetLinearVelocity(force);
 				}

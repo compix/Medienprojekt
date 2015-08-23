@@ -8,7 +8,8 @@ enum class SkillType
 {
 	NONE,
 	PLACE_PORTAL,
-	PUNCH
+	PUNCH,
+	BLINK
 };
 
 /**
@@ -29,6 +30,9 @@ struct Skill
 			priority = 10;
 			break;
 		case SkillType::PUNCH:
+			priority = 10;
+			break;
+		case SkillType::BLINK:
 			priority = 10;
 			break;
 		default:

@@ -14,7 +14,7 @@ BodyFactory::~BodyFactory()
 {
 }
 
-b2Body* BodyFactory::CreateBox(Entity* entity, float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
+b2Body* BodyFactory::CreateBox(Entity entity, float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
 {
 
 	b2PolygonShape shape;
@@ -24,11 +24,12 @@ b2Body* BodyFactory::CreateBox(Entity* entity, float posX, float posY, float wid
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type), 
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	body->SetUserData(entity);
+	int userData = entity.id().id();
+	body->SetUserData(reinterpret_cast<void*>(userData));
 	return body;
 }
 
-b2Body* BodyFactory::CreateCircle(Entity* entity, float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
+b2Body* BodyFactory::CreateCircle(Entity entity, float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor)
 {
 	b2CircleShape shape;
 	CreateCircleShape(&shape,radius);
@@ -37,7 +38,9 @@ b2Body* BodyFactory::CreateCircle(Entity* entity, float posX, float posY, float 
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type),
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	body->SetUserData(entity);
+	int userData = entity.id().id();
+	body->SetUserData(reinterpret_cast<void*>(userData));
+	body->GetUserData();
 	return body;
 }
 

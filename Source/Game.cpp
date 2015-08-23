@@ -47,6 +47,8 @@
 #include "Events/ResetGameEvent.h"
 #include "Systems/JumpSystem.h"
 #include "Systems/HoldingSystem.h"
+#include "Systems/BlinkSystem.h"
+#include "Systems/AfterimageSystem.h"
 
 
 Game::Game()
@@ -76,7 +78,7 @@ void Game::init(uint8_t width, uint8_t height)
 
 	/*Setup PhysixSystem*/
 	if (!isClient()) {
-		m_PhysixSystem = new PhysixSystem(6, 3, GameConstants::S_SCALE);
+		m_PhysixSystem = new PhysixSystem(8, 8, GameConstants::S_SCALE);
 		m_PhysixSystem->setContactListener(&listener);
 		m_PhysixSystem->SetDebugDrawer(&m_debugDraw);
 		BodyFactory::m_World = m_PhysixSystem->GetWorld();
@@ -186,9 +188,11 @@ void LocalGame::addSystems()
 	addSystem<HoldingSystem>();
 	addSystem<DestructionSystem>();
 	addSystem<ExplosionSystem>(m_layerManager.get());
+	addSystem<BlinkSystem>(m_layerManager.get());
 	addSystem<PortalSystem>(m_layerManager.get());
 	addSystem<JumpSystem>(m_layerManager.get());
 	addSystem<BombKickSystem>(m_layerManager.get());
+	addSystem<AfterimageSystem>();
 	addSystem<HealthSystem>();
 	addSystem<DeathSystem>();
 	addSystem<InputSystem>();

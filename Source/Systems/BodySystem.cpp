@@ -40,7 +40,7 @@ void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
 		body->GetWorld()->DestroyBody(body);
 	}
 
-	GameGlobals::entityFactory->destroyEntity(entity);
+	//GameGlobals::entityFactory->destroyEntity(entity);
 }
 
 void BodySystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)

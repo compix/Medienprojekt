@@ -29,6 +29,7 @@ public:
 
 	Entity createBomb(uint8_t cellX, uint8_t cellY, Entity owner);
 	Entity createPortal(uint8_t cellX, uint8_t cellY, Entity owner, bool linked);
+	Entity createAfterimage(int cellX, int cellY, float posX, float posY, sf::Sprite sprite, float time);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
 	void createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, entityx::Entity::Id portalId);
 
@@ -40,8 +41,6 @@ public:
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
 
-	Entity* createEntity();
-	void	destroyEntity(Entity entity);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:
@@ -49,6 +48,5 @@ private:
 	LayerManager* m_layerManager;
 	ShaderManager* m_shaderManager;
 	entityx::SystemManager* m_systemManager;
-	std::map<Entity::Id, Entity> m_entityMap;
 };
 
