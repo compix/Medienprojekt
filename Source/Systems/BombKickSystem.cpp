@@ -12,7 +12,6 @@
 #include "../PhysixSystem.h"
 #include "../Components/JumpComponent.h"
 #include "../GameGlobals.h"
-#include "../EntityFactory.h"
 
 
 BombKickSystem::BombKickSystem(LayerManager* layerManager)
@@ -27,7 +26,6 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 
 		auto cellComponent = player.component<CellComponent>();
 		auto layerComponent = player.component<LayerComponent>();
-		auto inputComponent = player.component<InputComponent>();
 
 
 		auto leftBombEntity = m_layerManager->getEntityWithComponent<BombComponent>(layerComponent->layer, cellComponent->x-1, cellComponent->y);
@@ -39,7 +37,6 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		checkCollisionWithBomb(downBombEntity,	Direction::DOWN);
 		checkCollisionWithBomb(rightBombEntity, Direction::RIGHT);
 		checkCollisionWithBomb(upBombEntity,	Direction::UP);
-		
 	}
 
 	//Check to stop kicked Bombs or interact with the AntiMagnet
