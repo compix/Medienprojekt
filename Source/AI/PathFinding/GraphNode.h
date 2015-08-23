@@ -5,20 +5,11 @@ struct GraphNode;
 
 struct BombProperties
 {
-	BombProperties(uint8_t explosionRange) : explosionSimulated(false), explosionRange(explosionRange),
-		numOfBlocksAffectedByExplosion(0), numOfPlayersAffectedByExplosion(0), numOfItemsAffectedByExplosion(0) {}
+	BombProperties(uint8_t explosionRange) : explosionSimulated(false), explosionRange(explosionRange) {}
 	BombProperties() : BombProperties(explosionRange) {}
 
 	bool explosionSimulated;
 	uint8_t explosionRange;
-
-	// If there is a bomb on that node, how many destructible blocks will the explosion hit?
-	uint8_t numOfBlocksAffectedByExplosion;
-
-	// If there is a bomb on that node, how many players will the explosion hit?
-	uint8_t numOfPlayersAffectedByExplosion;
-
-	uint8_t numOfItemsAffectedByExplosion;
 
 	float explosionTime;
 };

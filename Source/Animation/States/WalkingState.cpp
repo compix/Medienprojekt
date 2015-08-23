@@ -33,12 +33,10 @@ void WalkingState::update(Animator* animator, entityx::Entity& entity, float del
 			animator->updateAnimation(AnimationType::WALK_UP_BOMB, entity);
 		break;
 	case Direction::DOWN:
-		if (!inventoryComponent->isHoldingBomb){
+		if (!inventoryComponent->isHoldingBomb)
 			animator->updateAnimation(AnimationType::WALK_DOWN, entity);
-		}else
-		{
+		else
 			animator->updateAnimation(AnimationType::WALK_DOWN_BOMB, entity);
-		}
 		break;
 	case Direction::LEFT:
 		if (!inventoryComponent->isHoldingBomb)

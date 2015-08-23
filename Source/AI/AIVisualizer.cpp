@@ -398,6 +398,9 @@ void AIVisualizer::visualizeAction(ActionType actionType, entityx::Entity& entit
 	case ActionType::PLACE_PORTAL:
 		m_text.setString("Placing portal.");
 		break;
+	case ActionType::ATTACK_ENEMY:
+		m_text.setString("Attacking enemy.");
+		break;
 	default:
 		m_text.setString("No idea what I'm doing.");
 		break;

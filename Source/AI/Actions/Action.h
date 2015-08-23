@@ -5,10 +5,11 @@
 #include "../Behaviors/FollowPath.h"
 #include <entityx/entityx.h>
 
-class IAction
+class BaseAction
 {
 public:
-	virtual ~IAction() {}
+	BaseAction() : m_numOfChecks(5) {}
+	virtual ~BaseAction() {}
 
 	virtual bool valid(entityx::Entity& entity) = 0;
 	virtual void update(entityx::Entity& entity, float deltaTime) = 0;
@@ -17,11 +18,15 @@ public:
 	virtual void resetRating() = 0;
 	virtual AIPath& path() = 0;
 	virtual void preparePath(entityx::Entity& entity) = 0;
+	virtual inline void setNumOfChecks(uint8_t num) { m_numOfChecks = num; };
+
+protected:
+	uint8_t m_numOfChecks;
 };
 
-typedef std::shared_ptr<IAction> ActionPtr;
+typedef std::shared_ptr<BaseAction> ActionPtr;
 
-class Action : public IAction
+class Action : public BaseAction
 {
 public:
 	Action();
@@ -39,7 +44,7 @@ public:
 	inline float getRating() override { return m_followPath.path().rating; }
 	inline void resetRating() override { m_followPath.path().resetRating(); }
 	inline AIPath& path() override { return m_followPath.path(); }
-
+	
 	/**
 	* Compute the best path with the given path rating and prepare it for update.
 	*/

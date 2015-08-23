@@ -1,7 +1,7 @@
 #pragma once
 #include <entityx/Entity.h>
 
-class UseSkill
+class PunchBomb
 {
 public:
 	void operator()(entityx::Entity& entity);

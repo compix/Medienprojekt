@@ -90,6 +90,9 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\PunchBomb.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
@@ -112,6 +115,9 @@
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateAttackEnemy.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
@@ -139,6 +145,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RatePortalSpot.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RatePunchBomb.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h">
@@ -640,6 +649,9 @@
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\PunchBomb.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
@@ -657,6 +669,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
       <Filter>AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp">
+      <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
       <Filter>AI\PathRatings</Filter>
@@ -683,6 +698,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RatePortalSpot.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RatePunchBomb.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp">

@@ -108,7 +108,7 @@ void Graph::update(float deltaTime)
 	}
 }
 
-void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction)
+void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, AffectedByExplosion* affectedEntities)
 {
 	auto currentNode = getNode(x, y);
 	setOnFire(x, y, explosionTime);
@@ -128,19 +128,30 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 			setOnFire(currentNode->x, currentNode->y, explosionTime);
 			if (currentNode->properties.hasItem)
 			{
-				m_nodeGrid[x][y].bombProperties.numOfItemsAffectedByExplosion++;
+				if (affectedEntities)
+					affectedEntities->numOfItems++;
 				break; // Items stop explosions.
+			}
+
+			if (currentNode->properties.hasPlayer && affectedEntities)
+			{
+				std::vector<entityx::Entity> players = m_layerManager->getEntitiesWithComponents<InventoryComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
+				affectedEntities->players.insert(affectedEntities->players.end(), players.begin(), players.end());
 			}
 		}
 		else
 		{
 			if (currentNode->properties.hasBlock)
 			{
-				if (currentNode->properties.affectedByExplosion)
-					m_nodeGrid[x][y].bombProperties.numOfItemsAffectedByExplosion++;
+				// The block already affected by an explosion could potentially have an item. Another bomb could destroy this item
+				if (currentNode->properties.affectedByExplosion && affectedEntities)
+					affectedEntities->numOfItems++;
 
 				setOnFire(currentNode->x, currentNode->y, explosionTime);
-				m_nodeGrid[x][y].bombProperties.numOfBlocksAffectedByExplosion++;
+
+				if (affectedEntities)
+					affectedEntities->numOfBlocks++;
+
 				auto block = m_layerManager->getEntityWithComponent<BlockComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
 				if (block.valid())
 					m_blocksAffectedByExplosion.push_back(block);
@@ -154,7 +165,7 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 					// Simulate the explosion chain
 					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime);
 				}
-			}	
+			}
 
 			// Explosion was stopped so get outta here.
 			break;
@@ -177,19 +188,16 @@ void Graph::setOnFire(uint8_t x, uint8_t y, float explosionTime)
 	}
 }
 
-void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime)
+void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedEntities)
 {	
 	auto currentNode = getNode(x, y);
-	currentNode->bombProperties.numOfBlocksAffectedByExplosion = 0;
-	currentNode->bombProperties.numOfPlayersAffectedByExplosion = 0;
-	currentNode->bombProperties.numOfItemsAffectedByExplosion = 0;
 	currentNode->bombProperties.explosionRange = range;
 	currentNode->bombProperties.explosionSimulated = true;
 
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, explosionTime, direction);
+		explosionSpread(x, y, range, explosionTime, direction, affectedEntities);
 	}
 }
 

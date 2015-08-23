@@ -114,6 +114,9 @@ struct InventoryComponent
 	{
 		if (GameConstants::INIT_PORTAL_SKILL)
 			activeSkills.put(SkillType::PLACE_PORTAL);
+
+		if (GameConstants::INIT_PUNCH_SKILL)
+			activeSkills.put(SkillType::PUNCH);
 	}
 
 	int bombCount;

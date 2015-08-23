@@ -1,11 +1,9 @@
-#include "RateDestroyBlockSpot.h"
-#include "../../GameConstants.h"
-#include "RateSafety.h"
-#include "../PathFinding/PathEngine.h"
+#include "RateAttackEnemy.h"
 #include "../AIUtil.h"
+#include "RateSafety.h"
 #include "../../Components/InventoryComponent.h"
 
-bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
+bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
@@ -19,19 +17,19 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 
 		if (AIUtil::isSafePath(entity, path))
 		{
-			// Bomb should affect blocks but no items
+			// Bomb should affect enemies but no items
 			bool found = true;
 			float timePerCell = AIUtil::getTimePerCell(entity);
 			float bombExploTime = goal->properties.affectedByExplosion ? goal->properties.timeTillExplosion : GameConstants::EXPLOSION_TIME;
-			bool spotAffectedByExplosion = goal->properties.affectedByExplosion;		
+			bool spotAffectedByExplosion = goal->properties.affectedByExplosion;
 
 			AffectedByExplosion affectedEntities;
 			pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, bombExploTime, &affectedEntities);
-			
-			bool blocksAffected = affectedEntities.numOfBlocks > 0;
+
+			bool enemiesAffected = affectedEntities.isEnemyAffected(entity);
 			bool itemsAffected = affectedEntities.numOfItems > 0;
 
-			if (!blocksAffected || itemsAffected)
+			if (!enemiesAffected || itemsAffected)
 				found = false;
 
 			if (found)
@@ -57,7 +55,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 			}
 
 			if (found)
-				path.rating = affectedEntities.numOfBlocks - timePerCell * path.nodes.size();
+				path.rating = 5.f - timePerCell * path.nodes.size();
 
 			// Reset to the old state
 			pathEngine->getSimGraph()->resetSimulation();
