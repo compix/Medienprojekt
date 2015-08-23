@@ -59,7 +59,7 @@ void ContactListener::EndContact(b2Contact* contact)
 		Entity entitySensor = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(sensor->GetUserData())));
 
 		if (BodyFactory::contactBetween(contact,BodyFactory::BOMB_RADAR,BodyFactory::PLAYER)){
-			if (entitySensor.component<OwnerComponent>()->entity.id() == entityNotSensor.id() && sensor->GetFixtureList()->GetNext()->GetFilterData().categoryBits == BodyFactory::BOMB){
+			if (entitySensor.component<OwnerComponent>()->entity.id() == entityNotSensor.id() && BodyFactory::isA(sensor->GetFixtureList()->GetNext(), BodyFactory::BOMB)){
 				createCollisionToBomb(sensor, notSensor);
 			}
 		}
@@ -71,10 +71,28 @@ void ContactListener::EndContact(b2Contact* contact)
 void ContactListener::createCollisionToBomb(b2Body* sensor, b2Body* notSensor)
 {
 	auto fixture = sensor->GetFixtureList();
+	uint16 filterForMask = 0;
+	if (BodyFactory::isA(notSensor->GetFixtureList(), BodyFactory::PLAYER_1))
+	{
+		filterForMask = BodyFactory::PLAYER_1;
+	} else
+	if (BodyFactory::isA(notSensor->GetFixtureList(), BodyFactory::PLAYER_2))
+	{
+		filterForMask = BodyFactory::PLAYER_2;
+	} else
+	if (BodyFactory::isA(notSensor->GetFixtureList(), BodyFactory::PLAYER_3))
+	{
+		filterForMask = BodyFactory::PLAYER_3;
+	}else
+	if (BodyFactory::isA(notSensor->GetFixtureList(), BodyFactory::PLAYER_4))
+	{
+		filterForMask = BodyFactory::PLAYER_4;
+	}
+
 	while (fixture != nullptr)
 	{
 		auto filter = fixture->GetFilterData();
-		filter.maskBits = filter.maskBits | notSensor->GetFixtureList()->GetFilterData().categoryBits;
+		filter.maskBits = filter.maskBits | filterForMask;
 		fixture->SetFilterData(filter);
 		fixture = fixture->GetNext();
 	}

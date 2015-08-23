@@ -45,6 +45,7 @@
 #include "Components/ColorComponent.h"
 #include "Components/PortalMarkerComponent.h"
 #include "Components/AfterimageComponent.h"
+#include "Components/AIComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -236,7 +237,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, cellX, cellY);
 	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
 	{
-			if (it->has_component<PlayerComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
+			if (it->has_component<PlayerComponent>() || it->has_component<AIComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
 				it->has_component<BodyComponent>();
 				filter = filter | ~it->component<BodyComponent>()->body->GetFixtureList()->GetFilterData().categoryBits;
 			}
