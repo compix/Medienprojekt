@@ -69,7 +69,9 @@ public:
 
 	void remove(SkillType skillType)
 	{
-		assert(skillType != SkillType::NONE);
+		if(skillType == SkillType::NONE) 
+			return;
+
 		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
 		{
 			if (it->type == skillType)
@@ -82,6 +84,8 @@ public:
 
 	// Skill set is never empty. If the entity has no skills then SkillType::NONE is returned.
 	inline const Skill& top() { return *m_skills.begin(); }
+
+	
 
 private:
 	std::vector<Skill> m_skills;

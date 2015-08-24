@@ -46,6 +46,7 @@
 #include "Components/PortalMarkerComponent.h"
 #include "Components/AfterimageComponent.h"
 #include "Components/ExplosionStopComponent.h"
+#include "Components/AIComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -231,6 +232,18 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 
+
+	uint16 filter = 0;
+	auto entitiesOnTarget = m_layerManager->getEntitiesWithOneComponent<PlayerComponent, AIComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
+	for (auto e : entitiesOnTarget)
+	{
+		if (e.has_component<BodyComponent>()){
+			filter |= e.component<BodyComponent>()->body->GetFixtureList()->GetFilterData().categoryBits;
+		}
+	}
+
+	filter = ~filter;
+
 	//Physix
 	if (!m_isClient)
 	{
@@ -244,7 +257,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 			GameConstants::CELL_HEIGHT* 0.5f,
 			b2_kinematicBody,
 			BodyFactory::BOMB,
-			~fixture->GetFilterData().categoryBits);
+			filter);
 
 		bodyComponent.body->SetFixedRotation(true);
 		/* Filter jonglieren, damit man nach einer Bombe mit dieser wieder Kollidiert */
@@ -558,6 +571,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	entity.assign<ItemComponent>(type);
 	entity.assign<HealthComponent>(1);
 	entity.assign<ExplosionStopComponent>();
+	entity.assign<DynamicComponent>();
 
 	switch (type)
 	{

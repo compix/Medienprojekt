@@ -20,8 +20,6 @@ class EntityFactory
 public:
 	EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager);
 
-	// TODO: Clean this up: remove code duplications. Need an easier way to create entities (with a builder).
-
 	Entity createPlayer(float x, float y, uint8_t playerIndex);
 
 	Entity createBlock(uint8_t cellX, uint8_t cellY);

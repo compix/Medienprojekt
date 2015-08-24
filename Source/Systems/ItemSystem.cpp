@@ -8,6 +8,7 @@
 #include "../Components/DestructionComponent.h"
 #include "../Events/ItemPickedUpEvent.h"
 #include "../Components/ItemSpawnerComponent.h"
+#include "../Components/JumpComponent.h"
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
@@ -38,7 +39,7 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 		auto itemComponent = item.component<ItemComponent>();
 
 		auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
-		if (entityWithInventory.valid())
+		if (entityWithInventory.valid() && !item.has_component<JumpComponent>())
 		{
 			auto inventory = entityWithInventory.component<InventoryComponent>();
 
