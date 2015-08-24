@@ -6,18 +6,18 @@ bool AnimationLoader::load(const string& key, const Json::Value& jsonValue)
 
 	for (auto it = jsonValue.begin(); it != jsonValue.end(); ++it)
 	{
-		auto key = it.key().asString();
-		if (key == "colCount")
+		auto jsKey = it.key().asString();
+		if (jsKey == "colCount")
 			animation.colCount = it->asUInt();
-		else if (key == "rowCount")
+		else if (jsKey == "rowCount")
 			animation.rowCount = it->asUInt();
-		else if (key == "frameCount")
+		else if (jsKey == "frameCount")
 			animation.frameCount = it->asUInt();
-		else if (key == "frameDuration")
+		else if (jsKey == "frameDuration")
 			animation.frameDuration = it->asFloat();
-		else if (key == "startFrame")
+		else if (jsKey == "startFrame")
 			animation.startFrame = it->asUInt();
-		else if (key == "playMode")
+		else if (jsKey == "playMode")
 		{
 			auto playMode = it->asString();
 			if (playMode == "NORMAL")

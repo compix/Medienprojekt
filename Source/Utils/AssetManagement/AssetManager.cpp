@@ -1,6 +1,7 @@
 #include "AssetManager.h"
 #include "../../Game.h"
 #include "../../Events/PreloadEvent.h"
+#include "../Random.h"
 
 AssetManager::AssetManager()
 {
@@ -8,6 +9,11 @@ AssetManager::AssetManager()
 	m_animationLoader.loadFromJson("Assets/json/animations.json");
 	m_soundLoader.loadFromJson("Assets/json/sound.json");
 	m_musicLoader.loadFromJson("Assets/json/music.json");
+	m_aiLoader.loadFromJson("Assets/json/AI.json");
+
+	for (auto& pair : m_aiLoader.getAssets())
+		m_aiPersonalities.push_back(pair.second);
+	std::shuffle(m_aiPersonalities.begin(), m_aiPersonalities.end(), Random::RNG());
 
 	m_loaders.push_back(&m_textureLoader);
 	m_loaders.push_back(&m_animationLoader);

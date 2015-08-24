@@ -18,7 +18,7 @@ struct AIPersonality
 
 	/**
 	* Desires partly determine AI actions to create "personality".
-	* Multiplicative path rating factors which can change over time by per seconds values of events.
+	* Multiplicative path rating factors which can change over time by per seconds values or events.
 	* Desire levels are in [0, FLT_MAX]
 	*
 	* Affinity is the base desire level for certain actions of an AI. 
@@ -35,7 +35,12 @@ struct AIPersonality
 		float placePortal;
 		float getItem;
 		float getSafe;
-	} affinity, desires;
+	} affinity, desires, changePerSecond;
 
-	SkillType favoriteSkillType;
+	std::vector<SkillType> favoriteSkills;
+	std::string name;
+
+	inline void addFavorite(SkillType skillType) { if(!hasFavorite(skillType)) favoriteSkills.push_back(skillType); }
+
+	bool hasFavorite(SkillType skillType);
 };

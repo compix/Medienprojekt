@@ -1,0 +1,101 @@
+{
+    "Alex": 
+	{
+        "affinity":
+		{
+			"destroyBlock": 0,
+			"wait": 1,
+			"attackEnemy": 5,
+			"placePortal": 1,
+			"getItem": 5,
+			"getSafe": 1
+		},
+		"desires":
+		{
+			"destroyBlock": 1,
+			"wait": 1,
+			"attackEnemy": 1,
+			"placePortal": 1,
+			"getItem": 1,
+			"getSafe": 1
+		},
+		"changePerSecond":
+		{
+			"destroyBlock": 0,
+			"wait": 0,
+			"attackEnemy": 0,
+			"placePortal": 0,
+			"getItem": 0,
+			"getSafe": 0
+		},
+		"favoriteSkill": ["PLACE_PORTAL", "PUNCH", "BLINK"]
+    },
+
+
+
+	    "John": 
+	{
+        "affinity":
+		{
+			"destroyBlock": 2,
+			"wait": 1,
+			"attackEnemy": 5,
+			"placePortal": 1,
+			"getItem": 5,
+			"getSafe": 1
+		},
+		"desires":
+		{
+			"destroyBlock": 1.5,
+			"wait": 2,
+			"attackEnemy": 0.5,
+			"placePortal": 1,
+			"getItem": 1,
+			"getSafe": 1
+		},
+		"changePerSecond":
+		{
+			"destroyBlock": 0,
+			"wait": 0,
+			"attackEnemy": 0,
+			"placePortal": 0,
+			"getItem": 0,
+			"getSafe": 0
+		},
+		"favoriteSkill": []
+    },
+
+
+
+	    "Kevin": 
+	{
+        "affinity":
+		{
+			"destroyBlock": 0,
+			"wait": 1,
+			"attackEnemy": 5,
+			"placePortal": 1,
+			"getItem": 5,
+			"getSafe": 0
+		},
+		"desires":
+		{
+			"destroyBlock": 1.5,
+			"wait": 1,
+			"attackEnemy": 3,
+			"placePortal": 1,
+			"getItem": 2,
+			"getSafe": 0.5
+		},
+		"changePerSecond":
+		{
+			"destroyBlock": 0,
+			"wait": 0,
+			"attackEnemy": 0,
+			"placePortal": 0,
+			"getItem": 0,
+			"getSafe": 0
+		},
+		"favoriteSkill": ["PUNCH"]
+    }
+}

@@ -53,9 +53,8 @@ public:
 	AssetLoader(const std::string name, const std::string basePath) : AssetLoaderBase(name, basePath) {}
 	typedef unordered_map<string, T> AssetMap;
 
-public:
 	virtual T& get(const string& name);
-
+	inline const AssetMap& getAssets() const { return m_assets; }
 protected:
 	AssetMap m_assets;
 };

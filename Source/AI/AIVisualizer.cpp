@@ -6,6 +6,7 @@
 #include "PathFinding/AIPath.h"
 #include "../Components/AIComponent.h"
 #include "PathFinding/NodePathInfo.h"
+#include <sstream>
 
 AIVisualizer::AIVisualizer()
 	:AIVisualizer(nullptr)
@@ -115,7 +116,7 @@ void AIVisualizer::visualize(float deltaTime)
 
 	if (m_visualizeActions)
 	{
-		for (auto entity : GameGlobals::entities->entities_with_components<AIComponent>())
+		for (auto entity : GameGlobals::entities->entities_with_components<AIComponent, TransformComponent>())
 		{
 			auto aiComponent = entity.component<AIComponent>();
 			if (aiComponent && aiComponent->currentAction)
@@ -423,38 +424,43 @@ void AIVisualizer::visualize(const AIPath& path)
 void AIVisualizer::visualizeAction(ActionType actionType, entityx::Entity& entity)
 {
 	auto transform = entity.component<TransformComponent>();
-	m_text.setPosition(transform->x - GameConstants::CELL_WIDTH * 0.5f, transform->y - GameConstants::CELL_HEIGHT);
+	auto aiComponent = entity.component<AIComponent>();
+
+	std::stringstream ss;
+	ss << aiComponent->personality.name << ": ";
 
 	switch (actionType)
 	{
 	case ActionType::DESTROY_BLOCK:
-		m_text.setString("Destroying block.");
+		ss << "Destroying block.";
 		break;
 	case ActionType::WAIT:
-		m_text.setString("Waiting for opportunities.");
+		ss << "Waiting for opportunities.";
 		break;
 	case ActionType::GET_ITEM:
-		m_text.setString("Getting item.");
+		ss << "Getting item.";
 		break;
 	case ActionType::GET_SAFE:
-		m_text.setString("Getting safe.");
+		ss << "Getting safe.";
 		break;
 	case ActionType::KICK_BOMB:
-		m_text.setString("Kicking bomb.");
+		ss << "Kicking bomb.";
 		break;
 	case ActionType::TRY_TO_SURVIVE:
-		m_text.setString("Trying to survive.");
+		ss << "Trying to survive.";
 		break;
 	case ActionType::PLACE_PORTAL:
-		m_text.setString("Placing portal.");
+		ss << "Placing portal.";
 		break;
 	case ActionType::ATTACK_ENEMY:
-		m_text.setString("Attacking enemy.");
+		ss << "Attacking enemy.";
 		break;
 	default:
-		m_text.setString("No idea what I'm doing.");
+		ss << "No idea what I'm doing.";
 		break;
 	}
 
+	m_text.setString(ss.str());
+	m_text.setPosition(transform->x - GameConstants::CELL_WIDTH * 0.5f - m_text.getLocalBounds().width * 0.5f, transform->y - GameConstants::CELL_HEIGHT);
 	GameGlobals::window->draw(m_text);
 }

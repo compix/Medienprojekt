@@ -635,6 +635,9 @@
     <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h">
       <Filter>AI\Personality</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -931,6 +934,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp">
       <Filter>AI\Personality</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AILoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

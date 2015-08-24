@@ -18,7 +18,6 @@ LevelGenerator::LevelGenerator(LevelConfig levelConfig)
 void LevelGenerator::generateRandomLevel()
 {
 	m_destructibleBlocks.clear();
-	Random::randomize();
 
 	// Rules because lots of if then else statements are ugly, hard to read and harder to change.
 	std::vector<Rule> rules;

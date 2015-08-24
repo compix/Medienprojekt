@@ -619,6 +619,26 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	return entity;
 }
 
+void EntityFactory::initAI(Entity& entity, uint8_t id)
+{
+	assert(entity && !entity.has_component<AIComponent>());
+	assert(entity.has_component<InventoryComponent>() && entity.has_component<InputComponent>());
+
+	entity.assign<AIComponent>(id);
+	auto aiComponent = entity.component<AIComponent>();
+
+	auto& personalities = GameGlobals::assetManager->getAIPersonalities();
+	assert(personalities.size() > 0);
+
+	if (id >= personalities.size())
+	{
+		cout << "EntityFactory AI-Init - WARNING: Not enough AI personalities. Taking first available." << endl;
+		id = 0;
+	}
+	
+	aiComponent->personality = personalities[id];
+}
+
 sf::Sprite EntityFactory::createSprite(const std::string& textureName)
 {
 	auto texture = GameGlobals::assetManager->getTexture(textureName);

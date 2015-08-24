@@ -19,6 +19,7 @@
 #include "Events/ForceDisconnectEvent.h"
 #include "Events/PreloadEvent.h"
 #include "Utils/Logging/Logger.h"
+#include "Utils/Random.h"
 
 using namespace std;
 
@@ -47,6 +48,7 @@ void changeToGameDir()
 
 int Main::run()
 {
+	Random::randomize();
 	changeToGameDir();
 
 	Logger::run();

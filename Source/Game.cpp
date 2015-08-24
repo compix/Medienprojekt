@@ -178,8 +178,8 @@ LocalGame::~LocalGame()
 void LocalGame::addSystems()
 {
 	addSystem<BodySystem>();
-	//addSystem<SoundSystem>();
-	//addSystem<MusicSystem>();
+	addSystem<SoundSystem>();
+	addSystem<MusicSystem>();
 	addSystem<InventorySystem>();
 	addSystem<ItemSystem>(m_layerManager.get());
 	addSystem<TimerSystem>();
@@ -226,6 +226,7 @@ void LocalGame::resetEntities()
 	levelGenerator.generateRandomLevel();
 
 	uint8_t i = 0;
+	uint8_t aiId = 0;
 	ComponentHandle<InputComponent> input;
 	for (Entity entity : GameGlobals::entities->entities_with_components(input))
 	{
@@ -236,7 +237,7 @@ void LocalGame::resetEntities()
 			switch (m_playerTypes[i])
 			{
 			case CreateGamePlayerType::LOCAL: entity.assign<LocalInputComponent>(i); break;
-			case CreateGamePlayerType::COMPUTER: entity.assign<AIComponent>(i); break;
+			case CreateGamePlayerType::COMPUTER: m_entityFactory->initAI(entity, aiId++); break;
 			case CreateGamePlayerType::CLIENT: entity.assign<FreeSlotComponent>(); break;
 			}
 			i++;

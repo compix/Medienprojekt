@@ -39,6 +39,7 @@ public:
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
 
+	void initAI(Entity& entity, uint8_t id);
 private:
 	sf::Sprite createSprite(const std::string& textureName);
 private:
