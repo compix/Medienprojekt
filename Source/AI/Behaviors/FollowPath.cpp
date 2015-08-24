@@ -19,10 +19,10 @@ FollowPath::FollowPath(const AIPath& path, LayerManager* layerManager)
 {
 }
 
-void FollowPath::operator()(entityx::Entity& entity)
+bool FollowPath::operator()(entityx::Entity& entity)
 {
 	if (m_path.nodes.size() == 0)
-		return;
+		return true;
 
 	assert(entity);
 
@@ -63,17 +63,10 @@ void FollowPath::operator()(entityx::Entity& entity)
 
 		// If there is a portal on the next cell then the above moveX, moveY calculation won't work
 		// The entity has to enter the portal to be teleported to the next cell:
-		auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, n2->x, n2->y);
-		if (portal)
+		if (n2->properties.otherPortal)
 		{
-			if (portal.component<PortalComponent>()->otherPortal.valid())
-			{
-				auto otherPortal = portal.component<PortalComponent>()->otherPortal;
-				auto portalCell = otherPortal.component<CellComponent>();
-				// Move into the portal
-				moveX = portalCell->x - n1->x;
-				moveY = portalCell->y - n1->y;
-			}
+			moveX = n2->properties.otherPortal->x - n1->x;
+			moveY = n2->properties.otherPortal->y - n1->y;
 		}
 
 		int collisionAvoidanceX = leftAvoidance * abs(moveY) + rightAvoidance * abs(moveY);
@@ -84,10 +77,14 @@ void FollowPath::operator()(entityx::Entity& entity)
 		inputComponent->moveY = static_cast<float>(moveY + collisionAvoidanceY);
 	}
 
+	bool inCenter = (abs(leftAvoidance) + abs(rightAvoidance) + abs(botAvoidance) + abs(topAvoidance)) == 0;
+
 	// Try to move to the center of the goal-cell
-	if (m_path.reachedGoal())
+	if (m_path.reachedGoal() && !inCenter)
 	{
 		inputComponent->moveX = static_cast<float>(leftAvoidance + rightAvoidance);
 		inputComponent->moveY = static_cast<float>(botAvoidance + topAvoidance);
 	}
+
+	return m_path.reachedGoal() && inCenter;
 }

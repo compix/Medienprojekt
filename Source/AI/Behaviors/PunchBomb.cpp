@@ -4,7 +4,7 @@
 #include "../../Components/DirectionComponent.h"
 #include "../../Components/CellComponent.h"
 
-void PunchBomb::operator()(entityx::Entity& entity)
+bool PunchBomb::operator()(entityx::Entity& entity)
 {
 	assert(entity.valid() && entity.has_component<InputComponent>());
 	assert(entity.has_component<AIComponent>() && entity.has_component<CellComponent>());
@@ -20,4 +20,6 @@ void PunchBomb::operator()(entityx::Entity& entity)
 		directionComponent->direction = CommonUtil::toDirection(abs(cell->x - node->x), abs(cell->y - node->y));
 		inputComponent->skillButtonPressed = true;
 	}
+
+	return true;
 }

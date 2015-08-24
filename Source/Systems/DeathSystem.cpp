@@ -33,17 +33,8 @@ void DeathSystem::receive(const DeathEvent& deathEvent)
 		return;
 
 	auto delayComponent = dyingEntity.component<DestructionDelayComponent>();
-
-	if (delayComponent)
-	{
-		if (!dyingEntity.has_component<DestructionComponent>())
-			dyingEntity.assign<DestructionComponent>(delayComponent->seconds);
-	}
-	else
-	{
-		if (!dyingEntity.has_component<DestructionComponent>())
-			dyingEntity.assign<DestructionComponent>();
-	}
+	if (!dyingEntity.has_component<DestructionComponent>())
+		dyingEntity.assign<DestructionComponent>(delayComponent ? delayComponent->seconds : 0.f);
 
 	if (!m_gameOver && dyingEntity.has_component<PlayerComponent>())
 	{

@@ -149,6 +149,7 @@
     <ClInclude Include="..\..\Source\Components\DynamicComponent.h" />
     <ClInclude Include="..\..\Source\Components\EffectComponent.h" />
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h" />
+    <ClInclude Include="..\..\Source\Components\ExplosionStopComponent.h" />
     <ClInclude Include="..\..\Source\Components\FloorComponent.h" />
     <ClInclude Include="..\..\Source\Components\FreeSlotComponent.h" />
     <ClInclude Include="..\..\Source\Components\HealthComponent.h" />

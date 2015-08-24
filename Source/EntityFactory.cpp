@@ -45,6 +45,7 @@
 #include "Components/ColorComponent.h"
 #include "Components/PortalMarkerComponent.h"
 #include "Components/AfterimageComponent.h"
+#include "Components/ExplosionStopComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -141,6 +142,7 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<DestructionDelayComponent>(1.f);
 
+	entity.assign<ExplosionStopComponent>();
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<HealthComponent>(1);
 
@@ -165,7 +167,6 @@ entityx::Entity EntityFactory::createBlock(uint8_t cellX, uint8_t cellY)
 	m_layerManager->add(entity);
 
 	return entity;
-
 }
 
 entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
@@ -180,9 +181,8 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 	sprite.setOrigin(GameConstants::CELL_WIDTH*0.5f, GameConstants::CELL_HEIGHT*0.5f);
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<SolidBlockComponent>();
-
+	entity.assign<ExplosionStopComponent>();
 	entity.assign<CellComponent>(cellX, cellY);
-
 
 	if (!m_isClient)
 	{
@@ -557,6 +557,7 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<ItemComponent>(type);
 	entity.assign<HealthComponent>(1);
+	entity.assign<ExplosionStopComponent>();
 
 	switch (type)
 	{

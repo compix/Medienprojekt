@@ -1,4 +1,5 @@
 #pragma once
 #include <../entityx/entityx/entityx.h>
 
-typedef std::function<void(entityx::Entity& entity)> Behavior;
+// Returns true when done
+typedef std::function<bool(entityx::Entity& entity)> Behavior;

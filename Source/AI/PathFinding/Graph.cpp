@@ -143,9 +143,15 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 		{
 			if (currentNode->properties.hasBlock)
 			{
-				// The block already affected by an explosion could potentially have an item. Another bomb could destroy this item
+				// A block already affected by an explosion could potentially have an item. Another bomb could destroy this item
 				if (currentNode->properties.affectedByExplosion && affectedEntities)
-					affectedEntities->numOfItems++;
+				{
+					if (abs(currentNode->properties.timeTillExplosion - explosionTime) >= 0.25f)
+						affectedEntities->numOfItems++;
+
+					if (currentNode->properties.timeTillExplosion <= explosionTime)
+						break;
+				}
 
 				setOnFire(currentNode->x, currentNode->y, explosionTime);
 
@@ -165,6 +171,8 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 					// Simulate the explosion chain
 					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime);
 				}
+
+				continue; // Bombs don't stop explosions
 			}
 
 			// Explosion was stopped so get outta here.

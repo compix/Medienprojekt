@@ -11,7 +11,7 @@ public:
 
 	inline void setPath(const AIPath& path) { m_path = path; }
 	inline AIPath& path() { return m_path; }
-	void operator()(entityx::Entity& entity);
+	bool operator()(entityx::Entity& entity);
 
 protected:
 	AIPath m_path;

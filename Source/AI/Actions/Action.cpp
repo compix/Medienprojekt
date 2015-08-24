@@ -24,13 +24,8 @@ void Action::update(entityx::Entity& entity, float deltaTime)
 {
 	assert(entity && entity.has_component<CellComponent>() && entity.has_component<TransformComponent>() && entity.has_component<AIComponent>());
 
-	m_followPath(entity);
-
-	if (!m_behaviorExecuted && m_followPath.path().reachedGoal())
-	{
-		m_behavior(entity);
-		m_behaviorExecuted = true;
-	}
+	if (m_followPath(entity) && !m_behaviorExecuted)
+		m_behaviorExecuted = m_behavior(entity);
 }
 
 void Action::preparePath(entityx::Entity& entity)

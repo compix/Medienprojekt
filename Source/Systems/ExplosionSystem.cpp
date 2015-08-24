@@ -12,6 +12,7 @@
 #include "../Components/FloorComponent.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/PortalComponent.h"
+#include "../Components/ExplosionStopComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
@@ -39,14 +40,9 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				int nextCellY = spread->direction == Direction::UP ? cell->y - 1 : spread->direction == Direction::DOWN ? cell->y + 1 : cell->y;
 				
 				int nextRange = spread->range - 1;
-				for (auto& e : m_layerManager->getEntities(layer->layer, nextCellX, nextCellY))
-				{
-					if (e.has_component<ExplosionComponent>() || e.has_component<EffectComponent>() || e.has_component<InventoryComponent>() || e.has_component<PortalComponent>())
-						continue;
-
+				if (m_layerManager->hasEntityWithComponent<ExplosionStopComponent>(layer->layer, nextCellX, nextCellY))
 					nextRange = 0;
-					break;
-				}
+
 				if (!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
 				{
 					// Don't create the explosion right away to avoid multiple spreading in one direction in one frame. This fixes a low fps bug with portals.

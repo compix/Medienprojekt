@@ -13,9 +13,7 @@ bool ActionSelector::valid(entityx::Entity& entity)
 void ActionSelector::update(entityx::Entity& entity, float deltaTime)
 {
 	if (m_currentAction)
-	{
 		m_currentAction->update(entity, deltaTime);
-	}
 }
 
 bool ActionSelector::done()
