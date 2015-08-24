@@ -13,8 +13,9 @@ AIVisualizer::AIVisualizer()
 }
 
 AIVisualizer::AIVisualizer(PathEngine* pathEngine)
-	: m_pathEngine(pathEngine), m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false), m_visualizeDangerZones(false), m_keyPressed(false), m_visualizeActions(false),
-	m_messageTime(2.f), m_messageTimer(m_messageTime), m_showingMessage(false)
+	: m_pathEngine(pathEngine), m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false), m_visualizeDangerZones(false), m_keyPressed(false), 
+	m_visualizeActions(false), m_messageTime(2.f), m_messageTimer(m_messageTime), m_showingMessage(false), m_visualizeSmells(false),
+	m_leftXOffset(-100.f), m_rightXOffset(float(21 * GameConstants::CELL_WIDTH))
 {
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
 	{
@@ -39,10 +40,15 @@ void AIVisualizer::setPathEngine(PathEngine* pathEngine)
 	assert(pathEngine);
 	m_pathEngine = pathEngine; 
 	m_graph = m_pathEngine->getSimGraph();
+
+	m_rightXOffset = float(m_graph->m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH);
 }
 
 void AIVisualizer::visualize(float deltaTime)
 {
+	m_rightYOffset = 25.f;
+	m_leftYOffset = 25.f;
+
 	if (!m_keyPressed)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
@@ -74,11 +80,17 @@ void AIVisualizer::visualize(float deltaTime)
 			m_visualizeActions = !m_visualizeActions;
 			showMessage(m_visualizeActions ? "Visualizing AI actions" : "Hiding AI action visualization");
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F6))
+		{
+			m_visualizeSmells = !m_visualizeSmells;
+			showMessage(m_visualizeSmells ? "Visualizing smells" : "Hiding smell visualization");
+		}
 	}
 
 	m_keyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::F1) || sf::Keyboard::isKeyPressed(sf::Keyboard::F2) ||
 				   sf::Keyboard::isKeyPressed(sf::Keyboard::F3) || sf::Keyboard::isKeyPressed(sf::Keyboard::F4) || 
-				   sf::Keyboard::isKeyPressed(sf::Keyboard::F5);
+				   sf::Keyboard::isKeyPressed(sf::Keyboard::F5) || sf::Keyboard::isKeyPressed(sf::Keyboard::F6);
 
 	if (m_visualizePathInfo)
 	{
@@ -94,6 +106,9 @@ void AIVisualizer::visualize(float deltaTime)
 
 	if (m_visualizeProperties)
 		visualizeNodeProperties();
+
+	if (m_visualizeSmells)
+		visualizeSmells();
 
 	if (m_visualizeDangerZones)
 		visualizeDangerZones();
@@ -142,10 +157,9 @@ void AIVisualizer::showMessage(const std::string& message)
 
 void AIVisualizer::drawPathInfoLegend()
 {
-	int liNum = 0;
-	drawText("UNVISITED", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(0, 255, 0));
-	drawText("OPEN", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(255, 255, 0));
-	drawText("CLOSED", -100, ++liNum * 25.f, TextShapeType::CIRCLE, sf::Color(255, 0, 255));
+	drawText("UNVISITED", -100, offsetY(true), TextShapeType::CIRCLE, sf::Color(0, 255, 0));
+	drawText("OPEN", -100, offsetY(true), TextShapeType::CIRCLE, sf::Color(255, 255, 0));
+	drawText("CLOSED", -100, offsetY(true), TextShapeType::CIRCLE, sf::Color(255, 0, 255));
 }
 
 void AIVisualizer::visualizePathInfo(uint8_t task)
@@ -220,13 +234,12 @@ void AIVisualizer::visualizeNodeProperties()
 	m_rect.setRotation(0.f);
 	m_rect.setSize(sf::Vector2f(5, 5));
 
-	float liNum = 0;
-	float xText = float(m_graph->m_width * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH);
-	drawText("Bomb", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(255, 0, 0));
-	drawText("Item", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(0, 255, 0));
-	drawText("Player", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(0, 0, 255));
-	drawText("Portal", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(255, 255, 0));
-	drawText("Block", xText, ++liNum * 25, TextShapeType::RECT, sf::Color(139, 69, 19));
+	drawText("Property Legend", m_rightXOffset - 5, offsetY(false));
+	drawText("Bomb", m_rightXOffset, offsetY(false), TextShapeType::RECT, sf::Color(255, 0, 0));
+	drawText("Item", m_rightXOffset, offsetY(false), TextShapeType::RECT, sf::Color(0, 255, 0));
+	drawText("Player", m_rightXOffset, offsetY(false), TextShapeType::RECT, sf::Color(0, 0, 255));
+	drawText("Portal", m_rightXOffset, offsetY(false), TextShapeType::RECT, sf::Color(255, 255, 0));
+	drawText("Block", m_rightXOffset, offsetY(false), TextShapeType::RECT, sf::Color(139, 69, 19));
 
 	for (auto x = 1; x < m_graph->m_width - 1; ++x)
 	{
@@ -323,6 +336,31 @@ void AIVisualizer::visualizeNodes()
 	}
 }
 
+void AIVisualizer::visualizeSmells()
+{
+	offsetY(false);
+	drawText("Smell Legend", m_rightXOffset, offsetY(false));
+	drawText("Affected Blocks", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(255, 140, 0));
+
+	m_circle.setRadius(20.f);
+	m_circle.setOrigin(10, 10);
+	for (auto x = 1; x < m_graph->m_width - 1; ++x)
+	{
+		for (auto y = 1; y < m_graph->m_height - 1; ++y)
+		{
+			auto& node = m_graph->m_nodeGrid[x][y];
+
+			m_circle.setPosition(x * GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH*0.5f - 3.f, y * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT*0.5f + 5.f);
+
+			if (node.smells.dyingBlock > 0)
+			{
+				m_circle.setFillColor(sf::Color(255, 140, 0, 25 * node.smells.dyingBlock));
+				GameGlobals::window->draw(m_circle);
+			}
+		}
+	}
+}
+
 void AIVisualizer::drawText(const std::string& text, float x, float y, TextShapeType legendShapeType, const sf::Color& color)
 {
 	float yShapeOffset = 5;
@@ -351,6 +389,18 @@ void AIVisualizer::drawText(const std::string& text, float x, float y, TextShape
 	m_text.setString(text);
 	m_text.setPosition(x, y);
 	GameGlobals::window->draw(m_text);
+}
+
+float AIVisualizer::offsetY(bool left)
+{
+	if (left)
+	{
+		m_leftYOffset += 25.f;
+		return m_leftYOffset;
+	}
+
+	m_rightYOffset += 25.f;
+	return m_rightYOffset;
 }
 
 void AIVisualizer::visualize(const AIPath& path)

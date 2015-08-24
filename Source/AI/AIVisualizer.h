@@ -32,7 +32,8 @@ public:
 	void visualizeNodeProperties();
 	void visualizeDangerZones();
 	void visualizeNodes();
-	
+	void visualizeSmells();
+
 	void visualize(const AIPath& path);
 
 	void visualizeAction(ActionType actionType, entityx::Entity& entity);
@@ -41,6 +42,8 @@ public:
 
 private:
 	void drawText(const std::string& text, float x, float y, TextShapeType legendShapeType = TextShapeType::NONE, const sf::Color& color = sf::Color());
+
+	float offsetY(bool left);
 
 private:
 	PathEngine* m_pathEngine;
@@ -56,6 +59,7 @@ private:
 	bool m_visualizePathInfo;
 	bool m_visualizeDangerZones;
 	bool m_visualizeActions;
+	bool m_visualizeSmells;
 	bool m_keyPressed;
 
 	float m_messageTimer;
@@ -63,4 +67,10 @@ private:
 	bool m_showingMessage;
 	std::string m_message;
 	sf::Text m_textMessage;
+
+	float m_leftYOffset;
+	float m_rightYOffset;
+
+	float m_leftXOffset;
+	float m_rightXOffset;
 };

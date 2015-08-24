@@ -29,7 +29,7 @@ public:
 	Entity createPortal(uint8_t cellX, uint8_t cellY, Entity owner, bool linked);
 	Entity createAfterimage(int cellX, int cellY, float posX, float posY, sf::Sprite sprite, float time);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime);
-	void createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, entityx::Entity::Id portalId);
+	void createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime);
 
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 

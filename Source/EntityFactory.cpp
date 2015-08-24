@@ -274,9 +274,12 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	}
 	//Physix_END
 
-	m_layerManager->add(entity);
+	// Don't teleport if placed on a portal
+	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
+	if (portal)
+		entity.assign<PortalMarkerComponent>(portal.id());
 
-	sf::Sprite sprite = entity.component<SpriteComponent>()->sprite;
+	m_layerManager->add(entity);
 
 	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
 	return entity;
@@ -437,7 +440,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 	return entity;
 }
 
-void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, entityx::Entity::Id portalId)
+void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime)
 {
 	entityx::Entity explosions[4];
 	explosions[0] = createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime);
@@ -445,8 +448,13 @@ void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range,
 	explosions[2] = createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime);
 	explosions[3] = createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
 
-	for (auto e : explosions)
-		e.assign<PortalMarkerComponent>(portalId);
+	// Don't teleport if placed on a portal
+	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
+	if (portal)
+	{
+		for (auto e : explosions)
+			e.assign<PortalMarkerComponent>(portal.id());
+	}
 }
 
 Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)

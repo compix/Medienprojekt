@@ -1,6 +1,7 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/CellComponent.h"
 #include "RatePortalSpot.h"
+#include "../../Components/AIComponent.h"
 
 bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
@@ -19,11 +20,15 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (goal->properties.hasPortal)
 		return false;
 
+	auto& personality = entity.component<AIComponent>()->personality;
+	auto& desires = personality.desires;
+	auto& affinity = personality.affinity;
+
 	auto firstPortal = inventory->placedPortals.first;
 	if (!firstPortal.valid())
 	{
 		// Doesn't really matter where to place it (no idea what spots are strategically better)
-		path.rating = 1.f;
+		path.rating = affinity.placePortal * desires.placePortal;
 		return true;
 	}
 
@@ -41,7 +46,7 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 		if (distance < 5)
 			return false;
 
-		path.rating = float(distance*distance) / path.nodes.size();
+		path.rating = (affinity.placePortal + float(distance)) * desires.placePortal;
 		return true;
 	}
 

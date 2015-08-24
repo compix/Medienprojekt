@@ -4,6 +4,11 @@
 #include "SimulationGraph.h"
 #include "AIPath.h"
 #include "NodePathInfo.h"
+#include "../../Components/AIComponent.h"
+#include "../../Components/InventoryComponent.h"
+#include "../../Utils/Common.h"
+#include "../../Components/CellComponent.h"
+#include "../../Components/LayerComponent.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
 	:m_layerManager(layerManager), m_numOfFreeTasks(PATH_ENGINE_MAX_TASK_NUM)
@@ -174,6 +179,9 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeConditio
 void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks)
 {
 	assert(maxChecks > 0);
+	assert(entity.has_component<AIComponent>() && entity.has_component<InventoryComponent>());
+	assert(entity.has_component<TransformComponent>() && entity.has_component<CellComponent>());
+	assert(entity.has_component<LayerComponent>());
 	assert(inBounds(startX, startY));
 	uint8_t taskNum = newTask();
 	resetPathInfo(taskNum);

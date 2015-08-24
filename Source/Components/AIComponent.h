@@ -1,6 +1,7 @@
 #pragma once
 #include "../AI/Actions/ActionType.h"
 #include "../AI/Actions/Action.h"
+#include "../AI/Personality/AIPersonality.h"
 
 enum class BehaviorType
 {
@@ -19,6 +20,7 @@ struct AIComponent
 
 	AIPath lastPath;
 	ActionType lastActionType;
+	AIPersonality personality;
 
 	// Used for some behavior like punch.
 	GraphNode* behaviorNode;

@@ -1,14 +1,18 @@
 #include "RateDistanceToItems.h"
 #include "../../Game.h"
 #include "../../Components/CellComponent.h"
+#include "../../Components/AIComponent.h"
 
 bool RateDistanceToItems::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	if (!path.goal()->valid)
 		return false;
 
-	float valueFactor = 3.f;
-	path.rating = inverseDistanceToItems(path.goal()) * valueFactor;
+	auto& personality = entity.component<AIComponent>()->personality;
+	auto& desires = personality.desires;
+	auto& affinity = personality.affinity;
+	path.rating = affinity.getItem + inverseDistanceToItems(path.goal());
+	path.rating *= desires.getItem;
 	return true;
 }
 

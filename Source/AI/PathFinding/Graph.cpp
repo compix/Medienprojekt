@@ -10,6 +10,7 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/PortalComponent.h"
 #include "../../Components/DestructionComponent.h"
+#include <queue>
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -52,6 +53,7 @@ void Graph::update(float deltaTime)
 		{
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
 			m_nodeGrid[x][y].bombProperties.explosionSimulated = false;
+			m_nodeGrid[x][y].smells.dyingBlock = 0;
 		}
 	}
 
@@ -67,14 +69,14 @@ void Graph::update(float deltaTime)
 		}
 	}
 
-	for (auto dieingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
+	for (auto dyingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
 	{
-		if (!dieingBlock.valid())
+		if (!dyingBlock.valid())
 			continue;
 
-		auto cell = dieingBlock.component<CellComponent>();
+		auto cell = dyingBlock.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion = true;
-		m_blocksAffectedByExplosion.push_back(dieingBlock);
+		m_blocksAffectedByExplosion.push_back(dyingBlock);
 	}
 
 	for (auto bombEntity : GameGlobals::entities->entities_with_components<BombComponent, TimerComponent, CellComponent>())
@@ -105,6 +107,16 @@ void Graph::update(float deltaTime)
 	{
 		if (!m_nodeGrid[bomb.x][bomb.y].bombProperties.explosionSimulated)
 			placeBomb(bomb.x, bomb.y, bomb.range, bomb.explosionTime);
+	}
+
+	for (auto& dyingBlock : m_blocksAffectedByExplosion)
+	{
+		if (!dyingBlock)
+			continue;
+
+		auto cell = dyingBlock.component<CellComponent>();
+		assert(cell);
+		spreadSmell(SmellType::DYING_BLOCK, cell->x, cell->y, 5);
 	}
 }
 
@@ -196,16 +208,50 @@ void Graph::setOnFire(uint8_t x, uint8_t y, float explosionTime)
 	}
 }
 
+void Graph::spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uint8_t range)
+{
+	// A simple breadth first search algorithm
+	assert(inBounds(startX, startY));
+
+	std::queue<GraphNode*> processQueue;
+	GraphNode& start = m_nodeGrid[startX][startY];
+	processQueue.push(&start);
+	// Highest smell at the start -> then decreases by 1 for each cell
+	start.smell(smellType) = std::max(start.smell(smellType), uint16_t(range));
+
+	while (processQueue.size() > 0)
+	{
+		GraphNode* curNode = processQueue.front();
+		processQueue.pop();
+
+		// Go through all neighbors
+		for (uint8_t i = 0; i < 4; ++i)
+		{
+			GraphNode* neighbor = getNeighbor(curNode, static_cast<Direction>(i));
+
+			if (!neighbor || !neighbor->valid)
+				continue;
+
+			if (neighbor->smell(smellType) < curNode->smell(smellType))
+			{
+				processQueue.push(neighbor);
+				neighbor->smell(smellType) = curNode->smell(smellType) - 1;
+			}
+		}
+	}
+}
+
 void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedEntities)
 {	
 	auto currentNode = getNode(x, y);
 	currentNode->bombProperties.explosionRange = range;
 	currentNode->bombProperties.explosionSimulated = true;
 
+	float correctExplosionTime = currentNode->properties.affectedByExplosion ? std::min(explosionTime, currentNode->properties.timeTillExplosion) : explosionTime;
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, explosionTime, direction, affectedEntities);
+		explosionSpread(x, y, range, correctExplosionTime, direction, affectedEntities);
 	}
 }
 
@@ -357,25 +403,25 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 		if (node->x == 0)
 			return nullptr;
 
-		portalNode = getOtherPortalNode(node->x - 1, node->y);
+		portalNode = getPortalNeighbor(node->x - 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x - 1][node->y];
 	case Direction::RIGHT:
 		if (node->x == m_width - 1)
 			return nullptr;
 
-		portalNode = getOtherPortalNode(node->x + 1, node->y);
+		portalNode = getPortalNeighbor(node->x + 1, node->y);
 		return portalNode ? portalNode : &m_nodeGrid[node->x + 1][node->y];
 	case Direction::UP:
 		if (node->y == 0)
 			return nullptr;
 
-		portalNode = getOtherPortalNode(node->x, node->y - 1);
+		portalNode = getPortalNeighbor(node->x, node->y - 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y - 1];
 	case Direction::DOWN:
 		if (node->y == m_height - 1)
 			return nullptr;
 
-		portalNode = getOtherPortalNode(node->x, node->y + 1);
+		portalNode = getPortalNeighbor(node->x, node->y + 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
 		assert(false); // Invalid neighbor input.
@@ -389,10 +435,7 @@ bool Graph::hasNeighbor(const GraphNode* node, Direction neighbor)
 	return n && n->valid;
 }
 
-GraphNode* Graph::getOtherPortalNode(uint8_t x, uint8_t y)
+GraphNode* Graph::getPortalNeighbor(uint8_t x, uint8_t y)
 {
-	if (m_nodeGrid[x][y].properties.otherPortal)
-		return m_nodeGrid[x][y].properties.otherPortal;
-
-	return m_nodeGrid[x][y].properties.otherPortal;
+	return m_nodeGrid[x][y].valid ? m_nodeGrid[x][y].properties.otherPortal : nullptr;
 }

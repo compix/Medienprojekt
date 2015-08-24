@@ -58,6 +58,9 @@
     <Filter Include="Utils\Logging">
       <UniqueIdentifier>{8C0201F6-F8C2-7C2C-C1FD-C5A92D7DC108}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI\Personality">
+      <UniqueIdentifier>{eee616ce-a4e0-4c62-a18c-cd41070b2900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AI\AIUtil.h">
@@ -629,6 +632,9 @@
     <ClInclude Include="..\..\Source\Components\ExplosionStopComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h">
+      <Filter>AI\Personality</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -922,6 +928,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp">
+      <Filter>AI\Personality</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

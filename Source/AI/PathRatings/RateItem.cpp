@@ -2,6 +2,7 @@
 #include "../PathFinding/PathEngine.h"
 #include "../AIUtil.h"
 #include "RateSafety.h"
+#include "../../Components/AIComponent.h"
 
 bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
@@ -29,7 +30,11 @@ bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity&
 
 			if (AIUtil::isSafePath(entity, fullPath, &minExploTime))
 			{
-				path.rating = 3.f + minExploTime - path.nodes.size() * timePerCell;
+				auto& personality = entity.component<AIComponent>()->personality;
+				auto& desires = personality.desires;
+				auto& affinity = personality.affinity;
+				path.rating = affinity.getItem + minExploTime - path.nodes.size() * timePerCell;
+				path.rating *= desires.getItem;
 				return true;
 			}			
 		}

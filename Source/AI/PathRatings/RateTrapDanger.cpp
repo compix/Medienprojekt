@@ -2,6 +2,7 @@
 #include "../PathFinding/PathEngine.h"
 #include "../../Components/CellComponent.h"
 #include "../../Systems/AISystem.h"
+#include "../../Components/AIComponent.h"
 
 RateTrapDanger::RateTrapDanger()
 {
@@ -24,10 +25,10 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 				isPotentialTrap(graph, goal, Direction::LEFT, range) ||
 				isPotentialTrap(graph, goal, Direction::RIGHT, range);	
 
-	if (trap)
-		path.rating = 0.f;
-	else
-		path.rating = 2.f;
+	auto& personality = entity.component<AIComponent>()->personality;
+	auto& desires = personality.desires;
+	auto& affinity = personality.affinity;
+	path.rating = trap ? 1.f / affinity.getSafe / personality.desires.getSafe : 2.f;
 
 	return true;
 }

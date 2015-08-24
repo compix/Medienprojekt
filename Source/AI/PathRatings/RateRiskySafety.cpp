@@ -1,6 +1,7 @@
 #include "RateRiskySafety.h"
 #include "../../Utils/Math.h"
 #include "../AIUtil.h"
+#include "../../Components/AIComponent.h"
 
 bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
@@ -15,7 +16,10 @@ bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 		if (minExploTime < timePerCell * 0.5f)
 			return false;
 
-		path.rating = Math::clamp(minExploTime, 0.f, 1.f);
+		auto& personality = entity.component<AIComponent>()->personality;
+		auto& desires = personality.desires;
+		auto& affinity = personality.affinity;
+		path.rating = (affinity.getSafe + Math::clamp(minExploTime, 0.f, 1.f)) * desires.getSafe;
 		return true;
 	}
 

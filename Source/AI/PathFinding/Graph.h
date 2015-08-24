@@ -54,7 +54,7 @@ public:
 	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x < m_width && y < m_height); return &m_nodeGrid[x][y]; }
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
-	GraphNode* getOtherPortalNode(uint8_t x, uint8_t y);
+	GraphNode* getPortalNeighbor(uint8_t x, uint8_t y);
 
 	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedByExplosion = nullptr);
 
@@ -70,6 +70,9 @@ protected:
 	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, AffectedByExplosion* affectedByExplosion = nullptr);
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
+	void spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uint8_t range);
+
+	inline bool inBounds(uint8_t x, uint8_t y) { return x < m_width && y < m_height; }
 protected:
 	uint8_t m_width, m_height;
 	GraphNode** m_nodeGrid;

@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <assert.h>
 
 struct GraphNode;
 
@@ -12,6 +13,16 @@ struct BombProperties
 	uint8_t explosionRange;
 
 	float explosionTime;
+};
+
+enum class SmellType
+{
+	DYING_BLOCK
+};
+
+struct Smells
+{
+	uint16_t dyingBlock; // <- Item could spawn.
 };
 
 struct NodeProperties
@@ -42,4 +53,17 @@ struct GraphNode
 
 	NodeProperties properties;
 	BombProperties bombProperties;
+	Smells smells;
+
+	uint16_t& smell(SmellType type)
+	{
+		switch (type)
+		{
+		case SmellType::DYING_BLOCK:
+			return smells.dyingBlock;
+		default:
+			assert(false);
+			return smells.dyingBlock;
+		}
+	}
 };

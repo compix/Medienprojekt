@@ -3,6 +3,7 @@
 RateCombination::RateCombination(std::initializer_list<PathRating> ratings)
 {
 	m_pathRatings = ratings;
+	assert(m_pathRatings.size() > 0);
 }
 
 bool RateCombination::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
@@ -18,6 +19,6 @@ bool RateCombination::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 			return false;
 	}
 
-	path.rating = totalRating;
+	path.rating = totalRating / m_pathRatings.size();
 	return true;
 }

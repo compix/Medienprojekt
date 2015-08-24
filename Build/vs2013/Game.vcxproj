@@ -126,6 +126,7 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
+    <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
     <ClInclude Include="..\..\Source\Animation\Animator.h" />
     <ClInclude Include="..\..\Source\Animation\AnimatorManager.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
+    <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp" />
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
     <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
     <ClCompile Include="..\..\Source\Animation\States\IdleState.cpp" />
