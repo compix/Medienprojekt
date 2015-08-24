@@ -25,14 +25,15 @@ struct AffectedByExplosion
 	}
 };
 
-struct NormalBomb
+struct Bomb
 {
-	NormalBomb() : range(1), explosionTime(3.f), x(0), y(0) {}
-	NormalBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime) : x(x), y(y), range(range), explosionTime(explosionTime) {}
+	Bomb() : range(1), explosionTime(3.f), x(0), y(0) {}
+	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost) : x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost) {}
 
 	uint8_t range;
 	float explosionTime;
 	uint8_t x, y;
+	bool ghost;
 };
 
 class Graph : public EntityLayer::IOnChangeListener
@@ -56,7 +57,7 @@ public:
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getPortalNeighbor(uint8_t x, uint8_t y);
 
-	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedByExplosion = nullptr);
+	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, AffectedByExplosion* affectedByExplosion = nullptr);
 
 	template<class T>
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
@@ -67,7 +68,7 @@ public:
 
 	void reset();
 protected:
-	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, AffectedByExplosion* affectedByExplosion = nullptr);
+	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, AffectedByExplosion* affectedByExplosion = nullptr);
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
 	void spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uint8_t range);
@@ -78,7 +79,7 @@ protected:
 	GraphNode** m_nodeGrid;
 	LayerManager* m_layerManager;
 
-	std::vector<NormalBomb> m_normalBombs;
+	std::vector<Bomb> m_normalBombs;
 	std::vector<entityx::Entity> m_blocksAffectedByExplosion;
 };
 

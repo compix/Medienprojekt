@@ -269,6 +269,7 @@
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
+    <ClInclude Include="..\..\Source\Utils\ActiveQueue.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AssetLoader.h" />

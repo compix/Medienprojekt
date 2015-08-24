@@ -208,7 +208,7 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 	return entity;
 }
 
-Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
+Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner, bool ghost)
 {
 	Entity entity = GameGlobals::entities->create();;
 
@@ -219,10 +219,10 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 	transformComponent.scaleY = 0.75f;
 
 	entity.assign<TransformComponent>(transformComponent);
-	auto texture = createSprite("bomb");
+	auto texture = createSprite(ghost ? "ghost_bomb" : "bomb");
 	entity.assign<SpriteComponent>(texture);
 	assert(owner.has_component<InventoryComponent>());
-	entity.assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME);
+	entity.assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME, ghost);
 	entity.assign<TimerComponent>(GameConstants::EXPLOSION_TIME);
 	entity.assign<HealthComponent>(1);
 	entity.assign<OwnerComponent>(owner);
@@ -281,7 +281,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner)
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner);
+	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner, ghost);
 	return entity;
 }
 
@@ -367,7 +367,7 @@ Entity EntityFactory::createAfterimage(int cellX, int cellY, float posX, float p
 	return entity;
 }
 
-Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime)
+Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, bool ghost)
 {
 	Entity entity = GameGlobals::entities->create();
 
@@ -423,7 +423,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
 	}
 
-	entity.assign<SpreadComponent>(direction, range, spreadTime);
+	entity.assign<SpreadComponent>(direction, range, spreadTime, ghost);
 	entity.assign<ExplosionComponent>();
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<DestructionComponent>(0.55f);
@@ -436,17 +436,17 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime);
+	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime, ghost);
 	return entity;
 }
 
-void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime)
+void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, bool ghost)
 {
 	entityx::Entity explosions[4];
-	explosions[0] = createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime);
-	explosions[1] = createExplosion(cellX, cellY, Direction::UP, range, spreadTime);
-	explosions[2] = createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime);
-	explosions[3] = createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime);
+	explosions[0] = createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime, ghost);
+	explosions[1] = createExplosion(cellX, cellY, Direction::UP, range, spreadTime, ghost);
+	explosions[2] = createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime, ghost);
+	explosions[3] = createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime, ghost);
 
 	// Don't teleport if placed on a portal
 	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
@@ -609,6 +609,9 @@ Entity EntityFactory::createItem(uint8_t cellX, uint8_t cellY, ItemType type)
 		break;
 	case ItemType::BLINK_SKILL:
 		entity.assign<SpriteComponent>(createSprite("blink_skill"));
+		break;
+	case ItemType::GHOST_BOMB:
+		entity.assign<SpriteComponent>(createSprite("ghost_bomb_item"));
 		break;
 	default: break;
 	}

@@ -24,7 +24,7 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	bool spotAffectedByExplosion = goal->properties.affectedByExplosion;
 
 	AffectedByExplosion affectedEntities;
-	pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, &affectedEntities);
+	pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->isGhostBombActive(), &affectedEntities);
 
 	bool enemiesAffected = affectedEntities.isEnemyAffected(entity);
 	bool itemsAffected = affectedEntities.numOfItems > 0;

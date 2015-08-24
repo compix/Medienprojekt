@@ -4,13 +4,14 @@
 
 struct ExplosionSpreadRequest
 {
-	ExplosionSpreadRequest(uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
-		:x(x), y(y), direction(direction), range(range), spreadTime(spreadTime) {}
+	ExplosionSpreadRequest(uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost)
+		:x(x), y(y), direction(direction), range(range), spreadTime(spreadTime), ghost(ghost) {}
 
 	uint8_t x, y;
 	Direction direction;
 	uint8_t range;
 	float spreadTime;
+	bool ghost;
 };
 
 class ExplosionSystem : public entityx::System<ExplosionSystem>

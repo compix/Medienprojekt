@@ -78,6 +78,8 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 				if (inventory->canHold == false)
 					inventory->canHold = true;
 				break;
+			case ItemType::GHOST_BOMB:
+				inventory->put(BombType::GHOST);
 				break;
 			default: break;
 			}

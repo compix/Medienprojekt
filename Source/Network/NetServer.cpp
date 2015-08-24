@@ -224,12 +224,12 @@ void NetServer::receive(const SendChatEvent& evt)
 
 void NetServer::receive(const BombCreatedEvent& evt)
 {
-	broadcast(NetChannel::WORLD_RELIABLE, createBombPacket(evt.entity, evt.x, evt.y, evt.owner));
+	broadcast(NetChannel::WORLD_RELIABLE, createBombPacket(evt.entity, evt.x, evt.y, evt.owner, evt.ghost));
 }
 
 void NetServer::receive(const ExplosionCreatedEvent& evt)
 {
-	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime));
+	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime, evt.ghost));
 }
 
 void NetServer::receive(const EntityDestroyedEvent& evt)
@@ -603,16 +603,17 @@ void NetServer::sendBombEntities(ENetPeer *peer)
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(bomb, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, owner->entity));
+		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, owner->entity, bomb->ghost));
 }
 
-ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Entity owner)
+ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Entity owner, bool ghost)
 {
 	m_messageWriter.init(MessageType::CREATE_BOMB);
 	m_messageWriter.write<uint64_t>(entity.id().id());
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<uint64_t>(owner.id().id());
+	m_messageWriter.write<bool>(ghost);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
@@ -624,10 +625,10 @@ void NetServer::sendExplosionEntities(ENetPeer* peer)
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(explosion, spread, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime));
+		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime, spread->ghost));
 }
 
-ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime)
+ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost)
 {
 	m_messageWriter.init(MessageType::CREATE_EXPLOSION);
 	m_messageWriter.write<uint64_t>(entity.id().id());
@@ -636,6 +637,7 @@ ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y
 	m_messageWriter.write<Direction>(direction);
 	m_messageWriter.write<uint8_t>(range);
 	m_messageWriter.write<float>(spreadTime);
+	m_messageWriter.write<bool>(ghost);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

@@ -2,7 +2,7 @@
 #include "../GameConstants.h"
 #include <utility>
 #include <entityx/Entity.h>
-#include <algorithm>
+#include "../Utils/ActiveQueue.h"
 
 enum class SkillType
 {
@@ -40,55 +40,28 @@ struct Skill
 		}
 	}
 
+	inline bool operator==(const Skill& other) { return type == other.type; }
+
 	SkillType type;
 	uint8_t priority; // 0 = highest priority
 };
 
 struct SkillComparator
 {
-	bool operator()(const Skill& s1, const Skill& s2)
-	{
-		return s1.priority < s2.priority;
-	}
+	inline bool operator()(const Skill& s1, const Skill& s2) { return s1.priority < s2.priority; }
 };
 
-class SkillQueue
+enum class BombType : uint8_t
 {
-public:
-	SkillQueue()
-	{
-		m_skills.push_back(Skill(SkillType::NONE));
-	}
+	NORMAL,
+	GHOST, // Only stopped by solid blocks
+	LIGHTNING // 1 Range explosion at the end of the spread
+};
 
-	void put(SkillType skillType)
-	{
-		remove(skillType);
-		auto it = std::lower_bound(m_skills.begin(), m_skills.end(), Skill(skillType), SkillComparator());
-		m_skills.insert(it, Skill(skillType));
-	}
-
-	void remove(SkillType skillType)
-	{
-		if(skillType == SkillType::NONE) 
-			return;
-
-		for (auto it = m_skills.begin(); it != m_skills.end(); ++it)
-		{
-			if (it->type == skillType)
-			{
-				m_skills.erase(it);
-				break;
-			}
-		}
-	}
-
-	// Skill set is never empty. If the entity has no skills then SkillType::NONE is returned.
-	inline const Skill& top() { return *m_skills.begin(); }
-
-	
-
-private:
-	std::vector<Skill> m_skills;
+struct BombTypeComparator
+{
+	// Always the same priority
+	inline bool operator()(const BombType& b1, const BombType& b2) { return false; }
 };
 
 struct InventoryComponent
@@ -102,10 +75,12 @@ struct InventoryComponent
 		canHold(GameConstants::INIT_PLAYERS_CAN_HOLD_BOMB)
 	{
 		if (GameConstants::INIT_PORTAL_SKILL)
-			activeSkills.put(SkillType::PLACE_PORTAL);
+			put(SkillType::PLACE_PORTAL);
 
 		if (GameConstants::INIT_PUNCH_SKILL)
-			activeSkills.put(SkillType::PUNCH);
+			put(SkillType::PUNCH);
+
+		put(BombType::NORMAL);
 	}
 
 	int bombCount;
@@ -116,11 +91,15 @@ struct InventoryComponent
 	bool isHoldingBomb;
 	bool canHold;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
-	SkillQueue activeSkills; // Currently active skills with a custom priority order
-	
+	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order
+	ActiveQueue<BombType, BombTypeComparator> activeBombs;
 
-	inline void put(SkillType skillType) { activeSkills.put(skillType); }
-	inline SkillType activeSkill() { return activeSkills.top().type; }
+	inline void put(SkillType skillType) { activeSkills.put(Skill(skillType)); }
+	inline SkillType activeSkill() { return activeSkills.empty() ? SkillType::NONE : activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
-	inline void removeSkill(SkillType type) { activeSkills.remove(type); }
+	inline void removeSkill(SkillType type) { activeSkills.remove(Skill(type)); }
+
+	inline BombType activeBomb() { return activeBombs.empty() ? BombType::NORMAL : activeBombs.top(); }
+	inline void put(BombType bombType) { activeBombs.put(bombType); }
+	inline bool isGhostBombActive() { return activeBomb() == BombType::GHOST; }
 };

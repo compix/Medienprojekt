@@ -44,7 +44,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 			}
 			if (inventory->bombCount > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
 			{
-				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity);
+				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity, inventory->isGhostBombActive());
 				inventory->bombCount--;
 			}
 			

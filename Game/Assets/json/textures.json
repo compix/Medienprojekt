@@ -2,6 +2,7 @@
     "block": "Block.png",
     "solid_block":  "SolidBlock.png",
 	"bomb": "Bomb.png",
+	"ghost_bomb": "GhostBomb.png",
 	"explosion": "explosion.png",
 	"subExplosion": "subExplosion.png",
 	"exploEnd": "exploEnd.png",
@@ -21,5 +22,6 @@
     "anti_magnet_skill":"anti_magnet_skill.png",
     "punch_skill": "punch_skill.png",
     "holding_skill": "holding_skill.png",
-    "blink_skill":  "blink_skill.png"
+    "blink_skill":  "blink_skill.png",
+	"ghost_bomb_item" : "GhostBombItem.png"
 }

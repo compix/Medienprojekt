@@ -3,14 +3,12 @@
 #include "../Components/BombComponent.h"
 #include "../EntityFactory.h"
 #include "../Components/CellComponent.h"
-#include "../Components/DestructionComponent.h"
 #include "../Events/EntityGotHitEvent.h"
-#include "../Components/TimerComponent.h"
 #include "../Events/BombExplodedEvent.h"
 #include "../GameGlobals.h"
 #include "../Utils/AssetManagement/AssetManager.h"
 #include "../Events/SoundEvent.h"
-#include "../Components/PortalMarkerComponent.h"
+#include "../Components/OwnerComponent.h"
 
 BombSystem::BombSystem()
 {
@@ -56,9 +54,9 @@ void BombSystem::detonate(entityx::Entity entity)
 			return;
 
 		GameGlobals::events->emit<SoundEvent>("explosion");
-		assert(cell);
+		assert(cell && bomb);
 
-		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime);
+		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime, bomb->ghost);
 		GameGlobals::events->emit<BombExplodedEvent>(entity);
 		bomb->exploded = true;
 	}

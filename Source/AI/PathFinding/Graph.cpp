@@ -86,7 +86,7 @@ void Graph::update(float deltaTime)
 		auto cell = bombEntity.component<CellComponent>();
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
-		m_normalBombs.push_back(NormalBomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds));
+		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost));
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
 	}
@@ -97,16 +97,16 @@ void Graph::update(float deltaTime)
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
 
-		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction);
+		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, spread->ghost);
 	}
 
 	// Sort by explosionTime to simulate the correct explosion chain
-	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const NormalBomb& b1, const NormalBomb& b2) {return b1.explosionTime < b2.explosionTime; });
+	std::sort(m_normalBombs.begin(), m_normalBombs.end(), [](const Bomb& b1, const Bomb& b2) {return b1.explosionTime < b2.explosionTime; });
 
 	for (auto& bomb : m_normalBombs)
 	{
 		if (!m_nodeGrid[bomb.x][bomb.y].bombProperties.explosionSimulated)
-			placeBomb(bomb.x, bomb.y, bomb.range, bomb.explosionTime);
+			placeBomb(bomb.x, bomb.y, bomb.range, bomb.explosionTime, bomb.ghost);
 	}
 
 	for (auto& dyingBlock : m_blocksAffectedByExplosion)
@@ -120,7 +120,7 @@ void Graph::update(float deltaTime)
 	}
 }
 
-void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, AffectedByExplosion* affectedEntities)
+void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, AffectedByExplosion* affectedEntities)
 {
 	auto currentNode = getNode(x, y);
 	setOnFire(x, y, explosionTime);
@@ -142,7 +142,11 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 			{
 				if (affectedEntities)
 					affectedEntities->numOfItems++;
-				break; // Items stop explosions.
+
+				if (!ghost)
+					break; // Items stop explosions.
+
+				continue;
 			}
 
 			if (currentNode->properties.hasPlayer && affectedEntities)
@@ -162,7 +166,11 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 						affectedEntities->numOfItems++;
 
 					if (currentNode->properties.timeTillExplosion <= explosionTime)
-						break;
+					{
+						if (!ghost)
+							break;
+						continue;
+					}
 				}
 
 				setOnFire(currentNode->x, currentNode->y, explosionTime);
@@ -181,14 +189,14 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 				if (!currentNode->bombProperties.explosionSimulated)
 				{
 					// Simulate the explosion chain
-					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime);
+					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, ghost);
 				}
 
 				continue; // Bombs don't stop explosions
 			}
 
-			// Explosion was stopped so get outta here.
-			break;
+			if (!ghost)
+				break; // Explosion was stopped so get outta here.
 		}
 	}
 }
@@ -241,7 +249,7 @@ void Graph::spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uin
 	}
 }
 
-void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, AffectedByExplosion* affectedEntities)
+void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, AffectedByExplosion* affectedEntities)
 {	
 	auto currentNode = getNode(x, y);
 	currentNode->bombProperties.explosionRange = range;
@@ -251,7 +259,7 @@ void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, 
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, correctExplosionTime, direction, affectedEntities);
+		explosionSpread(x, y, range, correctExplosionTime, direction, ghost, affectedEntities);
 	}
 }
 

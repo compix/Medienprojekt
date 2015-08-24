@@ -67,9 +67,9 @@ private:
 	void broadcastDynamicUpdates();
 	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y, uint64_t packetNumber);
 	void sendBombEntities(ENetPeer* peer);
-	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner);
+	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner, bool ghost);
 	void sendExplosionEntities(ENetPeer* peer);
-	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime);
+	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost);
 	void sendPortalEntities(ENetPeer* peer);
 	ENetPacket* createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner);
 	void sendItemEntities(ENetPeer* peer);

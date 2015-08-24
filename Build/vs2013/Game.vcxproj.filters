@@ -638,6 +638,9 @@
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h">
       <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\ActiveQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
