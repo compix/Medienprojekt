@@ -1,7 +1,7 @@
 #pragma once
 #include <entityx/Entity.h>
 
-class PunchBomb
+class UseDirectionSkill
 {
 public:
 	bool operator()(entityx::Entity& entity);

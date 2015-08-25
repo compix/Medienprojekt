@@ -22,6 +22,7 @@ private:
 	ActionPtr m_kickBombAction;
 	ActionPtr m_tryToSurviveAction;
 	ActionPtr m_punchBomb;
+	ActionPtr m_blink;
 	
 	const float m_waitTime;
 	float m_waitTimer;

@@ -210,7 +210,7 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 	if (spread.lightning && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
 	{
 		Bomb bomb(currentNode->x, currentNode->y, 1, explosionTime, spread.ghost, false);
-		placeBomb(bomb);
+		placeBomb(bomb, affectedEntities);
 	}
 }
 
@@ -252,7 +252,8 @@ void Graph::spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uin
 
 			if (!neighbor || !neighbor->valid)
 				continue;
-
+			
+			// If there is already a higher smell value of the given type on the cell then skip this node
 			if (neighbor->smell(smellType) < curNode->smell(smellType))
 			{
 				processQueue.push(neighbor);

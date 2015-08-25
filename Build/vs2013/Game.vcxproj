@@ -103,7 +103,7 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
-    <ClInclude Include="..\..\Source\AI\Behaviors\PunchBomb.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
@@ -113,6 +113,7 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateAttackEnemy.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlink.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
@@ -302,7 +303,7 @@
     <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
-    <ClCompile Include="..\..\Source\AI\Behaviors\PunchBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
@@ -310,6 +311,7 @@
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlink.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />

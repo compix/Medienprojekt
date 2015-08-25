@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
 #include "GraphNode.h"
+#include "../AIUtil.h"
 
 struct AIPath
 {
-	AIPath() : cost(0), rating(-FLT_MAX), curNode(0) {}
+	AIPath() : cost(0), rating(-FLT_MAX), curNode(0), behaviorNode(nullptr) {}
 
 	void attach(AIPath& path);
 
@@ -17,11 +18,14 @@ struct AIPath
 	std::vector<GraphNode*> nodes;
 	uint16_t cost;
 	uint16_t curNode;
+	GraphNode* behaviorNode; // Used for some behavior like punch.
 
 	// How good is the path? Higher values = better path
 	float rating;
 
 	bool operator==(const AIPath& other);
+
+	inline float requiredTime(entityx::Entity& entity) const { return nodes.empty() ? 0 : (nodes.size() - 1) * AIUtil::getTimePerCell(entity); }
 };
 
 std::ostream& operator<<(std::ostream& stream, const AIPath& path);

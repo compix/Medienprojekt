@@ -9,5 +9,6 @@ enum class ActionType
 	KICK_BOMB,
 	TRY_TO_SURVIVE,
 	PLACE_PORTAL,
-	ATTACK_ENEMY
+	ATTACK_ENEMY,
+	BLINK
 };

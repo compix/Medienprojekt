@@ -8,7 +8,7 @@
 class BaseAction
 {
 public:
-	BaseAction() : m_numOfChecks(5) {}
+	BaseAction() : m_numOfChecks(5), m_randomPaths(true) {}
 	virtual ~BaseAction() {}
 
 	virtual bool valid(entityx::Entity& entity) = 0;
@@ -19,9 +19,11 @@ public:
 	virtual AIPath& path() = 0;
 	virtual void preparePath(entityx::Entity& entity) = 0;
 	virtual inline void setNumOfChecks(uint8_t num) { m_numOfChecks = num; };
+	virtual inline void setRandomPaths(bool randomPaths) { m_randomPaths = randomPaths; }
 
 protected:
 	uint8_t m_numOfChecks;
+	uint8_t m_randomPaths;
 };
 
 typedef std::shared_ptr<BaseAction> ActionPtr;
@@ -49,6 +51,7 @@ public:
 	* Compute the best path with the given path rating and prepare it for update.
 	*/
 	void preparePath(entityx::Entity& entity) override;
+
 private:
 	PathEngine* m_pathEngine;
 	PathRating m_pathRating;

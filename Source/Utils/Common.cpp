@@ -21,7 +21,7 @@ Direction CommonUtil::toDirection(int dirX, int dirY)
 		}
 	}
 
-	// This should never happen
+	// This should never happen -> obviously wrong input
 	assert(false);
 	return Direction::DOWN;
 }

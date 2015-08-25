@@ -34,8 +34,12 @@ void Action::preparePath(entityx::Entity& entity)
 
 	auto cell = entity.component<CellComponent>();
 	AIPath path;
-	m_pathEngine->searchBest(entity, cell->x, cell->y, path, m_pathRating, m_numOfChecks);
-
+	
+	if (m_randomPaths)
+		m_pathEngine->searchRandom(entity, cell->x, cell->y, path, m_pathRating, m_numOfChecks);
+	else
+		m_pathEngine->searchBest(entity, cell->x, cell->y, path, m_pathRating, m_numOfChecks);
+	
 	m_followPath.setPath(path);
 
 	m_behaviorExecuted = false;

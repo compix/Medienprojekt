@@ -25,6 +25,9 @@
 #include "../AI/Actions/GetSafe.h"
 #include "../Events/DeathEvent.h"
 #include "../Events/BombCreatedEvent.h"
+#include "../AI/PathRatings/RateBlink.h"
+#include "../AI/Behaviors/UseDirectionSkill.h"
+#include "../Components/LayerComponent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
@@ -51,10 +54,12 @@ void AISystem::init()
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
 
-		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
-
 		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
+
+		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
+
+		aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 	}
 }
 
@@ -130,7 +135,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 	m_pathEngine->update(static_cast<float>(dt));
 
-	for (auto entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent>())
+	for (auto entity : entityManager.entities_with_components<AIComponent, CellComponent, InputComponent, InventoryComponent, TransformComponent, LayerComponent>())
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		auto input = entity.component<InputComponent>();
@@ -161,6 +166,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 			assert(bestAction);
 			aiComponent->currentAction = bestAction.get();
+			aiComponent->behaviorNode = bestAction->path().behaviorNode;
 			aiComponent->currentActionType = bestActionType;
 
 #ifdef AI_LOGGING

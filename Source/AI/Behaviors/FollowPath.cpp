@@ -86,5 +86,13 @@ bool FollowPath::operator()(entityx::Entity& entity)
 		inputComponent->moveY = static_cast<float>(botAvoidance + topAvoidance);
 	}
 
+	// Normalize
+	float len = sqrtf(inputComponent->moveX * inputComponent->moveX + inputComponent->moveY * inputComponent->moveY);
+	if (len != 0.f)
+	{
+		inputComponent->moveX /= len;
+		inputComponent->moveY /= len;
+	}
+
 	return m_path.reachedGoal() && inCenter;
 }

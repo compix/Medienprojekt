@@ -9,7 +9,8 @@
 #include "../PathRatings/RateRiskySafety.h"
 #include "../PathRatings/RateTrapDanger.h"
 #include "../PathRatings/RatePunchBomb.h"
-#include "../Behaviors/PunchBomb.h"
+#include "../Behaviors/UseDirectionSkill.h"
+#include "../PathRatings/RateBlink.h"
 
 bool GetSafe::done()
 {
@@ -29,10 +30,18 @@ GetSafe::GetSafe(PathEngine* pathEngine, LayerManager* layerManager)
 {
 	m_getSafeAction = std::make_shared<Action>(pathEngine, RateCombination({ RateRiskySafety(), RateTrapDanger() }), DoNothing(), layerManager);
 	m_getSafeAction->setNumOfChecks(20);
+	m_getSafeAction->setRandomPaths(false);
 	m_kickBombAction = std::make_shared<Action>(pathEngine, RateKickBomb(), DoNothing(), layerManager);
-	m_punchBomb = std::make_shared<Action>(pathEngine, RatePunchBomb(), PunchBomb(), layerManager);
+	m_kickBombAction->setRandomPaths(false);
+	m_punchBomb = std::make_shared<Action>(pathEngine, RatePunchBomb(), UseDirectionSkill(), layerManager);
+	m_punchBomb->setRandomPaths(false);
 	m_tryToSurviveAction = std::make_shared<Action>(pathEngine, RateDesperateSaveAttempt(), DoNothing(), layerManager);
 	m_tryToSurviveAction->setNumOfChecks(20);
+	m_tryToSurviveAction->setRandomPaths(false);
+
+	m_blink = std::make_shared<Action>(pathEngine, RateBlink() , UseDirectionSkill(), layerManager);
+	m_blink->setRandomPaths(false);
+	m_blink->setNumOfChecks(10);
 }
 
 void GetSafe::preparePath(entityx::Entity& entity)
@@ -49,17 +58,24 @@ void GetSafe::preparePath(entityx::Entity& entity)
 		{
 			m_getSafeAction->preparePath(entity);
 
-			// If the risky path will certainly lead to death then try to survive by waiting on a cell which is most promising. 
-			// Wait for a bomb to explode and maybe it will be possible to escape after.
-			if (m_getSafeAction->path().nodes.size() == 0)
+			if (m_getSafeAction->path().nodes.size() > 0)
 			{
-				m_currentAction = m_tryToSurviveAction.get();
-				m_currentAction->preparePath(entity);
+				// All good so just take the path to safety
+				m_currentAction = m_getSafeAction.get();
 				return;
 			}
 
-			// All good so just take the path to safety
-			m_currentAction = m_getSafeAction.get();
+			m_blink->preparePath(entity);
+			if (m_blink->path().nodes.size() > 0)
+			{
+				m_currentAction = m_blink.get();
+				return;
+			}
+
+			// The risky path will certainly lead to death. Try to survive by waiting on a cell which is most promising. 
+			// Wait for a bomb to explode and maybe it will be possible to escape after.
+			m_currentAction = m_tryToSurviveAction.get();
+			m_currentAction->preparePath(entity);
 			return;
 		}
 
@@ -84,5 +100,11 @@ void GetSafe::update(entityx::Entity& entity, float deltaTime)
 {
 	m_waitTimer -= deltaTime;
 	if (m_waitTimer <= 0.f)
+	{
+		if (m_currentAction == m_blink.get())
+			m_waitTimer = 0.f;
+
 		m_currentAction->update(entity, deltaTime);
+	}
+		
 }

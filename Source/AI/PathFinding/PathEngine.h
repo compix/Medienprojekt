@@ -36,7 +36,24 @@ public:
 	// Finds the shortest path to a node of the given type
 	void breadthFirstSearch(uint8_t startX, uint8_t startY, NodeCondition nodeCondition, AIPath& pathOut);
 
+	/**
+	* Uses a breadth first search algorithm to find the best rated path.
+	* Paths are rated with the PathRating functor.
+	* @param maxChecks: number of valid paths that are compared to find the best
+	*/
 	void searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks = 5);
+
+	/**
+	* Uses a breadth first search algorithm to find the given max given number of valid paths.
+	* Paths are rated with the PathRating functor.
+	*/
+	void search(entityx::Entity& entity, uint8_t startX, uint8_t startY, PathRating ratePath, std::vector<AIPath>& outPaths, uint8_t maxPaths = 5);
+
+	/**
+	* Uses a breadth first search algorithm to find a random path out of the specified number of valid paths.
+	* Paths are rated with the PathRating functor.
+	*/
+	void searchRandom(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t outOf = 5);
 
 	void update(float deltaTime);
 

@@ -1,5 +1,7 @@
 #include "AIPath.h"
 #include <ostream>
+#include <entityx/Entity.h>
+#include "../AIUtil.h"
 
 void AIPath::attach(AIPath& path)
 {

@@ -9,6 +9,7 @@
 #include "../../Utils/Common.h"
 #include "../../Components/CellComponent.h"
 #include "../../Components/LayerComponent.h"
+#include "../../Utils/Random.h"
 
 PathEngine::PathEngine(LayerManager* layerManager)
 	:m_layerManager(layerManager), m_numOfFreeTasks(PATH_ENGINE_MAX_TASK_NUM)
@@ -178,11 +179,32 @@ void PathEngine::breadthFirstSearch(uint8_t startX, uint8_t startY, NodeConditio
 
 void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t maxChecks)
 {
-	assert(maxChecks > 0);
+	std::vector<AIPath> paths;
+	search(entity, startX, startY, ratePath, paths, maxChecks);
+
+	if (!paths.empty())
+	{
+		uint8_t bestIndex = 0;
+		for (uint8_t i = 1; i < paths.size(); ++i)
+			if (paths[bestIndex].rating < paths[i].rating)
+				bestIndex = i;
+		pathOut = paths[bestIndex];
+		return;
+	}
+
+	pathOut = AIPath();
+}
+
+void PathEngine::search(entityx::Entity& entity, uint8_t startX, uint8_t startY, PathRating ratePath, std::vector<AIPath>& outPaths, uint8_t maxPaths)
+{
+	// There is no such thing as "assert overuse"
+	assert(maxPaths > 0);
+	assert(entity);
 	assert(entity.has_component<AIComponent>() && entity.has_component<InventoryComponent>());
 	assert(entity.has_component<TransformComponent>() && entity.has_component<CellComponent>());
 	assert(entity.has_component<LayerComponent>());
 	assert(inBounds(startX, startY));
+
 	uint8_t taskNum = newTask();
 	resetPathInfo(taskNum);
 
@@ -192,7 +214,6 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 	processQueue.push(&start);
 	start.state = NodeState::CLOSED;
 	AIPath path;
-	AIPath bestPath;
 
 	while (processQueue.size() > 0)
 	{
@@ -201,13 +222,12 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 
 		makePath(path, curInfo, taskNum);
 		if (ratePath(this, path, entity))
-		{		
-			maxChecks--;
-			if (path.rating > bestPath.rating)
-				bestPath = path;
+		{
+			maxPaths--;
+			outPaths.push_back(path);
 		}
 
-		if (maxChecks == 0)
+		if (maxPaths == 0)
 			break;
 
 		GraphNode* curNode = m_simGraph->getNode(curInfo->x, curInfo->y);
@@ -233,13 +253,15 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 		}
 	}
 
-	pathOut.nodes.clear();
-	pathOut.rating = bestPath.rating;
-	for (uint32_t i = 0; i < bestPath.nodes.size(); ++i)
-		pathOut.nodes.push_back(bestPath.nodes[i]);
-
 	// Done
 	freeTask(taskNum);
+}
+
+void PathEngine::searchRandom(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t outOf)
+{
+	std::vector<AIPath> paths;
+	search(entity, startX, startY, ratePath, paths, outOf);
+	pathOut = paths.empty() ? AIPath() : paths[Random::getInt(0, paths.size() - 1)];
 }
 
 void PathEngine::update(float deltaTime)
