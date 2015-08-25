@@ -240,9 +240,10 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
 	bool ghost = reader.read<bool>();
+	bool lightning = reader.read<bool>();
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
-		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, ghost));
+		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, ghost, lightning));
 }
 
 void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -254,7 +255,8 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	uint8_t range = reader.read<uint8_t>();
 	float spreadTime = reader.read<float>();
 	bool ghost = reader.read<bool>();
-	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost));
+	bool lightning = reader.read<bool>();
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost, lightning));
 }
 
 void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

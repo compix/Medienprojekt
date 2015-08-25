@@ -23,5 +23,7 @@
     "punch_skill": "punch_skill.png",
     "holding_skill": "holding_skill.png",
     "blink_skill":  "blink_skill.png",
-	"ghost_bomb_item" : "GhostBombItem.png"
+	"ghost_bomb_item" : "GhostBombItem.png",
+	"lightning_bomb":  "LightningBomb.png",
+	"lightning_bomb_item" : "LightningBombItem.png"
 }

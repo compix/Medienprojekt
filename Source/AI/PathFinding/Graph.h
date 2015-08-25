@@ -28,12 +28,28 @@ struct AffectedByExplosion
 struct Bomb
 {
 	Bomb() : range(1), explosionTime(3.f), x(0), y(0) {}
-	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost) : x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost) {}
+	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, bool lightning) 
+		: x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost), lightning(lightning) {}
 
+	uint8_t x, y;
 	uint8_t range;
 	float explosionTime;
-	uint8_t x, y;
 	bool ghost;
+	bool lightning;
+};
+
+struct ExplosionSpread
+{
+	ExplosionSpread() : range(1), explosionTime(3.f), x(0), y(0) {}
+	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, bool lightning)
+		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), ghost(ghost), lightning(lightning) {}
+
+	uint8_t x, y;
+	uint8_t range;
+	float explosionTime;
+	Direction direction;
+	bool ghost;
+	bool lightning;
 };
 
 class Graph : public EntityLayer::IOnChangeListener
@@ -57,7 +73,7 @@ public:
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getPortalNeighbor(uint8_t x, uint8_t y);
 
-	virtual void placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, AffectedByExplosion* affectedByExplosion = nullptr);
+	virtual void placeBomb(const Bomb& bomb, AffectedByExplosion* affectedByExplosion = nullptr);
 
 	template<class T>
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
@@ -68,7 +84,7 @@ public:
 
 	void reset();
 protected:
-	void explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, AffectedByExplosion* affectedByExplosion = nullptr);
+	void explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* affectedByExplosion = nullptr);
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 
 	void spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uint8_t range);

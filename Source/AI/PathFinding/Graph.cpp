@@ -86,7 +86,7 @@ void Graph::update(float deltaTime)
 		auto cell = bombEntity.component<CellComponent>();
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
-		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost));
+		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost, bombComponent->lightning));
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
 	}
@@ -97,7 +97,8 @@ void Graph::update(float deltaTime)
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
 
-		explosionSpread(cell->x, cell->y, spread->range, 0.f, spread->direction, spread->ghost);
+		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->spreadTime, spread->direction, spread->ghost, spread->lightning);
+		explosionSpread(eSpread);
 	}
 
 	// Sort by explosionTime to simulate the correct explosion chain
@@ -106,7 +107,7 @@ void Graph::update(float deltaTime)
 	for (auto& bomb : m_normalBombs)
 	{
 		if (!m_nodeGrid[bomb.x][bomb.y].bombProperties.explosionSimulated)
-			placeBomb(bomb.x, bomb.y, bomb.range, bomb.explosionTime, bomb.ghost);
+			placeBomb(bomb);
 	}
 
 	for (auto& dyingBlock : m_blocksAffectedByExplosion)
@@ -120,20 +121,28 @@ void Graph::update(float deltaTime)
 	}
 }
 
-void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, AffectedByExplosion* affectedEntities)
+void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* affectedEntities)
 {
-	auto currentNode = getNode(x, y);
-	setOnFire(x, y, explosionTime);
+	float explosionTime = spread.explosionTime;
+	auto currentNode = getNode(spread.x, spread.y);
+	setOnFire(spread.x, spread.y, explosionTime);
 
 	// Simulate the explosion:
-	for (int j = 0; j < range; ++j)
+	for (int j = 0; j < spread.range; ++j)
 	{
-		currentNode = getNeighbor(currentNode, direction);
+		auto neighbor = getNeighbor(currentNode, spread.direction);
 
-		if (!currentNode)
+		if (!neighbor || neighbor->properties.hasSolidBlock)
 			break;
 
+		currentNode = neighbor;
 		explosionTime += GameConstants::EXPLOSION_SPREAD_TIME;
+
+		if (currentNode->properties.hasPlayer && affectedEntities)
+		{
+			std::vector<entityx::Entity> players = m_layerManager->getEntitiesWithComponents<InventoryComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
+			affectedEntities->players.insert(affectedEntities->players.end(), players.begin(), players.end());
+		}
 
 		if (currentNode->valid)
 		{			
@@ -143,16 +152,10 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 				if (affectedEntities)
 					affectedEntities->numOfItems++;
 
-				if (!ghost)
-					break; // Items stop explosions.
+				if (spread.ghost)
+					continue; 
 
-				continue;
-			}
-
-			if (currentNode->properties.hasPlayer && affectedEntities)
-			{
-				std::vector<entityx::Entity> players = m_layerManager->getEntitiesWithComponents<InventoryComponent>(GameConstants::MAIN_LAYER, currentNode->x, currentNode->y);
-				affectedEntities->players.insert(affectedEntities->players.end(), players.begin(), players.end());
+				break; // Items stop explosions.
 			}
 		}
 		else
@@ -167,9 +170,10 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 
 					if (currentNode->properties.timeTillExplosion <= explosionTime)
 					{
-						if (!ghost)
-							break;
-						continue;
+						if (spread.ghost)
+							continue;
+
+						break;
 					}
 				}
 
@@ -189,15 +193,24 @@ void Graph::explosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosion
 				if (!currentNode->bombProperties.explosionSimulated)
 				{
 					// Simulate the explosion chain
-					placeBomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, ghost);
+					Bomb bomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, spread.ghost, spread.lightning);
+					placeBomb(bomb);
 				}
 
 				continue; // Bombs don't stop explosions
 			}
 
-			if (!ghost)
-				break; // Explosion was stopped so get outta here.
+			if (spread.ghost && !currentNode->properties.hasSolidBlock)
+				continue;
+
+			break; // Explosion was stopped so get outta here.
 		}
+	}
+
+	if (spread.lightning && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
+	{
+		Bomb bomb(currentNode->x, currentNode->y, 1, explosionTime, spread.ghost, false);
+		placeBomb(bomb);
 	}
 }
 
@@ -249,17 +262,18 @@ void Graph::spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uin
 	}
 }
 
-void Graph::placeBomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, AffectedByExplosion* affectedEntities)
+void Graph::placeBomb(const Bomb& bomb, AffectedByExplosion* affectedEntities)
 {	
-	auto currentNode = getNode(x, y);
-	currentNode->bombProperties.explosionRange = range;
+	auto currentNode = getNode(bomb.x, bomb.y);
+	currentNode->bombProperties.explosionRange = bomb.range;
 	currentNode->bombProperties.explosionSimulated = true;
 
-	float correctExplosionTime = currentNode->properties.affectedByExplosion ? std::min(explosionTime, currentNode->properties.timeTillExplosion) : explosionTime;
+	float correctExplosionTime = currentNode->properties.affectedByExplosion ? std::min(bomb.explosionTime, currentNode->properties.timeTillExplosion) : bomb.explosionTime;
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		explosionSpread(x, y, range, correctExplosionTime, direction, ghost, affectedEntities);
+		ExplosionSpread explosion(bomb.x, bomb.y, bomb.range, correctExplosionTime, direction, bomb.ghost, bomb.lightning);
+		explosionSpread(explosion, affectedEntities);
 	}
 }
 
@@ -341,7 +355,10 @@ void Graph::onEntityAdded(entityx::Entity& entity)
 	}
 
 	if (entity.has_component<SolidBlockComponent>())
+	{
 		removeNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasSolidBlock = true;
+	}	
 }
 
 void Graph::onEntityRemoved(entityx::Entity& entity)
@@ -399,6 +416,7 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 		assert(!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
 		if (!m_layerManager->hasEntityWithOneComponent<BombComponent, BlockComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
 			addNode(cell->x, cell->y);
+		m_nodeGrid[cell->x][cell->y].properties.hasSolidBlock = false;
 	}
 }
 

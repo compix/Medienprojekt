@@ -81,6 +81,9 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 			case ItemType::GHOST_BOMB:
 				inventory->put(BombType::GHOST);
 				break;
+			case ItemType::LIGHTNING_BOMB:
+				inventory->put(BombType::LIGHTNING);
+				break;
 			default: break;
 			}
 
