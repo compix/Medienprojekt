@@ -36,6 +36,7 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 		auto cell = entity.component<CellComponent>();
 		auto direction = entity.component<DirectionComponent>();
 		auto layerComponent = entity.component<LayerComponent>();
+		auto blink = entity.component<BlinkComponent>();
 
 		Entity blocks;
 		int x = 0, y = 0;
@@ -119,10 +120,10 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 			default: break;
 			}
 
-			this->afterImageCounter += dt;
-			if (entity.has_component<SpriteComponent>() && this->afterImageCounter >= 0.03)
+			blink->afterImageCounter += dt;
+			if (entity.has_component<SpriteComponent>() && blink->afterImageCounter >= 0.03)
 			{
-				this->afterImageCounter = 0;
+				blink->afterImageCounter = 0;
 				GameGlobals::entityFactory->createAfterimage(cell->x, cell->y, transform->x, transform->y, entity.component<SpriteComponent>()->sprite, 1.f);
 			}
 		}
