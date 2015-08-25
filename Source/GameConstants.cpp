@@ -48,6 +48,8 @@ namespace GameConstants
 	// Relating to Sounds
 	extern const bool SOUND = true;
 	extern const bool MUSIC = true;
+	extern const float MUSIC_VOLUME = 100.f;
+	extern const float SOUND_VOLUME = 50.f;
 
 	// Relating to AI
 	extern const float AI_UPDATE_TIME = 1.f / 30.f;
