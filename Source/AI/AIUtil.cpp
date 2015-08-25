@@ -33,7 +33,7 @@ bool AIUtil::isSafePath(entityx::Entity& entity, AIPath& path, float* minExplosi
 			float exploTime = node->properties.timeTillExplosion - timePerCell * (i - path.curNode);
 			if (minExplosionTime)
 				*minExplosionTime = std::min(*minExplosionTime, exploTime);
-			if (exploTime <= timePerCell + GameConstants::AI_UPDATE_TIME * 3.f)
+			if (exploTime >= - timePerCell * 2.f - GameConstants::AI_UPDATE_TIME * 3.f && exploTime <= timePerCell + GameConstants::AI_UPDATE_TIME * 3.f)
 				return false;
 		}
 	}

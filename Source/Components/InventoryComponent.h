@@ -80,7 +80,8 @@ struct InventoryComponent
 		if (GameConstants::INIT_PUNCH_SKILL)
 			put(SkillType::PUNCH);
 
-		put(BombType::NORMAL);
+		if (GameConstants::INIT_BLINK_SKILL)
+			put(SkillType::BLINK);
 	}
 
 	int bombCount;
@@ -102,4 +103,5 @@ struct InventoryComponent
 	inline BombType activeBomb() { return activeBombs.empty() ? BombType::NORMAL : activeBombs.top(); }
 	inline void put(BombType bombType) { activeBombs.put(bombType); }
 	inline bool isGhostBombActive() { return activeBomb() == BombType::GHOST; }
+	inline bool isLightningBombActive() { return activeBomb() == BombType::LIGHTNING; }
 };

@@ -28,7 +28,7 @@ struct Smells
 struct NodeProperties
 {
 	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), hasItem(false), 
-		hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr) {}
+		hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr), hasSolidBlock(false) {}
 
 	float timeTillExplosion;
 
@@ -39,6 +39,7 @@ struct NodeProperties
 	bool hasPlayer;
 	bool hasPortal;
 	bool hasBlock;
+	bool hasSolidBlock;
 
 	bool affectedByExplosion;
 };

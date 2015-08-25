@@ -11,7 +11,8 @@ enum class ItemType : uint8_t
 	PUNCH_SKILL,
 	HOLD_BOMB_SKILL,
 	BLINK_SKILL,
-	GHOST_BOMB
+	GHOST_BOMB,
+	LIGHTNING_BOMB
 };
 
 struct ItemComponent

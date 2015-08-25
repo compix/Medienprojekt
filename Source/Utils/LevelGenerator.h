@@ -41,6 +41,7 @@ struct DefaultConfig : LevelConfig
 		blockDensity = 0.85f;
 		float uniformChance = blockDensity * 0.125f;
 		uint16_t itemCount = uint16_t(uniformChance * maxBlockCount);
+		
 		itemSpawnProperty(ItemType::BOMB_CAP_BOOST,		 uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::ANTI_MAGNET_SKILL,	 uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::BOMB_KICK_SKILL,	 uint16_t(itemCount), uint16_t(itemCount));
@@ -51,6 +52,7 @@ struct DefaultConfig : LevelConfig
 		itemSpawnProperty(ItemType::SPEED_MULTIPLICATOR, uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::BLINK_SKILL,		 uint16_t(itemCount), uint16_t(itemCount));
 		itemSpawnProperty(ItemType::GHOST_BOMB,			 uint16_t(itemCount), uint16_t(itemCount));
+		itemSpawnProperty(ItemType::LIGHTNING_BOMB,		 uint16_t(itemCount), uint16_t(itemCount));
 	}
 };
 

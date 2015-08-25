@@ -54,7 +54,7 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 	if (inventory->isHoldingBomb)
 	{
 		auto cell = whoThrows.component<CellComponent>();
-		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, whoThrows, inventory->isGhostBombActive());
+		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, whoThrows, inventory->isGhostBombActive(), inventory->isLightningBombActive());
 		int x = 0, y = 0;
 		JumpSystem::adjustXY_RelatingToTheDirection(&x, &y, 
 													GameConstants::PUNCH_DISTANCE,

@@ -24,7 +24,8 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 	bool spotAffectedByExplosion = goal->properties.affectedByExplosion;
 
 	AffectedByExplosion affectedEntities;
-	pathEngine->getSimGraph()->placeBomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->isGhostBombActive(), &affectedEntities);
+	Bomb bomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->isGhostBombActive(), inventory->isLightningBombActive());
+	pathEngine->getSimGraph()->placeBomb(bomb, &affectedEntities);
 
 	uint8_t numOfAffectedBlocks = affectedEntities.numOfBlocks;
 	bool blocksAffected = numOfAffectedBlocks > 0;
@@ -38,13 +39,11 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 		// Found a potential spot -> check if a safe escape path exists
 		AIPath safePath;
 		pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
+		found = safePath.nodes.size() >= 2;
 
-		if (safePath.nodes.size() < 2 || !AIUtil::isSafePath(entity, safePath))
-			found = false;
-
-		if (found && spotAffectedByExplosion)
+		if (found)
 		{
-			// Check the full path (to bomb and back to safety) to be sure if it's really safe
+			// Check the full path for safety
 			AIPath fullPath;
 			fullPath.attach(path);
 			fullPath.attach(safePath);

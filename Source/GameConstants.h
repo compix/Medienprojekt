@@ -21,6 +21,7 @@ namespace GameConstants
 	extern const bool INIT_PORTAL_SKILL;		// Ob zu beginn von Spielern Portale gesetzt werden können.
 	extern const bool INIT_ANTI_MAGNET;			// Ob gekickte Bomben von Beginn an von Spielern abprallen.
 	extern const bool INIT_PUNCH_SKILL;			// Ob Spieler zu beginn Bomben schlagen können.
+	extern const bool INIT_BLINK_SKILL;			// Ob Spieler zu Beginn blinken können.
 	extern const int PUNCH_DISTANCE;
 	extern const float BLINK_SPEED;
 
