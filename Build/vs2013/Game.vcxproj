@@ -262,6 +262,7 @@
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\GameGlobals.h" />
     <ClInclude Include="..\..\Source\Graphics\Particle.h" />
+    <ClInclude Include="..\..\Source\Graphics\ParticleEffects.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleManager.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h" />
@@ -379,6 +380,7 @@
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\GameConstants.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp" />

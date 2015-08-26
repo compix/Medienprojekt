@@ -5,10 +5,14 @@
 #include "../Behaviors/FollowPath.h"
 #include <entityx/entityx.h>
 
+typedef std::function<bool(entityx::Entity& entity)> ActionActivationCondition;
+
 class BaseAction
 {
 public:
-	BaseAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false) {}
+	BaseAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false), 
+		m_activationCondition([](entityx::Entity& e){ return true; }) {}
+
 	virtual ~BaseAction() {}
 
 	virtual bool valid(entityx::Entity& entity) = 0;
@@ -21,12 +25,21 @@ public:
 	virtual inline void setNumOfChecks(uint8_t num) { m_numOfChecks = num; };
 	virtual inline void setRandomPaths(bool randomPaths) { m_randomPaths = randomPaths; }
 	virtual inline void rest() { m_resting = true; }
+	virtual inline bool isResting() { return m_resting; }
+	virtual inline void activate(bool active) { m_active = active; }
+	virtual inline bool isActive() { return m_active; }
+	virtual inline void setActivationCondition(ActionActivationCondition actionActivationCondition) { m_activationCondition = actionActivationCondition; }
+	
+	virtual inline void checkForActivation(entityx::Entity& entity) { m_active = m_activationCondition(entity); }
 
 	virtual std::string logString(entityx::Entity& entity) { return ""; }
 protected:
 	uint8_t m_numOfChecks;
 	uint8_t m_randomPaths;
 	bool m_resting;
+	bool m_active;
+
+	ActionActivationCondition m_activationCondition;
 };
 
 typedef std::shared_ptr<BaseAction> ActionPtr;

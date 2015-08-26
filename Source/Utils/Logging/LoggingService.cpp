@@ -4,6 +4,9 @@
 #include "Logger.h"
 #include <sstream>
 #include <ctime>
+#include <chrono>
+
+typedef std::chrono::system_clock SysClock;
 
 LoggingService::LoggingService(const std::string filename)
 	:m_filename(filename), m_readBuffer(&m_requestBuffer1), m_writeBuffer(&m_requestBuffer2), m_readyForFlip(false), m_active(false), m_thread()
@@ -15,12 +18,17 @@ LoggingService::LoggingService(const std::string filename)
 
 void LoggingService::log(const std::string& msg)
 {
+	using namespace std::chrono;
+	milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	std::size_t fractSeconds = ms.count() % 1000;
+
 	time_t now = time(0);
 	tm* d = std::localtime(&now);
 	std::stringstream ss;
 	ss << (d->tm_hour    < 10 ? "0" : "") << d->tm_hour    << ":" 
 	   << (d->tm_min     < 10 ? "0" : "") << d->tm_min     << ":" 
-	   << (d->tm_sec     < 10 ? "0" : "") << d->tm_sec     << " "
+	   << (d->tm_sec     < 10 ? "0" : "") << d->tm_sec     << ":"
+	   << (fractSeconds  < 10 ? "0" : "") << fractSeconds  << " "
 	   << (d->tm_mday    < 10 ? "0" : "") << d->tm_mday    << "."
 	   << (1 + d->tm_mon < 10 ? "0" : "") << 1 + d->tm_mon << "."
 	   << 1900 + d->tm_year << " - ";

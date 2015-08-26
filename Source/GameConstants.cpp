@@ -20,7 +20,7 @@ namespace GameConstants
 	extern const bool INIT_PORTAL_SKILL = false;
 	extern const bool INIT_ANTI_MAGNET = false;
 	extern const bool INIT_PUNCH_SKILL = false;
-	extern const bool INIT_BLINK_SKILL = true;
+	extern const bool INIT_BLINK_SKILL = false;
 	extern const int PUNCH_DISTANCE = 2;
 	extern const float BLINK_SPEED = 20.f;
 

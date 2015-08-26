@@ -52,7 +52,6 @@ void Graph::update(float deltaTime)
 		for (auto y = 1; y < m_height - 1; ++y)
 		{
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
-			m_nodeGrid[x][y].bombProperties.explosionSimulated = false;
 			m_nodeGrid[x][y].properties.timeTillExplosion = 0.f;
 			m_nodeGrid[x][y].smells.dyingBlock = 0;
 		}
@@ -88,8 +87,8 @@ void Graph::update(float deltaTime)
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->type));
-		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
-		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
+		auto& bombProperties = m_nodeGrid[cell->x][cell->y].bombProperties;
+		bombProperties = BombProperties(bombComponent->explosionRange, timerComponent->seconds, bombComponent->type);
 	}
 
 	// Go through all explosion components and simulate the explosion.
@@ -194,7 +193,8 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 				if (!currentNode->bombProperties.explosionSimulated)
 				{
 					// Simulate the explosion chain
-					Bomb bomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, spread.bombType);
+					auto& bombProperties = currentNode->bombProperties;
+					Bomb bomb(currentNode->x, currentNode->y, bombProperties.explosionRange, explosionTime, bombProperties.type);
 					placeBomb(bomb);
 				}
 

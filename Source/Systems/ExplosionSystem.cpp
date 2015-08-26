@@ -2,17 +2,10 @@
 #include "../Components/ExplosionComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/LayerComponent.h"
-#include "../Components/LinkComponent.h"
-#include "../Components/DestructionComponent.h"
 #include "../GameGlobals.h"
 #include "../Components/SolidBlockComponent.h"
-#include "../Components/EffectComponent.h"
-#include "../Components/InventoryComponent.h"
-#include "../Components/BombComponent.h"
-#include "../Components/FloorComponent.h"
-#include "../Components/HealthComponent.h"
-#include "../Components/PortalComponent.h"
 #include "../Components/ExplosionStopComponent.h"
+#include "../Components/InventoryComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
@@ -50,9 +43,16 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				}
 
 				if (!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
-					explosionSpreadRequests.push_back(ExplosionSpreadRequest(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->bombType));
-				else if (spread->bombType == BombType::LIGHTNING)
-					explosionSpreadRequests.push_back(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->bombType));
+				{
+					ExplosionSpreadRequest request(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->bombType);
+					explosionSpreadRequests.push_back(request);
+				}
+					
+				else if (spread->bombType == BombType::LIGHTNING || spread->bombType == BombType::LIGHTNING_PEAK)
+				{
+					ExplosionSpreadRequest request(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->bombType));
+					explosionSpreadRequests.push_back(request);
+				}	
 			}
 
 			spread->stopped = true;

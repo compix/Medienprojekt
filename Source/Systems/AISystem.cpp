@@ -28,6 +28,7 @@
 #include "../AI/PathRatings/RateBlink.h"
 #include "../AI/Behaviors/UseDirectionSkill.h"
 #include "../Components/LayerComponent.h"
+#include "../Components/BlockComponent.h"
 
 AISystem::AISystem(LayerManager* layerManager)
 	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
@@ -38,10 +39,10 @@ AISystem::AISystem(LayerManager* layerManager)
 
 void AISystem::init()
 {
-	for (auto entity : GameGlobals::entities->entities_with_components<AIComponent, CellComponent, InputComponent>())
+	for (auto entity : GameGlobals::entities->entities_with_components<AIComponent, CellComponent, InputComponent, InventoryComponent>())
 	{
 		auto aiComponent = entity.component<AIComponent>();
-
+		
 		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
 
@@ -58,9 +59,25 @@ void AISystem::init()
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
 
-		aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
+		//aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 
 		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
+
+		// Set the activation conditions
+		aiComponent->actions[ActionType::PLACE_PORTAL]->setActivationCondition([&](entityx::Entity& e)
+		{
+			if (e.has_component<InventoryComponent>())
+			{
+				auto inventory = e.component<InventoryComponent>();
+				return inventory->isActive(SkillType::PLACE_PORTAL);
+			}
+
+			return false;
+		});
+
+		aiComponent->actions[ActionType::WAIT]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<BlockComponent>(); });
+		aiComponent->actions[ActionType::DESTROY_BLOCK]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<BlockComponent>(); });
+		aiComponent->actions[ActionType::GET_ITEM]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<ItemComponent>(); });
 	}
 }
 
@@ -157,6 +174,11 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		auto aiComponent = entity.component<AIComponent>();
 		auto input = entity.component<InputComponent>();
 
+		// Action activation routine: No need to always run the PathFinding algorithm -> deactivate actions
+		// Example: No blocks in level -> No need to find a path to destroy blocks -> deactivate path finding action
+		for (auto& pair : aiComponent->actions)
+			pair.second->checkForActivation(entity);
+
 		// Reset inputs
 		input->moveX = 0.f;
 		input->moveY = 0.f;
@@ -175,6 +197,10 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			for (auto& pair : aiComponent->actions)
 			{
 				auto& action = pair.second;
+
+				if (!action->isActive())
+					continue;
+
 				action->preparePath(entity);
 
 				if (!bestAction || bestAction->getRating() < action->getRating())

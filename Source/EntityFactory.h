@@ -34,12 +34,12 @@ public:
 	Entity createBomb(uint8_t cellX, uint8_t cellY, Entity owner, BombType type);
 	Entity createPortal(uint8_t cellX, uint8_t cellY, Entity owner, bool linked);
 	Entity createAfterimage(int cellX, int cellY, float posX, float posY, sf::Sprite sprite, float time);
-	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, BombType bombType);
 	/**
 	* ghost = won't be stopped by anything except solid blocks
 	* lightning = 1 range explosion when it is stopped
 	*/
 	void createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, BombType bombType);
+	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, BombType bombType);
 
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 

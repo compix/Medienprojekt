@@ -47,6 +47,7 @@
 #include "Components/AfterimageComponent.h"
 #include "Components/ExplosionStopComponent.h"
 #include "Components/AIComponent.h"
+#include "Graphics/ParticleEffects.h"
 #include "Components/NoNetComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
@@ -332,21 +333,6 @@ Entity EntityFactory::createPortal(uint8_t cellX, uint8_t cellY, Entity owner, b
 			.colorFunction(Gradient<RGB>(GradientType::SMOOTH, RGB(170, 255, 255), ownerColor))
 			.position((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f
 			);
-
-		/*
-		emitter->spawnTime(0.01f)
-			.maxLifetime(5.f)
-			.speedModifier(1.f)
-			.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
-			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(5, 5)))
-			.spawnWidth(GameConstants::CELL_WIDTH)
-			.spawnHeight(GameConstants::CELL_HEIGHT)
-			.spawnDuration(100.f)
-			.transparencyFunction(Gradient<float>(GradientType::REGRESS, 255, 0))
-			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 150, 252), RGB(0, 255, 252)))
-			.position((float)GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f, (float)GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f
-			);*/
 	}
 
 	GameGlobals::events->emit<PortalCreatedEvent>(entity, cellX, cellY, owner);
@@ -373,14 +359,39 @@ Entity EntityFactory::createAfterimage(int cellX, int cellY, float posX, float p
 	return entity;
 }
 
+void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, BombType bombType)
+{
+	entityx::Entity explosions[4];
+	for (uint8_t i = 0; i < 4; ++i)
+	{
+		Direction direction = static_cast<Direction>(i);
+		explosions[i] = createExplosion(cellX, cellY, direction, range, spreadTime, bombType);
+	}
+
+	// Don't teleport if placed on a portal
+	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
+	if (portal)
+	{
+		for (auto e : explosions)
+			e.assign<PortalMarkerComponent>(portal.id());
+	}
+}
+
 Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, BombType bombType)
 {
+
+	if (bombType == BombType::LIGHTNING && range == 0)
+	{
+		createExplosion(cellX, cellY, 1, spreadTime, BombType::LIGHTNING_PEAK);
+		return Entity();
+	}
+
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
 
-	float width = GameConstants::CELL_WIDTH;
-	float height = GameConstants::CELL_HEIGHT;
+	float width = float(GameConstants::CELL_WIDTH);
+	float height = float(GameConstants::CELL_HEIGHT);
 
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
@@ -398,36 +409,20 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 		break;
 	case Direction::DOWN:
 		break;
+	default:
+		assert(false);
 	}
 
-	/*
-	entity.assign<LightComponent>(sf::Vector2f(transformComponent.x, transformComponent.y), sf::Color(255, 140, 0), 100.f, 360.f, 0.f);
-	auto lightComponent = entity.component<LightComponent>();
-	lightComponent->light.setShader(m_shaderManager->getLightShader());
-	lightComponent->light.setAttenuation(sf::Vector3f(200.f, 10.f, 0.2f));
-	*/
-
-	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
-	auto emitter = manager->spawnEmitter();
-
-	if (emitter)
+	switch (bombType)
 	{
-		entity.assign<ParticleComponent>();
-		entity.component<ParticleComponent>()->emitter = emitter;
-
-		emitter->spawnTime(0.0015f)
-			.maxLifetime(0.25f)
-			.gravityModifier(1.f)
-			.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
-			.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-			.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
-			.burstParticleNumber(10)
-			.burstTime(0.5f)
-			.spawnWidth(50 - 5)
-			.spawnHeight(50)
-			.spawnDuration(0.3f)
-			.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(5, 42, 252), RGB(255, 102, 0)));
+	case BombType::GHOST: entity.assign<ParticleComponent>(ParticleEffects::ghostBomb()); break;
+	case BombType::LIGHTNING: entity.assign<ParticleComponent>(ParticleEffects::lightningBomb(range)); break;
+	case BombType::LIGHTNING_PEAK: entity.assign<ParticleComponent>(ParticleEffects::lightningBombPeak()); break;
+	default: entity.assign<ParticleComponent>(ParticleEffects::normalBomb()); break;
 	}
+
+	if (!entity.component<ParticleComponent>()->emitter)
+		entity.remove<ParticleComponent>();
 
 	entity.assign<SpreadComponent>(direction, range, spreadTime, bombType);
 	entity.assign<ExplosionComponent>();
@@ -442,28 +437,8 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 
 	m_layerManager->add(entity);
 
-	if (bombType == BombType::LIGHTNING && range == 0)
-		createExplosion(cellX, cellY, 1, spreadTime, BombType::NORMAL);
-
 	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime, bombType);
 	return entity;
-}
-
-void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, BombType bombType)
-{
-	entityx::Entity explosions[4];
-	explosions[0] = createExplosion(cellX, cellY, Direction::DOWN, range, spreadTime, bombType);
-	explosions[1] = createExplosion(cellX, cellY, Direction::UP, range, spreadTime, bombType);
-	explosions[2] = createExplosion(cellX, cellY, Direction::LEFT, range, spreadTime, bombType);
-	explosions[3] = createExplosion(cellX, cellY, Direction::RIGHT, range, spreadTime, bombType);
-
-	// Don't teleport if placed on a portal
-	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
-	if (portal)
-	{
-		for (auto e : explosions)
-			e.assign<PortalMarkerComponent>(portal.id());
-	}
 }
 
 Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)
