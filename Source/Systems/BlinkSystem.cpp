@@ -132,7 +132,7 @@ void BlinkSystem::receive(const SkillEvent& evt)
 			// Serverseitig
 			if (body.valid())
 			{
-				entity.remove<InputComponent>();
+				entity.component<InputComponent>()->disabled = true;
 				body->body->SetType(b2_dynamicBody);
 				body->body->SetBullet(true);
 			}
@@ -144,7 +144,7 @@ void BlinkSystem::receive(const SkillEvent& evt)
 			// Serverseitig
 			if (body.valid())
 			{
-				entity.assign<InputComponent>();
+				entity.component<InputComponent>()->disabled = false;
 				body->body->SetBullet(false);
 				body->body->SetType(b2_dynamicBody);
 				body->body->SetLinearVelocity(b2Vec2_zero);

@@ -27,6 +27,9 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 	for (auto entity : entityManager.entities_with_components<InputComponent, CellComponent, InventoryComponent>())
 	{
 		auto input = entity.component<InputComponent>();
+		if (input->disabled)
+			continue;
+
 		auto cell = entity.component<CellComponent>();
 		auto inventory = entity.component<InventoryComponent>();
 

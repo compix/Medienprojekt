@@ -8,4 +8,5 @@ struct InputComponent
 	bool bombButtonPressed = false;
 	bool skillButtonPressed = false;
 	uint64_t packetNumber = 0; // for netcode
+	bool disabled = false;
 };

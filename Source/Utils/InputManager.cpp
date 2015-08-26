@@ -28,16 +28,7 @@ InputManager::InputManager()
 	GameGlobals::events->subscribe<MenuShowEvent>(*this);
 	GameGlobals::events->subscribe<sf::Event>(*this);
 
-	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
-	{
-		PlayerInput &pi = m_playerInputs[i];
-		pi.moveX = 0;
-		pi.moveY = 0;
-		for (int j = 0; j < PlayerButton::COUNT; j++)
-		{
-			pi.buttonPressed[j] = false;
-		}
-	}
+	reset();
 	
 	loadConfigFromJson("input.json");
 	
@@ -49,6 +40,20 @@ InputManager::InputManager()
 }
 
 InputManager::~InputManager() { }
+
+void InputManager::reset()
+{
+	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
+	{
+		PlayerInput &pi = m_playerInputs[i];
+		pi.moveX = 0;
+		pi.moveY = 0;
+		for (int j = 0; j < PlayerButton::COUNT; j++)
+		{
+			pi.buttonPressed[j] = false;
+		}
+	}
+}
 
 bool InputManager::loadConfigFromJson(const std::string& path) {
 	Json::Value root;
@@ -151,6 +156,11 @@ void InputManager::receive(const MenuShowEvent &evt)
 		GameGlobals::events->unsubscribe<sf::Event>(*this);
 	else
 		GameGlobals::events->subscribe<sf::Event>(*this);
+}
+
+void InputManager::receive(const ResetGameEvent& evt)
+{
+	reset();
 }
 
 void InputManager::update()
