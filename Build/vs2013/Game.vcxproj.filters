@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -15,6 +15,9 @@
     </Filter>
     <Filter Include="AI\PathRatings">
       <UniqueIdentifier>{A3327241-8F00-6647-7894-D66D640142AC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Personality">
+      <UniqueIdentifier>{D86CCD64-C43A-C16A-ADCE-3191993B9DCF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Animation">
       <UniqueIdentifier>{859E00A2-F108-B518-3A47-66BEA6F0926D}</UniqueIdentifier>
@@ -58,9 +61,6 @@
     <Filter Include="Utils\Logging">
       <UniqueIdentifier>{8C0201F6-F8C2-7C2C-C1FD-C5A92D7DC108}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AI\Personality">
-      <UniqueIdentifier>{eee616ce-a4e0-4c62-a18c-cd41070b2900}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AI\AIUtil.h">
@@ -93,6 +93,9 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
@@ -118,6 +121,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateAttackEnemy.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlink.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
@@ -158,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h">
       <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h">
+      <Filter>AI\Personality</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Animation\AnimationType.h">
       <Filter>Animation</Filter>
@@ -224,6 +233,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\ExplosionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\ExplosionStopComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\FloorComponent.h">
@@ -560,6 +572,12 @@
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\ActiveQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h">
       <Filter>Utils\AssetManagement</Filter>
     </ClInclude>
@@ -626,27 +644,6 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\ExplosionStopComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h">
-      <Filter>AI\Personality</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Utils\ActiveQueue.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlink.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Graphics\ParticleEffects.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -670,6 +667,9 @@
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
@@ -689,6 +689,9 @@
       <Filter>AI\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlink.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
@@ -729,6 +732,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp">
       <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp">
+      <Filter>AI\Personality</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
       <Filter>Animation</Filter>
@@ -881,6 +887,9 @@
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Utils\AssetManagement\AILoader.cpp">
+      <Filter>Utils\AssetManagement</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp">
       <Filter>Utils\AssetManagement</Filter>
     </ClCompile>
@@ -937,21 +946,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp">
-      <Filter>AI\Personality</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Utils\AssetManagement\AILoader.cpp">
-      <Filter>Utils\AssetManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlink.cpp">
-      <Filter>AI\PathRatings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp">
-      <Filter>AI\Behaviors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

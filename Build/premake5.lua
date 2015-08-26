@@ -35,7 +35,7 @@ testDir			= rootDir .. "/Test"
 buildDir		= (_ACTION)
 
 -- [start] Settings that are true for all projects
-configurations { "Debug", "Release" }
+configurations { "Debug", "Release", "Profile" }
 if isLinux and isNetbeans then
 	location ("netbeans-linux")
 else
@@ -51,8 +51,11 @@ filter { "action:vs*" }
 filter { "Debug" }
 	defines { isVisualStudio and "_DEBUG" or "DEBUG"}
 	flags { "Symbols" }
+	
+filter { "Profile" }
+	flags { "Symbols" }
 
-filter { "Release" }
+filter { "Release or Profile" }
 	flags {"ReleaseRuntime"}
 	defines { "NDEBUG" }
 	--flags { "Optimize" }
@@ -119,6 +122,17 @@ solution "Game"
 				"cppformat-s",
 				"SFML-s"
 			}
+		filter { "Profile" }
+			targetdir( gameDir )
+			links {
+				"TGUI-s-p",
+				"Box2D-s-p",
+				"enet-s-p",
+				"jsoncpp-s-p",
+				"entityx-s-p",
+				"cppformat-s-p",
+				"SFML-s-p"
+			}
 			
 		-- no filter
 		filter {}
@@ -152,6 +166,8 @@ solution "Thirdparty"
 	
 	filter { "Release" }
 		targetsuffix  "-s"
+	filter { "Profile" }
+		targetsuffix  "-s-p"
 	filter { "Debug" }
 		targetsuffix  "-s-d"
 

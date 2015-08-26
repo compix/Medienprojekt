@@ -102,7 +102,7 @@ void LevelGenerator::spawnItems()
 {
 	// If too many items were specified then some of the rare items might not spawn at all
 	// Solution: Alternate item types in the vector
-	std::unordered_map<ItemType, int> itemCounts;
+	std::map<ItemType, int> itemCounts;
 	for (auto& itemSpawnProperty : m_levelConfig.itemSpawnProperties)
 		itemCounts[itemSpawnProperty.itemType] = Random::getInt(itemSpawnProperty.min, itemSpawnProperty.max);
 
