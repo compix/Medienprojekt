@@ -2,6 +2,7 @@
 #include <entityx/entityx.h>
 #include "../AI/PathFinding/PathEngine.h"
 #include "../AI/AIVisualizer.h"
+#include "../GameGlobals.h"
 
 struct BombCreatedEvent;
 struct PortalCreatedEvent;

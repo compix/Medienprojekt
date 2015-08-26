@@ -1,18 +1,20 @@
 #include "MenuPageRoot.h"
 #include "../../Events/ExitEvent.h"
+#include "../../Events/ForceDisconnectEvent.h"
 #include "../Menu.h"
 #include "../../GameGlobals.h"
+#include "../../Events/CreateGameEvent.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
 	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_settingsPage(menu), m_creditsPage(menu)
 {
-	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
+	createPicture(800, 600, "Assets/ui/background.png");
 
-	auto x = 300;
-	int y = 150;
-	auto stepY = 60;
-	auto width = 200;
-	auto height = 40;
+	auto x = 300.0f;
+	auto y = 150.0f;
+	auto stepY = 60.0f;
+	auto width = 200.0f;
+	auto height = 40.0f;
 
 	tgui::Button::Ptr button = createButton(x, y, width, height, "Create Game");
 	button->bindCallback(&MenuPageRoot::onCreateGame, this, tgui::Button::LeftMouseClicked);
@@ -30,8 +32,21 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	button->bindCallback(&MenuPageRoot::onCredits, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
-	button = createButton(x, y, width, height, "Exit");
-	button->bindCallback(&MenuPageRoot::onExit, this, tgui::Button::LeftMouseClicked);
+	m_exitButton = createButton(x, y, width, height, "Exit");
+	m_exitButton->bindCallback(&MenuPageRoot::onExit, this, tgui::Button::LeftMouseClicked);
+
+	GameGlobals::events->subscribe<ForceDisconnectEvent>(*this);
+	GameGlobals::events->subscribe<StartGameEvent>(*this);
+}
+
+void MenuPageRoot::receive(const ForceDisconnectEvent& evt)
+{
+	m_exitButton->setText("Exit");
+}
+
+void MenuPageRoot::receive(const StartGameEvent& evt)
+{
+	m_exitButton->setText("Exit to Mainmenu");
 }
 
 void MenuPageRoot::onCreateGame()
@@ -56,5 +71,8 @@ void MenuPageRoot::onCredits()
 
 void MenuPageRoot::onExit()
 {
-	GameGlobals::events->emit<ExitEvent>();
+	if (GameGlobals::game.get())
+		GameGlobals::events->emit<ForceDisconnectEvent>();
+	else
+		GameGlobals::events->emit<ExitEvent>();
 }

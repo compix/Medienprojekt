@@ -96,8 +96,8 @@ int Main::run()
 			{
 				if (GameGlobals::game)
 					GameGlobals::game->refreshView();
-				menuView.setSize(event.size.width, event.size.height);
-				screenView.setSize(event.size.width, event.size.height);
+				menuView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
+				screenView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
 				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
@@ -198,14 +198,6 @@ void Main::receive(const PreloadEvent& evt)
 	if (evt.progress == evt.total)
 	{
 		AnimatorManager::init();
-
-		// Create dummy local game
-		std::vector<CreateGamePlayerInfo> players;
-		players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
-		players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
-		players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::COMPUTER));
-		players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::COMPUTER));
-		m_events.emit<CreateGameEvent>(21, 21, players);
 	}
 }
 

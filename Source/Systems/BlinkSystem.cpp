@@ -106,8 +106,8 @@ void BlinkSystem::spawnAfterImages(entityx::Entity &entity, entityx::TimeDelta d
 	auto blink = entity.component<BlinkComponent>();
 	auto cell = entity.component<CellComponent>();
 	auto transform = entity.component<TransformComponent>();
-	blink->afterImageCounter += dt;
-	if (entity.has_component<SpriteComponent>() && blink->afterImageCounter >= 0.03)
+	blink->afterImageCounter += static_cast<float>(dt);
+	if (entity.has_component<SpriteComponent>() && blink->afterImageCounter >= 0.03f)
 	{
 		blink->afterImageCounter = 0;
 		GameGlobals::entityFactory->createAfterimage(cell->x, cell->y, transform->x, transform->y, entity.component<SpriteComponent>()->sprite, 1.f);

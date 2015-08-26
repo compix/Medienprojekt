@@ -77,17 +77,17 @@ void ChatRenderSystem::renderEntries()
 {
 	sf::Color nameColor = sf::Color::Green;
 	sf::Color messageColor = sf::Color::White;
-	int x = 0;
-	int y = 0;
+	float x = 0;
+	float y = 0;
 	if (m_moveUpTime > 0)
-		y = 2 * m_moveUpTime * m_lineSpacing;
+		y = static_cast<float>(2 * m_moveUpTime * m_lineSpacing);
 	int index = m_oldestEntry;
 	do {
 		auto &entry = m_entries[index];
 		if (entry.timeLeft <= 0)
 			return;
 
-		nameColor.a = messageColor.a = 255 * std::min(1.0, entry.timeLeft);
+		nameColor.a = messageColor.a = static_cast<sf::Uint8>(255 * std::min(1.0, entry.timeLeft));
 
 		entry.name.setPosition(x, y);
 		entry.message.setPosition(x + entry.name.getLocalBounds().width, y);

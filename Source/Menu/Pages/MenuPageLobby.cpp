@@ -16,15 +16,15 @@
 MenuPageLobby::MenuPageLobby(Menu &menu)
 	:MenuPage(menu)
 {
-	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
+	createPicture(800, 600, "Assets/ui/background.png");
 	createLabel(50, 50, "Lobby");
 
-	auto readySize = 40;
-	auto x1 = 50;
-	auto x2 = 210;
-	auto y = 120;
-	auto stepY = 50;
-	auto labelYOffset = 6;
+	auto readySize = 40.0f;
+	auto x1 = 50.0f;
+	auto x2 = 210.0f;
+	auto y = 120.0f;
+	auto stepY = 50.0f;
+	auto labelYOffset = 6.0f;
 
 	for (int i = 0; i < GameConstants::MAX_PLAYERS; i++)
 	{

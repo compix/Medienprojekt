@@ -43,6 +43,7 @@ void Menu::receive(const PreloadEvent& evt)
 	if (evt.progress == evt.total)
 	{
 		popPage();
+		pushPage(&m_rootPage);
 		GameGlobals::events->unsubscribe<PreloadEvent>(*this);
 		GameGlobals::events->subscribe<sf::Event>(*this);
 	}
