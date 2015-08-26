@@ -4,11 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include "../Utils/Math.h"
-#include <cinttypes>
 #include "../Utils/AssetManagement/TexturePacker.h"
-#include <../entityx/entityx/entityx.h>
+#include "../Utils/Colors.h"
+#include <entityx/entityx.h>
 
-struct RGB;
 const float PARTICLE_GRAVITY = 9.81f;
 
 typedef std::function < float(float) > MathFunction; // returns f(time)
@@ -67,9 +66,9 @@ public:
 	void setTexture(Assets::Texture* texture);
 private:
 	void spawnParticle();
-	void update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut);
+	void update(Particle& p, float deltaTime);
 
-	void updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size);
+	void updateQuad(int vertexStart, Particle& p);
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
@@ -115,4 +114,11 @@ private:
 	MathFunction m_transparencyFunction;
 
 	bool m_scheduledForRemoval;
+
+	float m_cachedTime;
+	float m_cachedAngularVelocity;
+	sf::Vector2f m_cachedVelocity;
+	sf::Vector2f m_cachedSize;
+	sf::Color m_cachedColor;
+	RGB m_cachedColorRGB;
 };

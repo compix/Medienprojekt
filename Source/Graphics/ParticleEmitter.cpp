@@ -2,8 +2,6 @@
 #include "../Utils/Random.h"
 #include "../Utils/Colors.h"
 #include "../Utils/Math.h"
-#include "ParticleManager.h"
-#include <iostream>
 #include <float.h>
 #include "../Components/TransformComponent.h"
 
@@ -13,6 +11,7 @@ ParticleEmitter::ParticleEmitter()
 }
 
 ParticleEmitter::ParticleEmitter(uint32_t maxParticles)
+	: m_cachedTime(-FLT_MAX)
 {
 	m_particles.resize(maxParticles);
 	m_vertices.resize(maxParticles * 4);
@@ -115,8 +114,8 @@ void ParticleEmitter::update(float deltaTime)
 			continue;
 		}
 
-		update(p, deltaTime, color, size);
-		updateQuad(i * 4, p, color, size);
+		update(p, deltaTime);
+		updateQuad(i * 4, p);
 
 		i++;
 	}
@@ -124,13 +123,30 @@ void ParticleEmitter::update(float deltaTime)
 	m_lastPos = m_pos;
 }
 
-void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, sf::Vector2f& sizeOut)
+void ParticleEmitter::update(Particle& p, float deltaTime)
 {
 	float t = (m_maxLifetime - p.lifetime) / m_maxLifetime; // normalized time: [0, 1]
+	if (!Math::nearEq(t, m_cachedTime))
+	{
+		m_cachedTime = t;
+		m_cachedVelocity = m_velocityFunction(t);
+		m_cachedAngularVelocity = m_angularVelocityFunction(t);
+		p.rotation += m_cachedAngularVelocity;
+		m_cachedColorRGB = m_colorFunction(t);
+		m_cachedColor.r = static_cast<sf::Uint8>(m_cachedColorRGB.r);
+		m_cachedColor.g = static_cast<sf::Uint8>(m_cachedColorRGB.g);
+		m_cachedColor.b = static_cast<sf::Uint8>(m_cachedColorRGB.b);
+		m_cachedColor.a = static_cast<sf::Uint8>(m_transparencyFunction(t));
+		m_cachedSize = m_sizeFunction(t);
+	}
 
-	p.rotation += m_angularVelocityFunction(t);
-	sf::Vector2f velocity = m_velocityFunction(t);
+	sf::Vector2f velocity = m_cachedVelocity;
 	Math::rotate(velocity, p.angle);
+
+	velocity *= m_speedModifier;
+	velocity.y += PARTICLE_GRAVITY * m_gravityModifier;
+
+	p.pos += velocity * deltaTime;
 
 	if (m_following && m_target.valid() && m_target.has_component<TransformComponent>())
 	{
@@ -153,19 +169,6 @@ void ParticleEmitter::update(Particle& p, float deltaTime, sf::Color& colorOut, 
 			p.pos -= m_pos - m_lastPos;
 		}
 	}
-	
-	velocity *= m_speedModifier;
-	velocity.y += PARTICLE_GRAVITY * m_gravityModifier;
-
-	p.pos += velocity * deltaTime;
-
-	sizeOut = m_sizeFunction(t);
-	auto rgb = m_colorFunction(t);
-
-	colorOut.r = static_cast<sf::Uint8>(rgb.r);
-	colorOut.g = static_cast<sf::Uint8>(rgb.g);
-	colorOut.b = static_cast<sf::Uint8>(rgb.b);
-	colorOut.a = static_cast<sf::Uint8>(m_transparencyFunction(t));
 }
 
 ParticleEmitter& ParticleEmitter::spawnTime(float spawnTime)
@@ -227,10 +230,10 @@ void ParticleEmitter::spawnParticle()
 * 			- The rotation of the particle and emitter
 * 			- Color and Size
 */
-void ParticleEmitter::updateQuad(int vertexStart, Particle& p, const sf::Color& color, const sf::Vector2f& size)
+void ParticleEmitter::updateQuad(int vertexStart, Particle& p)
 {
-	float hw = size.x*0.5f;
-	float hh = size.y*0.5f;
+	float hw = m_cachedSize.x*0.5f;
+	float hh = m_cachedSize.y*0.5f;
 
 	float c = cosf(p.rotation);
 	float s = sinf(p.rotation);
@@ -256,7 +259,7 @@ void ParticleEmitter::updateQuad(int vertexStart, Particle& p, const sf::Color& 
 	v2.position = sf::Vector2f((hwc - hhs + x) *c - (hhc + hws + y) *s + m_pos.x, (hhc + hws + y) *c + (hwc - hhs + x) *s + m_pos.y);
 	v3.position = sf::Vector2f((-hwc - hhs + x)*c - (hhc - hws + y) *s + m_pos.x, (hhc - hws + y) *c + (-hwc - hhs + x)*s + m_pos.y);
 
-	v0.color = v1.color = v2.color = v3.color = color;
+	v0.color = v1.color = v2.color = v3.color = m_cachedColor;
 }
 
 void ParticleEmitter::draw(sf::RenderTarget& target, sf::RenderStates states) const
