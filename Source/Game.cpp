@@ -49,6 +49,7 @@
 #include "Systems/HoldingSystem.h"
 #include "Systems/BlinkSystem.h"
 #include "Systems/AfterimageSystem.h"
+#include "Graphics/ParticleEffects.h"
 
 
 Game::Game()
@@ -108,17 +109,20 @@ void Game::init(uint8_t width, uint8_t height)
 	// This Particle Emitter is just for tests.
 	m_particleEmitter->
 		position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
-		.spawnTime(0.008f)
-		.maxLifetime(0.5f)
-		.speedModifier(10.f)
-		.gravityModifier(-7.f)
-		.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
+		.spawnTime(0.0015f)
+		.maxLifetime(0.3f)
+		.gravityModifier(1.f)
+		.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
 		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(5, 5), sf::Vector2f(10, 10)))
-		.spawnWidth(15)
+		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
+		.burstParticleNumber(10)
+		.burstTime(0.5f)
+		.spawnWidth(50 - 5)
 		.spawnHeight(50)
-		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)));
+		.spawnDuration(0.3f)
+		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 252, 255), RGB(0, 84, 255)));
 
+	ParticleEffects::init(m_systems.system<ParticleSystem>().get());
 	initialized = true;
 }
 
@@ -142,7 +146,7 @@ void Game::update(TimeDelta dt)
 	//m_light.setShader(m_shaderManager.getLightShader());
 
 	//GameGlobals::window->draw(m_light);
-	//GameGlobals::window->draw(*m_particleEmitter);
+	GameGlobals::window->draw(*m_particleEmitter);
 
 	//m_systems.system<AISystem>()->visualize();
 }

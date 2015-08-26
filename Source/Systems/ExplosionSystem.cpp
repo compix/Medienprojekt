@@ -2,16 +2,8 @@
 #include "../Components/ExplosionComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/LayerComponent.h"
-#include "../Components/LinkComponent.h"
-#include "../Components/DestructionComponent.h"
 #include "../GameGlobals.h"
 #include "../Components/SolidBlockComponent.h"
-#include "../Components/EffectComponent.h"
-#include "../Components/InventoryComponent.h"
-#include "../Components/BombComponent.h"
-#include "../Components/FloorComponent.h"
-#include "../Components/HealthComponent.h"
-#include "../Components/PortalComponent.h"
 #include "../Components/ExplosionStopComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
@@ -50,9 +42,16 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 				}
 
 				if (!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
-					explosionSpreadRequests.push_back(ExplosionSpreadRequest(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->ghost, spread->lightning));
+				{
+					ExplosionSpreadRequest request(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak);
+					explosionSpreadRequests.push_back(request);
+				}
+					
 				else if (spread->lightning)
-					explosionSpreadRequests.push_back(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->ghost, spread->lightning));
+				{
+					ExplosionSpreadRequest request(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak));
+					explosionSpreadRequests.push_back(request);
+				}	
 			}
 
 			spread->stopped = true;
@@ -62,5 +61,5 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 	// Explosion aren't created right away to avoid multiple spreading in one direction in one frame. This fixes a low fps bug with portals.
 	// Handle explosion spread requests
 	for (auto& r : explosionSpreadRequests)
-		GameGlobals::entityFactory->createExplosion(r.x, r.y, r.direction, r.range, r.spreadTime, r.ghost, r.lightning);
+		GameGlobals::entityFactory->createExplosion(r.x, r.y, r.direction, r.range, r.spreadTime, r.ghost, r.lightning, r.lightningPeak);
 }

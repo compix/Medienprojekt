@@ -256,7 +256,8 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	float spreadTime = reader.read<float>();
 	bool ghost = reader.read<bool>();
 	bool lightning = reader.read<bool>();
-	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost, lightning));
+	bool lightningPeak = reader.read<bool>();
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost, lightning, lightningPeak));
 }
 
 void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

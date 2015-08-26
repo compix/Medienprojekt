@@ -644,6 +644,9 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleEffects.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -946,6 +949,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp">
       <Filter>AI\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

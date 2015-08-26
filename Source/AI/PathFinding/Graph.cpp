@@ -52,7 +52,6 @@ void Graph::update(float deltaTime)
 		for (auto y = 1; y < m_height - 1; ++y)
 		{
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
-			m_nodeGrid[x][y].bombProperties.explosionSimulated = false;
 			m_nodeGrid[x][y].properties.timeTillExplosion = 0.f;
 			m_nodeGrid[x][y].smells.dyingBlock = 0;
 		}
@@ -88,8 +87,8 @@ void Graph::update(float deltaTime)
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
 		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost, bombComponent->lightning));
-		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
-		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
+		auto& bombProperties = m_nodeGrid[cell->x][cell->y].bombProperties;
+		bombProperties = BombProperties(bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost, bombComponent->lightning);
 	}
 
 	// Go through all explosion components and simulate the explosion.
@@ -99,7 +98,7 @@ void Graph::update(float deltaTime)
 		auto spread = explosion.component<SpreadComponent>();
 
 		setOnFire(cell->x, cell->y, spread->timeTillNext);
-		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->ghost, spread->lightning);
+		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->ghost, spread->lightning, spread->lightningPeak);
 		explosionSpread(eSpread);
 	}
 
@@ -194,7 +193,8 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 				if (!currentNode->bombProperties.explosionSimulated)
 				{
 					// Simulate the explosion chain
-					Bomb bomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, spread.ghost, spread.lightning);
+					auto& bombProperties = currentNode->bombProperties;
+					Bomb bomb(currentNode->x, currentNode->y, bombProperties.explosionRange, explosionTime, bombProperties.ghost, bombProperties.lightning);
 					placeBomb(bomb);
 				}
 
@@ -208,7 +208,7 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 		}
 	}
 
-	if (spread.lightning && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
+	if (spread.lightning && !spread.lightningPeak && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
 	{
 		Bomb bomb(currentNode->x, currentNode->y, 1, explosionTime, spread.ghost, false);
 		placeBomb(bomb, affectedEntities);
@@ -276,7 +276,7 @@ void Graph::placeBomb(const Bomb& bomb, AffectedByExplosion* affectedEntities)
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		ExplosionSpread explosion(bomb.x, bomb.y, bomb.range, correctExplosionTime, direction, bomb.ghost, bomb.lightning);
+		ExplosionSpread explosion(bomb.x, bomb.y, bomb.range, correctExplosionTime, direction, bomb.ghost, bomb.lightning, false);
 		explosionSpread(explosion, affectedEntities);
 	}
 }

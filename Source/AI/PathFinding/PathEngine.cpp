@@ -20,7 +20,7 @@ PathEngine::PathEngine(LayerManager* layerManager)
 	for (uint8_t i = 0; i < PATH_ENGINE_MAX_TASK_NUM; ++i)
 	{
 		m_nodeInfo[i] = new NodePathInfo*[m_graph->m_width];
-		for (uint8_t j = 0; j < m_graph->m_height; ++j)
+		for (uint8_t j = 0; j < m_graph->m_width; ++j)
 			m_nodeInfo[i][j] = new NodePathInfo[m_graph->m_height];
 	}
 
@@ -44,7 +44,7 @@ PathEngine::~PathEngine()
 {
 	for (uint8_t i = 0; i < PATH_ENGINE_MAX_TASK_NUM; ++i)
 	{
-		for (uint8_t j = 0; j < m_graph->m_height; ++j)
+		for (uint8_t j = 0; j < m_graph->m_width; ++j)
 			delete[] m_nodeInfo[i][j];
 
 		delete m_nodeInfo[i];

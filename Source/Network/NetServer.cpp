@@ -229,7 +229,7 @@ void NetServer::receive(const BombCreatedEvent& evt)
 
 void NetServer::receive(const ExplosionCreatedEvent& evt)
 {
-	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime, evt.ghost, evt.lightning));
+	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime, evt.ghost, evt.lightning, evt.lightningPeak));
 }
 
 void NetServer::receive(const EntityDestroyedEvent& evt)
@@ -626,10 +626,11 @@ void NetServer::sendExplosionEntities(ENetPeer* peer)
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(explosion, spread, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime, spread->ghost, spread->lightning));
+		send(peer, NetChannel::WORLD_RELIABLE, 
+		createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak));
 }
 
-ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning)
+ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak)
 {
 	m_messageWriter.init(MessageType::CREATE_EXPLOSION);
 	m_messageWriter.write<uint64_t>(entity.id().id());
@@ -640,6 +641,7 @@ ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y
 	m_messageWriter.write<float>(spreadTime);
 	m_messageWriter.write<bool>(ghost);
 	m_messageWriter.write<bool>(lightning);
+	m_messageWriter.write<bool>(lightningPeak);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

@@ -69,7 +69,7 @@ private:
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner, bool ghost, bool lightning);
 	void sendExplosionEntities(ENetPeer* peer);
-	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning);
+	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak);
 	void sendPortalEntities(ENetPeer* peer);
 	ENetPacket* createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner);
 	void sendItemEntities(ENetPeer* peer);

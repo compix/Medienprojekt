@@ -28,7 +28,7 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	auto& personality = entity.component<AIComponent>()->personality;
 	auto& desires = personality.desires;
 	auto& affinity = personality.affinity;
-	path.rating = trap ? 1.f / affinity.getSafe / personality.desires.getSafe : 2.f;
+	path.rating = trap ? (1.f / affinity.getSafe / personality.desires.getSafe) : (affinity.getSafe * personality.desires.getSafe);
 
 	return true;
 }

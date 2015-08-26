@@ -58,7 +58,7 @@ void AISystem::init()
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
 
-		aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
+		//aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 
 		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
 	}

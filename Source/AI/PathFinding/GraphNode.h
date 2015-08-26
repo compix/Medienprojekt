@@ -6,11 +6,14 @@ struct GraphNode;
 
 struct BombProperties
 {
-	BombProperties(uint8_t explosionRange) : explosionSimulated(false), explosionRange(explosionRange) {}
-	BombProperties() : BombProperties(explosionRange) {}
+	BombProperties(uint8_t explosionRange, float explosionTime, bool ghost, bool lightning) 
+		: explosionSimulated(false), explosionRange(explosionRange), explosionTime(explosionTime), ghost(ghost), lightning(lightning) {}
+	BombProperties() : BombProperties(explosionRange, 0.f, false, false) {}
 
 	bool explosionSimulated;
 	uint8_t explosionRange;
+	bool ghost;
+	bool lightning;
 
 	float explosionTime;
 };

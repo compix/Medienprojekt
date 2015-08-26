@@ -29,7 +29,7 @@ struct Bomb
 {
 	Bomb() : range(1), explosionTime(3.f), x(0), y(0) {}
 	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, bool lightning) 
-		: x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost), lightning(lightning) {}
+		: x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost), lightning(lightning){}
 
 	uint8_t x, y;
 	uint8_t range;
@@ -41,8 +41,8 @@ struct Bomb
 struct ExplosionSpread
 {
 	ExplosionSpread() : range(1), explosionTime(3.f), x(0), y(0) {}
-	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, bool lightning)
-		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), ghost(ghost), lightning(lightning) {}
+	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, bool lightning, bool lightningPeak)
+		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), ghost(ghost), lightning(lightning), lightningPeak(lightningPeak) {}
 
 	uint8_t x, y;
 	uint8_t range;
@@ -50,6 +50,7 @@ struct ExplosionSpread
 	Direction direction;
 	bool ghost;
 	bool lightning;
+	bool lightningPeak;
 };
 
 class Graph : public EntityLayer::IOnChangeListener
