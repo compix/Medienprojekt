@@ -25,6 +25,9 @@ public:
 
 	void init();
 	void reset();
+
+	template<class C, class... Args>
+	bool doEntitiesExistWithComponents();
 private:
 	void log(entityx::Entity& entity);
 	void log(entityx::Entity& entity, const std::string& txt);
@@ -36,3 +39,12 @@ private:
 
 	AIVisualizer m_visualizer;
 };
+
+template <class C, class ... Args>
+bool AISystem::doEntitiesExistWithComponents()
+{
+	for (auto entity : GameGlobals::entities->entities_with_components<C, Args...>())
+		return true;
+
+	return false;
+}
