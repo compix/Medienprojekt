@@ -47,6 +47,7 @@
 #include "Components/AfterimageComponent.h"
 #include "Components/ExplosionStopComponent.h"
 #include "Components/AIComponent.h"
+#include "Components/NoNetComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -367,6 +368,7 @@ Entity EntityFactory::createAfterimage(int cellX, int cellY, float posX, float p
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<TimerComponent>(time);
 	entity.assign<AfterimageComponent>(time);
+	entity.assign<NoNetComponent>();
 	m_layerManager->add(entity);
 	return entity;
 }

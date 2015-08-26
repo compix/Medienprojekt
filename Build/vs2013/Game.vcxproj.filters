@@ -277,6 +277,9 @@
     <ClInclude Include="..\..\Source\Components\LocalInputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\NoNetComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -337,9 +340,6 @@
     <ClInclude Include="..\..\Source\Events\CreateGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\CreatePortalEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Events\DeathEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -391,9 +391,6 @@
     <ClInclude Include="..\..\Source\Events\PreloadEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Events\PunchEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Events\ReadyEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -404,6 +401,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\SkillEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h">

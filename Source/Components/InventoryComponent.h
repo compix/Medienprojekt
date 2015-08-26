@@ -4,7 +4,7 @@
 #include <entityx/Entity.h>
 #include "../Utils/ActiveQueue.h"
 
-enum class SkillType
+enum class SkillType : uint8_t
 {
 	NONE,
 	PLACE_PORTAL,

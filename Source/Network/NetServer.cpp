@@ -33,9 +33,11 @@
 #include "../Events/StartGameEvent.h"
 #include "../Components/PlayerComponent.h"
 #include "../Events/ReadyEvent.h"
+#include "../Events/SkillEvent.h"
 #include <format.h>
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
+#include "../Components/NoNetComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -56,6 +58,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<GameOverEvent>(*this);
 	GameGlobals::events->subscribe<ResetGameEvent>(*this);
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
+	GameGlobals::events->subscribe<SkillEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -234,9 +237,12 @@ void NetServer::receive(const ExplosionCreatedEvent& evt)
 
 void NetServer::receive(const EntityDestroyedEvent& evt)
 {
-	m_messageWriter.init(MessageType::DESTROY_ENTITY);
-	m_messageWriter.write<uint64_t>(evt.entity.id().id());
-	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	if (!evt.entity.has_component<NoNetComponent>())
+	{
+		m_messageWriter.init(MessageType::DESTROY_ENTITY);
+		m_messageWriter.write<uint64_t>(evt.entity.id().id());
+		broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	}
 }
 
 void NetServer::receive(const PortalCreatedEvent& evt)
@@ -311,6 +317,15 @@ void NetServer::receive(const StartGameEvent& evt)
 			sendStartGame(&m_playerInfos[i]);
 		}
 	}
+}
+
+void NetServer::receive(const SkillEvent& evt)
+{
+	m_messageWriter.init(MessageType::SKILL);
+	m_messageWriter.write<uint64_t>(evt.triggerEntity.id().id());
+	m_messageWriter.write<SkillType>(evt.type);
+	m_messageWriter.write<bool>(evt.activate);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetServer::startCountdown()

@@ -21,6 +21,7 @@
 #include "../Components/DynamicComponent.h"
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
+#include "../Events/SkillEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -52,7 +53,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::ALL_READY, &NetClient::onAllReadyMessage, this);
 	m_handler.setCallback(MessageType::GAME_OVER, &NetClient::onGameOverMessage, this);
 	m_handler.setCallback(MessageType::RESET_GAME, &NetClient::onResetGameMessage, this);
-	
+	m_handler.setCallback(MessageType::SKILL, &NetClient::onSkillMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -365,6 +366,14 @@ void NetClient::onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent
 {
 	GameGlobals::events->emit<ResetGameEvent>();
 	entityMap.clear();
+}
+
+void NetClient::onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	SkillType type = reader.read<SkillType>();
+	bool activate = reader.read<bool>();
+	GameGlobals::events->emit<SkillEvent>(getEntity(id), type, activate);
 }
 
 Entity NetClient::getEntity(uint64_t id)
