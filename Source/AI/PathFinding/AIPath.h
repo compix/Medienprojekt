@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <float.h>
+#include <iostream>
 #include "GraphNode.h"
 #include "../AIUtil.h"
 
