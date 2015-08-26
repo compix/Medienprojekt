@@ -29,6 +29,17 @@ using entityx::Receiver;
 using entityx::EntityManager;
 using entityx::EntityDestroyedEvent;
 
+class DynamicUpdateWriter
+{
+public:
+	DynamicUpdateWriter();
+	ENetPacket *addEntity(Entity &entity, float x, float y, uint64_t packetNumber);
+	ENetPacket *finish();
+
+private:
+	MessageWriter<MessageType> m_messageWriter;
+};
+
 class NetServer : public Receiver<NetServer>
 {
 public:
@@ -68,7 +79,6 @@ private:
 	void sendPlayerEntities(ENetPeer* peer);
 	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y, uint8_t playerIndex);
 	void broadcastDynamicUpdates();
-	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y, uint64_t packetNumber);
 	void sendBombEntities(ENetPeer* peer);
 	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner, BombType type);
 	void sendExplosionEntities(ENetPeer* peer);
@@ -98,6 +108,7 @@ private:
 	ServerConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;
+	DynamicUpdateWriter m_dynamicUpdateWriter;
 	uint8_t m_width;
 	uint8_t m_height;
 	float m_countdown = 0;

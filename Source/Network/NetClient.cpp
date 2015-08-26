@@ -318,30 +318,41 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 
 void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
-	uint64_t id = reader.read<uint64_t>();
-	uint64_t packetNumber = reader.read<uint64_t>();
-	float x = reader.read<float>();
-	float y = reader.read<float>();
-	Entity entity = getEntity(id);
-	if (entity.valid())
+	while (reader.remaining() > 0)
 	{
-		auto dynamic = entity.component<DynamicComponent>();
-		if (dynamic->packetNumber >= packetNumber)
-			return;
-		dynamic->packetNumber = packetNumber;
-		auto transform = entity.component<TransformComponent>();
-		if(transform.valid())
+		uint64_t id = reader.read<uint64_t>();
+		uint64_t packetNumber = reader.read<uint64_t>();
+		float x = reader.read<float>();
+		float y = reader.read<float>();
+		bool hasInput = reader.read<bool>();
+
+		Entity entity = getEntity(id);
+		if (entity.valid())
 		{
-			transform->x = x;
-			transform->y = y;
-		}
-		if(entity != m_playerEntity) {
-			auto input = entity.component<InputComponent>();
-			if(input.valid())
+			auto dynamic = entity.component<DynamicComponent>();
+			if (dynamic->packetNumber >= packetNumber)
+				return;
+			dynamic->packetNumber = packetNumber;
+			auto transform = entity.component<TransformComponent>();
+			if (transform.valid())
 			{
-				input->moveX = reader.read<float>();
-				input->moveY = reader.read<float>();
+				transform->x = x;
+				transform->y = y;
 			}
+			if (entity != m_playerEntity) {
+				auto input = entity.component<InputComponent>();
+				if (input.valid() && hasInput)
+				{
+					input->moveX = reader.read<float>();
+					input->moveY = reader.read<float>();
+					hasInput = false;
+				}
+			}
+		}
+		if (hasInput)
+		{
+			reader.read<float>();
+			reader.read<float>();
 		}
 	}
 }

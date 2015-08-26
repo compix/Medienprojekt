@@ -42,6 +42,49 @@
 using namespace std;
 using namespace NetCode;
 
+const size_t DYNAMIC_DATA_SIZE = 8 + 8 + 4 + 4 + 1;
+const size_t DYNAMIC_DATA_INPUT_SIZE = DYNAMIC_DATA_SIZE + 4 + 4;
+DynamicUpdateWriter::DynamicUpdateWriter()
+	: m_messageWriter(1024)
+{
+	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
+}
+
+ENetPacket* DynamicUpdateWriter::addEntity(Entity& entity, float x, float y, uint64_t packetNumber)
+{
+	assert(entity.valid());
+	auto input = entity.component<InputComponent>();
+
+	ENetPacket *packet = nullptr;
+	if (!m_messageWriter.checkSize(input.valid() ? DYNAMIC_DATA_INPUT_SIZE : DYNAMIC_DATA_SIZE))
+		packet = finish();
+
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint64_t>(packetNumber);
+	m_messageWriter.write<float>(x);
+	m_messageWriter.write<float>(y);
+	m_messageWriter.write<bool>(input.valid());
+
+	if (input.valid())
+	{
+		m_messageWriter.write<float>(input->moveX);
+		m_messageWriter.write<float>(input->moveY);
+	}
+	return packet;
+}
+
+ENetPacket* DynamicUpdateWriter::finish()
+{
+	if (!m_messageWriter.isEmpty())
+	{
+		ENetPacket *packet = m_messageWriter.createPacket(0);
+
+		m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
+		return packet;
+	}
+	return nullptr;
+}
+
 NetServer::NetServer()
 	: m_messageWriter(1024)
 {
@@ -592,23 +635,14 @@ void NetServer::broadcastDynamicUpdates()
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(dynamic, transform, cell))
-		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y, dynamic->packetNumber++));
-}
-
-ENetPacket *NetServer::createUpdateDynamicPacket(Entity entity, float x, float y, uint64_t packetNumber)
-{
-	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
-	m_messageWriter.write<uint64_t>(entity.id().id());
-	m_messageWriter.write<uint64_t>(packetNumber);
-	m_messageWriter.write<float>(x);
-	m_messageWriter.write<float>(y);
-	auto input = entity.component<InputComponent>();
-	if(input.valid())
 	{
-		m_messageWriter.write<float>(input->moveX);
-		m_messageWriter.write<float>(input->moveY);
+		auto *packet = m_dynamicUpdateWriter.addEntity(entity, transform->x, transform->y, dynamic->packetNumber++);
+		if (packet)
+			broadcast(NetChannel::WORLD_UNRELIABLE, packet);
 	}
-	return m_messageWriter.createPacket(0);
+	auto *packet = m_dynamicUpdateWriter.finish();
+	if (packet)
+		broadcast(NetChannel::WORLD_UNRELIABLE, packet);
 }
 
 void NetServer::sendBombEntities(ENetPeer *peer)
