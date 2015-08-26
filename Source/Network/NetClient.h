@@ -52,6 +52,7 @@ public:
 	void onAllReadyMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onGameOverMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 private:
 	void mapEntity(uint64_t id, Entity entity);
 	Entity getEntity(uint64_t id);

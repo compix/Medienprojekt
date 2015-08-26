@@ -2,18 +2,18 @@
 #include <entityx/System.h>
 #include "../EntityFactory.h"
 
+enum class BombType : uint8_t;
+
 struct ExplosionSpreadRequest
 {
-	ExplosionSpreadRequest(uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak)
-		:x(x), y(y), direction(direction), range(range), spreadTime(spreadTime), ghost(ghost), lightning(lightning), lightningPeak(lightningPeak) {}
+	ExplosionSpreadRequest(uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, BombType bombType)
+		:x(x), y(y), direction(direction), range(range), spreadTime(spreadTime), bombType(bombType) {}
 
 	uint8_t x, y;
 	Direction direction;
 	uint8_t range;
 	float spreadTime;
-	bool ghost;
-	bool lightning;
-	bool lightningPeak;
+	BombType bombType;
 };
 
 class ExplosionSystem : public entityx::System<ExplosionSystem>

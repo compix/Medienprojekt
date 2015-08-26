@@ -48,6 +48,7 @@
 #include "Components/ExplosionStopComponent.h"
 #include "Components/AIComponent.h"
 #include "Graphics/ParticleEffects.h"
+#include "Components/NoNetComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -209,7 +210,7 @@ entityx::Entity EntityFactory::createSolidBlock(uint8_t cellX, uint8_t cellY)
 	return entity;
 }
 
-Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner, bool ghost, bool lightning)
+Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner, BombType type)
 {
 	Entity entity = GameGlobals::entities->create();;
 
@@ -220,10 +221,14 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner, boo
 	transformComponent.scaleY = 0.75f;
 
 	entity.assign<TransformComponent>(transformComponent);
-	auto texture = createSprite(ghost ? "ghost_bomb" : (lightning ? "lightning_bomb" : "bomb"));
-	entity.assign<SpriteComponent>(texture);
+	switch (type)
+	{
+	case BombType::GHOST: entity.assign<SpriteComponent>(createSprite("ghost_bomb")); break;
+	case BombType::LIGHTNING: entity.assign<SpriteComponent>(createSprite("lightning_bomb")); break;
+	default: entity.assign<SpriteComponent>(createSprite("bomb")); break;
+	}
 	assert(owner.has_component<InventoryComponent>());
-	entity.assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME, ghost, lightning);
+	entity.assign<BombComponent>(owner.component<InventoryComponent>()->explosionRange, GameConstants::EXPLOSION_SPREAD_TIME, type);
 	entity.assign<TimerComponent>(GameConstants::EXPLOSION_TIME);
 	entity.assign<HealthComponent>(1);
 	entity.assign<OwnerComponent>(owner);
@@ -282,7 +287,7 @@ Entity EntityFactory::createBomb(uint8_t cellX, uint8_t cellY, Entity owner, boo
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner, ghost, lightning);
+	GameGlobals::events->emit<BombCreatedEvent>(entity, cellX, cellY, owner, type);
 	return entity;
 }
 
@@ -349,17 +354,18 @@ Entity EntityFactory::createAfterimage(int cellX, int cellY, float posX, float p
 	entity.assign<SpriteComponent>(sprite);
 	entity.assign<TimerComponent>(time);
 	entity.assign<AfterimageComponent>(time);
+	entity.assign<NoNetComponent>();
 	m_layerManager->add(entity);
 	return entity;
 }
 
-void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak)
+void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, BombType bombType)
 {
 	entityx::Entity explosions[4];
 	for (uint8_t i = 0; i < 4; ++i)
 	{
 		Direction direction = static_cast<Direction>(i);
-		explosions[i] = createExplosion(cellX, cellY, direction, range, spreadTime, ghost, lightning, lightningPeak);
+		explosions[i] = createExplosion(cellX, cellY, direction, range, spreadTime, bombType);
 	}
 
 	// Don't teleport if placed on a portal
@@ -371,12 +377,12 @@ void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range,
 	}
 }
 
-Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak)
+Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, BombType bombType)
 {
 
-	if (lightning && !lightningPeak && range == 0)
+	if (bombType == BombType::LIGHTNING && range == 0)
 	{
-		createExplosion(cellX, cellY, 1, spreadTime, ghost, lightning, true);
+		createExplosion(cellX, cellY, 1, spreadTime, BombType::LIGHTNING_PEAK);
 		return Entity();
 	}
 
@@ -407,19 +413,18 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 		assert(false);
 	}
 
-	if (lightningPeak)
-		entity.assign<ParticleComponent>(ParticleEffects::lightningBombPeak());
-	else if (lightning)
-		entity.assign<ParticleComponent>(ParticleEffects::lightningBomb(range));
-	else if (ghost)
-		entity.assign<ParticleComponent>(ParticleEffects::ghostBomb());
-	else
-		entity.assign<ParticleComponent>(ParticleEffects::normalBomb());
+	switch (bombType)
+	{
+	case BombType::GHOST: entity.assign<ParticleComponent>(ParticleEffects::ghostBomb()); break;
+	case BombType::LIGHTNING: entity.assign<ParticleComponent>(ParticleEffects::lightningBomb(range)); break;
+	case BombType::LIGHTNING_PEAK: entity.assign<ParticleComponent>(ParticleEffects::lightningBombPeak()); break;
+	default: entity.assign<ParticleComponent>(ParticleEffects::normalBomb()); break;
+	}
 
 	if (!entity.component<ParticleComponent>()->emitter)
 		entity.remove<ParticleComponent>();
 
-	entity.assign<SpreadComponent>(direction, range, spreadTime, ghost, lightning, lightningPeak);
+	entity.assign<SpreadComponent>(direction, range, spreadTime, bombType);
 	entity.assign<ExplosionComponent>();
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<DestructionComponent>(0.55f);
@@ -432,7 +437,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime, ghost, lightning, lightningPeak);
+	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime, bombType);
 	return entity;
 }
 

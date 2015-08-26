@@ -4,13 +4,12 @@
 using entityx::Entity;
 struct BombCreatedEvent
 {
-	BombCreatedEvent(Entity entity, uint8_t x, uint8_t y, Entity owner, bool ghost, bool lightning)
-		: entity(entity), x(x), y(y), owner(owner), ghost(ghost), lightning(lightning) {}
+	BombCreatedEvent(Entity entity, uint8_t x, uint8_t y, Entity owner, BombType type)
+		: entity(entity), x(x), y(y), owner(owner), type(type) {}
 
 	Entity entity;
 	Entity owner;
 	uint8_t x;
 	uint8_t y;
-	bool ghost;
-	bool lightning;
+	BombType type;
 };

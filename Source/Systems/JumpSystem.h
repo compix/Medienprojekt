@@ -1,11 +1,11 @@
 #include <entityx/entityx.h>
 #include "../Components/BodyComponent.h"
 #include "../Events/TimeoutEvent.h"
-#include "../Events/PunchEvent.h"
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
 #include "../Components/JumpComponent.h"
 
+struct SkillEvent;
 struct TimeoutEvent;
 using entityx::System;
 using entityx::EntityManager;
@@ -20,7 +20,7 @@ public:
 	JumpSystem(LayerManager* layerManager);
 	~JumpSystem();
 	void configure(entityx::EventManager &event_manager) override;
-	void receive(const PunchEvent& event);
+	void receive(const SkillEvent& event);
 	bool targetIsOutOfBounds(int toX, int toY);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 	

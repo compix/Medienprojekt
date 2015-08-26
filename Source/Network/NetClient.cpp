@@ -6,6 +6,7 @@
 #include "../Events/PlayerJoinEvent.h"
 #include "../Game.h"
 #include "../Components/InputComponent.h"
+#include "../Components/InventoryComponent.h"
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
 #include "../Components/LocalInputComponent.h"
@@ -20,6 +21,7 @@
 #include "../Components/DynamicComponent.h"
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
+#include "../Events/SkillEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -51,7 +53,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::ALL_READY, &NetClient::onAllReadyMessage, this);
 	m_handler.setCallback(MessageType::GAME_OVER, &NetClient::onGameOverMessage, this);
 	m_handler.setCallback(MessageType::RESET_GAME, &NetClient::onResetGameMessage, this);
-	
+	m_handler.setCallback(MessageType::SKILL, &NetClient::onSkillMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -239,11 +241,10 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
-	bool ghost = reader.read<bool>();
-	bool lightning = reader.read<bool>();
+	BombType type = reader.read<BombType>();
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
-		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, ghost, lightning));
+		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, type));
 }
 
 void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -254,10 +255,8 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	Direction direction = reader.read<Direction>();
 	uint8_t range = reader.read<uint8_t>();
 	float spreadTime = reader.read<float>();
-	bool ghost = reader.read<bool>();
-	bool lightning = reader.read<bool>();
-	bool lightningPeak = reader.read<bool>();
-	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost, lightning, lightningPeak));
+	BombType bombType = reader.read<BombType>();
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, bombType));
 }
 
 void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -319,30 +318,41 @@ void NetClient::onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetE
 
 void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
-	uint64_t id = reader.read<uint64_t>();
-	uint64_t packetNumber = reader.read<uint64_t>();
-	float x = reader.read<float>();
-	float y = reader.read<float>();
-	Entity entity = getEntity(id);
-	if (entity.valid())
+	while (reader.remaining() > 0)
 	{
-		auto dynamic = entity.component<DynamicComponent>();
-		if (dynamic->packetNumber >= packetNumber)
-			return;
-		dynamic->packetNumber = packetNumber;
-		auto transform = entity.component<TransformComponent>();
-		if(transform.valid())
+		uint64_t id = reader.read<uint64_t>();
+		uint64_t packetNumber = reader.read<uint64_t>();
+		float x = reader.read<float>();
+		float y = reader.read<float>();
+		bool hasInput = reader.read<bool>();
+
+		Entity entity = getEntity(id);
+		if (entity.valid())
 		{
-			transform->x = x;
-			transform->y = y;
-		}
-		if(entity != m_playerEntity) {
-			auto input = entity.component<InputComponent>();
-			if(input.valid())
+			auto dynamic = entity.component<DynamicComponent>();
+			if (dynamic->packetNumber >= packetNumber)
+				return;
+			dynamic->packetNumber = packetNumber;
+			auto transform = entity.component<TransformComponent>();
+			if (transform.valid())
 			{
-				input->moveX = reader.read<float>();
-				input->moveY = reader.read<float>();
+				transform->x = x;
+				transform->y = y;
 			}
+			if (entity != m_playerEntity) {
+				auto input = entity.component<InputComponent>();
+				if (input.valid() && hasInput)
+				{
+					input->moveX = reader.read<float>();
+					input->moveY = reader.read<float>();
+					hasInput = false;
+				}
+			}
+		}
+		if (hasInput)
+		{
+			reader.read<float>();
+			reader.read<float>();
 		}
 	}
 }
@@ -367,6 +377,14 @@ void NetClient::onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent
 {
 	GameGlobals::events->emit<ResetGameEvent>();
 	entityMap.clear();
+}
+
+void NetClient::onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	SkillType type = reader.read<SkillType>();
+	bool activate = reader.read<bool>();
+	GameGlobals::events->emit<SkillEvent>(getEntity(id), type, activate);
 }
 
 Entity NetClient::getEntity(uint64_t id)

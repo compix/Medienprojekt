@@ -20,6 +20,7 @@ enum class MessageType : uint16_t
 	DEATH,
 	DESTROY_ENTITY,
 	UPDATE_DYNAMIC,
+	SKILL,
 	START_GAME,
 	COUNTDOWN,
 	ALL_READY,

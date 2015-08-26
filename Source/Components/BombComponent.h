@@ -1,13 +1,14 @@
 #pragma once
 
+enum class BombType : uint8_t;
+
 struct BombComponent
 {
-	BombComponent(int explosionRange, float explosionSpreadTime, bool ghost, bool lightning) 
-		: explosionRange(explosionRange), explosionSpreadTime(explosionSpreadTime), exploded(false), ghost(ghost), lightning(lightning) {}
+	BombComponent(int explosionRange, float explosionSpreadTime, BombType type)
+		: explosionRange(explosionRange), explosionSpreadTime(explosionSpreadTime), exploded(false), type(type) {}
 
 	int explosionRange;
 	float explosionSpreadTime; // in seconds
 	bool exploded;
-	bool ghost; // Explosion will only be stopped by solid blocks
-	bool lightning; // 1 range explosion when it is stopped
+	BombType type;
 };

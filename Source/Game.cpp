@@ -289,6 +289,11 @@ void ClientGame::receive(const ResetGameEvent& evt)
 
 void ClientGame::addSystems()
 {
+	addSystem<SoundSystem>();
+	addSystem<MusicSystem>();
+	addSystem<BlinkSystem>(m_layerManager.get());
+	addSystem<TimerSystem>();
+	addSystem<AfterimageSystem>();
 	addSystem<InputSystem>();
 //	addSystem<ClientInputHandleSystem>(); // fixme
 	addSystem<AnimationSystem>();
@@ -296,4 +301,5 @@ void ClientGame::addSystems()
 	addSystem<ParticleSystem>();
 	addSystem<LightSystem>();
 	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	addSystem<ChatRenderSystem>();
 }

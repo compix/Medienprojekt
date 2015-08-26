@@ -3,7 +3,7 @@
 #include "../GameGlobals.h"
 #include "../EntityFactory.h"
 #include "../Components/OwnerComponent.h"
-#include "../Events/CreatePortalEvent.h"
+#include "../Events/SkillEvent.h"
 #include "../Components/DirectionComponent.h"
 #include "../Components/CellComponent.h"
 #include "../Components/LayerComponent.h"
@@ -23,13 +23,13 @@ PortalSystem::PortalSystem(LayerManager* layerManager)
 PortalSystem::~PortalSystem()
 {
 	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
-	GameGlobals::events->unsubscribe<CreatePortalEvent>(*this);
+	GameGlobals::events->unsubscribe<SkillEvent>(*this);
 }
 
 void PortalSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<TimeoutEvent>(*this);
-	events.subscribe<CreatePortalEvent>(*this);
+	events.subscribe<SkillEvent>(*this);
 }
 
 
@@ -115,10 +115,10 @@ void PortalSystem::receive(const TimeoutEvent& timeoutEvent)
 	}
 }
 
-void PortalSystem::receive(const CreatePortalEvent& event)
+void PortalSystem::receive(const SkillEvent& event)
 {
 	auto entity = event.triggerEntity;
-	if (!entity.valid())
+	if (event.type != SkillType::PLACE_PORTAL || !entity.valid())
 		return;
 	assert(entity.has_component<CellComponent>() && entity.has_component<InventoryComponent>());
 

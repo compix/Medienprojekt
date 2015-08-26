@@ -5,6 +5,7 @@
 #include "../GameGlobals.h"
 #include "../Components/SolidBlockComponent.h"
 #include "../Components/ExplosionStopComponent.h"
+#include "../Components/InventoryComponent.h"
 
 ExplosionSystem::ExplosionSystem(LayerManager* layerManager)
 	:m_layerManager(layerManager) {}
@@ -37,19 +38,19 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 					nextRange = 0;
 				else
 				{
-					if (!spread->ghost && m_layerManager->hasEntityWithComponent<ExplosionStopComponent>(layer->layer, nextCellX, nextCellY))
+					if (spread->bombType != BombType::GHOST && m_layerManager->hasEntityWithComponent<ExplosionStopComponent>(layer->layer, nextCellX, nextCellY))
 						nextRange = 0;
 				}
 
 				if (!m_layerManager->hasEntityWithComponent<SolidBlockComponent>(layer->layer, nextCellX, nextCellY))
 				{
-					ExplosionSpreadRequest request(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak);
+					ExplosionSpreadRequest request(nextCellX, nextCellY, spread->direction, nextRange, spread->spreadTime, spread->bombType);
 					explosionSpreadRequests.push_back(request);
 				}
 					
-				else if (spread->lightning)
+				else if (spread->bombType == BombType::LIGHTNING || spread->bombType == BombType::LIGHTNING_PEAK)
 				{
-					ExplosionSpreadRequest request(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak));
+					ExplosionSpreadRequest request(ExplosionSpreadRequest(cell->x, cell->y, spread->direction, 0, spread->spreadTime, spread->bombType));
 					explosionSpreadRequests.push_back(request);
 				}	
 			}
@@ -61,5 +62,5 @@ void ExplosionSystem::update(entityx::EntityManager& entities, entityx::EventMan
 	// Explosion aren't created right away to avoid multiple spreading in one direction in one frame. This fixes a low fps bug with portals.
 	// Handle explosion spread requests
 	for (auto& r : explosionSpreadRequests)
-		GameGlobals::entityFactory->createExplosion(r.x, r.y, r.direction, r.range, r.spreadTime, r.ghost, r.lightning, r.lightningPeak);
+		GameGlobals::entityFactory->createExplosion(r.x, r.y, r.direction, r.range, r.spreadTime, r.bombType);
 }
