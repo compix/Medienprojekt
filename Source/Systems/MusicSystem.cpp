@@ -16,7 +16,7 @@ void MusicSystem::receive(const StartGameEvent& event)
 {
 	m_music = GameGlobals::assetManager->getMusic("Title_Theme");
 	m_music->setLoop(true);
-	m_music->setVolume(50);
+	m_music->setVolume(GameConstants::MUSIC_VOLUME);
 	m_music->play();
 }
 
@@ -24,7 +24,7 @@ void MusicSystem::receive(const MusicEvent& event)
 {
 	m_music = GameGlobals::assetManager->getMusic(event.name);
 	m_music->setLoop(event.loop);
-	m_music->setVolume(50);
+	m_music->setVolume(GameConstants::MUSIC_VOLUME);
 	m_music->play();
 }
 

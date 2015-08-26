@@ -15,5 +15,7 @@ void SoundSystem::configure(entityx::EventManager& event_manager)
 
 void SoundSystem::receive(const SoundEvent& event)
 {
-	GameGlobals::assetManager->getSound(event.name)->play();
+	auto sound = GameGlobals::assetManager->getSound(event.name);
+	sound->setVolume(GameConstants::SOUND_VOLUME);
+	sound->play();
 }
