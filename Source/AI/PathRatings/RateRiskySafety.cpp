@@ -13,13 +13,13 @@ bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	{
 		float timePerCell = AIUtil::getTimePerCell(entity);
 		AIUtil::isSafePath(entity, path, &minExploTime);
-		if (minExploTime < timePerCell * 0.5f)
+		if (minExploTime < timePerCell * 0.8f)
 			return false;
 
 		auto& personality = entity.component<AIComponent>()->personality;
 		auto& desires = personality.desires;
 		auto& affinity = personality.affinity;
-		path.rating = (affinity.getSafe + Math::clamp(minExploTime, 0.f, 1.f)) * desires.getSafe;
+		path.rating = (minExploTime / 5.f + affinity.getSafe - timePerCell * path.nodes.size() * 0.5f) * desires.getSafe;
 		return true;
 	}
 

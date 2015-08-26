@@ -16,7 +16,7 @@ float AIUtil::getTimePerCell(entityx::Entity& entity)
 	// Multiplication with m_Scale is the transformation from meters to pixels
 	float speed = inventory->speedMultiplicator * GameConstants::PLAYER_SPEED * PhysixSystem::m_Scale;
 
-	return GameConstants::CELL_WIDTH / speed;
+	return 1.05f * GameConstants::CELL_WIDTH / speed; // 5% more just to be safe (to mitigate errors in physics/collision avoidance for example)
 }
 
 bool AIUtil::isSafePath(entityx::Entity& entity, AIPath& path, float* minExplosionTime)
@@ -24,7 +24,7 @@ bool AIUtil::isSafePath(entityx::Entity& entity, AIPath& path, float* minExplosi
 	assert(entity.has_component<InventoryComponent>() && entity.has_component<TransformComponent>());
 
 	if (minExplosionTime)
-		*minExplosionTime = 2.f;
+		*minExplosionTime = 5.f;
 
 	float timePerCell = getTimePerCell(entity);
 

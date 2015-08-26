@@ -89,6 +89,12 @@ void GetSafe::preparePath(entityx::Entity& entity)
 			m_currentAction->preparePath(entity);
 		}
 
+		if (m_currentAction->path().nodes.size() == 0)
+		{
+			m_currentAction = m_tryToSurviveAction.get();
+			m_currentAction->preparePath(entity);
+		}
+
 		return;
 	}
 

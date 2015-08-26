@@ -11,10 +11,11 @@ bool RateSafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entit
 	float minExploTime;
 	if (!path.goal()->properties.affectedByExplosion && AIUtil::isSafePath(entity, path, &minExploTime))
 	{
+		float timePerCell = AIUtil::getTimePerCell(entity);
 		auto& personality = entity.component<AIComponent>()->personality;
 		auto& desires = personality.desires;
 		auto& affinity = personality.affinity;
-		path.rating = (affinity.getSafe + Math::clamp(minExploTime, 0.f, 1.f)) * desires.getSafe;
+		path.rating = (minExploTime / 5.f + affinity.getSafe - timePerCell * path.nodes.size() * 0.5f) * desires.getSafe;
 		return true;
 	}
 

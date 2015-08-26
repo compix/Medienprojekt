@@ -178,8 +178,8 @@ LocalGame::~LocalGame()
 void LocalGame::addSystems()
 {
 	addSystem<BodySystem>();
-	//addSystem<SoundSystem>();
-	//addSystem<MusicSystem>();
+	addSystem<SoundSystem>();
+	addSystem<MusicSystem>();
 	addSystem<InventorySystem>();
 	addSystem<ItemSystem>(m_layerManager.get());
 	addSystem<TimerSystem>();

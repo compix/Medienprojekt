@@ -48,8 +48,6 @@ void AISystem::init()
 		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
 
-		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
-
 		PathRating attackEnemyRating = RateCombination({ RateAttackEnemy(), RateEscape(), RateTrapDanger() });
 		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<Action>(m_pathEngine.get(), attackEnemyRating, PlaceBomb(), m_layerManager);
 
@@ -61,6 +59,8 @@ void AISystem::init()
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
 
 		aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
+
+		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
 	}
 }
 

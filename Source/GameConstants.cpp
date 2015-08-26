@@ -12,15 +12,15 @@ namespace GameConstants
 
 	// Relating to Players
 	extern const float PLAYER_SPEED = 4.f;
-	extern const float INIT_SPEED_MULTI = 1.0f;
-	extern const float SPEED_MULTI_CAP = 3.f;
+	extern const float INIT_SPEED_MULTI = 1.f;
+	extern const float SPEED_MULTI_CAP = 2.5f;
 	extern const float SPEED_MULTI_INC = 0.25f;
 	extern const bool INIT_PLAYERS_CAN_KICK = false;
 	extern const bool INIT_PLAYERS_CAN_HOLD_BOMB = false;
 	extern const bool INIT_PORTAL_SKILL = false;
 	extern const bool INIT_ANTI_MAGNET = false;
 	extern const bool INIT_PUNCH_SKILL = false;
-	extern const bool INIT_BLINK_SKILL = false;
+	extern const bool INIT_BLINK_SKILL = true;
 	extern const int PUNCH_DISTANCE = 2;
 	extern const float BLINK_SPEED = 20.f;
 
