@@ -5,12 +5,12 @@ class FpsCalculator
 {
 private:
 	int index = 0;
-	int sum = 0;
+	int64_t sum = 0;
     std::int64_t *fpsFrames;
     std::int64_t lastTime = -1;
     const int waitTime;
 	const int cacheSize;
-    int nextUpdate;
+	int64_t nextUpdate;
     float fpsCount;
 
 public:

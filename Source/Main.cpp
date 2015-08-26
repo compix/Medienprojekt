@@ -96,8 +96,8 @@ int Main::run()
 			{
 				if (GameGlobals::game)
 					GameGlobals::game->refreshView();
-				menuView.setSize(event.size.width, event.size.height);
-				screenView.setSize(event.size.width, event.size.height);
+				menuView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
+				screenView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
 				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{

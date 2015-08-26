@@ -9,13 +9,13 @@ MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 	createLabel(50, 50, "Join Server");
 
-	auto width2 = 300;
-	auto height2 = 40;
-	auto x1 = 50;
-	auto x2 = 250;
-	auto y = 200;
-	auto stepY = 50;
-	auto labelYOffset = 6;
+	auto width2 = 300.0f;
+	auto height2 = 40.0f;
+	auto x1 = 50.0f;
+	auto x2 = 250.0f;
+	auto y = 200.0f;
+	auto stepY = 50.0f;
+	auto labelYOffset = 6.0f;
 
 	createLabel(x1, y + labelYOffset, "Name:");
 	m_name = createEditBox(x2, y, width2, height2);

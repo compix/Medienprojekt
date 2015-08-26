@@ -11,20 +11,20 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 	createLabel(50, 50, "Create Game");
 
-	auto width2 = 250;
-	auto width3 = 250;
-	auto height2 = 40;
-	auto x1 = 50;
-	auto x2 = 210;
-	auto x3 = x2 + width2 + 20;
-	auto y = 120;
-	auto stepY = 50;
-	auto labelYOffset = 6;
+	auto width2 = 250.0f;
+	auto width3 = 250.0f;
+	auto height2 = 40.0f;
+	auto x1 = 50.0f;
+	auto x2 = 210.0f;
+	auto x3 = x2 + width2 + 20.0f;
+	auto y = 12.0f;
+	auto stepY = 50.0f;
+	auto labelYOffset = 6.0f;
 
 	createLabel(x1, y + labelYOffset, "Size: ");
-	m_width = createSizeComboBox(x2, y, width2 * 0.4, height2, 7, 31, 21);
+	m_width = createSizeComboBox(x2, y, width2 * 0.4f, height2, 7, 31, 21);
 	createLabel(x2 + 117, y + labelYOffset + 5, "x");
-	m_height = createSizeComboBox(x2 + width2 * 0.6, y, width2 * 0.4, height2, 7, 31, 21);
+	m_height = createSizeComboBox(x2 + width2 * 0.6f, y, width2 * 0.4f, height2, 7, 31, 21);
 
 	m_playerCount = createComboBox(x3, y, width3, height2);
 	m_playerCount->addItem("2 Players", 2);

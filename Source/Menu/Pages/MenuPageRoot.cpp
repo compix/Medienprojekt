@@ -8,11 +8,11 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 {
 	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
 
-	auto x = 300;
-	int y = 150;
-	auto stepY = 60;
-	auto width = 200;
-	auto height = 40;
+	auto x = 300.0f;
+	auto y = 150.0f;
+	auto stepY = 60.0f;
+	auto width = 200.0f;
+	auto height = 40.0f;
 
 	tgui::Button::Ptr button = createButton(x, y, width, height, "Create Game");
 	button->bindCallback(&MenuPageRoot::onCreateGame, this, tgui::Button::LeftMouseClicked);
