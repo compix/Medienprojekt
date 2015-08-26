@@ -25,31 +25,30 @@ struct AffectedByExplosion
 	}
 };
 
+enum class BombType : uint8_t;
 struct Bomb
 {
 	Bomb() : range(1), explosionTime(3.f), x(0), y(0) {}
-	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, bool ghost, bool lightning) 
-		: x(x), y(y), range(range), explosionTime(explosionTime), ghost(ghost), lightning(lightning) {}
+	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, BombType type) 
+		: x(x), y(y), range(range), explosionTime(explosionTime), type(type) {}
 
 	uint8_t x, y;
 	uint8_t range;
 	float explosionTime;
-	bool ghost;
-	bool lightning;
+	BombType type;
 };
 
 struct ExplosionSpread
 {
 	ExplosionSpread() : range(1), explosionTime(3.f), x(0), y(0) {}
-	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, bool ghost, bool lightning)
-		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), ghost(ghost), lightning(lightning) {}
+	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, BombType bombType)
+		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), bombType(bombType) {}
 
 	uint8_t x, y;
 	uint8_t range;
 	float explosionTime;
 	Direction direction;
-	bool ghost;
-	bool lightning;
+	BombType bombType;
 };
 
 class Graph : public EntityLayer::IOnChangeListener

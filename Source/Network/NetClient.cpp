@@ -6,6 +6,7 @@
 #include "../Events/PlayerJoinEvent.h"
 #include "../Game.h"
 #include "../Components/InputComponent.h"
+#include "../Components/InventoryComponent.h"
 #include "../Events/ExitEvent.h"
 #include "../Events/DeathEvent.h"
 #include "../Components/LocalInputComponent.h"
@@ -239,11 +240,10 @@ void NetClient::onCreateBombMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t x = reader.read<uint8_t>();
 	uint8_t y = reader.read<uint8_t>();
 	uint64_t ownerId = reader.read<uint64_t>();
-	bool ghost = reader.read<bool>();
-	bool lightning = reader.read<bool>();
+	BombType type = reader.read<BombType>();
 	Entity owner = getEntity(ownerId);
 	if (owner.valid())
-		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, ghost, lightning));
+		mapEntity(id, GameGlobals::entityFactory->createBomb(x, y, owner, type));
 }
 
 void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
@@ -254,9 +254,8 @@ void NetClient::onCreateExplosionMessage(MessageReader<MessageType>& reader, ENe
 	Direction direction = reader.read<Direction>();
 	uint8_t range = reader.read<uint8_t>();
 	float spreadTime = reader.read<float>();
-	bool ghost = reader.read<bool>();
-	bool lightning = reader.read<bool>();
-	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, ghost, lightning));
+	BombType bombType = reader.read<BombType>();
+	mapEntity(id, GameGlobals::entityFactory->createExplosion(x, y, direction, range, spreadTime, bombType));
 }
 
 void NetClient::onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt)

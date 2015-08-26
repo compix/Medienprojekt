@@ -87,7 +87,7 @@ void Graph::update(float deltaTime)
 		auto cell = bombEntity.component<CellComponent>();
 
 		//m_nodeGrid[cell->x][cell->y].properties.hasBomb = true;
-		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->ghost, bombComponent->lightning));
+		m_normalBombs.push_back(Bomb(cell->x, cell->y, bombComponent->explosionRange, timerComponent->seconds, bombComponent->type));
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionRange = bombComponent->explosionRange;
 		m_nodeGrid[cell->x][cell->y].bombProperties.explosionTime = timerComponent->seconds;
 	}
@@ -99,7 +99,7 @@ void Graph::update(float deltaTime)
 		auto spread = explosion.component<SpreadComponent>();
 
 		setOnFire(cell->x, cell->y, spread->timeTillNext);
-		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->ghost, spread->lightning);
+		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->bombType);
 		explosionSpread(eSpread);
 	}
 
@@ -153,7 +153,7 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 				if (affectedEntities)
 					affectedEntities->numOfItems++;
 
-				if (spread.ghost)
+				if (spread.bombType == BombType::GHOST)
 					continue; 
 
 				break; // Items stop explosions.
@@ -171,7 +171,7 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 
 					if (currentNode->properties.timeTillExplosion <= explosionTime)
 					{
-						if (spread.ghost)
+						if (spread.bombType == BombType::GHOST)
 							continue;
 
 						break;
@@ -194,23 +194,23 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 				if (!currentNode->bombProperties.explosionSimulated)
 				{
 					// Simulate the explosion chain
-					Bomb bomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, spread.ghost, spread.lightning);
+					Bomb bomb(currentNode->x, currentNode->y, currentNode->bombProperties.explosionRange, explosionTime, spread.bombType);
 					placeBomb(bomb);
 				}
 
 				continue; // Bombs don't stop explosions
 			}
 
-			if (spread.ghost && !currentNode->properties.hasSolidBlock)
+			if (spread.bombType == BombType::GHOST && !currentNode->properties.hasSolidBlock)
 				continue;
 
 			break; // Explosion was stopped so get outta here.
 		}
 	}
 
-	if (spread.lightning && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
+	if (spread.bombType == BombType::LIGHTNING && currentNode && (spread.x != currentNode->x || spread.y != currentNode->y))
 	{
-		Bomb bomb(currentNode->x, currentNode->y, 1, explosionTime, spread.ghost, false);
+		Bomb bomb(currentNode->x, currentNode->y, 1, explosionTime, BombType::NORMAL);
 		placeBomb(bomb, affectedEntities);
 	}
 }
@@ -276,7 +276,7 @@ void Graph::placeBomb(const Bomb& bomb, AffectedByExplosion* affectedEntities)
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);
-		ExplosionSpread explosion(bomb.x, bomb.y, bomb.range, correctExplosionTime, direction, bomb.ghost, bomb.lightning);
+		ExplosionSpread explosion(bomb.x, bomb.y, bomb.range, correctExplosionTime, direction, bomb.type);
 		explosionSpread(explosion, affectedEntities);
 	}
 }

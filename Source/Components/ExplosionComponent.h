@@ -1,19 +1,19 @@
 #pragma once
 #include "../Utils/Common.h"
 
+enum class BombType : uint8_t;
 
 struct SpreadComponent
 {
-	SpreadComponent(Direction direction, int range, float spreadTime, bool ghost, bool lightning) 
-		: direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime), stopped(false), ghost(ghost), lightning(lightning)  {}
+	SpreadComponent(Direction direction, int range, float spreadTime, BombType bombType)
+		: direction(direction), range(range), spreadTime(spreadTime), timeTillNext(spreadTime), stopped(false), bombType(bombType)  {}
 
 	Direction direction;
 	int range; // how far it can spread in cells
 	float spreadTime; // in seconds
 	float timeTillNext; // in seconds
 	bool stopped;
-	bool ghost; // Explosion will only be stopped by solid blocks
-	bool lightning; // 1 range explosion when it is stopped
+	BombType bombType;
 };
 
 /**

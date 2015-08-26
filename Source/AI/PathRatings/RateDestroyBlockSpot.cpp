@@ -24,7 +24,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 	bool spotAffectedByExplosion = goal->properties.affectedByExplosion;
 
 	AffectedByExplosion affectedEntities;
-	Bomb bomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->isGhostBombActive(), inventory->isLightningBombActive());
+	Bomb bomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->activeBomb());
 	pathEngine->getSimGraph()->placeBomb(bomb, &affectedEntities);
 	goal->valid = false;
 
