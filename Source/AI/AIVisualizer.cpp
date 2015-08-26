@@ -455,6 +455,9 @@ void AIVisualizer::visualizeAction(ActionType actionType, entityx::Entity& entit
 	case ActionType::ATTACK_ENEMY:
 		ss << "Attacking enemy.";
 		break;
+	case ActionType::BLINK:
+		ss << "Blinking.";
+		break;
 	default:
 		ss << "No idea what I'm doing.";
 		break;

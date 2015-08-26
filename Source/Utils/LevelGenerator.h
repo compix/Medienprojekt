@@ -38,7 +38,7 @@ struct DefaultConfig : LevelConfig
 		uint16_t numIndestructibleBlocks = (width - 3) * (height - 3) / 4 + (height + width - 2) * 2;
 		uint16_t numFreeBlocks = 3 * 4; // At the 4 player corners
 		uint16_t maxBlockCount = width * height - numIndestructibleBlocks - numFreeBlocks;
-		blockDensity = 0.0f;
+		blockDensity = 0.85f;
 		float uniformChance = blockDensity * 0.125f;
 		uint16_t itemCount = uint16_t(uniformChance * maxBlockCount);
 		

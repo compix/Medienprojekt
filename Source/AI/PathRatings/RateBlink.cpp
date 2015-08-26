@@ -21,7 +21,7 @@ bool RateBlink::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity
 		if (neighbor && neighbor->valid && isSafeLine(neighbor, pathEngine->getSimGraph(), direction, path.requiredTime(entity)))
 		{
 			// Found a safe line
-			path.rating = 10.f;
+			path.rating = 1.f;
 			path.behaviorNode = neighbor;
 			return true;
 		}
@@ -54,7 +54,10 @@ bool RateBlink::isSafeLine(const GraphNode* const startNode, Graph* graph, Direc
 			curNode = neighbor;
 		
 		++i;
-	} while (neighbor && neighbor->valid);
+
+		// i < 30 because portals can be connected on the same line cause a potential endless loop
+		// This is not a workaround but necessary because this path might be unsafe after a certain number of iterations (through the portal)
+	} while (neighbor && neighbor->valid && i < 30); 
 
 	return !curNode->properties.affectedByExplosion;
 }

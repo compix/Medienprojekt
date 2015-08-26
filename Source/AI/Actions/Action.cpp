@@ -15,14 +15,18 @@ Action::Action(PathEngine* pathEngine, PathRating pathRating, Behavior behavior,
 bool Action::valid(entityx::Entity& entity)
 {
 	return m_followPath.path().nodes.size() > 0 && 
-		  !AIUtil::isBlockedIgnoreLast(m_followPath.path()) && 
-		  AIUtil::isValidPath(m_followPath.path()) && 
-		  m_pathRating(m_pathEngine, m_followPath.path(), entity);
+		   !AIUtil::isBlockedIgnoreLast(m_followPath.path()) && 
+		   AIUtil::isValidPath(m_followPath.path()) && 
+		   AIUtil::isOnPath(entity, m_followPath.path()) &&
+		   m_pathRating(m_pathEngine, m_followPath.path(), entity);
 }
 
 void Action::update(entityx::Entity& entity, float deltaTime)
 {
 	assert(entity && entity.has_component<CellComponent>() && entity.has_component<TransformComponent>() && entity.has_component<AIComponent>());
+
+	if (m_resting)
+		return;
 
 	if (m_followPath(entity) && !m_behaviorExecuted)
 		m_behaviorExecuted = m_behavior(entity);
@@ -43,4 +47,5 @@ void Action::preparePath(entityx::Entity& entity)
 	m_followPath.setPath(path);
 
 	m_behaviorExecuted = false;
+	m_resting = false;
 }

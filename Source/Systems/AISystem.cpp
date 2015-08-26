@@ -45,19 +45,20 @@ void AISystem::init()
 		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
 
+		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
+		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
+
+		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
+
 		PathRating attackEnemyRating = RateCombination({ RateAttackEnemy(), RateEscape(), RateTrapDanger() });
 		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<Action>(m_pathEngine.get(), attackEnemyRating, PlaceBomb(), m_layerManager);
 
 		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks(), RateTrapDanger() });
 		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
+		aiComponent->actions[ActionType::WAIT]->setRandomPaths(false);
 
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
-
-		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
-		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
-
-		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
 
 		aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 	}
@@ -70,48 +71,64 @@ void AISystem::reset()
 
 void AISystem::log(entityx::Entity& entity)
 {
+	if (!entity)
+		return;
+
 	auto aiComponent = entity.component<AIComponent>();
 	assert(aiComponent && aiComponent->currentAction);
 
 	if (aiComponent->currentActionType == aiComponent->lastActionType && aiComponent->lastPath == aiComponent->currentAction->path())
 		return;
 
-	if (aiComponent->currentAction->path().nodes.size() == 0)
-		log(entity, "No action");
-
 	std::stringstream stream;
 
-	switch (aiComponent->currentActionType)
+	if (aiComponent->currentAction->path().nodes.size() > 0)
 	{
-	case ActionType::DESTROY_BLOCK:
-		stream << "Destroying block.";	
-		break;
-	case ActionType::WAIT:
-		stream << "Waiting for opportunities.";
-		break;
-	case ActionType::GET_ITEM:
-		stream << "Getting item.";
-		break;
-	case ActionType::GET_SAFE:
-		stream << "Getting safe.";
-		break;
-	case ActionType::KICK_BOMB:
-		stream << "Kicking bomb.";
-		break;
-	case ActionType::TRY_TO_SURVIVE:
-		stream << "Trying to survive.";
-		break;
-	case ActionType::PLACE_PORTAL:
-		stream << "Placing portal.";
-		break;
-	case ActionType::ATTACK_ENEMY:
-		stream << "Attacking enemy.";
-		break;
-	default:
-		stream << "UNKNOWN ACTION.";
-		break;
+		switch (aiComponent->currentActionType)
+		{
+		case ActionType::DESTROY_BLOCK:
+			stream << "Destroying block.";
+			break;
+		case ActionType::WAIT:
+			stream << "Waiting for opportunities.";
+			break;
+		case ActionType::GET_ITEM:
+			stream << "Getting item.";
+			break;
+		case ActionType::GET_SAFE:
+			stream << aiComponent->currentAction->logString(entity);
+			break;
+		case ActionType::KICK_BOMB:
+			stream << "Kicking bomb.";
+			break;
+		case ActionType::TRY_TO_SURVIVE:
+			stream << "Trying to survive.";
+			break;
+		case ActionType::PLACE_PORTAL:
+			stream << "Placing portal.";
+			break;
+		case ActionType::ATTACK_ENEMY:
+			stream << "Attacking enemy.";
+			break;
+		case ActionType::BLINK:
+			stream << "Blinking.";
+			break;
+		default:
+			stream << "UNKNOWN ACTION.";
+			break;
+		}
 	}
+	else
+		stream << "No action.";
 
+	auto cell = entity.component<CellComponent>();
+	assert(cell);
+	auto curOnPath = aiComponent->currentAction->path().current();
+
+	stream << " Pos: (" << int(cell->x) << ", " << int(cell->y) << ")";
+	if (curOnPath)
+		stream << " PathPos: (" << int(curOnPath->x) << ", " << int(curOnPath->y) << ")";
+	stream << " Speed: " << AIUtil::getTimePerCell(entity);
 	stream << " Path: " << aiComponent->currentAction->path();
 
 	log(entity, stream.str());
@@ -146,8 +163,11 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->bombButtonPressed = false;
 		input->skillButtonPressed = false;
 
-		if (!aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !aiComponent->currentAction->valid(entity))))
+		bool currentActionValid = aiComponent->currentAction ? aiComponent->currentAction->valid(entity) : false;
+		if (!aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !currentActionValid)))
 		{
+			auto lastAction = aiComponent->currentAction;
+
 			ActionPtr bestAction;
 			ActionType bestActionType;
 
@@ -163,6 +183,15 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 					bestActionType = pair.first;
 				}
 			}
+
+			/*
+			// No need to do the same action type again if it's still valid
+			if (currentActionValid && aiComponent->lastActionType == aiComponent->currentActionType)
+			{
+				aiComponent->currentAction->rest();
+				continue;
+			}
+			*/
 
 			assert(bestAction);
 			aiComponent->currentAction = bestAction.get();

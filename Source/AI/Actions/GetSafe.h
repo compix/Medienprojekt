@@ -15,6 +15,8 @@ public:
 	void preparePath(entityx::Entity& entity) override;
 
 	void update(entityx::Entity& entity, float deltaTime) override;
+
+	std::string logString(entityx::Entity& entity) override;
 private:
 	PathEngine* m_pathEngine;
 

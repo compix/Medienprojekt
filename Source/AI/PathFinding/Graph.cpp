@@ -53,6 +53,7 @@ void Graph::update(float deltaTime)
 		{
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
 			m_nodeGrid[x][y].bombProperties.explosionSimulated = false;
+			m_nodeGrid[x][y].properties.timeTillExplosion = 0.f;
 			m_nodeGrid[x][y].smells.dyingBlock = 0;
 		}
 	}
@@ -97,7 +98,8 @@ void Graph::update(float deltaTime)
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
 
-		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->spreadTime, spread->direction, spread->ghost, spread->lightning);
+		setOnFire(cell->x, cell->y, spread->timeTillNext);
+		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->ghost, spread->lightning);
 		explosionSpread(eSpread);
 	}
 
@@ -125,7 +127,6 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 {
 	float explosionTime = spread.explosionTime;
 	auto currentNode = getNode(spread.x, spread.y);
-	setOnFire(spread.x, spread.y, explosionTime);
 
 	// Simulate the explosion:
 	for (int j = 0; j < spread.range; ++j)
@@ -270,6 +271,8 @@ void Graph::placeBomb(const Bomb& bomb, AffectedByExplosion* affectedEntities)
 	currentNode->bombProperties.explosionSimulated = true;
 
 	float correctExplosionTime = currentNode->properties.affectedByExplosion ? std::min(bomb.explosionTime, currentNode->properties.timeTillExplosion) : bomb.explosionTime;
+	setOnFire(bomb.x, bomb.y, correctExplosionTime);
+
 	for (int i = 0; i < 4; ++i) // Go in all directions
 	{
 		Direction direction = static_cast<Direction>(static_cast<int>(Direction::UP) + i);

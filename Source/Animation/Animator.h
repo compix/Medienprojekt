@@ -48,7 +48,9 @@ private:
 template <class T>
 void Animator::changeTo(entityx::Entity& entity)
 {
-	assert(m_states.count(typeid(T)) > 0);
+	if (m_states.count(typeid(T)) == 0)
+		return;
+
 	auto animationComponent = entity.component<AnimationComponent>();
 	animationComponent->state = m_states[typeid(T)].get();
 }

@@ -8,7 +8,7 @@
 class BaseAction
 {
 public:
-	BaseAction() : m_numOfChecks(5), m_randomPaths(true) {}
+	BaseAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false) {}
 	virtual ~BaseAction() {}
 
 	virtual bool valid(entityx::Entity& entity) = 0;
@@ -20,10 +20,13 @@ public:
 	virtual void preparePath(entityx::Entity& entity) = 0;
 	virtual inline void setNumOfChecks(uint8_t num) { m_numOfChecks = num; };
 	virtual inline void setRandomPaths(bool randomPaths) { m_randomPaths = randomPaths; }
+	virtual inline void rest() { m_resting = true; }
 
+	virtual std::string logString(entityx::Entity& entity) { return ""; }
 protected:
 	uint8_t m_numOfChecks;
 	uint8_t m_randomPaths;
+	bool m_resting;
 };
 
 typedef std::shared_ptr<BaseAction> ActionPtr;
@@ -41,7 +44,7 @@ public:
 
 	void update(entityx::Entity& entity, float deltaTime) override;
 
-	inline bool done() override { return m_behaviorExecuted; }
+	inline bool done() override { return m_resting || m_behaviorExecuted; }
 
 	inline float getRating() override { return m_followPath.path().rating; }
 	inline void resetRating() override { m_followPath.path().resetRating(); }

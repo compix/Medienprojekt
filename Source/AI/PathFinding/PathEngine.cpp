@@ -184,8 +184,8 @@ void PathEngine::searchBest(entityx::Entity& entity, uint8_t startX, uint8_t sta
 
 	if (!paths.empty())
 	{
-		uint8_t bestIndex = 0;
-		for (uint8_t i = 1; i < paths.size(); ++i)
+		uint32_t bestIndex = 0;
+		for (uint32_t i = 1; i < paths.size(); ++i)
 			if (paths[bestIndex].rating < paths[i].rating)
 				bestIndex = i;
 		pathOut = paths[bestIndex];

@@ -5,8 +5,7 @@
 
 void AIPath::attach(AIPath& path)
 {
-	for (uint32_t i = 0; i < nodes.size(); ++i)
-		nodes.push_back(path.nodes[i]);
+	nodes.insert(nodes.end(), path.nodes.begin(), path.nodes.end());
 	cost += path.cost;
 }
 

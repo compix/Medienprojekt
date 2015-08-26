@@ -16,7 +16,7 @@ namespace Math
 	HSV lerp(const HSV& start, const HSV& end, float t);
 	sf::Vector2f lerp(const sf::Vector2f& start, const sf::Vector2f& end, float t);
 
-	inline float clamp(float v, float min, float max) { return v < min ? min : v > max ? max : v; }
+	inline float clamp(float v, float min, float max) { return v < min ? min : (v > max ? max : v); }
 
 	inline float smoothstep(float start, float end, float t) { return start + t*t*(3 - 2 * t) * (end - start); }
 	RGB smoothstep(RGB start, RGB end, float t);

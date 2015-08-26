@@ -7,7 +7,7 @@ bool RatePortalSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 {
 	auto goal = path.goal();
 
-	if (!goal->valid)
+	if (!goal->valid || goal->properties.affectedByExplosion)
 		return false;
 
 	// Check if the player can place portals

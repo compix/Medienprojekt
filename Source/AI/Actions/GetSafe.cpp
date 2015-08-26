@@ -1,16 +1,15 @@
 #include "GetSafe.h"
 #include "../Behaviors/DoNothing.h"
-#include "../PathRatings/RateSafety.h"
 #include "../PathRatings/RateCombination.h"
 #include "../PathRatings/RateKickBomb.h"
 #include "../PathRatings/RateDesperateSaveAttempt.h"
 #include "../../Components/CellComponent.h"
-#include "../AIUtil.h"
 #include "../PathRatings/RateRiskySafety.h"
 #include "../PathRatings/RateTrapDanger.h"
 #include "../PathRatings/RatePunchBomb.h"
 #include "../Behaviors/UseDirectionSkill.h"
 #include "../PathRatings/RateBlink.h"
+#include <sstream>
 
 bool GetSafe::done()
 {
@@ -100,11 +99,24 @@ void GetSafe::update(entityx::Entity& entity, float deltaTime)
 {
 	m_waitTimer -= deltaTime;
 	if (m_waitTimer <= 0.f)
-	{
-		if (m_currentAction == m_blink.get())
-			m_waitTimer = 0.f;
+		m_currentAction->update(entity, deltaTime);	
+}
 
-		m_currentAction->update(entity, deltaTime);
-	}
-		
+std::string GetSafe::logString(entityx::Entity& entity)
+{
+	std::stringstream ss;
+	ss << "Getting safe: ";
+	
+	if (m_currentAction == m_getSafeAction.get())
+		ss << "Seems safe.";
+	else if (m_currentAction == m_kickBombAction.get())
+		ss << "Kicking bomb.";
+	else if (m_currentAction == m_tryToSurviveAction.get())
+		ss << "Really desperate right now.";
+	else if (m_currentAction == m_punchBomb.get())
+		ss << "Punching bomb.";
+	else if (m_currentAction == m_blink.get())
+		ss << "Blinking to safety.";
+
+	return ss.str();
 }

@@ -4,13 +4,11 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/AIComponent.h"
 
-struct AIPersonality;
-
 bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();
 
-	if (!goal)
+	if (!goal->valid)
 		return false;
 
 	// If the AI can't place more bombs or the path isn't safe then it fails
@@ -26,6 +24,7 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	AffectedByExplosion affectedEntities;
 	Bomb bomb(goal->x, goal->y, inventory->explosionRange, GameConstants::EXPLOSION_TIME, inventory->isGhostBombActive(), inventory->isLightningBombActive());
 	pathEngine->getSimGraph()->placeBomb(bomb, &affectedEntities);
+	goal->valid = false;
 
 	bool enemiesAffected = affectedEntities.isEnemyAffected(entity);
 	bool itemsAffected = affectedEntities.numOfItems > 0;
@@ -33,24 +32,34 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	if (!enemiesAffected || itemsAffected)
 		found = false;
 
+	AIPath safePath;
+	AIPath fullPath;
+
 	if (found)
 	{
 		// Found a potential spot -> check if a safe escape path exists
-		AIPath safePath;
-		pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 5);
-		found = safePath.nodes.size() >= 2;
+		pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
+		found = safePath.nodes.size() > 1;
+		fullPath.attach(path);
+		fullPath.attach(safePath);
+		fullPath.curNode = path.curNode;
 
-		if (found)
+		// If the spot is affected by an explosion, check if the path to the spot and back to safety is safe
+		if (found && spotAffectedByExplosion)
 		{
-			// Check the full path for safety
-			AIPath fullPath;
-			fullPath.attach(path);
-			fullPath.attach(safePath);
-			fullPath.curNode = path.curNode;
-
 			if (!AIUtil::isSafePath(entity, fullPath))
 				found = false;
 		}
+	}
+
+	// Reset to the old state
+	pathEngine->getSimGraph()->resetSimulation();
+
+	if (found)
+	{
+		// Check if the path to the spot and back to safety is safe without the simulated bomb
+		if (!AIUtil::isSafePath(entity, fullPath))
+			found = false;
 	}
 
 	if (found)
@@ -60,9 +69,6 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 		auto& affinity = personality.affinity;
 		path.rating = (affinity.attackEnemy - timePerCell * path.nodes.size()) * desires.attackEnemy;
 	}
-
-	// Reset to the old state
-	pathEngine->getSimGraph()->resetSimulation();
 
 	return found;
 }

@@ -28,7 +28,9 @@ void SimulationGraph::resetSimulation()
 		auto realNode = m_realGraph->getNode(pos.x, pos.y);
 		auto& node = m_nodeGrid[pos.x][pos.y];
 
-		node.properties = realNode->properties;
+		bool wasMarked = node.marked;
+		node = *realNode;
+		node.marked = wasMarked;
 		// Set other Portal to the correct pointer
 		auto otherPortal = m_realGraph->getNode(pos.x, pos.y)->properties.otherPortal;
 		if (otherPortal)

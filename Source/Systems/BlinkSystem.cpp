@@ -10,6 +10,9 @@
 #include "../PhysixSystem.h"
 #include "../GameGlobals.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/AnimationComponent.h"
+#include "../Animation/Animator.h"
+#include "../Animation/States/WalkingState.h"
 
 
 BlinkSystem::BlinkSystem(LayerManager* layerManager)
@@ -125,6 +128,11 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 			{
 				blink->afterImageCounter = 0;
 				GameGlobals::entityFactory->createAfterimage(cell->x, cell->y, transform->x, transform->y, entity.component<SpriteComponent>()->sprite, 1.f);
+				if (entity.has_component<AnimationComponent>())
+				{
+					auto animationComponent = entity.component<AnimationComponent>();
+					animationComponent->animator->changeTo<WalkingState>(entity);
+				}
 			}
 		}
 	}

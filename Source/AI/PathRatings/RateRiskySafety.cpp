@@ -13,7 +13,7 @@ bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	{
 		float timePerCell = AIUtil::getTimePerCell(entity);
 		AIUtil::isSafePath(entity, path, &minExploTime);
-		if (minExploTime < timePerCell * 0.9f)
+		if (minExploTime < timePerCell * 0.5f)
 			return false;
 
 		auto& personality = entity.component<AIComponent>()->personality;
