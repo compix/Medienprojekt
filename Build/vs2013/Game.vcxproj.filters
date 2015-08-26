@@ -427,6 +427,9 @@
     <ClInclude Include="..\..\Source\Graphics\Particle.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Graphics\ParticleEffects.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -754,6 +757,9 @@
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\GameConstants.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
