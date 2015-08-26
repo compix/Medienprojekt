@@ -198,14 +198,6 @@ void Main::receive(const PreloadEvent& evt)
 	if (evt.progress == evt.total)
 	{
 		AnimatorManager::init();
-
-		// Create dummy local game
-		std::vector<CreateGamePlayerInfo> players;
-		players.push_back(CreateGamePlayerInfo("Stan", CreateGamePlayerType::LOCAL));
-		players.push_back(CreateGamePlayerInfo("Kenny", CreateGamePlayerType::COMPUTER));
-		players.push_back(CreateGamePlayerInfo("Kyle", CreateGamePlayerType::COMPUTER));
-		players.push_back(CreateGamePlayerInfo("Cartman", CreateGamePlayerType::COMPUTER));
-		m_events.emit<CreateGameEvent>(21, 21, players);
 	}
 }
 

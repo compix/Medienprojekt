@@ -8,7 +8,7 @@
 MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	:MenuPage(menu)
 {
-	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
+	createPicture(800, 600, "Assets/ui/background.png");
 	createLabel(50, 50, "Create Game");
 
 	auto width2 = 250.0f;
@@ -17,7 +17,7 @@ MenuPageCreateGame::MenuPageCreateGame(Menu &menu)
 	auto x1 = 50.0f;
 	auto x2 = 210.0f;
 	auto x3 = x2 + width2 + 20.0f;
-	auto y = 12.0f;
+	auto y = 120.0f;
 	auto stepY = 50.0f;
 	auto labelYOffset = 6.0f;
 

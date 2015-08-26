@@ -6,7 +6,7 @@
 MenuPageJoinGame::MenuPageJoinGame(Menu &menu)
 	:MenuPage(menu), m_connectingPage(menu)
 {
-	createPicture(800, 600, "Assets/ui/xubuntu_bg_aluminium.jpg");
+	createPicture(800, 600, "Assets/ui/background.png");
 	createLabel(50, 50, "Join Server");
 
 	auto width2 = 300.0f;
