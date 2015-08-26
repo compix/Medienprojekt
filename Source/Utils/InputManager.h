@@ -2,6 +2,7 @@
 #include <map>
 #include <entityx/entityx.h>
 #include "../Events/MenuShowEvent.h"
+#include "../Events/ResetGameEvent.h"
 #include <SFML/Window/Joystick.hpp>
 #include "../GameConstants.h"
 
@@ -64,6 +65,7 @@ public:
 
 	void receive(const sf::Event &evt);
 	void receive(const MenuShowEvent &evt);
+	void receive(const ResetGameEvent &evt);
 	
 	void update();
 
@@ -73,6 +75,7 @@ private:
 	JoystickConfig m_storedJoystickConfigs[GameConstants::MAX_PLAYERS];
 	JoystickConfig *m_joystickMap[sf::Joystick::Count];
 
+	void reset();
 	bool loadConfigFromJson(const std::string& path);
 	void bindKey(int playerIndex, PlayerButton button, int keyCode);
 
