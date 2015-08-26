@@ -1,19 +1,20 @@
 #pragma once
 #include <stdint.h>
 #include <assert.h>
+#include "../../Components/InventoryComponent.h"
+
 
 struct GraphNode;
 
 struct BombProperties
 {
-	BombProperties(uint8_t explosionRange, float explosionTime, bool ghost, bool lightning) 
-		: explosionSimulated(false), explosionRange(explosionRange), explosionTime(explosionTime), ghost(ghost), lightning(lightning) {}
-	BombProperties() : BombProperties(explosionRange, 0.f, false, false) {}
+	BombProperties(uint8_t explosionRange, float explosionTime, BombType type)
+		: explosionSimulated(false), explosionRange(explosionRange), explosionTime(explosionTime), type(type) {}
+	BombProperties() : BombProperties(explosionRange, 0.f, BombType::NORMAL) {}
 
 	bool explosionSimulated;
 	uint8_t explosionRange;
-	bool ghost;
-	bool lightning;
+	BombType type;
 
 	float explosionTime;
 };

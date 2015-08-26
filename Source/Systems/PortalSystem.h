@@ -3,10 +3,10 @@
 #include "../Components/BodyComponent.h"
 #include "../Components/PortalComponent.h"
 #include "../Events/TimeoutEvent.h"
-#include "../Events/CreatePortalEvent.h"
 #include "../LayerManager.h"
 #include "../Components/CellComponent.h"
 
+struct SkillEvent;
 struct TimeoutEvent;
 using entityx::System;
 using entityx::EntityManager;
@@ -21,7 +21,7 @@ public:
 	PortalSystem(LayerManager* layerManager);
 	~PortalSystem();
 	void configure(entityx::EventManager &event_manager) override;
-	void receive(const CreatePortalEvent& event);
+	void receive(const SkillEvent& event);
 	void receive(const TimeoutEvent& timeoutEvent);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 

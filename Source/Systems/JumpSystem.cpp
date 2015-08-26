@@ -12,6 +12,7 @@
 #include "../GameGlobals.h"
 #include "../Game.h"
 #include "../Components/PlayerComponent.h"
+#include "../Events/SkillEvent.h"
 
 JumpSystem::JumpSystem(LayerManager* layerManager)
 {
@@ -24,11 +25,14 @@ JumpSystem::~JumpSystem()
 
 void JumpSystem::configure(entityx::EventManager& event_manager)
 {
-	event_manager.subscribe<PunchEvent>(*this);
+	event_manager.subscribe<SkillEvent>(*this);
 }
 
-void JumpSystem::receive(const PunchEvent& event)
+void JumpSystem::receive(const SkillEvent& event)
 {
+	if (event.type != SkillType::PUNCH)
+		return;
+
 	auto entity = event.triggerEntity;
 	assert(entity && entity.has_component<InventoryComponent>() && entity.has_component<DirectionComponent>() && entity.has_component<CellComponent>());
 
@@ -38,7 +42,7 @@ void JumpSystem::receive(const PunchEvent& event)
 	Entity bomb;
 
 	int x = 0, y = 0;
-	int jumpDistance = event.punchDistance;
+	int jumpDistance = GameConstants::PUNCH_DISTANCE;
 	adjustXY_RelatingToTheDirection(&x, &y, jumpDistance, direction, cellComponent, &bomb);
 
 	if (!bomb)

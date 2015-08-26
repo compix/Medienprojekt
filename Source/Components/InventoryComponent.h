@@ -4,7 +4,7 @@
 #include <entityx/Entity.h>
 #include "../Utils/ActiveQueue.h"
 
-enum class SkillType
+enum class SkillType : uint8_t
 {
 	NONE,
 	PLACE_PORTAL,
@@ -55,7 +55,8 @@ enum class BombType : uint8_t
 {
 	NORMAL,
 	GHOST, // Only stopped by solid blocks
-	LIGHTNING // 1 Range explosion at the end of the spread
+	LIGHTNING, // 1 Range explosion at the end of the spread
+	LIGHTNING_PEAK // Not a bomb, but used for explosions
 };
 
 struct BombTypeComparator
@@ -102,6 +103,4 @@ struct InventoryComponent
 
 	inline BombType activeBomb() { return activeBombs.empty() ? BombType::NORMAL : activeBombs.top(); }
 	inline void put(BombType bombType) { activeBombs.put(bombType); }
-	inline bool isGhostBombActive() { return activeBomb() == BombType::GHOST; }
-	inline bool isLightningBombActive() { return activeBomb() == BombType::LIGHTNING; }
 };

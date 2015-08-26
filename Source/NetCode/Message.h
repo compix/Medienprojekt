@@ -36,6 +36,16 @@ namespace NetCode
 			write<MT>(type);
 		}
 
+		bool checkSize(size_t length)
+		{
+			return m_position + length <= m_limit;
+		}
+
+		bool isEmpty()
+		{
+			return m_position <= sizeof(MT);
+		}
+
 		ENetPacket *createPacket(enet_uint32 flags)
 		{
 			return enet_packet_create(m_data, m_position, flags);
@@ -86,6 +96,11 @@ namespace NetCode
 		}
 
 		MT getType() { return m_type; }
+
+		size_t remaining()
+		{
+			return m_limit > m_position ? (m_limit - m_position) : 0;
+		}
 
 		template <typename T>
 		typename enable_if<!is_bool<T>::value && !is_string<T>::value, T>::type read()

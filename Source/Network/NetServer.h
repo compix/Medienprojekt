@@ -8,6 +8,8 @@
 #include "../GameConstants.h"
 #include "../Events/StartGameEvent.h"
 
+struct SkillEvent;
+enum class BombType : uint8_t;
 struct ResetGameEvent;
 struct GameOverEvent;
 struct SetReadyEvent;
@@ -26,6 +28,17 @@ using NetCode::MessageReader;
 using entityx::Receiver;
 using entityx::EntityManager;
 using entityx::EntityDestroyedEvent;
+
+class DynamicUpdateWriter
+{
+public:
+	DynamicUpdateWriter();
+	ENetPacket *addEntity(Entity &entity, float x, float y, uint64_t packetNumber);
+	ENetPacket *finish();
+
+private:
+	MessageWriter<MessageType> m_messageWriter;
+};
 
 class NetServer : public Receiver<NetServer>
 {
@@ -50,6 +63,7 @@ public:
 	void receive(const GameOverEvent &evt);
 	void receive(const ResetGameEvent &evt);
 	void receive(const StartGameEvent& evt);
+	void receive(const SkillEvent &evt);
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -65,11 +79,10 @@ private:
 	void sendPlayerEntities(ENetPeer* peer);
 	ENetPacket* createPlayerPacket(entityx::Entity entity, float x, float y, uint8_t playerIndex);
 	void broadcastDynamicUpdates();
-	ENetPacket* createUpdateDynamicPacket(entityx::Entity entity, float x, float y, uint64_t packetNumber);
 	void sendBombEntities(ENetPeer* peer);
-	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner, bool ghost, bool lightning);
+	ENetPacket* createBombPacket(entityx::Entity entity, uint8_t x, uint8_t y, entityx::Entity owner, BombType type);
 	void sendExplosionEntities(ENetPeer* peer);
-	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak);
+	ENetPacket* createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, BombType bombType);
 	void sendPortalEntities(ENetPeer* peer);
 	ENetPacket* createPortalPacket(Entity entity, uint8_t x, uint8_t y, Entity owner);
 	void sendItemEntities(ENetPeer* peer);
@@ -95,6 +108,7 @@ private:
 	ServerConnection<MessageType> m_connection;
 	MessageHandler<MessageType> m_handler;
 	MessageWriter<MessageType> m_messageWriter;
+	DynamicUpdateWriter m_dynamicUpdateWriter;
 	uint8_t m_width;
 	uint8_t m_height;
 	float m_countdown = 0;

@@ -33,12 +33,57 @@
 #include "../Events/StartGameEvent.h"
 #include "../Components/PlayerComponent.h"
 #include "../Events/ReadyEvent.h"
+#include "../Events/SkillEvent.h"
 #include <format.h>
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
+#include "../Components/NoNetComponent.h"
 
 using namespace std;
 using namespace NetCode;
+
+const size_t DYNAMIC_DATA_SIZE = 8 + 8 + 4 + 4 + 1;
+const size_t DYNAMIC_DATA_INPUT_SIZE = DYNAMIC_DATA_SIZE + 4 + 4;
+DynamicUpdateWriter::DynamicUpdateWriter()
+	: m_messageWriter(1024)
+{
+	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
+}
+
+ENetPacket* DynamicUpdateWriter::addEntity(Entity& entity, float x, float y, uint64_t packetNumber)
+{
+	assert(entity.valid());
+	auto input = entity.component<InputComponent>();
+
+	ENetPacket *packet = nullptr;
+	if (!m_messageWriter.checkSize(input.valid() ? DYNAMIC_DATA_INPUT_SIZE : DYNAMIC_DATA_SIZE))
+		packet = finish();
+
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<uint64_t>(packetNumber);
+	m_messageWriter.write<float>(x);
+	m_messageWriter.write<float>(y);
+	m_messageWriter.write<bool>(input.valid());
+
+	if (input.valid())
+	{
+		m_messageWriter.write<float>(input->moveX);
+		m_messageWriter.write<float>(input->moveY);
+	}
+	return packet;
+}
+
+ENetPacket* DynamicUpdateWriter::finish()
+{
+	if (!m_messageWriter.isEmpty())
+	{
+		ENetPacket *packet = m_messageWriter.createPacket(0);
+
+		m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
+		return packet;
+	}
+	return nullptr;
+}
 
 NetServer::NetServer()
 	: m_messageWriter(1024)
@@ -56,6 +101,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<GameOverEvent>(*this);
 	GameGlobals::events->subscribe<ResetGameEvent>(*this);
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
+	GameGlobals::events->subscribe<SkillEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -224,19 +270,22 @@ void NetServer::receive(const SendChatEvent& evt)
 
 void NetServer::receive(const BombCreatedEvent& evt)
 {
-	broadcast(NetChannel::WORLD_RELIABLE, createBombPacket(evt.entity, evt.x, evt.y, evt.owner, evt.ghost, evt.lightning));
+	broadcast(NetChannel::WORLD_RELIABLE, createBombPacket(evt.entity, evt.x, evt.y, evt.owner, evt.type));
 }
 
 void NetServer::receive(const ExplosionCreatedEvent& evt)
 {
-	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime, evt.ghost, evt.lightning, evt.lightningPeak));
+	broadcast(NetChannel::WORLD_RELIABLE, createExplosionPacket(evt.entity, evt.x, evt.y, evt.direction, evt.range, evt.spreadTime, evt.bombType));
 }
 
 void NetServer::receive(const EntityDestroyedEvent& evt)
 {
-	m_messageWriter.init(MessageType::DESTROY_ENTITY);
-	m_messageWriter.write<uint64_t>(evt.entity.id().id());
-	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	if (!evt.entity.has_component<NoNetComponent>())
+	{
+		m_messageWriter.init(MessageType::DESTROY_ENTITY);
+		m_messageWriter.write<uint64_t>(evt.entity.id().id());
+		broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+	}
 }
 
 void NetServer::receive(const PortalCreatedEvent& evt)
@@ -311,6 +360,15 @@ void NetServer::receive(const StartGameEvent& evt)
 			sendStartGame(&m_playerInfos[i]);
 		}
 	}
+}
+
+void NetServer::receive(const SkillEvent& evt)
+{
+	m_messageWriter.init(MessageType::SKILL);
+	m_messageWriter.write<uint64_t>(evt.triggerEntity.id().id());
+	m_messageWriter.write<SkillType>(evt.type);
+	m_messageWriter.write<bool>(evt.activate);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetServer::startCountdown()
@@ -577,23 +635,14 @@ void NetServer::broadcastDynamicUpdates()
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(dynamic, transform, cell))
-		broadcast(NetChannel::WORLD_UNRELIABLE, createUpdateDynamicPacket(entity, transform->x, transform->y, dynamic->packetNumber++));
-}
-
-ENetPacket *NetServer::createUpdateDynamicPacket(Entity entity, float x, float y, uint64_t packetNumber)
-{
-	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
-	m_messageWriter.write<uint64_t>(entity.id().id());
-	m_messageWriter.write<uint64_t>(packetNumber);
-	m_messageWriter.write<float>(x);
-	m_messageWriter.write<float>(y);
-	auto input = entity.component<InputComponent>();
-	if(input.valid())
 	{
-		m_messageWriter.write<float>(input->moveX);
-		m_messageWriter.write<float>(input->moveY);
+		auto *packet = m_dynamicUpdateWriter.addEntity(entity, transform->x, transform->y, dynamic->packetNumber++);
+		if (packet)
+			broadcast(NetChannel::WORLD_UNRELIABLE, packet);
 	}
-	return m_messageWriter.createPacket(0);
+	auto *packet = m_dynamicUpdateWriter.finish();
+	if (packet)
+		broadcast(NetChannel::WORLD_UNRELIABLE, packet);
 }
 
 void NetServer::sendBombEntities(ENetPeer *peer)
@@ -603,18 +652,17 @@ void NetServer::sendBombEntities(ENetPeer *peer)
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(bomb, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, owner->entity, bomb->ghost, bomb->lightning));
+		send(peer, NetChannel::WORLD_RELIABLE, createBombPacket(entity, cell->x, cell->y, owner->entity, bomb->type));
 }
 
-ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Entity owner, bool ghost, bool lightning)
+ENetPacket *NetServer::createBombPacket(Entity entity, uint8_t x, uint8_t y, Entity owner, BombType type)
 {
 	m_messageWriter.init(MessageType::CREATE_BOMB);
 	m_messageWriter.write<uint64_t>(entity.id().id());
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<uint64_t>(owner.id().id());
-	m_messageWriter.write<bool>(ghost);
-	m_messageWriter.write<bool>(lightning);
+	m_messageWriter.write<BombType>(type);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
@@ -626,11 +674,10 @@ void NetServer::sendExplosionEntities(ENetPeer* peer)
 	ComponentHandle<CellComponent> cell;
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(explosion, spread, owner, cell))
-		send(peer, NetChannel::WORLD_RELIABLE, 
-		createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime, spread->ghost, spread->lightning, spread->lightningPeak));
+		send(peer, NetChannel::WORLD_RELIABLE, createExplosionPacket(entity, cell->x, cell->y, spread->direction, spread->range, spread->spreadTime, spread->bombType));
 }
 
-ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, bool ghost, bool lightning, bool lightningPeak)
+ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y, Direction direction, uint8_t range, float spreadTime, BombType bombType)
 {
 	m_messageWriter.init(MessageType::CREATE_EXPLOSION);
 	m_messageWriter.write<uint64_t>(entity.id().id());
@@ -639,9 +686,7 @@ ENetPacket *NetServer::createExplosionPacket(Entity entity, uint8_t x, uint8_t y
 	m_messageWriter.write<Direction>(direction);
 	m_messageWriter.write<uint8_t>(range);
 	m_messageWriter.write<float>(spreadTime);
-	m_messageWriter.write<bool>(ghost);
-	m_messageWriter.write<bool>(lightning);
-	m_messageWriter.write<bool>(lightningPeak);
+	m_messageWriter.write<BombType>(bombType);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 
