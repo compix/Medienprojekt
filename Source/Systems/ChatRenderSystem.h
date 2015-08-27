@@ -4,6 +4,7 @@
 #include "../EntityLayer.h"
 #include "../LayerManager.h"
 
+struct MenuShowEvent;
 struct ChatEvent;
 using entityx::System;
 using entityx::EntityManager;
@@ -30,6 +31,7 @@ public:
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 	void updateEntries(TimeDelta dt);
 	void renderEntries();
+	void receive(const MenuShowEvent& evt);
 	void receive(const ChatEvent &evt);
 
 private:
@@ -42,5 +44,6 @@ private:
 	int m_oldestEntry = 0;
 	TimeDelta m_moveUpTime;
 	float m_lineSpacing;
+	bool m_visible = false;
 };
 

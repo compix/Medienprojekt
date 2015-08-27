@@ -5,6 +5,7 @@
 #include "../Events/ChatEvent.h"
 #include "../Events/ExitEvent.h"
 #include "../Utils/Math.h"
+#include "../Events/MenuShowEvent.h"
 
 ChatRenderSystem::ChatRenderSystem()
 {
@@ -37,15 +38,20 @@ ChatRenderSystem::~ChatRenderSystem()
 void ChatRenderSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<ChatEvent>(*this);
+	events.subscribe<MenuShowEvent>(*this);
 }
+
 void ChatRenderSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
 	if (m_moveUpTime > 0)
 		m_moveUpTime -= dt;
 	updateEntries(dt);
-	GameGlobals::window->setView(*GameGlobals::screenView);
-	renderEntries();
-	GameGlobals::window->setView(*GameGlobals::gameView);
+	if (m_visible)
+	{
+		GameGlobals::window->setView(*GameGlobals::screenView);
+		renderEntries();
+		GameGlobals::window->setView(*GameGlobals::gameView);
+	}
 }
 
 void ChatRenderSystem::updateEntries(TimeDelta dt)
@@ -102,6 +108,11 @@ void ChatRenderSystem::renderEntries()
 		if (index == MAX_CHAT_LINES)
 			index = 0;
 	} while (index != m_oldestEntry);
+}
+
+void ChatRenderSystem::receive(const MenuShowEvent &evt)
+{
+	m_visible = !evt.visible;
 }
 
 void ChatRenderSystem::receive(const ChatEvent &evt)
