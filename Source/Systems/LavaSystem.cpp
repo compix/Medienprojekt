@@ -5,21 +5,28 @@
 #include "../Events/Phase2StartedEvent.h"
 
 LavaSystem::LavaSystem(uint8_t levelWidth, uint8_t levelHeight)
-	: m_phase2Started(false), m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_totalTime(0.f), m_startTime(60.f), m_leftTillSpawn(GameConstants::LAVA_SPAWN_TIME),
-	m_curCellX(1), m_curCellY(1), m_curDirection(Direction::DOWN), m_topBorder(0), m_botBorder(m_levelHeight-1), m_leftBorder(0), m_rightBorder(m_levelWidth-1),
-	m_end(false)
+	: m_phase2Started(false), m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_timer(0.f), m_startTime(4.f), m_leftTillSpawn(GameConstants::LAVA_SPAWN_TIME),
+	  m_topBorder(0), m_botBorder(m_levelHeight-1), m_leftBorder(0), m_rightBorder(m_levelWidth-1)
 {
 
 }
 
+void LavaSystem::reset()
+{
+	m_topBorder   = 0;
+	m_botBorder   = m_levelHeight - 1;
+	m_leftBorder  = 0;
+	m_rightBorder = m_levelWidth - 1;
+	m_phase2Started = false;
+	m_timer = 0.f;
+	m_leftTillSpawn = GameConstants::LAVA_SPAWN_TIME;
+}
+
 void LavaSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
-	if (m_end)
-		return;
+	m_timer += float(dt);
 
-	m_totalTime += float(dt);
-
-	if (m_totalTime < m_startTime)
+	if (m_timer < m_startTime)
 		return;
 
 	if (!m_phase2Started)

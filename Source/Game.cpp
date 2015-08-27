@@ -236,6 +236,9 @@ void LocalGame::resetEntities()
 	if (m_systems.system<AISystem>())
 		m_systems.system<AISystem>()->reset();
 
+	if (m_systems.system<LavaSystem>())
+		m_systems.system<LavaSystem>()->reset();
+
 	LevelGenerator levelGenerator(DefaultConfig(m_width, m_height));
 	levelGenerator.generateRandomLevel();
 

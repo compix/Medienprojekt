@@ -74,7 +74,10 @@ void Graph::update(float deltaTime)
 	{
 		auto cell = lava.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion = true;
-		m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = 0.f;
+		if (lava.has_component<TimerComponent>())
+			m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = lava.component<TimerComponent>()->seconds;
+		else
+			m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = 0.f;
 	}
 
 	for (auto dyingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())
