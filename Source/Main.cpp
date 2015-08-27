@@ -233,7 +233,7 @@ void Main::toggleFullscreen()
 
 void Main::onResize(float width, float height)
 {
-	fitViewInto(*GameGlobals::menuView, GameConstants::MENU_WIDTH, GameConstants::MENU_HEIGHT, width, height);
+	fitViewInto(*GameGlobals::menuView, float(GameConstants::MENU_WIDTH), float(GameConstants::MENU_HEIGHT), width, height);
 	GameGlobals::screenView->setSize(width, height);
 	GameGlobals::screenView->setCenter(width / 2.0f, height / 2.0f);
 }

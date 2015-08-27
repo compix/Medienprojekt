@@ -5,7 +5,9 @@
 
 struct JumpComponent
 {
-	JumpComponent(Direction direction, int fromX, int fromY, int toX, int toY, float startVelocity, float totalTime, float deltaTimeMultiplikator) : direction(direction), fromX(fromX), fromY(fromY), toX(toX), toY(toY), startVelocity(startVelocity), totalTime(totalTime), deltaTimeMultiplikator(deltaTimeMultiplikator){}
+	JumpComponent(Direction direction, int fromX, int fromY, int toX, int toY, float startVelocity, float totalTime, float deltaTimeMultiplikator) 
+		: direction(direction), fromX(fromX), fromY(fromY), toX(toX), toY(toY), startVelocity(startVelocity), 
+		totalTime(totalTime), deltaTimeMultiplikator(deltaTimeMultiplikator){}
 
 	Direction direction;
 	int fromX, fromY;

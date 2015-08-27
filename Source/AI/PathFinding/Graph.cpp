@@ -400,9 +400,8 @@ void Graph::onEntityRemoved(entityx::Entity& entity)
 	
 	if (entity.has_component<ItemComponent>())
 	{
-		// 2 items on one cell? Shouldn't happen.
-		assert(!m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y));
-		m_nodeGrid[cell->x][cell->y].properties.hasItem = false;
+		if(!m_layerManager->hasEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y))
+			m_nodeGrid[cell->x][cell->y].properties.hasItem = false;
 		return;
 	}
 

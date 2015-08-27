@@ -671,6 +671,9 @@
     <ClInclude Include="..\..\Source\Systems\NotificationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\BombLandedOnEntityEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">

@@ -4,6 +4,7 @@
 #include "../Components/ItemComponent.h"
 #include "../Utils/Common.h"
 
+struct BombLandedOnEntityEvent;
 struct ItemPickedUpEvent;
 class LayerManager;
 
@@ -19,8 +20,12 @@ public:
 
 	void receive(const entityx::EntityDestroyedEvent& destroyedEvent);
 	void receive(const ItemPickedUpEvent& pickedUpEvent);
-
+	void receive(const BombLandedOnEntityEvent& bombLandedOnEntityEvent);
+	
 private:
+	void dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType);
+	void getFreeCells(std::vector<LevelCell>& outFreeCells);
+
 	/**
 	* Returns true if successfully removed.
 	*/

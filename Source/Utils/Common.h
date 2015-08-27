@@ -15,6 +15,10 @@ enum class Direction : uint8_t
 
 struct LevelCell
 {
+	LevelCell() {}
+	LevelCell(uint8_t x, uint8_t y) 
+		:x(x), y(y) {}
+
 	uint8_t x;
 	uint8_t y;
 };

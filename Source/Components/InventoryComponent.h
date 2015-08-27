@@ -105,10 +105,11 @@ struct InventoryComponent
 	inline void put(SkillType skillType) { activeSkills.put(Skill(skillType)); }
 	inline SkillType activeSkill() { return activeSkills.empty() ? SkillType::NONE : activeSkills.top().type; }
 	inline bool isActive(SkillType type) { return activeSkill() == type; }
-	inline void removeSkill(SkillType type) { activeSkills.remove(Skill(type)); }
+	inline void remove(SkillType type) { activeSkills.remove(Skill(type)); }
 
 	inline BombType activeBomb() { return activeBombs.empty() ? BombType::NORMAL : activeBombs.top(); }
 	inline void put(BombType bombType) { activeBombs.put(bombType); }
+	inline void remove(BombType bombType) { activeBombs.remove(bombType); }
 
 	inline float speed() { return (GameConstants::INIT_SPEED_MULTI + GameConstants::SPEED_MULTI_INC * itemCounts[ItemType::SPEED_MULTIPLICATOR]) * GameConstants::PLAYER_SPEED; }
 	inline bool canPunchBomb() { return itemCounts[ItemType::PUNCH_SKILL] > 0; }

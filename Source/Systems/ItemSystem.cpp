@@ -7,8 +7,12 @@
 #include "../Components/InventoryComponent.h"
 #include "../Components/DestructionComponent.h"
 #include "../Events/ItemPickedUpEvent.h"
+#include "../Events/BombLandedOnEntityEvent.h"
 #include "../Components/ItemSpawnerComponent.h"
 #include "../Components/JumpComponent.h"
+#include "../Utils/Random.h"
+#include "../Utils/Math.h"
+#include "../Components/LavaComponent.h"
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
@@ -53,6 +57,12 @@ bool ItemSystem::removeItem(entityx::Entity& entity, ItemType itemType)
 		inventory->itemCounts[itemType]--;
 		auto& items = inventory->items;
 		items.erase(std::remove(items.begin(), items.end(), itemType), items.end());
+
+		if (CommonUtil::isBomb(itemType))
+			inventory->remove(CommonUtil::toBomb(itemType));
+		else if (CommonUtil::isSkill(itemType))
+			inventory->remove(CommonUtil::toSkill(itemType));
+
 		return true;
 	}
 
@@ -68,6 +78,12 @@ bool ItemSystem::addItem(entityx::Entity& entity, ItemType itemType)
 		inventory->itemCounts[itemType]++;
 		auto& items = inventory->items;
 		items.push_back(itemType);
+
+		if (CommonUtil::isBomb(itemType))
+			inventory->put(CommonUtil::toBomb(itemType));
+		else if (CommonUtil::isSkill(itemType))
+			inventory->put(CommonUtil::toSkill(itemType));
+
 		return true;
 	}
 
@@ -78,6 +94,7 @@ void ItemSystem::configure(entityx::EventManager& events)
 {
 	events.subscribe<entityx::EntityDestroyedEvent>(*this);
 	events.subscribe<ItemPickedUpEvent>(*this);
+	events.subscribe<BombLandedOnEntityEvent>(*this);
 }
 
 void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -95,15 +112,7 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 		if (entityWithInventory.valid() && !item.has_component<JumpComponent>())
 		{
 			auto inventory = entityWithInventory.component<InventoryComponent>();
-			ItemType itemType = itemComponent->type;
-
-			addItem(entityWithInventory, itemType);
-
-			if (CommonUtil::isBomb(itemType))
-				inventory->put(CommonUtil::toBomb(itemType));
-			else if (CommonUtil::isSkill(itemType))
-				inventory->put(CommonUtil::toSkill(itemType));
-
+			addItem(entityWithInventory, itemComponent->type);
 			eventManager.emit<ItemPickedUpEvent>(item, entityWithInventory);
 		}
 	}
@@ -124,6 +133,28 @@ void ItemSystem::receive(const entityx::EntityDestroyedEvent& destroyedEvent)
 
 		GameGlobals::entityFactory->createItem(cell->x, cell->y, itemSpawn->itemType);
 	}
+
+	if (entity.has_component<InventoryComponent>())
+	{
+		auto inventory = entity.component<InventoryComponent>();
+
+		if (inventory->items.empty())
+			return;
+
+		auto cell = entity.component<CellComponent>();
+		assert(cell);
+
+		std::vector<LevelCell> m_freeCells;
+		getFreeCells(m_freeCells);
+		std::shuffle(m_freeCells.begin(), m_freeCells.end(), Random::RNG());
+		
+		size_t freeIndex = 0;
+
+		for (uint8_t i = 0; i < inventory->items.size() && freeIndex < m_freeCells.size(); ++i, ++freeIndex)
+		{
+			dropItemOnCell(LevelCell(cell->x, cell->y), m_freeCells[freeIndex], inventory->items[i]);
+		}
+	}
 }
 
 void ItemSystem::receive(const ItemPickedUpEvent& pickedUpEvent)
@@ -134,4 +165,53 @@ void ItemSystem::receive(const ItemPickedUpEvent& pickedUpEvent)
 		return;
 
 	item.assign<DestructionComponent>(0.f);
+}
+
+void ItemSystem::receive(const BombLandedOnEntityEvent& bombLandedOnEntityEvent)
+{
+	auto entity = bombLandedOnEntityEvent.entity;
+
+	if (entity && entity.has_component<InventoryComponent>())
+	{
+		auto inventory = entity.component<InventoryComponent>();
+		auto cell = entity.component<CellComponent>();
+		assert(cell);
+		if (inventory->items.empty())
+			return;
+
+		int randomItem = Random::getInt(0, inventory->items.size() - 1);
+		ItemType itemType = inventory->items[randomItem];
+
+		removeItem(entity, itemType);
+
+		// Drop item on a random free cell
+		std::vector<LevelCell> m_freeCells;
+		getFreeCells(m_freeCells);
+
+		if (m_freeCells.size() > 0)
+		{
+			size_t random = size_t(Random::getInt(0, m_freeCells.size()));
+			dropItemOnCell(LevelCell(cell->x, cell->y), m_freeCells[random], itemType);
+		}
+	}
+}
+
+void ItemSystem::dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType)
+{
+	auto item = GameGlobals::entityFactory->createItem(from.x, from.y, itemType);
+
+	Direction direction = static_cast<Direction>(Random::getInt(0, 3));
+	item.assign<JumpComponent>(direction, from.x, from.y, to.x, to.y, 1, 6.f, 20.f);
+}
+
+void ItemSystem::getFreeCells(std::vector<LevelCell>& outFreeCells)
+{
+	for (uint8_t x = 1; x < GameGlobals::game->getWidth() - 1; ++x)
+	{
+		for (uint8_t y = 1; y < GameGlobals::game->getHeight() - 1; ++y)
+		{
+			if (m_layerManager->isFree(GameConstants::MAIN_LAYER, x, y) && !m_layerManager->hasEntityWithComponent<LavaComponent>(GameConstants::FLOOR_LAYER, x, y))
+				outFreeCells.push_back(LevelCell(x, y));
+		}
+	}
 }
