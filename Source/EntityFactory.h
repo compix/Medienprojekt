@@ -53,7 +53,7 @@ public:
 
 	Entity createItemSpawnEffect(uint8_t cellX, uint8_t cellY);
 
-	void markLavaSpot(uint8_t cellX, uint8_t cellY, float time);
+	void markLavaSpot(uint8_t cellX, uint8_t cellY);
 
 	void initAI(Entity& entity, uint8_t id);
 private:

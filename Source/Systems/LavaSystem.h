@@ -9,12 +9,13 @@ public:
 	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
 
 private:
+	bool m_phase2Started;
+
 	uint8_t m_levelWidth;
 	uint8_t m_levelHeight;
 
 	float m_totalTime;
 	const float m_startTime;
-	const float m_lavaSpawnTime;
 	float m_leftTillSpawn;
 
 	uint8_t m_curCellX;

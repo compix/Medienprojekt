@@ -51,6 +51,8 @@
 #include "Systems/AfterimageSystem.h"
 #include "Graphics/ParticleEffects.h"
 #include "Systems/LavaSystem.h"
+#include "Systems/VisualLavaMarkSystem.h"
+#include "Systems/NotificationSystem.h"
 
 void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, float destH)
 {
@@ -214,6 +216,8 @@ void LocalGame::addSystems()
 	addSystem<ChatRenderSystem>();
 	addSystem<AISystem>(m_layerManager.get());
 	addSystem<LavaSystem>(m_width, m_height);
+	addSystem<VisualLavaMarkSystem>();
+	addSystem<NotificationSystem>(m_width, m_height);
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)

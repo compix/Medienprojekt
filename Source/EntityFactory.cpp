@@ -128,7 +128,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 	entity.assign<InventoryComponent>();
-	//entity.assign<HealthComponent>(1);
+	entity.assign<HealthComponent>(1);
 	entity.assign<PlayerComponent>(playerIndex);
 
 	m_layerManager->add(entity);
@@ -449,13 +449,17 @@ Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
 {
 	Entity entity = GameGlobals::entities->create();
 
+	auto floor = m_layerManager->getEntityWithComponent<FloorComponent>(GameConstants::FLOOR_LAYER, cellX, cellY);
+	if (floor && !floor.has_component<DestructionComponent>())
+		floor.assign<DestructionComponent>();
+
 	TransformComponent transformComponent;
 
 	float width = float(GameConstants::CELL_WIDTH);
 	float height = float(GameConstants::CELL_HEIGHT);
 
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
-	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 16.f;
 
 	entity.assign<ParticleComponent>(ParticleEffects::lava());
 
@@ -465,7 +469,7 @@ Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(cellX, cellY);
-	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<LayerComponent>(GameConstants::FLOOR_LAYER);
 	entity.assign<LavaComponent>();
 
 	m_layerManager->add(entity);
@@ -501,14 +505,14 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY)
 	return entity;
 }
 
-void EntityFactory::markLavaSpot(uint8_t cellX, uint8_t cellY, float time)
+void EntityFactory::markLavaSpot(uint8_t cellX, uint8_t cellY)
 {
 	auto entity = m_layerManager->getEntityWithComponent<FloorComponent>(GameConstants::FLOOR_LAYER, cellX, cellY);
 	if (entity && !entity.has_component<MarkedLavaSpotComponent>() && !entity.has_component<LavaComponent>())
 	{
 		entity.assign<LavaComponent>();
 		entity.assign<MarkedLavaSpotComponent>();
-		entity.assign<TimerComponent>(time);
+		entity.assign<TimerComponent>(GameConstants::LAVA_SPAWN_TIME);
 		GameGlobals::events->emit(LavaSpotMarkedEvent(cellX, cellY));
 	}	
 }

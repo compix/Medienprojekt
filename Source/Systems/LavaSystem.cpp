@@ -2,12 +2,11 @@
 #include "AISystem.h"
 #include "../EntityFactory.h"
 #include "../Utils/Math.h"
-#include "../Components/LavaComponent.h"
-#include "../Components/MarkedLavaSpotComponent.h"
+#include "../Events/Phase2StartedEvent.h"
 
 LavaSystem::LavaSystem(uint8_t levelWidth, uint8_t levelHeight)
-	:m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_totalTime(0.f), m_startTime(120.f), m_lavaSpawnTime(2.f), m_leftTillSpawn(m_lavaSpawnTime),
-	m_curCellX(1), m_curCellY(1), m_curDirection(Direction::DOWN), m_topBorder(0), m_botBorder(m_levelHeight-1), m_leftBorder(1), m_rightBorder(m_levelWidth-1),
+	: m_phase2Started(false), m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_totalTime(0.f), m_startTime(60.f), m_leftTillSpawn(GameConstants::LAVA_SPAWN_TIME),
+	m_curCellX(1), m_curCellY(1), m_curDirection(Direction::DOWN), m_topBorder(0), m_botBorder(m_levelHeight-1), m_leftBorder(0), m_rightBorder(m_levelWidth-1),
 	m_end(false)
 {
 
@@ -23,64 +22,77 @@ void LavaSystem::update(entityx::EntityManager& entities, entityx::EventManager&
 	if (m_totalTime < m_startTime)
 		return;
 
-	if (Math::nearEq(m_leftTillSpawn, m_lavaSpawnTime))
-		GameGlobals::entityFactory->markLavaSpot(m_curCellX, m_curCellY, m_lavaSpawnTime);
+	if (!m_phase2Started)
+		events.emit<Phase2StartedEvent>();
+
+	m_phase2Started = true;
+
+	bool marked = false;
+	if (Math::nearEq(m_leftTillSpawn, GameConstants::LAVA_SPAWN_TIME))
+		marked = true;
 
 	m_leftTillSpawn -= float(dt);
 
-	if (m_leftTillSpawn <= 0.f)
+	if (!marked && m_leftTillSpawn > 0.f)
+		return;
+
+	if (m_leftTillSpawn < 0.f)
+		m_leftTillSpawn = GameConstants::LAVA_SPAWN_TIME;
+
+	// Go through top border
+	if (m_topBorder + 1 != m_botBorder)
 	{
-		if (m_curCellX >= m_levelWidth || m_curCellY >= m_levelHeight)
-			return;
+		uint8_t y = marked ? m_topBorder + 1 : ++m_topBorder;
+		for (uint8_t x = m_leftBorder + 1; x < m_rightBorder; ++x)
+			if (x % 2 != 0 || y % 2 != 0)
+			{
+				if (marked)
+					GameGlobals::entityFactory->markLavaSpot(x, y);
+				else
+					GameGlobals::entityFactory->createLava(x, y);
+			}
+				
+	}
 
-		m_leftTillSpawn = m_lavaSpawnTime;
-		if (m_curCellX % 2 != 0 || m_curCellY % 2 != 0)
-			GameGlobals::entityFactory->createLava(m_curCellX, m_curCellY);
+	// Go through bot border
+	if (m_topBorder != m_botBorder - 1)
+	{
+		uint8_t y = marked ? m_botBorder - 1 : --m_botBorder;
+		for (uint8_t x = m_leftBorder + 1; x < m_rightBorder; ++x)
+			if (x % 2 != 0 || y % 2 != 0)
+			{
+				if (marked)
+					GameGlobals::entityFactory->markLavaSpot(x, y);
+				else
+					GameGlobals::entityFactory->createLava(x, y);
+			}
+	}
 
-		switch (m_curDirection)
-		{
-		case Direction::UP:
-			--m_curCellY;
-			if (m_curCellY == m_topBorder)
+	// Go through left border
+	if (m_leftBorder + 1 != m_rightBorder)
+	{
+		uint8_t x = marked ? m_leftBorder + 1 : ++m_leftBorder;
+		for (uint8_t y = m_topBorder + 1; y < m_botBorder; ++y)
+			if (x % 2 != 0 || y % 2 != 0)
 			{
-				m_curCellY = ++m_topBorder;
-				m_curDirection = Direction::LEFT;
-				--m_curCellX;
-				m_end = m_curCellX == m_leftBorder;
+				if (marked)
+					GameGlobals::entityFactory->markLavaSpot(x, y);
+				else
+					GameGlobals::entityFactory->createLava(x, y);
 			}
-			break;
-		case Direction::DOWN:
-			++m_curCellY;
-			if (m_curCellY == m_botBorder)
+	}
+
+	// Go through right border
+	if (m_leftBorder != m_rightBorder - 1)
+	{
+		uint8_t x = marked ? m_rightBorder - 1 : --m_rightBorder;
+		for (uint8_t y = m_topBorder + 1; y < m_botBorder; ++y)
+			if (x % 2 != 0 || y % 2 != 0)
 			{
-				m_curCellY = --m_botBorder;
-				m_curDirection = Direction::RIGHT;
-				++m_curCellX;
-				m_end = m_curCellX == m_rightBorder;
+				if (marked)
+					GameGlobals::entityFactory->markLavaSpot(x, y);
+				else
+					GameGlobals::entityFactory->createLava(x, y);
 			}
-			break;
-		case Direction::LEFT:
-			--m_curCellX;
-			if (m_curCellX == m_leftBorder)
-			{
-				m_curCellX = ++m_leftBorder;
-				m_curDirection = Direction::DOWN;
-				++m_curCellY;
-				m_end = m_curCellY == m_botBorder;
-			}
-			break;
-		case Direction::RIGHT:
-			++m_curCellX;
-			if (m_curCellX == m_rightBorder)
-			{
-				m_curCellX = --m_rightBorder;
-				m_curDirection = Direction::UP;
-				--m_curCellY;
-				m_end = m_curCellY == m_topBorder;
-			}
-			break;
-		default:
-			break;
-		}
 	}
 }

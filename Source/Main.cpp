@@ -59,7 +59,7 @@ int Main::run()
 	GameGlobals::events = &m_events;
 
 	sf::RenderWindow window(sf::VideoMode(GameConstants::WINDOW_WIDTH, GameConstants::WINDOW_HEIGHT), GameConstants::WINDOW_TITLE);
-	window.setVerticalSyncEnabled(true);
+	window.setVerticalSyncEnabled(false);
 
 	GameGlobals::window = &window;
 	

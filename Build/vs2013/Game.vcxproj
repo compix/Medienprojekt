@@ -249,6 +249,7 @@
     <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
+    <ClInclude Include="..\..\Source\Events\Phase2StartedEvent.h" />
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h" />
     <ClInclude Include="..\..\Source\Events\PortalCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\PreloadEvent.h" />
@@ -314,6 +315,7 @@
     <ClInclude Include="..\..\Source\Systems\LavaSystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\NotificationSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
     <ClInclude Include="..\..\Source\Systems\PortalSystem.h" />
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
@@ -430,6 +432,7 @@
     <ClCompile Include="..\..\Source\Systems\LavaSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\NotificationSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\PortalSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />

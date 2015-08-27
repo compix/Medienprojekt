@@ -2,6 +2,7 @@
 #include "../Components/MarkedLavaSpotComponent.h"
 #include "../Components/TimerComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../SFMLDebugDraw.h"
 
 void VisualLavaMarkSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
@@ -13,6 +14,8 @@ void VisualLavaMarkSystem::update(entityx::EntityManager& entities, entityx::Eve
 		if (timer->seconds <= 0.f)
 			continue;
 
-		sprite.setColor(sf::Color(255 - 100 * timer->seconds, 0, 0, 255 - 100 * timer->seconds));
+		sprite.setColor(sf::Color(255, 
+								  sf::Uint8(255.f / GameConstants::LAVA_SPAWN_TIME * timer->seconds),
+								  sf::Uint8(255.f / GameConstants::LAVA_SPAWN_TIME * timer->seconds)));
 	}
 }

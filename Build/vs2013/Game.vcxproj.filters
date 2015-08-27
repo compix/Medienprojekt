@@ -665,6 +665,12 @@
     <ClInclude Include="..\..\Source\Systems\VisualLavaMarkSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\Phase2StartedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\NotificationSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -975,6 +981,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\VisualLavaMarkSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\NotificationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>

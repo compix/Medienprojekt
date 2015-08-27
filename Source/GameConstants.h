@@ -65,5 +65,8 @@ namespace GameConstants
 	// Relating to timing Events
 	extern const float LOBBY_COUNTDOWN;			// Seconds to count down before forcing all players ready
 	extern const float LOBBY_READY_COUNTDOWN;	// Seconds to count down before game begins
-	extern const float RESET_GAME_COUNTDOWN;	// Seconds to wait after game over to reset the game	
+	extern const float RESET_GAME_COUNTDOWN;	// Seconds to wait after game over to reset the game
+
+	// Lava constants
+	extern const float LAVA_SPAWN_TIME;
 }

@@ -65,5 +65,8 @@ namespace GameConstants
 	extern const float LOBBY_COUNTDOWN = 120;
 	extern const float LOBBY_READY_COUNTDOWN = 3;
 	extern const float RESET_GAME_COUNTDOWN = 2;
+
+	// Lava constants
+	extern const float LAVA_SPAWN_TIME = 4.f;
 }
 
