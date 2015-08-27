@@ -10,6 +10,7 @@ ParticleSystem::ParticleSystem()
 	createManager("light", 500, 500);
 	createManager("block", 500, 500);
 	createManager("smoke", 500, 500);
+	createManager("lava", 500, 1000);
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)
@@ -25,7 +26,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 		return;
 
 	auto particleComponent = entity.component<ParticleComponent>();
-	if (particleComponent)
+	if (particleComponent && particleComponent->emitter)
 	{
 		particleComponent->emitter->remove();
 		particleComponent->emitter = nullptr;

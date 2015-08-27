@@ -125,15 +125,6 @@ void ParticleEmitter::update(Particle& p, float deltaTime)
 	float t = (m_maxLifetime - p.lifetime) / m_maxLifetime; // normalized time: [0, 1]
 	if (!Math::nearEq(t, m_cachedTime))
 	{
-		m_cachedColor.a = static_cast<sf::Uint8>(m_transparencyFunction(t));
-
-		// Skip almost invisible particles
-		if (m_cachedColor.a <= 30.f)
-		{
-			p.lifetime = -1.f; // Kill
-			return;
-		}
-
 		m_cachedTime = t;
 		m_cachedVelocity = m_velocityFunction(t);
 		m_cachedAngularVelocity = m_angularVelocityFunction(t);
@@ -142,6 +133,7 @@ void ParticleEmitter::update(Particle& p, float deltaTime)
 		m_cachedColor.r = static_cast<sf::Uint8>(m_cachedColorRGB.r);
 		m_cachedColor.g = static_cast<sf::Uint8>(m_cachedColorRGB.g);
 		m_cachedColor.b = static_cast<sf::Uint8>(m_cachedColorRGB.b);
+		m_cachedColor.a = static_cast<sf::Uint8>(m_transparencyFunction(t));
 		m_cachedSize = m_sizeFunction(t);
 	}
 

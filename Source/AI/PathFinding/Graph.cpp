@@ -11,6 +11,7 @@
 #include "../../Components/PortalComponent.h"
 #include "../../Components/DestructionComponent.h"
 #include <queue>
+#include "../../Components/LavaComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -67,6 +68,13 @@ void Graph::update(float deltaTime)
 			auto otherCell = portalComponent->otherPortal.component<CellComponent>();
 			m_nodeGrid[cell->x][cell->y].properties.otherPortal = &m_nodeGrid[otherCell->x][otherCell->y];
 		}
+	}
+
+	for (auto lava : GameGlobals::entities->entities_with_components<LavaComponent, CellComponent>())
+	{
+		auto cell = lava.component<CellComponent>();
+		m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion = true;
+		m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = 0.f;
 	}
 
 	for (auto dyingBlock : GameGlobals::entities->entities_with_components<BlockComponent, DestructionComponent, CellComponent>())

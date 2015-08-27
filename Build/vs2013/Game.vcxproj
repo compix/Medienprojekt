@@ -204,10 +204,12 @@
     <ClInclude Include="..\..\Source\Components\ItemComponent.h" />
     <ClInclude Include="..\..\Source\Components\ItemSpawnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\JumpComponent.h" />
+    <ClInclude Include="..\..\Source\Components\LavaComponent.h" />
     <ClInclude Include="..\..\Source\Components\LayerComponent.h" />
     <ClInclude Include="..\..\Source\Components\LightComponent.h" />
     <ClInclude Include="..\..\Source\Components\LinkComponent.h" />
     <ClInclude Include="..\..\Source\Components\LocalInputComponent.h" />
+    <ClInclude Include="..\..\Source\Components\MarkedLavaSpotComponent.h" />
     <ClInclude Include="..\..\Source\Components\NoNetComponent.h" />
     <ClInclude Include="..\..\Source\Components\OwnerComponent.h" />
     <ClInclude Include="..\..\Source\Components\ParticleComponent.h" />
@@ -242,6 +244,8 @@
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\LavaCreatedEvent.h" />
+    <ClInclude Include="..\..\Source\Events\LavaSpotMarkedEvent.h" />
     <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
     <ClInclude Include="..\..\Source\Events\MenuShowEvent.h" />
     <ClInclude Include="..\..\Source\Events\MusicEvent.h" />
@@ -307,6 +311,7 @@
     <ClInclude Include="..\..\Source\Systems\InventorySystem.h" />
     <ClInclude Include="..\..\Source\Systems\ItemSystem.h" />
     <ClInclude Include="..\..\Source\Systems\JumpSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\LavaSystem.h" />
     <ClInclude Include="..\..\Source\Systems\LightSystem.h" />
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h" />
@@ -314,6 +319,7 @@
     <ClInclude Include="..\..\Source\Systems\RenderSystem.h" />
     <ClInclude Include="..\..\Source\Systems\SoundSystem.h" />
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\VisualLavaMarkSystem.h" />
     <ClInclude Include="..\..\Source\Utils\ActiveQueue.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AILoader.h" />
     <ClInclude Include="..\..\Source\Utils\AssetManagement\AnimationLoader.h" />
@@ -421,6 +427,7 @@
     <ClCompile Include="..\..\Source\Systems\InventorySystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ItemSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\JumpSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\LavaSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp" />
@@ -428,6 +435,7 @@
     <ClCompile Include="..\..\Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\SoundSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\VisualLavaMarkSystem.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AILoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AnimationLoader.cpp" />
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AssetLoader.cpp" />

@@ -41,6 +41,8 @@ public:
 	void createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range, float spreadTime, BombType bombType);
 	Entity createExplosion(uint8_t cellX, uint8_t cellY, Direction direction, uint8_t range, float spreadTime, BombType bombType);
 
+	Entity createLava(uint8_t cellX, uint8_t cellY);
+
 	Entity createFloor(uint8_t cellX, uint8_t cellY);
 
 	Entity createSmoke(uint8_t cellX, uint8_t cellY);
@@ -48,6 +50,10 @@ public:
 	Entity createBoostEffect(uint8_t cellX, uint8_t cellY, Entity target);
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
+
+	Entity createItemSpawnEffect(uint8_t cellX, uint8_t cellY);
+
+	void markLavaSpot(uint8_t cellX, uint8_t cellY, float time);
 
 	void initAI(Entity& entity, uint8_t id);
 private:

@@ -13,6 +13,8 @@
 #include "../Components/EffectComponent.h"
 #include "../Components/LayerComponent.h"
 #include "../Events/ItemPickedUpEvent.h"
+#include "../Events/ItemCreatedEvent.h"
+#include "ParticleEffects.h"
 
 ParticleSpawnSystem::ParticleSpawnSystem(ParticleSystem* particleSystem, LayerManager* layerManager)
 	:m_particleSystem(particleSystem), m_layerManager(layerManager)
@@ -28,6 +30,7 @@ void ParticleSpawnSystem::configure(entityx::EventManager& events)
 	events.subscribe<DeathEvent>(*this);
 	events.subscribe<ExplosionCreatedEvent>(*this);
 	events.subscribe<ItemPickedUpEvent>(*this);
+	events.subscribe<ItemCreatedEvent>(*this);
 }
 
 void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
@@ -42,26 +45,9 @@ void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
 	
 	if (!entity.has_component<ParticleComponent>())
 	{
-		auto manager = m_particleSystem->getManager("block");
-		auto emitter = manager->spawnEmitter();
-
+		auto emitter = ParticleEffects::blockDeath();
 		if (emitter)
-		{
-			entity.assign<ParticleComponent>();
-			entity.component<ParticleComponent>()->emitter = emitter;
-
-			emitter->spawnTime(1.f)
-				.maxLifetime(1.f)
-				.speedModifier(10.f)
-				.burstParticleNumber(150)
-				.velocityFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(1, 1), sf::Vector2f(5, 5)))
-				.burstTime(0.0f)
-				.burstNumber(1)
-				.spawnWidth(15)
-				.spawnHeight(15)
-				.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-				.sizeFunction(Gradient3<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(60, 60), sf::Vector2f(5, 5), sf::Vector2f(35, 15)));
-		}
+			entity.assign<ParticleComponent>(emitter);
 	}
 }
 
@@ -91,4 +77,12 @@ void ParticleSpawnSystem::receive(const ItemPickedUpEvent& e)
 	auto cell = entity.component<CellComponent>();
 	assert(cell);
 	GameGlobals::entityFactory->createBoostEffect(cell->x, cell->y, entity);
+}
+
+void ParticleSpawnSystem::receive(const ItemCreatedEvent& e)
+{
+	if (e.entity)
+	{
+		GameGlobals::entityFactory->createItemSpawnEffect(e.x, e.y);
+	}
 }

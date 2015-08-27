@@ -50,6 +50,7 @@
 #include "Systems/BlinkSystem.h"
 #include "Systems/AfterimageSystem.h"
 #include "Graphics/ParticleEffects.h"
+#include "Systems/LavaSystem.h"
 
 
 Game::Game()
@@ -208,6 +209,7 @@ void LocalGame::addSystems()
 	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	addSystem<ChatRenderSystem>();
 	addSystem<AISystem>(m_layerManager.get());
+	addSystem<LavaSystem>(m_width, m_height);
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)

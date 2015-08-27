@@ -59,7 +59,7 @@ int Main::run()
 	GameGlobals::events = &m_events;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
-	window.setVerticalSyncEnabled(true);
+	window.setVerticalSyncEnabled(false);
 
 	GameGlobals::window = &window;
 	

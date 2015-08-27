@@ -13,7 +13,10 @@ public:
 	static ParticleEmitter* lightningBombPeak();
 	static ParticleEmitter* ghostBomb();
 	static ParticleEmitter* normalBomb();
-	
+	static ParticleEmitter* lava();
+	static ParticleEmitter* itemSpawn();
+	static ParticleEmitter* blockDeath();
+
 private:
 	static ParticleSystem*  m_particleSystem;
 };

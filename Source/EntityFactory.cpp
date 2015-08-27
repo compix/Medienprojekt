@@ -49,6 +49,10 @@
 #include "Components/AIComponent.h"
 #include "Graphics/ParticleEffects.h"
 #include "Components/NoNetComponent.h"
+#include "Events/LavaCreatedEvent.h"
+#include "Components/LavaComponent.h"
+#include "Events/LavaSpotMarkedEvent.h"
+#include "Components/MarkedLavaSpotComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -124,7 +128,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DynamicComponent>();
 	entity.assign<InventoryComponent>();
-	entity.assign<HealthComponent>(1);
+	//entity.assign<HealthComponent>(1);
 	entity.assign<PlayerComponent>(playerIndex);
 
 	m_layerManager->add(entity);
@@ -439,6 +443,74 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 
 	GameGlobals::events->emit<ExplosionCreatedEvent>(entity, cellX, cellY, direction, range, spreadTime, bombType);
 	return entity;
+}
+
+Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+
+	float width = float(GameConstants::CELL_WIDTH);
+	float height = float(GameConstants::CELL_HEIGHT);
+
+	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
+
+	entity.assign<ParticleComponent>(ParticleEffects::lava());
+
+	if (!entity.component<ParticleComponent>()->emitter)
+		entity.remove<ParticleComponent>();
+
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<DamageDealerComponent>(1);
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<LavaComponent>();
+
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
+Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+
+	float width = float(GameConstants::CELL_WIDTH);
+	float height = float(GameConstants::CELL_HEIGHT);
+
+	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 16.f;
+
+	entity.assign<ParticleComponent>(ParticleEffects::itemSpawn());
+
+	if (!entity.component<ParticleComponent>()->emitter)
+		entity.remove<ParticleComponent>();
+
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
+	entity.assign<DestructionComponent>(1.5f);
+
+	m_layerManager->add(entity);
+
+	GameGlobals::events->emit(LavaCreatedEvent(cellX, cellY));
+	return entity;
+}
+
+void EntityFactory::markLavaSpot(uint8_t cellX, uint8_t cellY, float time)
+{
+	auto entity = m_layerManager->getEntityWithComponent<FloorComponent>(GameConstants::FLOOR_LAYER, cellX, cellY);
+	if (entity && !entity.has_component<MarkedLavaSpotComponent>() && !entity.has_component<LavaComponent>())
+	{
+		entity.assign<LavaComponent>();
+		entity.assign<MarkedLavaSpotComponent>();
+		entity.assign<TimerComponent>(time);
+		GameGlobals::events->emit(LavaSpotMarkedEvent(cellX, cellY));
+	}	
 }
 
 Entity EntityFactory::createFloor(uint8_t cellX, uint8_t cellY)
