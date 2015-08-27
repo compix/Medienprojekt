@@ -38,10 +38,10 @@ struct DefaultConfig : LevelConfig
 		uint16_t numIndestructibleBlocks = (width - 3) * (height - 3) / 4 + (height + width - 2) * 2;
 		uint16_t numFreeBlocks = 3 * 4; // At the 4 player corners
 		uint16_t maxBlockCount = width * height - numIndestructibleBlocks - numFreeBlocks;
-		blockDensity = 0.85f;
-		float uniformChance = blockDensity * 0.15f;
+		blockDensity = 0.35f;
+		float uniformChance = blockDensity * 0.85f;
 		uint16_t itemCountCommon = uint16_t(uniformChance * maxBlockCount);
-		uint16_t itemCountRate = uint16_t(0.02f * maxBlockCount * blockDensity);
+		uint16_t itemCountRare = uint16_t(0.02f * maxBlockCount * blockDensity);
 
 		// Common
 		itemSpawnProperty(ItemType::BOMB_CAP_BOOST, uint16_t(itemCountCommon), uint16_t(itemCountCommon));
@@ -49,14 +49,14 @@ struct DefaultConfig : LevelConfig
 		itemSpawnProperty(ItemType::BOMB_RANGE_BOOST, uint16_t(itemCountCommon), uint16_t(itemCountCommon));
 
 		// Rare
-		itemSpawnProperty(ItemType::ANTI_MAGNET_SKILL,	 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::BOMB_KICK_SKILL,	 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::HOLD_BOMB_SKILL,	 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::PORTAL_SKILL,		 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::PUNCH_SKILL,		 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::BLINK_SKILL,		 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::GHOST_BOMB,			 itemCountRate, itemCountRate + 2);
-		itemSpawnProperty(ItemType::LIGHTNING_BOMB,		 itemCountRate, itemCountRate + 2);
+		itemSpawnProperty(ItemType::ANTI_MAGNET_SKILL,	 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::BOMB_KICK_SKILL,	 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::HOLD_BOMB_SKILL,	 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::PORTAL_SKILL,		 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::PUNCH_SKILL,		 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::BLINK_SKILL,		 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::GHOST_BOMB,			 itemCountRare, itemCountRare + 2);
+		itemSpawnProperty(ItemType::LIGHTNING_BOMB,		 itemCountRare, itemCountRare + 2);
 	}
 };
 

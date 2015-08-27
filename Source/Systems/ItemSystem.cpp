@@ -56,7 +56,7 @@ bool ItemSystem::removeItem(entityx::Entity& entity, ItemType itemType)
 	{
 		inventory->itemCounts[itemType]--;
 		auto& items = inventory->items;
-		items.erase(std::remove(items.begin(), items.end(), itemType), items.end());
+		items.erase(std::remove(items.begin(), items.end(), itemType));
 
 		if (CommonUtil::isBomb(itemType))
 			inventory->remove(CommonUtil::toBomb(itemType));
@@ -73,16 +73,16 @@ bool ItemSystem::addItem(entityx::Entity& entity, ItemType itemType)
 {
 	auto inventory = entity.component<InventoryComponent>();
 
+	if (CommonUtil::isBomb(itemType))
+		inventory->put(CommonUtil::toBomb(itemType));
+	else if (CommonUtil::isSkill(itemType))
+		inventory->put(CommonUtil::toSkill(itemType));
+
 	if (inventory->itemCounts[itemType] < m_maxItemCounts[itemType])
 	{
 		inventory->itemCounts[itemType]++;
 		auto& items = inventory->items;
 		items.push_back(itemType);
-
-		if (CommonUtil::isBomb(itemType))
-			inventory->put(CommonUtil::toBomb(itemType));
-		else if (CommonUtil::isSkill(itemType))
-			inventory->put(CommonUtil::toSkill(itemType));
 
 		return true;
 	}

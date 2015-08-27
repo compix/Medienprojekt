@@ -44,10 +44,10 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 			{
 				GameGlobals::events->emit<ThrowBombEvent>(entity);
 			}
-			if (inventory->getBombCount() > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
+			if (inventory->getAvailableBombCount() > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
 			{
 				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity, inventory->activeBomb());
-				inventory->itemCounts[ItemType::BOMB_CAP_BOOST]--;
+				inventory->placedBombCount++;
 			}
 			
 			input->bombButtonPressed = false;

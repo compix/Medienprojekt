@@ -34,14 +34,10 @@ void InventorySystem::receive(const BombExplodedEvent& e)
 	{
 		auto owner = ownerComponent->entity;
 
-		if (!owner.valid())
+		if (!owner || !owner.has_component<InventoryComponent>())
 			return;
 
 		auto inventory = owner.component<InventoryComponent>();
-
-		if (inventory)
-		{
-			inventory->itemCounts[ItemType::BOMB_CAP_BOOST]++;
-		}
+		--inventory->placedBombCount;
 	}
 }

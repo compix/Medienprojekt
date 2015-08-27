@@ -69,7 +69,7 @@ struct BombTypeComparator
 
 struct InventoryComponent
 {
-	InventoryComponent() : isHoldingBomb(false)
+	InventoryComponent() : isHoldingBomb(false), placedBombCount(0)
 	{
 		if (GameConstants::INIT_PORTAL_SKILL)
 			put(SkillType::PLACE_PORTAL);
@@ -80,7 +80,7 @@ struct InventoryComponent
 		if (GameConstants::INIT_BLINK_SKILL)
 			put(SkillType::BLINK);
 
-		itemCounts[ItemType::BOMB_CAP_BOOST] = GameConstants::INIT_BOMB_COUNT ? 1 : 0;
+		itemCounts[ItemType::BOMB_CAP_BOOST] = GameConstants::INIT_BOMB_COUNT;
 		itemCounts[ItemType::BOMB_KICK_SKILL] = GameConstants::INIT_PLAYERS_CAN_KICK ? 1 : 0;
 		itemCounts[ItemType::SPEED_MULTIPLICATOR] = 0;
 		itemCounts[ItemType::BOMB_RANGE_BOOST] = GameConstants::INIT_BOMB_RANGE;
@@ -91,10 +91,13 @@ struct InventoryComponent
 		itemCounts[ItemType::BLINK_SKILL] = 0;
 		itemCounts[ItemType::GHOST_BOMB] = 0;
 		itemCounts[ItemType::LIGHTNING_BOMB] = 0;
+
+		put(BombType::GHOST);
 	}
 
 	bool isHoldingBomb;
 	BombType holdingBombType;
+	uint8_t placedBombCount;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
 	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order
 	ActiveQueue<BombType, BombTypeComparator> activeBombs;
@@ -116,6 +119,10 @@ struct InventoryComponent
 	inline bool canHoldBomb() { return itemCounts[ItemType::HOLD_BOMB_SKILL] > 0; }
 	inline bool canKickBomb() { return itemCounts[ItemType::BOMB_KICK_SKILL] > 0; }
 	inline bool hasAntiMagnet() { return itemCounts[ItemType::ANTI_MAGNET_SKILL] > 0; }
-	uint8_t getExplosionRange() { return itemCounts[ItemType::BOMB_RANGE_BOOST]; }
-	uint8_t getBombCount() { return itemCounts[ItemType::BOMB_CAP_BOOST]; }
+	inline uint8_t getExplosionRange() { return itemCounts[ItemType::BOMB_RANGE_BOOST]; }
+	inline uint8_t getAvailableBombCount()
+	{
+		int c = itemCounts[ItemType::BOMB_CAP_BOOST] - placedBombCount;
+		return uint8_t(c < 0 ? 0 : c);
+	}
 };

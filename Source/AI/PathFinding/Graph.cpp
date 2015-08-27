@@ -108,8 +108,13 @@ void Graph::update(float deltaTime)
 		auto cell = explosion.component<CellComponent>();
 		auto spread = explosion.component<SpreadComponent>();
 
-		setOnFire(cell->x, cell->y, spread->timeTillNext);
-		ExplosionSpread eSpread(cell->x, cell->y, spread->range, spread->timeTillNext, spread->direction, spread->bombType);
+		float exploTime = std::max(0.f, spread->timeTillNext);
+		setOnFire(cell->x, cell->y, exploTime);
+
+		if (spread->stopped)
+			continue;
+
+		ExplosionSpread eSpread(cell->x, cell->y, spread->range, exploTime, spread->direction, spread->bombType);
 		explosionSpread(eSpread);
 	}
 
