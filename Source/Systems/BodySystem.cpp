@@ -7,6 +7,7 @@
 #include "../EntityFactory.h"
 #include "../Components/InventoryComponent.h"
 #include "../BodyFactory.h"
+#include "../Components/DynamicComponent.h"
 
 using namespace entityx;
 
@@ -55,5 +56,12 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 	{
 		transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
 		transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));
+		auto dynamic = entity.component<DynamicComponent>();
+		if (dynamic.valid())
+		{
+			auto v = body->body->GetLinearVelocity();
+			dynamic->velX = PhysixSystem::toWorld(v.x);
+			dynamic->velY = PhysixSystem::toWorld(v.y);
+		}
 	}
 }

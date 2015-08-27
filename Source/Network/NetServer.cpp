@@ -43,7 +43,7 @@
 using namespace std;
 using namespace NetCode;
 
-const size_t DYNAMIC_DATA_SIZE = 8 + 8 + 4 + 4 + 1;
+const size_t DYNAMIC_DATA_SIZE = 8 + 8 + 4 + 4 + 4 + 4 + 1;
 const size_t DYNAMIC_DATA_INPUT_SIZE = DYNAMIC_DATA_SIZE + 4 + 4;
 DynamicUpdateWriter::DynamicUpdateWriter()
 	: m_messageWriter(1024)
@@ -51,7 +51,7 @@ DynamicUpdateWriter::DynamicUpdateWriter()
 	m_messageWriter.init(MessageType::UPDATE_DYNAMIC);
 }
 
-ENetPacket* DynamicUpdateWriter::addEntity(Entity& entity, float x, float y, uint64_t packetNumber)
+ENetPacket* DynamicUpdateWriter::addEntity(Entity& entity, float x, float y, float velX, float velY, uint64_t packetNumber)
 {
 	assert(entity.valid());
 	auto input = entity.component<InputComponent>();
@@ -64,6 +64,8 @@ ENetPacket* DynamicUpdateWriter::addEntity(Entity& entity, float x, float y, uin
 	m_messageWriter.write<uint64_t>(packetNumber);
 	m_messageWriter.write<float>(x);
 	m_messageWriter.write<float>(y);
+	m_messageWriter.write<float>(velX);
+	m_messageWriter.write<float>(velY);
 	m_messageWriter.write<bool>(input.valid());
 
 	if (input.valid())
@@ -651,7 +653,7 @@ void NetServer::broadcastDynamicUpdates()
 	using GameGlobals::entities;
 	for (Entity entity : entities->entities_with_components(dynamic, transform, cell))
 	{
-		auto *packet = m_dynamicUpdateWriter.addEntity(entity, transform->x, transform->y, dynamic->packetNumber++);
+		auto *packet = m_dynamicUpdateWriter.addEntity(entity, transform->x, transform->y, dynamic->velX, dynamic->velY, dynamic->packetNumber++);
 		if (packet)
 			broadcast(NetChannel::WORLD_UNRELIABLE, packet);
 	}

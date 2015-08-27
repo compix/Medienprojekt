@@ -54,6 +54,7 @@
 #include "Systems/LavaSystem.h"
 #include "Systems/VisualLavaMarkSystem.h"
 #include "Systems/NotificationSystem.h"
+#include "Systems/DynamicPredictionSystem.h"
 
 void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, float destH)
 {
@@ -313,6 +314,7 @@ void ClientGame::receive(const HoldingStatusEvent& evt)
 
 void ClientGame::addSystems()
 {
+	addSystem<DynamicPredictionSystem>();
 	addSystem<SoundSystem>();
 	addSystem<MusicSystem>();
 	addSystem<BlinkSystem>(m_layerManager.get());

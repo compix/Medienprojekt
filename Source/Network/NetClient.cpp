@@ -326,6 +326,8 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 		uint64_t packetNumber = reader.read<uint64_t>();
 		float x = reader.read<float>();
 		float y = reader.read<float>();
+		float velX = reader.read<float>();
+		float velY = reader.read<float>();
 		bool hasInput = reader.read<bool>();
 
 		Entity entity = getEntity(id);
@@ -335,6 +337,8 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 			if (dynamic->packetNumber >= packetNumber)
 				return;
 			dynamic->packetNumber = packetNumber;
+			dynamic->velX = velX;
+			dynamic->velY = velY;
 			auto transform = entity.component<TransformComponent>();
 			if (transform.valid())
 			{

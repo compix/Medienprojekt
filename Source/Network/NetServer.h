@@ -34,7 +34,7 @@ class DynamicUpdateWriter
 {
 public:
 	DynamicUpdateWriter();
-	ENetPacket *addEntity(Entity &entity, float x, float y, uint64_t packetNumber);
+	ENetPacket *addEntity(Entity &entity, float x, float y, float velX, float velY, uint64_t packetNumber);
 	ENetPacket *finish();
 
 private:
