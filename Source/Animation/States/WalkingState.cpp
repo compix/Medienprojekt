@@ -11,7 +11,7 @@ void WalkingState::update(Animator* animator, entityx::Entity& entity, float del
 	auto inputComponent = entity.component<InputComponent>();
 	auto inventoryComponent = entity.component<InventoryComponent>();
 
-	if (inputComponent)
+	if (inputComponent && !inputComponent->disabled)
 	{
 		if (Math::nearEq(inputComponent->moveX, 0.f) && Math::nearEq(inputComponent->moveY, 0.f))
 		{

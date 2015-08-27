@@ -16,6 +16,8 @@ void AnimationSystem::update(EntityManager &entityManager, EventManager &eventMa
 	for (auto entity : entityManager.entities_with_components<InputComponent, DirectionComponent>())
 	{
 		auto input = entity.component<InputComponent>();
+		if (input->disabled)
+			continue;
 		auto directionComponent = entity.component<DirectionComponent>();
 		if (directionComponent)
 		{
