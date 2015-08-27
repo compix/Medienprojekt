@@ -38,8 +38,14 @@ void HoldingSystem::receive(const HoldingEvent& holdEvent)
 
 		if (!inventory->isHoldingBomb)
 		{
-			wantToHold.destroy();
+			if (wantToHold.has_component<BombComponent>())
+			{
+				inventory->holdingBombType = wantToHold.component<BombComponent>()->type;
+			}
 			inventory->isHoldingBomb = true;
+			wantToHold.destroy();
+			
+			
 		}
 	}
 }
@@ -54,7 +60,7 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 	if (inventory->isHoldingBomb)
 	{
 		auto cell = whoThrows.component<CellComponent>();
-		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, whoThrows, inventory->activeBomb());
+		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, whoThrows, inventory->holdingBombType);
 		int x = 0, y = 0;
 		JumpSystem::adjustXY_RelatingToTheDirection(&x, &y, 
 													GameConstants::PUNCH_DISTANCE,
