@@ -2,6 +2,13 @@
 
 namespace GameConstants
 {
+	// Window settings
+	extern const std::string WINDOW_TITLE = "Ya Man, Bomba Man";
+	extern const int WINDOW_WIDTH = 800;
+	extern const int WINDOW_HEIGHT = 600;
+	extern const int MENU_WIDTH = 800;
+	extern const int MENU_HEIGHT = 600;
+
 	// Relating to Map/Level
 	extern const float S_SCALE = 32.f;
 	extern const int CELL_WIDTH = 50;

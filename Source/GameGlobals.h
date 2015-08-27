@@ -37,3 +37,4 @@ namespace GameGlobals
 	extern sf::View *gameView;
 };
 
+void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, float destH);

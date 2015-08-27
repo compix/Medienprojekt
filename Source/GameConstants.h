@@ -1,7 +1,15 @@
 #pragma once
+#include <string>
 
 namespace GameConstants
 {
+	// Window settings
+	extern const std::string WINDOW_TITLE;
+	extern const int WINDOW_WIDTH;
+	extern const int WINDOW_HEIGHT;
+	extern const int MENU_WIDTH;
+	extern const int MENU_HEIGHT;
+
 	// Relating to Map/Level
 	extern const float S_SCALE;
 	extern const int CELL_WIDTH;

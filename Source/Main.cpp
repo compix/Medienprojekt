@@ -58,7 +58,7 @@ int Main::run()
 
 	GameGlobals::events = &m_events;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(GameConstants::WINDOW_WIDTH, GameConstants::WINDOW_HEIGHT), GameConstants::WINDOW_TITLE);
 	window.setVerticalSyncEnabled(true);
 
 	GameGlobals::window = &window;
@@ -79,8 +79,8 @@ int Main::run()
 	m_events.subscribe<ForceDisconnectEvent>(*this);
 	m_events.subscribe<PreloadEvent>(*this);
 
-	sf::View menuView(sf::FloatRect(0, 0, 800, 600));
-	sf::View screenView(sf::FloatRect(0, 0, 800, 600));
+	sf::View menuView(sf::FloatRect(0, 0, GameConstants::MENU_WIDTH, GameConstants::MENU_HEIGHT));
+	sf::View screenView(sf::FloatRect(0, 0, GameConstants::WINDOW_WIDTH, GameConstants::WINDOW_HEIGHT));
 	GameGlobals::menuView = &menuView;
 	GameGlobals::screenView = &screenView;
 
@@ -225,15 +225,15 @@ void Main::toggleFullscreen()
 	}
 	else
 	{
-		auto mode = sf::VideoMode(800, 600);
-		GameGlobals::window->create(mode, "SFML works!");
+		auto mode = sf::VideoMode(GameConstants::WINDOW_WIDTH, GameConstants::WINDOW_HEIGHT);
+		GameGlobals::window->create(mode, GameConstants::WINDOW_TITLE);
 		onResize(static_cast<float>(mode.width), static_cast<float>(mode.height));
 	}
 }
 
 void Main::onResize(float width, float height)
 {
-	GameGlobals::menuView->setSize(width, height);
+	fitViewInto(*GameGlobals::menuView, GameConstants::MENU_WIDTH, GameConstants::MENU_HEIGHT, width, height);
 	GameGlobals::screenView->setSize(width, height);
 	GameGlobals::screenView->setCenter(width / 2.0f, height / 2.0f);
 }
