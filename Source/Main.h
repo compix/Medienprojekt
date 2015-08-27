@@ -28,10 +28,14 @@ public:
 	void receive(const PreloadEvent& evt);
 	void disconnect();
 
+	void toggleFullscreen();
+	void onResize(float width, float height);
+
 private:
 	bool m_running = true;
 	unique_ptr<NetClient> m_client;
 	unique_ptr<NetServer> m_server;
 	EventManager m_events;
 	bool m_forceDisconnect = false;
+	bool m_fullscreen = false;
 };

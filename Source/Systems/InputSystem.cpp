@@ -12,6 +12,8 @@ void InputSystem::update(EntityManager &entityManager, EventManager &eventManage
 	auto entities = entityManager.entities_with_components(input, localInput);
 	for (auto entity : entities)
 	{
+		if (input->disabled)
+			continue;
 		auto &playerInput = GameGlobals::input->getPlayerInput(localInput->inputIndex);
 		if (playerInput.buttonPressed[PlayerButton::BOMB])
 		{

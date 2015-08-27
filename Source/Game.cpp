@@ -52,6 +52,18 @@
 #include "Graphics/ParticleEffects.h"
 #include "Systems/LavaSystem.h"
 
+void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, float destH)
+{
+	float screenRatio = destW / destH;
+	float viewRatio = sourceW / sourceH;
+	float scaleFactor;
+	if (viewRatio > screenRatio)
+		scaleFactor = sourceW / destW;
+	else
+		scaleFactor = sourceH / destH;
+	view.reset(sf::FloatRect(0, 0, destW * scaleFactor, destH * scaleFactor));
+	view.setCenter(sourceW*0.5f, sourceH*0.5f);
+}
 
 Game::Game()
 	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
@@ -158,15 +170,7 @@ void Game::refreshView()
 	float gameH = static_cast<float>(GameGlobals::game->getHeight() * GameConstants::CELL_HEIGHT);
 	float screenW = static_cast<float>(GameGlobals::window->getSize().x);
 	float screenH = static_cast<float>(GameGlobals::window->getSize().y);
-	float screenRatio = screenW / screenH;
-	float viewRatio = gameW / gameH;
-	float scaleFactor;
-	if (viewRatio > screenRatio)
-		scaleFactor = gameW / screenW;
-	else
-		scaleFactor = gameH / screenH;
-	m_view.reset(sf::FloatRect(0, 0, screenW * scaleFactor, screenH * scaleFactor));
-	m_view.setCenter(gameW*0.5f, gameH*0.5f);
+	fitViewInto(m_view, gameW, gameH, screenW, screenH);
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 

@@ -77,6 +77,9 @@ tgui::ChatBox::Ptr MenuPage::createChatBox(float x, float y, float width, float 
 	chatBox->setPosition(x, y);
 	chatBox->setSize(width, height);
 	chatBox->setTextColor(sf::Color::White);
+	auto bgColor = chatBox->getBackgroundColor();
+	bgColor.a = 128;
+	chatBox->setBackgroundColor(bgColor);
 	return chatBox;
 }
 
