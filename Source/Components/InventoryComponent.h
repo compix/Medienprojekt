@@ -91,6 +91,7 @@ struct InventoryComponent
 	bool bombKick;
 	bool antiMagnet;
 	bool isHoldingBomb;
+	BombType holdingBombType;
 	bool canHold;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
 	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order
