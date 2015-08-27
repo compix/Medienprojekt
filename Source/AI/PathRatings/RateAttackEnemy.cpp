@@ -13,7 +13,7 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 
 	// If the AI can't place more bombs or the path isn't safe then it fails
 	auto inventory = entity.component<InventoryComponent>();
-	if (inventory->getBombCount() == 0 || !AIUtil::isSafePath(entity, path))
+	if (inventory->getAvailableBombCount() == 0 || !AIUtil::isSafePath(entity, path))
 		return false;
 
 	// Bomb should affect enemies but no items
