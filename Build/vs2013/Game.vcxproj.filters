@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -265,6 +265,9 @@
     <ClInclude Include="..\..\Source\Components\JumpComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\LavaComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\LayerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -275,6 +278,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\LocalInputComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\MarkedLavaSpotComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\NoNetComponent.h">
@@ -320,6 +326,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\BombExplodedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\BombLandedOnEntityEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\BoostEffectCreatedEvent.h">
@@ -373,6 +382,12 @@
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\LavaCreatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\LavaSpotMarkedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\LobbyEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -380,6 +395,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\MusicEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Events\Phase2StartedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\PlayerJoinEvent.h">
@@ -530,6 +548,9 @@
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\DynamicPredictionSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -554,10 +575,16 @@
     <ClInclude Include="..\..\Source\Systems\JumpSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\LavaSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Systems\LightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\MusicSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\NotificationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\ParticleSystem.h">
@@ -573,6 +600,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Systems\TimerSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Systems\VisualLavaMarkSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\ActiveQueue.h">
@@ -646,33 +676,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\LavaSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\LavaComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\LavaCreatedEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\LavaSpotMarkedEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Components\MarkedLavaSpotComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\VisualLavaMarkSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\Phase2StartedEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Systems\NotificationSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\BombLandedOnEntityEvent.h">
-      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -875,6 +878,9 @@
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\DynamicPredictionSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -899,10 +905,16 @@
     <ClCompile Include="..\..\Source\Systems\JumpSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\LavaSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Systems\LightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\MusicSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\NotificationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\ParticleSystem.cpp">
@@ -918,6 +930,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Systems\TimerSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Systems\VisualLavaMarkSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\AssetManagement\AILoader.cpp">
@@ -979,15 +994,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\LavaSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\VisualLavaMarkSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Systems\NotificationSystem.cpp">
-      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

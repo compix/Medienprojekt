@@ -305,6 +305,7 @@
     <ClInclude Include="..\..\Source\Systems\DamageSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DeathSystem.h" />
     <ClInclude Include="..\..\Source\Systems\DestructionSystem.h" />
+    <ClInclude Include="..\..\Source\Systems\DynamicPredictionSystem.h" />
     <ClInclude Include="..\..\Source\Systems\ExplosionSystem.h" />
     <ClInclude Include="..\..\Source\Systems\HealthSystem.h" />
     <ClInclude Include="..\..\Source\Systems\HoldingSystem.h" />
@@ -422,6 +423,7 @@
     <ClCompile Include="..\..\Source\Systems\DamageSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DeathSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\DestructionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Systems\DynamicPredictionSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\ExplosionSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\HealthSystem.cpp" />
     <ClCompile Include="..\..\Source\Systems\HoldingSystem.cpp" />

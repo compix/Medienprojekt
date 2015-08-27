@@ -11,6 +11,7 @@
 #include "GameGlobals.h"
 #include "ContactListener.h"
 
+struct HoldingStatusEvent;
 struct ResetGameEvent;
 struct GameOverEvent;
 using entityx::TimeDelta;
@@ -114,6 +115,7 @@ public:
 	~ClientGame();
 
 	void receive(const ResetGameEvent &evt);
+	void receive(const HoldingStatusEvent &evt);
 	bool isClient() override { return true; }
 
 protected:

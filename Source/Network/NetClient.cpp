@@ -22,6 +22,7 @@
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
 #include "../Events/SkillEvent.h"
+#include "../Events/HoldingEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -54,6 +55,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::GAME_OVER, &NetClient::onGameOverMessage, this);
 	m_handler.setCallback(MessageType::RESET_GAME, &NetClient::onResetGameMessage, this);
 	m_handler.setCallback(MessageType::SKILL, &NetClient::onSkillMessage, this);
+	m_handler.setCallback(MessageType::HOLDING_STATUS, &NetClient::onHoldingStatusMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -324,6 +326,8 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 		uint64_t packetNumber = reader.read<uint64_t>();
 		float x = reader.read<float>();
 		float y = reader.read<float>();
+		float velX = reader.read<float>();
+		float velY = reader.read<float>();
 		bool hasInput = reader.read<bool>();
 
 		Entity entity = getEntity(id);
@@ -333,6 +337,8 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 			if (dynamic->packetNumber >= packetNumber)
 				return;
 			dynamic->packetNumber = packetNumber;
+			dynamic->velX = velX;
+			dynamic->velY = velY;
 			auto transform = entity.component<TransformComponent>();
 			if (transform.valid())
 			{
@@ -385,6 +391,13 @@ void NetClient::onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& ev
 	SkillType type = reader.read<SkillType>();
 	bool activate = reader.read<bool>();
 	GameGlobals::events->emit<SkillEvent>(getEntity(id), type, activate);
+}
+
+void NetClient::onHoldingStatusMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	bool holding = reader.read<bool>();
+	GameGlobals::events->emit<HoldingStatusEvent>(getEntity(id), holding);
 }
 
 Entity NetClient::getEntity(uint64_t id)

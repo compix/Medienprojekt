@@ -8,6 +8,7 @@
 #include "../GameConstants.h"
 #include "../Events/StartGameEvent.h"
 
+struct HoldingStatusEvent;
 struct SkillEvent;
 enum class BombType : uint8_t;
 struct ResetGameEvent;
@@ -33,7 +34,7 @@ class DynamicUpdateWriter
 {
 public:
 	DynamicUpdateWriter();
-	ENetPacket *addEntity(Entity &entity, float x, float y, uint64_t packetNumber);
+	ENetPacket *addEntity(Entity &entity, float x, float y, float velX, float velY, uint64_t packetNumber);
 	ENetPacket *finish();
 
 private:
@@ -64,6 +65,8 @@ public:
 	void receive(const ResetGameEvent &evt);
 	void receive(const StartGameEvent& evt);
 	void receive(const SkillEvent &evt);
+	void receive(const HoldingStatusEvent &evt);
+	
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
