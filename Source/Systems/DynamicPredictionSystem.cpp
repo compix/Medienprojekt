@@ -12,7 +12,12 @@ void DynamicPredictionSystem::update(entityx::EntityManager& entityManager, enti
 
 	for (Entity entity : entityManager.entities_with_components(dynamic, transform))
 	{
-		transform->x += static_cast<float>(dynamic->velX * dt);
-		transform->y += static_cast<float>(dynamic->velY * dt);
+		if (dynamic->updatedLastFrame)
+			dynamic->updatedLastFrame = false;
+		else
+		{
+			transform->x += static_cast<float>(dynamic->velX * dt);
+			transform->y += static_cast<float>(dynamic->velY * dt);
+		}
 	}
 }

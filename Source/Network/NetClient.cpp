@@ -339,6 +339,7 @@ void NetClient::onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetE
 			dynamic->packetNumber = packetNumber;
 			dynamic->velX = velX;
 			dynamic->velY = velY;
+			dynamic->updatedLastFrame = true;
 			auto transform = entity.component<TransformComponent>();
 			if (transform.valid())
 			{
