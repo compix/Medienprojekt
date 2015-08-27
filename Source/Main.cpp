@@ -96,12 +96,14 @@ int Main::run()
 			{
 				if (GameGlobals::game)
 					GameGlobals::game->refreshView();
-				menuView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
-				screenView.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
-				screenView.setCenter(event.size.width / 2.0f, event.size.height / 2.0f);
+				onResize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
 			} else if (event.type == sf::Event::MouseMoved && GameGlobals::game)
 			{
 				GameGlobals::game->setMousePos(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+			}
+			else if (event.type == sf::Event::KeyPressed && event.key.alt && event.key.code == sf::Keyboard::Return)
+			{
+				toggleFullscreen();
 			}
 
 			m_events.emit(event);
@@ -210,6 +212,30 @@ void Main::disconnect()
 		m_client.reset();
 	if (GameGlobals::game)
 		GameGlobals::game.reset();
+}
+
+void Main::toggleFullscreen()
+{
+	m_fullscreen = !m_fullscreen;
+	if (m_fullscreen)
+	{
+		auto mode = sf::VideoMode::getDesktopMode();
+		GameGlobals::window->create(mode, "", sf::Style::Fullscreen);
+		onResize(static_cast<float>(mode.width), static_cast<float>(mode.height));
+	}
+	else
+	{
+		auto mode = sf::VideoMode(800, 600);
+		GameGlobals::window->create(mode, "SFML works!");
+		onResize(static_cast<float>(mode.width), static_cast<float>(mode.height));
+	}
+}
+
+void Main::onResize(float width, float height)
+{
+	GameGlobals::menuView->setSize(width, height);
+	GameGlobals::screenView->setSize(width, height);
+	GameGlobals::screenView->setCenter(width / 2.0f, height / 2.0f);
 }
 
 int main()
