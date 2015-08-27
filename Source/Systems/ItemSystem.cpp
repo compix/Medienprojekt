@@ -13,12 +13,65 @@
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
 {
+	m_maxItemCounts[ItemType::BOMB_CAP_BOOST] = 8;
+	m_maxItemCounts[ItemType::BOMB_KICK_SKILL] = 1;
+	m_maxItemCounts[ItemType::SPEED_MULTIPLICATOR] = 6;
+	m_maxItemCounts[ItemType::BOMB_RANGE_BOOST] = 10;
+	m_maxItemCounts[ItemType::PORTAL_SKILL] = 1;
+	m_maxItemCounts[ItemType::ANTI_MAGNET_SKILL] = 1;
+	m_maxItemCounts[ItemType::PUNCH_SKILL] = 1;
+	m_maxItemCounts[ItemType::HOLD_BOMB_SKILL] = 1;
+	m_maxItemCounts[ItemType::BLINK_SKILL] = 1;
+	m_maxItemCounts[ItemType::GHOST_BOMB] = 1;
+	m_maxItemCounts[ItemType::LIGHTNING_BOMB] = 1;
+
+	m_minItemCounts[ItemType::BOMB_CAP_BOOST] = 1;
+	m_minItemCounts[ItemType::BOMB_KICK_SKILL] = 0;
+	m_minItemCounts[ItemType::SPEED_MULTIPLICATOR] = 0;
+	m_minItemCounts[ItemType::BOMB_RANGE_BOOST] = 2;
+	m_minItemCounts[ItemType::PORTAL_SKILL] = 0;
+	m_minItemCounts[ItemType::ANTI_MAGNET_SKILL] = 0;
+	m_minItemCounts[ItemType::PUNCH_SKILL] = 0;
+	m_minItemCounts[ItemType::HOLD_BOMB_SKILL] = 0;
+	m_minItemCounts[ItemType::BLINK_SKILL] = 0;
+	m_minItemCounts[ItemType::GHOST_BOMB] = 0;
+	m_minItemCounts[ItemType::LIGHTNING_BOMB] = 0;
 }
 
 ItemSystem::~ItemSystem()
 {
 	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
 	GameGlobals::events->unsubscribe<ItemPickedUpEvent>(*this);
+}
+
+bool ItemSystem::removeItem(entityx::Entity& entity, ItemType itemType)
+{
+	auto inventory = entity.component<InventoryComponent>();
+
+	if (inventory->itemCounts[itemType] > m_minItemCounts[itemType])
+	{
+		inventory->itemCounts[itemType]--;
+		auto& items = inventory->items;
+		items.erase(std::remove(items.begin(), items.end(), itemType), items.end());
+		return true;
+	}
+
+	return false;
+}
+
+bool ItemSystem::addItem(entityx::Entity& entity, ItemType itemType)
+{
+	auto inventory = entity.component<InventoryComponent>();
+
+	if (inventory->itemCounts[itemType] < m_maxItemCounts[itemType])
+	{
+		inventory->itemCounts[itemType]++;
+		auto& items = inventory->items;
+		items.push_back(itemType);
+		return true;
+	}
+
+	return false;
 }
 
 void ItemSystem::configure(entityx::EventManager& events)
@@ -42,50 +95,14 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 		if (entityWithInventory.valid() && !item.has_component<JumpComponent>())
 		{
 			auto inventory = entityWithInventory.component<InventoryComponent>();
+			ItemType itemType = itemComponent->type;
 
-			switch (itemComponent->type)
-			{
-			case ItemType::BOMB_CAP_BOOST:
-				if (inventory->bombCount < GameConstants::BOMB_CAP)
-					++inventory->bombCount;
-				break;
-			case ItemType::BOMB_KICK_SKILL:
-				if (inventory->bombKick == false)
-					inventory->bombKick = true;
-				break;
-			case ItemType::SPEED_MULTIPLICATOR:
-				if (inventory->speedMultiplicator < GameConstants::SPEED_MULTI_CAP)
-					inventory->speedMultiplicator += GameConstants::SPEED_MULTI_INC;
-				break;
-			case ItemType::BOMB_RANGE_BOOST:
-				if (inventory->explosionRange < GameConstants::BOMB_RANGE_CAP)
-					++inventory->explosionRange;
-				break;
-			case ItemType::PORTAL_SKILL:
-				inventory->put(SkillType::PLACE_PORTAL);
-				break;
-			case ItemType::ANTI_MAGNET_SKILL:
-				if (inventory->antiMagnet == false)
-					inventory->antiMagnet = true;
-				break;
-			case ItemType::PUNCH_SKILL:
-				inventory->put(SkillType::PUNCH);
-				break;
-			case ItemType::BLINK_SKILL:
-				inventory->put(SkillType::BLINK);
-				break;
-			case ItemType::HOLD_BOMB_SKILL:
-				if (inventory->canHold == false)
-					inventory->canHold = true;
-				break;
-			case ItemType::GHOST_BOMB:
-				inventory->put(BombType::GHOST);
-				break;
-			case ItemType::LIGHTNING_BOMB:
-				inventory->put(BombType::LIGHTNING);
-				break;
-			default: break;
-			}
+			addItem(entityWithInventory, itemType);
+
+			if (CommonUtil::isBomb(itemType))
+				inventory->put(CommonUtil::toBomb(itemType));
+			else if (CommonUtil::isSkill(itemType))
+				inventory->put(CommonUtil::toSkill(itemType));
 
 			eventManager.emit<ItemPickedUpEvent>(item, entityWithInventory);
 		}

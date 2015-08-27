@@ -79,8 +79,8 @@ int Main::run()
 	m_events.subscribe<ForceDisconnectEvent>(*this);
 	m_events.subscribe<PreloadEvent>(*this);
 
-	sf::View menuView(sf::FloatRect(0, 0, GameConstants::MENU_WIDTH, GameConstants::MENU_HEIGHT));
-	sf::View screenView(sf::FloatRect(0, 0, GameConstants::WINDOW_WIDTH, GameConstants::WINDOW_HEIGHT));
+	sf::View menuView(sf::FloatRect(0, 0, float(GameConstants::MENU_WIDTH), float(GameConstants::MENU_HEIGHT)));
+	sf::View screenView(sf::FloatRect(0, 0, float(GameConstants::WINDOW_WIDTH), float(GameConstants::WINDOW_HEIGHT)));
 	GameGlobals::menuView = &menuView;
 	GameGlobals::screenView = &screenView;
 

@@ -354,8 +354,8 @@ void JumpSystem::calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, Entity
 
 void JumpSystem::calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle<JumpComponent, EntityManager> jumpComp, float beginHeight)
 {
-	*xPos = static_cast<float>(jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed);
-	*yPos = static_cast<float>(beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2)));
+	*xPos = static_cast<double>(jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed);
+	*yPos = static_cast<double>(beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2)));
 }
 
 void JumpSystem::checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked)

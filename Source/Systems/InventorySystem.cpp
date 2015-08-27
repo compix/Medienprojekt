@@ -41,7 +41,7 @@ void InventorySystem::receive(const BombExplodedEvent& e)
 
 		if (inventory)
 		{
-			inventory->bombCount++;
+			inventory->itemCounts[ItemType::BOMB_CAP_BOOST]++;
 		}
 	}
 }

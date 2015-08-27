@@ -75,7 +75,7 @@ void Graph::update(float deltaTime)
 		auto cell = lava.component<CellComponent>();
 		m_nodeGrid[cell->x][cell->y].properties.affectedByExplosion = true;
 		if (lava.has_component<TimerComponent>())
-			m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = lava.component<TimerComponent>()->seconds;
+			m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = std::min(2.f, lava.component<TimerComponent>()->seconds);
 		else
 			m_nodeGrid[cell->x][cell->y].properties.timeTillExplosion = 0.f;
 	}

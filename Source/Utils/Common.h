@@ -1,6 +1,9 @@
 #pragma once
 #include<stdint.h>
-#include<stddef.h>
+
+enum class BombType : uint8_t;
+enum class ItemType : uint8_t;
+enum class SkillType : uint8_t;
 
 enum class Direction : uint8_t
 {
@@ -19,6 +22,14 @@ struct LevelCell
 namespace CommonUtil
 {
 	Direction toDirection(int dirX, int dirY);
+
+	SkillType toSkill(ItemType itemType);
+	BombType toBomb(ItemType itemType);
+	ItemType toItem(SkillType skillType);
+	ItemType toItem(BombType bombType);
+
+	bool isSkill(ItemType itemType);
+	bool isBomb(ItemType itemType);
 }
 
 struct EnumClassHash

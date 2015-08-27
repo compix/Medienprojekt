@@ -36,7 +36,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 		if (input->bombButtonPressed)
 		{
 			Entity belowBomb;
-			if (inventory->canHold && (belowBomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y)) && !inventory->isHoldingBomb)
+			if (inventory->canHoldBomb() && (belowBomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y)) && !inventory->isHoldingBomb)
 			{
 				GameGlobals::events->emit<HoldingEvent>(entity, belowBomb);
 			}
@@ -44,10 +44,10 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 			{
 				GameGlobals::events->emit<ThrowBombEvent>(entity);
 			}
-			if (inventory->bombCount > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
+			if (inventory->getBombCount() > 0 && !m_layerManager->hasEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y) && !inventory->isHoldingBomb)
 			{
 				GameGlobals::entityFactory->createBomb(cell->x, cell->y, entity, inventory->activeBomb());
-				inventory->bombCount--;
+				inventory->itemCounts[ItemType::BOMB_CAP_BOOST]--;
 			}
 			
 			input->bombButtonPressed = false;
@@ -61,7 +61,7 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		auto body = entity.component<BodyComponent>();
 		if (body && !entity.has_component<BlinkComponent>())
-			body->body->SetLinearVelocity(b2Vec2(input->moveX * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator), input->moveY * (GameConstants::PLAYER_SPEED*inventory->speedMultiplicator)));
+			body->body->SetLinearVelocity(b2Vec2(input->moveX * inventory->speed(), input->moveY * inventory->speed()));
 	}
 }
 

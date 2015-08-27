@@ -12,7 +12,7 @@ bool RateKickBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::Ent
 
 	auto inventory = entity.component<InventoryComponent>();
 	assert(inventory);
-	if (!inventory->bombKick)
+	if (!inventory->canKickBomb())
 		return false;
 
 	// Check if the the bomb can be kicked

@@ -3,6 +3,8 @@
 #include <utility>
 #include <entityx/Entity.h>
 #include "../Utils/ActiveQueue.h"
+#include "ItemComponent.h"
+#include "../Utils/Common.h"
 
 enum class SkillType : uint8_t
 {
@@ -67,13 +69,7 @@ struct BombTypeComparator
 
 struct InventoryComponent
 {
-	InventoryComponent() : bombCount(GameConstants::INIT_BOMB_COUNT),
-		explosionRange(GameConstants::INIT_BOMB_RANGE),
-		speedMultiplicator(GameConstants::INIT_SPEED_MULTI),
-		bombKick(GameConstants::INIT_PLAYERS_CAN_KICK),
-		antiMagnet(GameConstants::INIT_ANTI_MAGNET),
-		isHoldingBomb(false),
-		canHold(GameConstants::INIT_PLAYERS_CAN_HOLD_BOMB)
+	InventoryComponent() : isHoldingBomb(false)
 	{
 		if (GameConstants::INIT_PORTAL_SKILL)
 			put(SkillType::PLACE_PORTAL);
@@ -83,18 +79,27 @@ struct InventoryComponent
 
 		if (GameConstants::INIT_BLINK_SKILL)
 			put(SkillType::BLINK);
+
+		itemCounts[ItemType::BOMB_CAP_BOOST] = GameConstants::INIT_BOMB_COUNT ? 1 : 0;
+		itemCounts[ItemType::BOMB_KICK_SKILL] = GameConstants::INIT_PLAYERS_CAN_KICK ? 1 : 0;
+		itemCounts[ItemType::SPEED_MULTIPLICATOR] = 0;
+		itemCounts[ItemType::BOMB_RANGE_BOOST] = GameConstants::INIT_BOMB_RANGE;
+		itemCounts[ItemType::PORTAL_SKILL] = 0;
+		itemCounts[ItemType::ANTI_MAGNET_SKILL] = GameConstants::INIT_ANTI_MAGNET ? 1 : 0;
+		itemCounts[ItemType::PUNCH_SKILL] = 0;
+		itemCounts[ItemType::HOLD_BOMB_SKILL] = GameConstants::INIT_PLAYERS_CAN_HOLD_BOMB ? 1 : 0;
+		itemCounts[ItemType::BLINK_SKILL] = 0;
+		itemCounts[ItemType::GHOST_BOMB] = 0;
+		itemCounts[ItemType::LIGHTNING_BOMB] = 0;
 	}
 
-	int bombCount;
-	int explosionRange;
-	float speedMultiplicator;
-	bool bombKick;
-	bool antiMagnet;
 	bool isHoldingBomb;
-	bool canHold;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
 	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order
 	ActiveQueue<BombType, BombTypeComparator> activeBombs;
+	// How many items the entity has of the given type
+	std::unordered_map<ItemType, uint8_t> itemCounts;
+	std::vector<ItemType> items;
 
 	inline void put(SkillType skillType) { activeSkills.put(Skill(skillType)); }
 	inline SkillType activeSkill() { return activeSkills.empty() ? SkillType::NONE : activeSkills.top().type; }
@@ -103,4 +108,12 @@ struct InventoryComponent
 
 	inline BombType activeBomb() { return activeBombs.empty() ? BombType::NORMAL : activeBombs.top(); }
 	inline void put(BombType bombType) { activeBombs.put(bombType); }
+
+	inline float speed() { return (GameConstants::INIT_SPEED_MULTI + GameConstants::SPEED_MULTI_INC * itemCounts[ItemType::SPEED_MULTIPLICATOR]) * GameConstants::PLAYER_SPEED; }
+	inline bool canPunchBomb() { return itemCounts[ItemType::PUNCH_SKILL] > 0; }
+	inline bool canHoldBomb() { return itemCounts[ItemType::HOLD_BOMB_SKILL] > 0; }
+	inline bool canKickBomb() { return itemCounts[ItemType::BOMB_KICK_SKILL] > 0; }
+	inline bool hasAntiMagnet() { return itemCounts[ItemType::ANTI_MAGNET_SKILL] > 0; }
+	uint8_t getExplosionRange() { return itemCounts[ItemType::BOMB_RANGE_BOOST]; }
+	uint8_t getBombCount() { return itemCounts[ItemType::BOMB_CAP_BOOST]; }
 };

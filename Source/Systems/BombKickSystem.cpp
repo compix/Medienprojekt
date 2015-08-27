@@ -110,7 +110,7 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 
 bool BombKickSystem::hasAntiMagnet(Entity e)
 {
-	return e && e.has_component<InventoryComponent>() && e.component<InventoryComponent>()->antiMagnet;
+	return e && e.has_component<InventoryComponent>() && e.component<InventoryComponent>()->hasAntiMagnet();
 }
 
 void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direction)
@@ -144,7 +144,7 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 				case Direction::RIGHT:	force.x = forcePower;	break;
 				default: break;
 				}
-				if (entity.component<InventoryComponent>()->bombKick && entity.component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
+				if (entity.component<InventoryComponent>()->canKickBomb() && entity.component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
 				{
 					sensor->SetLinearVelocity(force);
 				}
