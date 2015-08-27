@@ -45,7 +45,7 @@ void HoldingSystem::receive(const HoldingEvent& holdEvent)
 			inventory->isHoldingBomb = true;
 			wantToHold.destroy();
 			
-			
+			GameGlobals::events->emit<HoldingStatusEvent>(holder, true);
 		}
 	}
 }
@@ -71,5 +71,6 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 									cell->x+x, cell->y+y, 
 									1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
 		inventory->isHoldingBomb = false;
+		GameGlobals::events->emit<HoldingStatusEvent>(whoThrows, false);
 	}
 }

@@ -34,6 +34,7 @@
 #include "../Components/PlayerComponent.h"
 #include "../Events/ReadyEvent.h"
 #include "../Events/SkillEvent.h"
+#include "../Events/HoldingEvent.h"
 #include <format.h>
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
@@ -102,6 +103,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<ResetGameEvent>(*this);
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
 	GameGlobals::events->subscribe<SkillEvent>(*this);
+	GameGlobals::events->subscribe<HoldingStatusEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -161,6 +163,11 @@ NetServer::~NetServer()
 	GameGlobals::events->unsubscribe<SmokeCreatedEvent>(*this);
 	GameGlobals::events->unsubscribe<DeathEvent>(*this);
 	GameGlobals::events->unsubscribe<SetReadyEvent>(*this);
+	GameGlobals::events->unsubscribe<GameOverEvent>(*this);
+	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
+	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
+	GameGlobals::events->unsubscribe<SkillEvent>(*this);
+	GameGlobals::events->unsubscribe<HoldingStatusEvent>(*this);
 
 	// Delete all playerinfos
 	auto host = m_connection.getHost();
@@ -368,6 +375,14 @@ void NetServer::receive(const SkillEvent& evt)
 	m_messageWriter.write<uint64_t>(evt.triggerEntity.id().id());
 	m_messageWriter.write<SkillType>(evt.type);
 	m_messageWriter.write<bool>(evt.activate);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const HoldingStatusEvent& evt)
+{
+	m_messageWriter.init(MessageType::HOLDING_STATUS);
+	m_messageWriter.write<uint64_t>(evt.entity.id().id());
+	m_messageWriter.write<bool>(evt.holding);
 	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 

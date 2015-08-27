@@ -45,6 +45,7 @@
 #include "Components/LocalInputComponent.h"
 #include "Components/AIComponent.h"
 #include "Events/ResetGameEvent.h"
+#include "Events/HoldingEvent.h"
 #include "Systems/JumpSystem.h"
 #include "Systems/HoldingSystem.h"
 #include "Systems/BlinkSystem.h"
@@ -287,17 +288,27 @@ void LocalGame::receive(const GameOverEvent& evt)
 ClientGame::ClientGame()
 {
 	GameGlobals::events->subscribe<ResetGameEvent>(*this);
+	GameGlobals::events->subscribe<HoldingStatusEvent>(*this);
 }
 
 ClientGame::~ClientGame()
 {
 	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
+	GameGlobals::events->unsubscribe<HoldingStatusEvent>(*this);
 }
 
 void ClientGame::receive(const ResetGameEvent& evt)
 {
 	m_entities.reset();
 	m_layerManager->reset();
+}
+
+void ClientGame::receive(const HoldingStatusEvent& evt)
+{
+	auto entity = evt.entity;
+	auto inv = entity.component<InventoryComponent>();
+	if (inv.valid())
+		inv->isHoldingBomb = evt.holding;
 }
 
 void ClientGame::addSystems()

@@ -8,6 +8,7 @@
 #include "../GameConstants.h"
 #include "../Events/StartGameEvent.h"
 
+struct HoldingStatusEvent;
 struct SkillEvent;
 enum class BombType : uint8_t;
 struct ResetGameEvent;
@@ -64,6 +65,8 @@ public:
 	void receive(const ResetGameEvent &evt);
 	void receive(const StartGameEvent& evt);
 	void receive(const SkillEvent &evt);
+	void receive(const HoldingStatusEvent &evt);
+	
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
