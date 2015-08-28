@@ -201,9 +201,9 @@ void Game::addSystems()
 		addSystem<DestructionSystem>();
 		addSystem<ExplosionSystem>(m_layerManager.get());
 	}
+	addSystem<BlinkSystem>(m_layerManager.get());
 	if (!client)
 	{
-		addSystem<BlinkSystem>(m_layerManager.get());
 		addSystem<PortalSystem>(m_layerManager.get());
 		addSystem<JumpSystem>(m_layerManager.get());
 		addSystem<BombKickSystem>(m_layerManager.get());
@@ -251,7 +251,6 @@ void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 
 void LocalGame::resetEntities()
 {
-	GameGlobals::input->reset();
 	BodyFactory::freeEntityIds();
 	m_entities.reset();
 	m_layerManager->reset();

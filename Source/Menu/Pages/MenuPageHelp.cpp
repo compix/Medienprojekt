@@ -5,19 +5,19 @@ MenuPageHelp::MenuPageHelp(Menu &menu)
 {
 	createPicture(800, 600, "Assets/ui/background.png");
 
-	auto panel = createPanel("Bombs:");
+	auto panel = createPanel("Bombs");
 	createItem(panel, "Bomb", "Normal", "A simple bomb");
 	createItem(panel, "GhostBomb", "Ghost-Bomb", "Explosion is not stopped by destructible blocks\n(explosion destroys in full range).");
 	createItem(panel, "LightningBomb", "Lightning-Bomb", "1 Tile-Range explosion at the peak in all directions.");
 
-	panel = createPanel("Passive Skills:");
+	panel = createPanel("Passive Skills");
 	createItem(panel, "speed_multiplicator", "Speed Boost", "Boosts the movement speed.");
 	createItem(panel, "BombRangeBoost", "Explosion-Range", "Boosts the explosion range.");
 	createItem(panel, "bombCapBoost", "Bomb Capacity", "Allows the player to place 1 more bomb.");
 	createItem(panel, "bomb_kick_skill", "Kick", "Allows the player to kick bombs in the facing\ndirection on contact: Bomb moves in that direction.");
 	createItem(panel, "anti_magnet_skill", "Anti-Magnet", "If a kicked bomb hits the player the bomb is\nautomatically kicked back (the direction is reversed).");
 
-	panel = createPanel("Active Skills:");
+	panel = createPanel("Active Skills");
 	createItem(panel, "portal_skill", "Portals", "Character can spawn 2 portals (1 at a time) at his\nposition.");
 	createItem(panel, "punch_skill", "Punch", "Punch bombs 1 tile in front of the character.");
 	createItem(panel, "holding_skill", "Bomb-Pickup", "Character can pick up 1 bomb if he is on top of the\nbomb (bomb pos = player pos).");

@@ -25,6 +25,7 @@ static const char *axisNames[] = {
 
 InputManager::InputManager()
 {
+	GameGlobals::events->subscribe<ResetGameEvent>(*this);
 	GameGlobals::events->subscribe<MenuShowEvent>(*this);
 	GameGlobals::events->subscribe<sf::Event>(*this);
 
