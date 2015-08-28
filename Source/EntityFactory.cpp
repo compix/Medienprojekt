@@ -51,6 +51,7 @@
 #include "Components/LavaComponent.h"
 #include "Events/LavaSpotMarkedEvent.h"
 #include "Components/MarkedLavaSpotComponent.h"
+#include "Components/SoundComponent.h"
 
 EntityFactory::EntityFactory(bool isClient, LayerManager* layerManager, ShaderManager* shaderManager, entityx::SystemManager* systemManager)
 	:m_isClient(isClient), m_layerManager(layerManager), m_shaderManager(shaderManager), m_systemManager(systemManager)
@@ -78,6 +79,7 @@ Entity EntityFactory::createPlayer(float x, float y, uint8_t playerIndex)
 
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<SpriteComponent>();
+	//entity.assign<SoundComponent>(0.5f, "walk", GameConstants::SOUND_VOLUME * 0.05f);
 
 	AnimationComponent animationComponent;
 	entity.assign<AnimationComponent>(animationComponent);

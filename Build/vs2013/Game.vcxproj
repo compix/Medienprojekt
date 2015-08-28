@@ -219,6 +219,7 @@
     <ClInclude Include="..\..\Source\Components\RenderOffsetComponent.h" />
     <ClInclude Include="..\..\Source\Components\ShaderComponent.h" />
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h" />
+    <ClInclude Include="..\..\Source\Components\SoundComponent.h" />
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h" />
     <ClInclude Include="..\..\Source\Components\TimerComponent.h" />
     <ClInclude Include="..\..\Source\Components\TransformComponent.h" />

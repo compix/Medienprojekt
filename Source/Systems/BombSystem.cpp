@@ -53,7 +53,6 @@ void BombSystem::detonate(entityx::Entity entity)
 		if (bomb->exploded)
 			return;
 
-		GameGlobals::events->emit<SoundEvent>("explosion");
 		assert(cell && bomb);
 
 		GameGlobals::entityFactory->createExplosion(cell->x, cell->y, bomb->explosionRange, bomb->explosionSpreadTime, bomb->type);

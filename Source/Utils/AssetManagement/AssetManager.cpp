@@ -57,7 +57,6 @@ sf::Sound* AssetManager::getSound(const std::string& name)
 	}
 
 	// Too many sounds
-	assert(false);
 	return nullptr;
 }
 

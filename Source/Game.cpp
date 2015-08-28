@@ -185,8 +185,7 @@ void Game::addSystems()
 		addSystem<BodySystem>();
 	else
 		addSystem<DynamicPredictionSystem>();
-	addSystem<SoundSystem>();
-	//addSystem<MusicSystem>();
+
 	if (!client)
 	{
 		addSystem<InventorySystem>();
@@ -215,6 +214,8 @@ void Game::addSystems()
 		addSystem<DeathSystem>();
 	}
 	addSystem<InputSystem>();
+	addSystem<SoundSystem>();
+	addSystem<MusicSystem>();
 	if (!client)
 		addSystem<InputHandleSystem>(m_layerManager.get());
 	addSystem<AnimationSystem>();
