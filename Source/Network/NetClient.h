@@ -54,6 +54,9 @@ public:
 	void onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onHoldingStatusMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onPhase2StartedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onMarkLavaSpotMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	
 private:
 	void mapEntity(uint64_t id, Entity entity);

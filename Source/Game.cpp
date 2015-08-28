@@ -178,6 +178,59 @@ void Game::refreshView()
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
+void Game::addSystems(bool isClient)
+{
+	if (!isClient)
+		addSystem<BodySystem>();
+	else
+		addSystem<DynamicPredictionSystem>();
+	addSystem<SoundSystem>();
+	//addSystem<MusicSystem>();
+	if (!isClient)
+	{
+		addSystem<InventorySystem>();
+		addSystem<ItemSystem>(m_layerManager.get());
+	}
+	addSystem<TimerSystem>();
+	if (!isClient)
+	{
+		addSystem<BombSystem>();
+		addSystem<DamageSystem>(m_layerManager.get());
+		addSystem<HoldingSystem>();
+		addSystem<DestructionSystem>();
+		addSystem<ExplosionSystem>(m_layerManager.get());
+	}
+	if (!isClient)
+	{
+		addSystem<BlinkSystem>(m_layerManager.get());
+		addSystem<PortalSystem>(m_layerManager.get());
+		addSystem<JumpSystem>(m_layerManager.get());
+		addSystem<BombKickSystem>(m_layerManager.get());
+	}
+	addSystem<AfterimageSystem>();
+	if (!isClient)
+	{
+		addSystem<HealthSystem>();
+		addSystem<DeathSystem>();
+	}
+	addSystem<InputSystem>();
+	if (!isClient)
+		addSystem<InputHandleSystem>(m_layerManager.get());
+	addSystem<AnimationSystem>();
+	addSystem<RenderSystem>(m_layerManager.get());
+	addSystem<ParticleSystem>();
+	addSystem<LightSystem>();
+	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
+	addSystem<ChatRenderSystem>();
+	if (!isClient)
+	{
+		addSystem<AISystem>(m_layerManager.get());
+		addSystem<LavaSystem>(m_width, m_height);
+	}
+	addSystem<VisualLavaMarkSystem>();
+	addSystem<NotificationSystem>(m_width, m_height);
+}
+
 LocalGame::LocalGame()
 {
 	GameGlobals::events->subscribe<GameOverEvent>(*this);
@@ -190,36 +243,7 @@ LocalGame::~LocalGame()
 
 void LocalGame::addSystems()
 {
-	addSystem<BodySystem>();
-	addSystem<SoundSystem>();
-	//addSystem<MusicSystem>();
-	addSystem<InventorySystem>();
-	addSystem<ItemSystem>(m_layerManager.get());
-	addSystem<TimerSystem>();
-	addSystem<BombSystem>();
-	addSystem<DamageSystem>(m_layerManager.get());
-	addSystem<HoldingSystem>();
-	addSystem<DestructionSystem>();
-	addSystem<ExplosionSystem>(m_layerManager.get());
-	addSystem<BlinkSystem>(m_layerManager.get());
-	addSystem<PortalSystem>(m_layerManager.get());
-	addSystem<JumpSystem>(m_layerManager.get());
-	addSystem<BombKickSystem>(m_layerManager.get());
-	addSystem<AfterimageSystem>();
-	addSystem<HealthSystem>();
-	addSystem<DeathSystem>();
-	addSystem<InputSystem>();
-	addSystem<InputHandleSystem>(m_layerManager.get());
-	addSystem<AnimationSystem>();
-	addSystem<RenderSystem>(m_layerManager.get());
-	addSystem<ParticleSystem>();
-	addSystem<LightSystem>();	
-	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	addSystem<ChatRenderSystem>();
-	addSystem<AISystem>(m_layerManager.get());
-	addSystem<LavaSystem>(m_width, m_height);
-	addSystem<VisualLavaMarkSystem>();
-	addSystem<NotificationSystem>(m_width, m_height);
+	Game::addSystems(false);
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
@@ -316,18 +340,5 @@ void ClientGame::receive(const HoldingStatusEvent& evt)
 
 void ClientGame::addSystems()
 {
-	addSystem<DynamicPredictionSystem>();
-	addSystem<SoundSystem>();
-	addSystem<MusicSystem>();
-	addSystem<BlinkSystem>(m_layerManager.get());
-	addSystem<TimerSystem>();
-	addSystem<AfterimageSystem>();
-	addSystem<InputSystem>();
-//	addSystem<ClientInputHandleSystem>(); // fixme
-	addSystem<AnimationSystem>();
-	addSystem<RenderSystem>(m_layerManager.get());
-	addSystem<ParticleSystem>();
-	addSystem<LightSystem>();
-	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
-	addSystem<ChatRenderSystem>();
+	Game::addSystems(true);
 }

@@ -23,6 +23,8 @@
 #include "../Events/ResetGameEvent.h"
 #include "../Events/SkillEvent.h"
 #include "../Events/HoldingEvent.h"
+#include "../Events/Phase2StartedEvent.h"
+#include "../Events/LavaSpotMarkedEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -56,6 +58,9 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::RESET_GAME, &NetClient::onResetGameMessage, this);
 	m_handler.setCallback(MessageType::SKILL, &NetClient::onSkillMessage, this);
 	m_handler.setCallback(MessageType::HOLDING_STATUS, &NetClient::onHoldingStatusMessage, this);
+	m_handler.setCallback(MessageType::PHASE2_STARTED, &NetClient::onPhase2StartedMessage, this);
+	m_handler.setCallback(MessageType::MARK_LAVA_SPOT, &NetClient::onMarkLavaSpotMessage, this);
+	m_handler.setCallback(MessageType::CREATE_LAVA, &NetClient::onCreateLavaMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -399,6 +404,25 @@ void NetClient::onHoldingStatusMessage(MessageReader<MessageType>& reader, ENetE
 	uint64_t id = reader.read<uint64_t>();
 	bool holding = reader.read<bool>();
 	GameGlobals::events->emit<HoldingStatusEvent>(getEntity(id), holding);
+}
+
+void NetClient::onPhase2StartedMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	GameGlobals::events->emit<Phase2StartedEvent>();
+}
+
+void NetClient::onMarkLavaSpotMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint8_t cellX = reader.read<uint8_t>();
+	uint8_t cellY = reader.read<uint8_t>();
+	GameGlobals::entityFactory->markLavaSpot(cellX, cellY);
+}
+
+void NetClient::onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint8_t cellX = reader.read<uint8_t>();
+	uint8_t cellY = reader.read<uint8_t>();
+	GameGlobals::entityFactory->createLava(cellX, cellY);
 }
 
 Entity NetClient::getEntity(uint64_t id)

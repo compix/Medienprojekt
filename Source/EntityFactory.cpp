@@ -474,6 +474,7 @@ Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
+	GameGlobals::events->emit(LavaCreatedEvent(cellX, cellY));
 	return entity;
 }
 
@@ -501,7 +502,6 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY)
 
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit(LavaCreatedEvent(cellX, cellY));
 	return entity;
 }
 

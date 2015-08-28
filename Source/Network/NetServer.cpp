@@ -39,6 +39,8 @@
 #include "../Events/GameOverEvent.h"
 #include "../Events/ResetGameEvent.h"
 #include "../Components/NoNetComponent.h"
+#include "../Events/Phase2StartedEvent.h"
+#include "../Events/LavaCreatedEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -106,6 +108,9 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<StartGameEvent>(*this);
 	GameGlobals::events->subscribe<SkillEvent>(*this);
 	GameGlobals::events->subscribe<HoldingStatusEvent>(*this);
+	GameGlobals::events->subscribe<Phase2StartedEvent>(*this);
+	GameGlobals::events->subscribe<LavaSpotMarkedEvent>(*this);
+	GameGlobals::events->subscribe<LavaCreatedEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -155,22 +160,6 @@ NetServer::NetServer()
 
 NetServer::~NetServer()
 {
-	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
-	GameGlobals::events->unsubscribe<BombCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<ExplosionCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
-	GameGlobals::events->unsubscribe<PortalCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<ItemCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<BoostEffectCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<SmokeCreatedEvent>(*this);
-	GameGlobals::events->unsubscribe<DeathEvent>(*this);
-	GameGlobals::events->unsubscribe<SetReadyEvent>(*this);
-	GameGlobals::events->unsubscribe<GameOverEvent>(*this);
-	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
-	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
-	GameGlobals::events->unsubscribe<SkillEvent>(*this);
-	GameGlobals::events->unsubscribe<HoldingStatusEvent>(*this);
-
 	// Delete all playerinfos
 	auto host = m_connection.getHost();
 	for (size_t i = 0; i < host->peerCount; i++)
@@ -385,6 +374,28 @@ void NetServer::receive(const HoldingStatusEvent& evt)
 	m_messageWriter.init(MessageType::HOLDING_STATUS);
 	m_messageWriter.write<uint64_t>(evt.entity.id().id());
 	m_messageWriter.write<bool>(evt.holding);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const Phase2StartedEvent& event)
+{
+	m_messageWriter.init(MessageType::PHASE2_STARTED);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const LavaSpotMarkedEvent& event)
+{
+	m_messageWriter.init(MessageType::MARK_LAVA_SPOT);
+	m_messageWriter.write<uint8_t>(event.cellX);
+	m_messageWriter.write<uint8_t>(event.cellY);
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const LavaCreatedEvent& event)
+{
+	m_messageWriter.init(MessageType::CREATE_LAVA);
+	m_messageWriter.write<uint8_t>(event.cellX);
+	m_messageWriter.write<uint8_t>(event.cellY);
 	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
