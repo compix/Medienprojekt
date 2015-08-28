@@ -68,14 +68,13 @@ public:
 	void receive(const ResetGameEvent &evt);
 	
 	void update();
-
+	void reset();
 private:
 	PlayerInput m_playerInputs[GameConstants::MAX_PLAYERS];
 	std::map<int, KeycodeMapEntry> m_keycodeMap;
 	JoystickConfig m_storedJoystickConfigs[GameConstants::MAX_PLAYERS];
 	JoystickConfig *m_joystickMap[sf::Joystick::Count];
 
-	void reset();
 	bool loadConfigFromJson(const std::string& path);
 	void bindKey(int playerIndex, PlayerButton button, int keyCode);
 

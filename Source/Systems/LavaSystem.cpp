@@ -5,8 +5,8 @@
 #include "../Events/Phase2StartedEvent.h"
 
 LavaSystem::LavaSystem(uint8_t levelWidth, uint8_t levelHeight)
-	: m_phase2Started(false), m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_timer(0.f), m_startTime(60.f), m_leftTillSpawn(GameConstants::LAVA_SPAWN_TIME),
-	  m_topBorder(0), m_botBorder(m_levelHeight-1), m_leftBorder(0), m_rightBorder(m_levelWidth-1)
+	: m_phase2Started(false), m_levelWidth(levelWidth), m_levelHeight(levelHeight), m_timer(0.f), m_startTime(5.f), m_leftTillSpawn(GameConstants::LAVA_SPAWN_TIME),
+	m_topBorder(0), m_botBorder(m_levelHeight - 1), m_leftBorder(0), m_rightBorder(m_levelWidth - 1), m_stopped(false)
 {
 
 }
@@ -24,6 +24,9 @@ void LavaSystem::reset()
 
 void LavaSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 {
+	if (m_stopped)
+		return;
+
 	m_timer += float(dt);
 
 	if (m_timer < m_startTime)

@@ -8,9 +8,9 @@ struct ItemSpawnProperty
 	ItemSpawnProperty(ItemType itemType, uint16_t min, uint16_t max) 
 		: itemType(itemType), min(min), max(max) {}
 
+	ItemType itemType;
 	uint16_t min;
 	uint16_t max;
-	ItemType itemType;
 };
 
 struct LevelConfig
@@ -38,8 +38,8 @@ struct DefaultConfig : LevelConfig
 		uint16_t numIndestructibleBlocks = (width - 3) * (height - 3) / 4 + (height + width - 2) * 2;
 		uint16_t numFreeBlocks = 3 * 4; // At the 4 player corners
 		uint16_t maxBlockCount = width * height - numIndestructibleBlocks - numFreeBlocks;
-		blockDensity = 0.35f;
-		float uniformChance = blockDensity * 0.85f;
+		blockDensity = 0.85f;
+		float uniformChance = blockDensity * 0.15f;
 		uint16_t itemCountCommon = uint16_t(uniformChance * maxBlockCount);
 		uint16_t itemCountRare = uint16_t(0.02f * maxBlockCount * blockDensity);
 

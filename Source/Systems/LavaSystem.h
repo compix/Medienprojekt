@@ -9,6 +9,8 @@ public:
 	void update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt) override;
 
 	void reset();
+	inline void stop(bool val) { m_stopped = val; }
+	inline float getPhase2StartTime() { return m_startTime; }
 private:
 	bool m_phase2Started;
 
@@ -23,4 +25,6 @@ private:
 	uint8_t m_botBorder;
 	uint8_t m_leftBorder;
 	uint8_t m_rightBorder;
+
+	bool m_stopped;
 };
