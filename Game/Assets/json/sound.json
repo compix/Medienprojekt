@@ -2,8 +2,6 @@
     "explosion": "explosion.wav",
 	"explosion2": "explosion2.flac",
 	"explosion3": "explosion3.wav",
-	"item_pickup": "item_pickup.flac",
 	"portal_open": "portal_open.wav",
-	"portal_close": "portal_close.wav",
-	"walk": "walk.ogg"
+	"portal_close": "portal_close.wav"
 }
