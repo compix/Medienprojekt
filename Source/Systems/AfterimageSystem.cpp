@@ -12,7 +12,6 @@ AfterimageSystem::AfterimageSystem()
 
 AfterimageSystem::~AfterimageSystem()
 {
-	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
 }
 
 void AfterimageSystem::configure(entityx::EventManager &event_manager)

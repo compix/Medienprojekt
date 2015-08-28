@@ -323,8 +323,6 @@ ClientGame::ClientGame()
 
 ClientGame::~ClientGame()
 {
-	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
-	GameGlobals::events->unsubscribe<HoldingStatusEvent>(*this);
 }
 
 void ClientGame::receive(const ResetGameEvent& evt)

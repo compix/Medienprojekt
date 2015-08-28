@@ -13,8 +13,6 @@ using namespace entityx;
 
 BodySystem::~BodySystem()
 {
-	GameGlobals::events->unsubscribe<ComponentAddedEvent<BodyComponent>>(*this);
-	GameGlobals::events->unsubscribe<EntityDestroyedEvent>(*this);
 }
 
 void BodySystem::configure(entityx::EventManager& event_manager)
