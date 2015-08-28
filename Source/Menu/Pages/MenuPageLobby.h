@@ -38,10 +38,10 @@ private:
 	void onAbort();
 
 private:
-	tgui::Label::Ptr m_name[GameConstants::MAX_PLAYERS];
+	std::shared_ptr<Label> m_name[GameConstants::MAX_PLAYERS];
 	tgui::Checkbox::Ptr m_ready[GameConstants::MAX_PLAYERS];
 	tgui::ChatBox::Ptr m_chatBox;
 	tgui::EditBox::Ptr m_editBox;
-	tgui::Label::Ptr m_timer;
+	std::shared_ptr<Label> m_timer;
 	bool m_ignoreChecked = false;
 };
