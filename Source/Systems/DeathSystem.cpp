@@ -11,8 +11,6 @@
 
 DeathSystem::~DeathSystem()
 {
-	GameGlobals::events->unsubscribe<StartGameEvent>(*this);
-	GameGlobals::events->unsubscribe<DeathEvent>(*this);
 }
 
 void DeathSystem::configure(entityx::EventManager& events)

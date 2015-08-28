@@ -3,7 +3,7 @@
 #include "../MenuPage.h"
 #include "MenuPageCreateGame.h"
 #include "MenuPageJoinGame.h"
-#include "MenuPageSettings.h"
+#include "MenuPageHelp.h"
 #include "MenuPageCredits.h"
 
 struct ForceDisconnectEvent;
@@ -20,14 +20,17 @@ public:
 protected:
 	void onCreateGame();
 	void onJoinGame();
-	void onSettings();
+	void onDisconnect();
+	void onHelp();
 	void onCredits();
 	void onExit();
 
 protected:
 	MenuPageCreateGame m_createGamePage;
 	MenuPageJoinGame m_joinGamePage;
-	MenuPageSettings m_settingsPage;
+	MenuPageHelp m_helpPage;
 	MenuPageCredits m_creditsPage;
-	tgui::Button::Ptr m_exitButton;
+	tgui::Button::Ptr m_createButton;
+	tgui::Button::Ptr m_joinButton;
+	tgui::Button::Ptr m_disconnectButton;
 };

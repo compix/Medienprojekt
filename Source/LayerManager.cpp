@@ -18,7 +18,6 @@ EntityLayer* LayerManager::createLayer(uint8_t width, uint8_t height, int layer)
 
 LayerManager::~LayerManager()
 {
-	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
 }
 
 void LayerManager::reset()

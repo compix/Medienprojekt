@@ -11,6 +11,7 @@
 #include "GameGlobals.h"
 #include "ContactListener.h"
 
+struct MenuShowEvent;
 struct HoldingStatusEvent;
 struct ResetGameEvent;
 struct GameOverEvent;
@@ -39,12 +40,12 @@ public:
 	uint8_t getWidth() { return m_width; }
 	uint8_t getHeight() { return m_height; }
 	virtual bool isClient() { return false; }
+	virtual bool isServer() { return false; }
 
 	void refreshView();
 	inline const sf::View& getView() const { return m_view; }
 protected:
-	void addSystems(bool isClient);
-	virtual void addSystems() = 0;
+	void addSystems();
 
 	template <typename S, typename ... Args>
 	std::shared_ptr<S> addSystem(Args && ... args);
@@ -95,18 +96,19 @@ public:
 
 	void update(TimeDelta dt) override;
 	void receive(const GameOverEvent &evt);
-
-protected:
-	void addSystems() override;
+	void receive(const MenuShowEvent &evt);
 
 protected:
 	CreateGamePlayerType m_playerTypes[GameConstants::MAX_PLAYERS];
 	uint8_t m_numPlayers;
 	TimeDelta m_resetTime = 0;
+	bool m_menuVisible = false;
 };
 
 class ServerGame : public LocalGame
 {
+public:
+	bool isServer() override { return true; }
 };
 
 class ClientGame : public Game, public Receiver<ClientGame>
@@ -118,7 +120,4 @@ public:
 	void receive(const ResetGameEvent &evt);
 	void receive(const HoldingStatusEvent &evt);
 	bool isClient() override { return true; }
-
-protected:
-	void addSystems() override;
 };

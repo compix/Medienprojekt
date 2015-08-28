@@ -22,8 +22,6 @@ PortalSystem::PortalSystem(LayerManager* layerManager)
 
 PortalSystem::~PortalSystem()
 {
-	GameGlobals::events->unsubscribe<TimeoutEvent>(*this);
-	GameGlobals::events->unsubscribe<SkillEvent>(*this);
 }
 
 void PortalSystem::configure(entityx::EventManager& events)

@@ -33,11 +33,11 @@ tgui::Picture::Ptr MenuPage::createPicture(float width, float height, const stri
 	return picture;
 }
 
-tgui::Label::Ptr MenuPage::createLabel(float x, float y, const string &text)
+std::shared_ptr<Label> MenuPage::createLabel(float x, float y, const string &text, float shadowOffset)
 {
-	tgui::Label::Ptr label(*m_panel);
+	std::shared_ptr<Label> label = std::make_shared<Label>(m_panel);
 	label->setText(text);
-	label->setPosition(x, y);
+	label->setPosition(x, y, shadowOffset);
 	return label;
 }
 
