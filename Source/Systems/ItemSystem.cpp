@@ -201,7 +201,7 @@ void ItemSystem::dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType)
 	auto item = GameGlobals::entityFactory->createItem(from.x, from.y, itemType);
 
 	Direction direction = static_cast<Direction>(Random::getInt(0, 3));
-	item.assign<JumpComponent>(direction, from.x, from.y, to.x, to.y, 1, 6.f, 20.f);
+	item.assign<JumpComponent>(direction, from.x, from.y, to.x, to.y, 1.f, 6.f, 20.f);
 }
 
 void ItemSystem::getFreeCells(std::vector<LevelCell>& outFreeCells)

@@ -192,7 +192,7 @@ void LocalGame::addSystems()
 {
 	addSystem<BodySystem>();
 	addSystem<SoundSystem>();
-	addSystem<MusicSystem>();
+	//addSystem<MusicSystem>();
 	addSystem<InventorySystem>();
 	addSystem<ItemSystem>(m_layerManager.get());
 	addSystem<TimerSystem>();
@@ -231,6 +231,7 @@ void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 
 void LocalGame::resetEntities()
 {
+	BodyFactory::freeEntityIds();
 	m_entities.reset();
 	m_layerManager->reset();
 	GameGlobals::events->emit<ResetGameEvent>();

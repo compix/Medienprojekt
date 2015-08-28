@@ -39,7 +39,7 @@ void AfterimageSystem::update(entityx::EntityManager &entityManager, entityx::Ev
 
 
 		auto color = sprite->sprite.getColor();
-		color.a = (timer->seconds / afteri->totalTime)*255.f;
+		color.a = sf::Uint8((timer->seconds / afteri->totalTime) * 255.f);
 		sprite->sprite.setColor(color);
 	}
 }

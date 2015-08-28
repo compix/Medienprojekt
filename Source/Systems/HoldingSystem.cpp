@@ -69,7 +69,7 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 		bomb.assign<JumpComponent>( whoThrows.component<DirectionComponent>()->direction, 
 									cell->x, cell->y,
 									cell->x+x, cell->y+y, 
-									1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
+									1.f, float(GameConstants::PUNCH_JUMPING_HEIGHT), float(GameConstants::PUNCH_JUMPING_SPEED));
 		inventory->isHoldingBomb = false;
 		GameGlobals::events->emit<HoldingStatusEvent>(whoThrows, false);
 	}

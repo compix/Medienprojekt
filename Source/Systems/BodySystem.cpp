@@ -39,6 +39,7 @@ void BodySystem::receive(const entityx::EntityDestroyedEvent& event)
 	{
 		auto body = entity.component<BodyComponent>()->body;
 		body->GetWorld()->DestroyBody(body);
+		BodyFactory::freeEntityId(entity.id().id());
 	}
 
 	//GameGlobals::entityFactory->destroyEntity(entity);

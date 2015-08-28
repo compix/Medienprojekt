@@ -91,7 +91,7 @@ void SFMLDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
 }
 void SFMLDebugDraw::DrawTransform(const b2Transform& xf)
 {
-	float lineLength = 0.4;
+	float lineLength = 0.4f;
 
 	/*b2Vec2 xAxis(b2Vec2(xf.p.x + (lineLength * xf.q.c), xf.p.y + (lineLength * xf.q.s)));*/
 	b2Vec2 xAxis = xf.p + lineLength * xf.q.GetXAxis();

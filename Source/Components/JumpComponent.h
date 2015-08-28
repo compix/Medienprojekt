@@ -12,7 +12,7 @@ struct JumpComponent
 	Direction direction;
 	int fromX, fromY;
 	int toX, toY;
-	double totalTime, timePassed = 0;	//Je höher totalTime um so höher fliegt der Ball.
+	float totalTime, timePassed = 0;	//Je höher totalTime um so höher fliegt der Ball.
 	float startVelocity;
 	float degreeX, degreeY;
 	bool isDegreeCalculated=false;

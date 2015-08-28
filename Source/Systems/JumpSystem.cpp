@@ -52,7 +52,8 @@ void JumpSystem::receive(const SkillEvent& event)
 	if (bomb.has_component<BodyComponent>() && bomb.component<BodyComponent>()->body->GetLinearVelocity().Length() == 0) //Wenn Bombe nicht gekickt worden sind
 	{
 		auto cpBomb = bomb.component<CellComponent>();
-		bomb.assign<JumpComponent>(direction, cpBomb->x, cpBomb->y, cpBomb->x + x, cpBomb->y + y, 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);
+		bomb.assign<JumpComponent>(direction, cpBomb->x, cpBomb->y, cpBomb->x + x, 
+			cpBomb->y + y, 1.f, float(GameConstants::PUNCH_JUMPING_HEIGHT), float(GameConstants::PUNCH_JUMPING_SPEED));
 	}
 }
 
@@ -93,7 +94,8 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				int jumpDistance = 1;
 				adjustXY_RelatingToTheDirection(&x, &y, jumpDistance, lastDirection);
 
-				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, cellComp->y + y, 1, GameConstants::BLOCKED_CELL_JUMPING_HEIGHT, GameConstants::BLOCKED_CELL_JUMPING_SPEED);
+				jumpingEntity.assign<JumpComponent>(lastDirection, cellComp->x, cellComp->y, cellComp->x + x, 
+					cellComp->y + y, 1.f, float(GameConstants::BLOCKED_CELL_JUMPING_HEIGHT), float(GameConstants::BLOCKED_CELL_JUMPING_SPEED));
 				jumpingEntity.component<JumpComponent>()->wasBlocked = true;
 
 				auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(GameConstants::MAIN_LAYER, cellComp->x, cellComp->y);
@@ -167,7 +169,7 @@ void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponen
 		jumpComp->isDegreeCalculated = true;
 	}
 
-	jumpComp->timePassed += dt*jumpComp->deltaTimeMultiplikator;
+	jumpComp->timePassed += float(dt*jumpComp->deltaTimeMultiplikator);
 	if (jumpComp->timePassed > jumpComp->totalTime)
 	{
 		jumpComp->timePassed = jumpComp->totalTime;
@@ -323,8 +325,8 @@ void JumpSystem::calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, Entity
 
 void JumpSystem::calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle<JumpComponent, EntityManager> jumpComp, float beginHeight)
 {
-	*xPos = static_cast<double>(jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed);
-	*yPos = static_cast<double>(beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2)));
+	*xPos = static_cast<float>(jumpComp->startVelocity * jumpComp->degreeX * jumpComp->timePassed);
+	*yPos = static_cast<float>(beginHeight + jumpComp->startVelocity * jumpComp->degreeY * jumpComp->timePassed - ((GameConstants::EARTH_GRAVITY / 2.f)*powf(jumpComp->timePassed, 2)));
 }
 
 void JumpSystem::checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked)

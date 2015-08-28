@@ -128,7 +128,8 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 
 	if (canKick)
 	{
-		Entity entity = GameGlobals::entities->get(GameGlobals::entities->create_id(reinterpret_cast<int>(notSensor->GetUserData())));
+		auto entityIdA = *static_cast<entityx::uint64_t*>(notSensor->GetUserData());
+		Entity entity = GameGlobals::entities->get(Entity::Id(entityIdA));
 
 		if (entity)
 		{

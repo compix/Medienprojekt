@@ -39,6 +39,13 @@ public:
 	static bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
 	static bool isA(b2Fixture* fixture, uint16 category);
 	static bool contactBetween(b2Contact* contact, uint16 categoryA, uint16 categoryB);
+
 	//static b2Body* BodyFactory::CreateBoxSensor(float posX, float posY, float radius, b2BodyType type, uint16 isA, uint16 collideWith);
+
+	static void freeEntityId(entityx::uint64_t id);
+	static void freeEntityIds();
+
+private:
+	static std::unordered_map<entityx::uint64_t, std::unique_ptr<entityx::uint64_t>> m_entityIds;
 };
 

@@ -3,6 +3,7 @@
 
 
 b2World* BodyFactory::m_World(new b2World(b2Vec2()));
+std::unordered_map<entityx::uint64_t, std::unique_ptr<entityx::uint64_t>> BodyFactory::m_entityIds;
 
 BodyFactory::BodyFactory(b2World b2_world)
 {
@@ -24,8 +25,8 @@ b2Body* BodyFactory::CreateBox(Entity entity, float posX, float posY, float widt
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type), 
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	int userData = entity.id().id();
-	body->SetUserData(reinterpret_cast<void*>(userData));
+	m_entityIds[entity.id().id()] = std::make_unique<entityx::uint64_t>(entity.id().id());
+	body->SetUserData(m_entityIds[entity.id().id()].get());
 	return body;
 }
 
@@ -38,9 +39,8 @@ b2Body* BodyFactory::CreateCircle(Entity entity, float posX, float posY, float r
 
 	b2Body* body = CreateBody(CreateBodyDef(&bodyDef, posX, posY, type),
 							  CreateFixtureDef(&fixtureDef, &shape, isA, collideWith, isSensor));
-	int userData = entity.id().id();
-	body->SetUserData(reinterpret_cast<void*>(userData));
-	body->GetUserData();
+	m_entityIds[entity.id().id()] = std::make_unique<entityx::uint64_t>(entity.id().id());
+	body->SetUserData(m_entityIds[entity.id().id()].get());
 	return body;
 }
 
@@ -103,3 +103,13 @@ bool BodyFactory::contactBetween(b2Contact* contact, uint16 categoryA, uint16 ca
 	return false;
 }
 
+void BodyFactory::freeEntityId(entityx::uint64_t id)
+{
+	if (m_entityIds.count(id) > 0)
+		m_entityIds.erase(id);
+}
+
+void BodyFactory::freeEntityIds()
+{
+	m_entityIds.clear();
+}
