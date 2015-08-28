@@ -480,6 +480,9 @@
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageHelp.h">
+      <Filter>Menu\Pages</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h">
       <Filter>Menu\Pages</Filter>
     </ClInclude>
@@ -820,6 +823,9 @@
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp">
+      <Filter>Menu\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageHelp.cpp">
       <Filter>Menu\Pages</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp">

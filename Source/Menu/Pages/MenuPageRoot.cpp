@@ -6,7 +6,7 @@
 #include "../../Events/CreateGameEvent.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
-	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_settingsPage(menu), m_creditsPage(menu)
+	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_helpPage(menu), m_creditsPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/background.png");
 
@@ -24,8 +24,8 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	button->bindCallback(&MenuPageRoot::onJoinGame, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
-	button = createButton(x, y, width, height, "Settings");
-	button->bindCallback(&MenuPageRoot::onSettings, this, tgui::Button::LeftMouseClicked);
+	button = createButton(x, y, width, height, "Help");
+	button->bindCallback(&MenuPageRoot::onHelp, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
 	button = createButton(x, y, width, height, "Credits");
@@ -59,9 +59,9 @@ void MenuPageRoot::onJoinGame()
 	m_menu.pushPage(&m_joinGamePage);
 }
 
-void MenuPageRoot::onSettings()
+void MenuPageRoot::onHelp()
 {
-	m_menu.pushPage(&m_settingsPage);
+	m_menu.pushPage(&m_helpPage);
 }
 
 void MenuPageRoot::onCredits()
