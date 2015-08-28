@@ -32,7 +32,6 @@ void ChatRenderSystem::initText(sf::Text& text)
 
 ChatRenderSystem::~ChatRenderSystem()
 {
-	GameGlobals::events->unsubscribe<ChatEvent>(*this);
 }
 
 void ChatRenderSystem::configure(entityx::EventManager& events)

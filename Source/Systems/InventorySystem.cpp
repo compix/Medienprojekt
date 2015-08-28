@@ -8,7 +8,6 @@
 
 InventorySystem::~InventorySystem()
 {
-	GameGlobals::events->unsubscribe<BombExplodedEvent>(*this);
 }
 
 void InventorySystem::configure(entityx::EventManager& events)

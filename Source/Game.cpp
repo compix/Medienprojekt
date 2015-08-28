@@ -178,21 +178,22 @@ void Game::refreshView()
 	m_shaderManager.updateScreenResolution(GameGlobals::window->getSize());
 }
 
-void Game::addSystems(bool isClient)
+void Game::addSystems()
 {
-	if (!isClient)
+	bool client = isClient();
+	if (!client)
 		addSystem<BodySystem>();
 	else
 		addSystem<DynamicPredictionSystem>();
 	addSystem<SoundSystem>();
 	//addSystem<MusicSystem>();
-	if (!isClient)
+	if (!client)
 	{
 		addSystem<InventorySystem>();
 		addSystem<ItemSystem>(m_layerManager.get());
 	}
 	addSystem<TimerSystem>();
-	if (!isClient)
+	if (!client)
 	{
 		addSystem<BombSystem>();
 		addSystem<DamageSystem>(m_layerManager.get());
@@ -200,7 +201,7 @@ void Game::addSystems(bool isClient)
 		addSystem<DestructionSystem>();
 		addSystem<ExplosionSystem>(m_layerManager.get());
 	}
-	if (!isClient)
+	if (!client)
 	{
 		addSystem<BlinkSystem>(m_layerManager.get());
 		addSystem<PortalSystem>(m_layerManager.get());
@@ -208,13 +209,13 @@ void Game::addSystems(bool isClient)
 		addSystem<BombKickSystem>(m_layerManager.get());
 	}
 	addSystem<AfterimageSystem>();
-	if (!isClient)
+	if (!client)
 	{
 		addSystem<HealthSystem>();
 		addSystem<DeathSystem>();
 	}
 	addSystem<InputSystem>();
-	if (!isClient)
+	if (!client)
 		addSystem<InputHandleSystem>(m_layerManager.get());
 	addSystem<AnimationSystem>();
 	addSystem<RenderSystem>(m_layerManager.get());
@@ -222,7 +223,7 @@ void Game::addSystems(bool isClient)
 	addSystem<LightSystem>();
 	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	addSystem<ChatRenderSystem>();
-	if (!isClient)
+	if (!client)
 	{
 		addSystem<AISystem>(m_layerManager.get());
 		addSystem<LavaSystem>(m_width, m_height);
@@ -234,16 +235,11 @@ void Game::addSystems(bool isClient)
 LocalGame::LocalGame()
 {
 	GameGlobals::events->subscribe<GameOverEvent>(*this);
+	GameGlobals::events->subscribe<MenuShowEvent>(*this);
 }
 
 LocalGame::~LocalGame()
 {
-	GameGlobals::events->unsubscribe<GameOverEvent>(*this);
-}
-
-void LocalGame::addSystems()
-{
-	Game::addSystems(false);
 }
 
 void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
@@ -295,7 +291,9 @@ void LocalGame::resetEntities()
 
 void LocalGame::update(TimeDelta dt)
 {
-	if (m_resetTime > 0)
+	if (m_menuVisible && !isServer())
+		dt = 0;
+	else if (m_resetTime > 0)
 	{
 		m_resetTime -= dt;
 		if (m_resetTime <= 0)
@@ -312,6 +310,11 @@ void LocalGame::receive(const GameOverEvent& evt)
 	m_resetTime = GameConstants::RESET_GAME_COUNTDOWN;
 }
 
+void LocalGame::receive(const MenuShowEvent& evt)
+{
+	m_menuVisible = evt.visible;
+}
+
 ClientGame::ClientGame()
 {
 	GameGlobals::events->subscribe<ResetGameEvent>(*this);
@@ -320,8 +323,6 @@ ClientGame::ClientGame()
 
 ClientGame::~ClientGame()
 {
-	GameGlobals::events->unsubscribe<ResetGameEvent>(*this);
-	GameGlobals::events->unsubscribe<HoldingStatusEvent>(*this);
 }
 
 void ClientGame::receive(const ResetGameEvent& evt)
@@ -336,9 +337,4 @@ void ClientGame::receive(const HoldingStatusEvent& evt)
 	auto inv = entity.component<InventoryComponent>();
 	if (inv.valid())
 		inv->isHoldingBomb = evt.holding;
-}
-
-void ClientGame::addSystems()
-{
-	Game::addSystems(true);
 }

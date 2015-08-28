@@ -85,7 +85,6 @@ NetClient::NetClient()
 
 NetClient::~NetClient()
 {
-	GameGlobals::events->unsubscribe<SendChatEvent>(*this);
 	m_connection.disconnectNow();
 	cout << "Connection closed" << endl;
 }

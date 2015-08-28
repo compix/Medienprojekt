@@ -7,7 +7,6 @@
 
 HealthSystem::~HealthSystem()
 {
-	GameGlobals::events->unsubscribe<EntityGotHitEvent>(*this);
 }
 
 void HealthSystem::configure(entityx::EventManager& events)

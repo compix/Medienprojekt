@@ -281,6 +281,7 @@
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageConnecting.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCreateGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageCredits.h" />
+    <ClInclude Include="..\..\Source\Menu\Pages\MenuPageHelp.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageJoinGame.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLoading.h" />
     <ClInclude Include="..\..\Source\Menu\Pages\MenuPageLobby.h" />
@@ -403,6 +404,7 @@
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageConnecting.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCreateGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageCredits.cpp" />
+    <ClCompile Include="..\..\Source\Menu\Pages\MenuPageHelp.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageJoinGame.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLoading.cpp" />
     <ClCompile Include="..\..\Source\Menu\Pages\MenuPageLobby.cpp" />

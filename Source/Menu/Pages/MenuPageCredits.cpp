@@ -6,8 +6,41 @@ MenuPageCredits::MenuPageCredits(Menu &menu)
 	createPicture(800, 600, "Assets/ui/background.png");
 	createLabel(50, 50, "Credits");
 
-	createLabel(50, 250, "Dennis Grass");
-	createLabel(275, 350, "Wladimir Kröker");
-	createLabel(500, 250, "Santo Pfingsten");
-	createLabel(275, 450, "Natalie Carl");
+	float x = 50;
+	float x2 = 300;
+
+	float y = 200;
+	createSection(x, y, "Developers: ");
+	createSubsection(x, y, "Dennis Grass");
+	createSubsection(x, y, "Wladimir Kröker");
+	createSubsection(x, y, "Santo Pfingsten");
+
+	y = 200;
+	createSection(x2, y, "Graphics:");
+	createSubsection(x2, y, "Natalie Carl");
+	createSubsection(x2, y, "Dennis Grass");
+
+	y = 400;
+	createSection(x, y, "Sounds:");
+	createSubsection(x, y, "Dennis Grass");
+
+	y = 400;
+	createSection(x2, y, "Music:");
+	createSubsection(x2, y, "Jana Stürenburg");
+}
+
+void MenuPageCredits::createSection(float x, float &y, const std::string& name)
+{
+	y += 20;
+	auto label = createLabel(x, y, name);
+	label->setTextStyle(sf::Text::Bold);
+	label->setTextSize(24);
+	y += 40;
+}
+
+void MenuPageCredits::createSubsection(float x, float &y, const std::string& name)
+{
+	auto label = createLabel(x, y, name);
+	label->setTextSize(20);
+	y += 30;
 }

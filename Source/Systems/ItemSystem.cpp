@@ -44,8 +44,6 @@ ItemSystem::ItemSystem(LayerManager* layerManager)
 
 ItemSystem::~ItemSystem()
 {
-	GameGlobals::events->unsubscribe<entityx::EntityDestroyedEvent>(*this);
-	GameGlobals::events->unsubscribe<ItemPickedUpEvent>(*this);
 }
 
 bool ItemSystem::removeItem(entityx::Entity& entity, ItemType itemType)

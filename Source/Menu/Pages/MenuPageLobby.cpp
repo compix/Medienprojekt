@@ -115,7 +115,8 @@ void MenuPageLobby::receive(const LobbyEvent& evt)
 		m_name[i]->setText(evt.name[i]);
 		setEnabled(m_ready[i], evt.enabled[i]);
 		setChecked(m_ready[i], evt.ready[i]);
-		setVisible(m_name[i], i < evt.numPlayers);
+		setVisible(m_name[i]->getLabel(), i < evt.numPlayers);
+		setVisible(m_name[i]->getShadow(), i < evt.numPlayers);
 		setVisible(m_ready[i], i < evt.numPlayers);
 	}
 	m_ignoreChecked = false;

@@ -12,7 +12,6 @@ using namespace entityx;
 
 HoldingSystem::~HoldingSystem()
 {
-	GameGlobals::events->unsubscribe<HoldingEvent>(*this);
 }
 
 void HoldingSystem::configure(entityx::EventManager& events)
