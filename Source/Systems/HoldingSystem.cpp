@@ -8,6 +8,7 @@
 #include "../Components/CellComponent.h"
 #include "JumpSystem.h"
 #include "../Components/OwnerComponent.h"
+#include "../Events/JumpEvent.h"
 
 using namespace entityx;
 
@@ -73,6 +74,7 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 									cell->x, cell->y,
 									cell->x+x, cell->y+y, 
 									1.f, float(GameConstants::PUNCH_JUMPING_HEIGHT), float(GameConstants::PUNCH_JUMPING_SPEED));
+		GameGlobals::events->emit<JumpEvent>(bomb);
 		inventory->isHoldingBomb = false;
 		GameGlobals::events->emit<HoldingStatusEvent>(whoThrows, false);
 	}

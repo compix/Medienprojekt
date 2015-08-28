@@ -15,10 +15,11 @@
 #include "../Events/SkillEvent.h"
 #include "../Events/BombLandedOnEntityEvent.h"
 #include "../Utils/Math.h"
+#include "../Events/JumpEvent.h"
 
-JumpSystem::JumpSystem(LayerManager* layerManager)
+JumpSystem::JumpSystem(LayerManager* layerManager, bool isClient)
+	: m_layerManager(layerManager), m_isClient(isClient)
 {
-	m_layerManager = layerManager;
 }
 
 JumpSystem::~JumpSystem()
@@ -27,7 +28,8 @@ JumpSystem::~JumpSystem()
 
 void JumpSystem::configure(entityx::EventManager& event_manager)
 {
-	event_manager.subscribe<SkillEvent>(*this);
+	if (!m_isClient)
+		event_manager.subscribe<SkillEvent>(*this);
 }
 
 void JumpSystem::receive(const SkillEvent& event)
@@ -55,6 +57,7 @@ void JumpSystem::receive(const SkillEvent& event)
 		auto cpBomb = bomb.component<CellComponent>();
 		bomb.assign<JumpComponent>(direction, cpBomb->x, cpBomb->y, cpBomb->x + x, 
 			cpBomb->y + y, 1.f, float(GameConstants::PUNCH_JUMPING_HEIGHT), float(GameConstants::PUNCH_JUMPING_SPEED));
+		GameGlobals::events->emit<JumpEvent>(bomb);
 	}
 }
 
@@ -65,17 +68,17 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 		auto jumpComp = jumpingEntity.component<JumpComponent>();
 		auto cellComp = jumpingEntity.component<CellComponent>();
 
-		ComponentHandle<BodyComponent> body;
-		if (jumpingEntity.has_component<BodyComponent>())
-		{
-			 body = jumpingEntity.component<BodyComponent>();
-			 deactivateCollisionForFlyingBodys(body);
-		}
+		ComponentHandle<BodyComponent> body = jumpingEntity.component<BodyComponent>();
 		
-		deactivateTimerForBombs(jumpingEntity, jumpComp);
+		if (!m_isClient)
+		{
+			if (body)
+				deactivateCollisionForFlyingBodys(body);
+			deactivateTimerForBombs(jumpingEntity, jumpComp);
+		}
 		jumpFunction(jumpingEntity, jumpComp, dt);
 
-		if (Math::nearEq(jumpComp->timePassed, jumpComp->totalTime)) //Wenn am Ziel angekommen
+		if (!m_isClient && Math::nearEq(jumpComp->timePassed, jumpComp->totalTime)) //Wenn am Ziel angekommen
 		{
 			bool targetBlocked = jumpingEntity.component<JumpComponent>()->targetIsBlocked;
 			Direction lastDirection = jumpingEntity.component<JumpComponent>()->direction;
@@ -118,17 +121,17 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				jumpingEntity.component<LayerComponent>()->layer = GameConstants::MAIN_LAYER;
 				activateTimerForBombs(jumpingEntity);
 			}
-
+			GameGlobals::events->emit<JumpEvent>(jumpingEntity);
 		}
 	}
 }
 
 void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt)
 {
-	int fromCheckX = jumpComp->fromX;
-	int fromCheckY = jumpComp->fromY;
-	int toCheckX = jumpComp->toX;
-	int toCheckY = jumpComp->toY;
+	uint8_t fromCheckX = jumpComp->fromX;
+	uint8_t fromCheckY = jumpComp->fromY;
+	uint8_t toCheckX = jumpComp->toX;
+	uint8_t toCheckY = jumpComp->toY;
 	adjustCellsIfOutOfBounds(&fromCheckX, &toCheckX, &fromCheckY, &toCheckY);
 
 	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, toCheckX, toCheckY);
@@ -233,7 +236,7 @@ void JumpSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direc
 	}
 }
 
-void JumpSystem::adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY)
+void JumpSystem::adjustCellsIfOutOfBounds(uint8_t* fromX, uint8_t* toX, uint8_t* fromY, uint8_t* toY)
 {
 	assert(fromX != nullptr || fromY != nullptr || toY != nullptr || toX != nullptr);
 	int deltaX = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toX), static_cast<float>(*fromX))));
@@ -281,22 +284,22 @@ float JumpSystem::getDeltaOf(float coord2, float coord1)
 	return coord2 - coord1;
 }
 
-float JumpSystem::getXCenterCoords(int cellX)
+float JumpSystem::getXCenterCoords(uint8_t cellX)
 {
 	return cellX*GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f;
 }
 
-float  JumpSystem::getYCenterCoords(int cellY)
+float  JumpSystem::getYCenterCoords(uint8_t cellY)
 {
 	return cellY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f;
 }
 
-float JumpSystem::getXCoords(int cellX)
+float JumpSystem::getXCoords(uint8_t cellX)
 {
 	return static_cast<float>(cellX*GameConstants::CELL_WIDTH);
 }
 
-float  JumpSystem::getYCoords(int cellY)
+float  JumpSystem::getYCoords(uint8_t cellY)
 {
 	return static_cast<float>(cellY * GameConstants::CELL_HEIGHT);
 }

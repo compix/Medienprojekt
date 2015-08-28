@@ -7,7 +7,9 @@
 #include "NetPlayerInfo.h"
 #include "../GameConstants.h"
 #include "../Events/LavaSpotMarkedEvent.h"
+#include "../Components/JumpComponent.h"
 
+struct JumpEvent;
 struct LavaCreatedEvent;
 struct Phase2StartedEvent;
 struct StartGameEvent;
@@ -18,7 +20,6 @@ struct ResetGameEvent;
 struct GameOverEvent;
 struct SetReadyEvent;
 struct DeathEvent;
-struct SmokeCreatedEvent;
 struct BoostEffectCreatedEvent;
 struct ItemCreatedEvent;
 struct SoundEvent;
@@ -62,7 +63,6 @@ public:
 	void receive(const PortalCreatedEvent &evt);
 	void receive(const ItemCreatedEvent &evt);
 	void receive(const BoostEffectCreatedEvent &evt);
-	void receive(const SmokeCreatedEvent &evt);
 	void receive(const DeathEvent &evt);
 	void receive(const SetReadyEvent &evt);
 	void receive(const GameOverEvent &evt);
@@ -74,7 +74,7 @@ public:
 	void receive(const LavaSpotMarkedEvent& event);
 	void receive(const LavaCreatedEvent& event);
 	void receive(const SoundEvent& event);
-	
+	void receive(const JumpEvent& event);
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -99,8 +99,6 @@ private:
 	void sendItemEntities(ENetPeer* peer);
 	ENetPacket* createItemPacket(Entity entity, uint8_t x, uint8_t y, ItemType type);
 	ENetPacket* createBoostEffectPacket(Entity entity, uint8_t x, uint8_t y, entityx::Entity target);
-	void sendSmokeEntities(ENetPeer* peer);
-	ENetPacket* createSmokePacket(Entity entity, uint8_t x, uint8_t y);
 	void broadcast(NetChannel channel, ENetPacket *packet);
 	void send(ENetPeer* peer, NetChannel channel, ENetPacket *packet);
 	void sendStartGame(NetPlayerInfo* netPlayerInfo);

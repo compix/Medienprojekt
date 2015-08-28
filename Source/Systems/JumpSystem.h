@@ -17,7 +17,7 @@ using entityx::ComponentAddedEvent;
 class JumpSystem : public System<JumpSystem>, public Receiver<JumpSystem>
 {
 public:
-	JumpSystem(LayerManager* layerManager);
+	JumpSystem(LayerManager* layerManager, bool isClient);
 	~JumpSystem();
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const SkillEvent& event);
@@ -26,6 +26,8 @@ public:
 	static void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction);
 private:
 	LayerManager* m_layerManager;
+	bool m_isClient;
+
 	void checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked);
 	void calculateDegreeOfJumpComp(ComponentHandle<JumpComponent, EntityManager> jumpComp, float endHeight);
 	void calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle<JumpComponent, EntityManager> jumpComp, float beginHeight);
@@ -37,11 +39,11 @@ private:
 	void removeRenderOffset(Entity jumping_entity);
 	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt);
 	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction, ComponentHandle<CellComponent> cellComponent, Entity* foundEntity);
-	void adjustCellsIfOutOfBounds(int* fromX, int* toX, int* fromY, int* toY);
+	void adjustCellsIfOutOfBounds(uint8_t* fromX, uint8_t* toX, uint8_t* fromY, uint8_t* toY);
 	void adjustHeightForBlockedTiles(const bool wasBlocked, const bool targetIsBlocked, float* beginHeight, float* endHeight, const float offHeight);
 	float getDeltaOf(float coord2, float coord1);
-	float getXCenterCoords(int cellX);
-	float getYCenterCoords(int cellY);
-	float getXCoords(int cellX);
-	float getYCoords(int cellY);
+	float getXCenterCoords(uint8_t cellX);
+	float getYCenterCoords(uint8_t cellY);
+	float getXCoords(uint8_t cellX);
+	float getYCoords(uint8_t cellY);
 };

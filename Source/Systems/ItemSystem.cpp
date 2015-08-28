@@ -13,6 +13,7 @@
 #include "../Utils/Random.h"
 #include "../Utils/Math.h"
 #include "../Components/LavaComponent.h"
+#include "../Events/JumpEvent.h"
 
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
@@ -200,6 +201,7 @@ void ItemSystem::dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType)
 
 	Direction direction = static_cast<Direction>(Random::getInt(0, 3));
 	item.assign<JumpComponent>(direction, from.x, from.y, to.x, to.y, 1.f, 6.f, 20.f);
+	GameGlobals::events->emit<JumpEvent>(item);
 }
 
 void ItemSystem::getFreeCells(std::vector<LevelCell>& outFreeCells)

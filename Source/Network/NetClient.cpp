@@ -26,6 +26,8 @@
 #include "../Events/Phase2StartedEvent.h"
 #include "../Events/LavaSpotMarkedEvent.h"
 #include "../Events/SoundEvent.h"
+#include "../Components/RenderOffsetComponent.h"
+#include "../Components/JumpComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -49,7 +51,6 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::CREATE_PORTAL, &NetClient::onCreatePortalMessage, this);
 	m_handler.setCallback(MessageType::CREATE_ITEM, &NetClient::onCreateItemMessage, this);
 	m_handler.setCallback(MessageType::CREATE_BOOST_EFFECT, &NetClient::onCreateBoostEffectMessage, this);
-	m_handler.setCallback(MessageType::CREATE_SMOKE, &NetClient::onCreateSmokeMessage, this);
 	m_handler.setCallback(MessageType::DEATH, &NetClient::onDeathMessage, this);
 	m_handler.setCallback(MessageType::DESTROY_ENTITY, &NetClient::onDestroyEntityMessage, this);
 	m_handler.setCallback(MessageType::UPDATE_DYNAMIC, &NetClient::onUpdateDynamicMessage, this);
@@ -63,6 +64,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::MARK_LAVA_SPOT, &NetClient::onMarkLavaSpotMessage, this);
 	m_handler.setCallback(MessageType::CREATE_LAVA, &NetClient::onCreateLavaMessage, this);
 	m_handler.setCallback(MessageType::SOUND, &NetClient::onSoundMessage, this);
+	m_handler.setCallback(MessageType::JUMP, &NetClient::onJumpMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -298,14 +300,6 @@ void NetClient::onCreateBoostEffectMessage(MessageReader<MessageType>& reader, E
 		mapEntity(id, GameGlobals::entityFactory->createBoostEffect(x, y, target));
 }
 
-void NetClient::onCreateSmokeMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
-{
-	uint64_t id = reader.read<uint64_t>();
-	uint8_t x = reader.read<uint8_t>();
-	uint8_t y = reader.read<uint8_t>();
-	mapEntity(id, GameGlobals::entityFactory->createSmoke(x, y));
-}
-
 void NetClient::onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
 {
 	uint64_t id = reader.read<uint64_t>();
@@ -430,6 +424,45 @@ void NetClient::onSoundMessage(MessageReader<MessageType>& reader, ENetEvent& ev
 {
 	std::string name = reader.read<string>();
 	GameGlobals::events->emit<SoundEvent>(name);
+}
+
+void NetClient::onJumpMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	uint64_t id = reader.read<uint64_t>();
+	bool hasJump = reader.read<bool>();
+
+	auto entity = getEntity(id);
+	if (entity)
+	{
+		if (entity.has_component<JumpComponent>())
+			entity.remove<JumpComponent>();
+		if (hasJump)
+		{
+			auto jump = entity.assign<JumpComponent>();
+
+			jump->direction = reader.read<Direction>();
+			jump->fromX = reader.read<uint8_t>();
+			jump->fromY = reader.read<uint8_t>();
+			jump->toX = reader.read<uint8_t>();
+			jump->toY = reader.read<uint8_t>();
+			jump->totalTime = reader.read<float>();
+			jump->timePassed = reader.read<float>();
+			jump->startVelocity = reader.read<float>();
+			jump->degreeX = reader.read<float>();
+			jump->degreeY = reader.read<float>();
+			jump->isDegreeCalculated = reader.read<bool>();
+			jump->deltaTimeMultiplikator = reader.read<float>();
+			jump->targetIsBlocked = reader.read<bool>();
+			jump->targetWasBlocked = reader.read<bool>();
+			jump->wasBlocked = reader.read<bool>();
+		}
+		else
+		{
+			auto roc = entity.component<RenderOffsetComponent>();
+			if (roc)
+				roc->scheduledForRemoval = true;
+		}
+	}
 }
 
 Entity NetClient::getEntity(uint64_t id)

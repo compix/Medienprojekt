@@ -382,6 +382,9 @@
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Events\JumpEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Events\LavaCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -422,9 +425,6 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SkillEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Events\SoundEvent.h">

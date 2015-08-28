@@ -24,7 +24,7 @@
 #include "../Events/PortalCreatedEvent.h"
 #include "../Events/ItemCreatedEvent.h"
 #include "../Events/BoostEffectCreatedEvent.h"
-#include "../Events/SmokeCreatedEvent.h"
+#include "../Events/JumpEvent.h"
 #include "../Events/DeathEvent.h"
 #include "../Events/SetReadyEvent.h"
 #include "../Events/LobbyEvent.h"
@@ -42,6 +42,8 @@
 #include "../Events/Phase2StartedEvent.h"
 #include "../Events/LavaCreatedEvent.h"
 #include "../Events/SoundEvent.h"
+#include "../Systems/JumpSystem.h"
+#include "../Components/RenderOffsetComponent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -101,7 +103,6 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<PortalCreatedEvent>(*this);
 	GameGlobals::events->subscribe<ItemCreatedEvent>(*this);
 	GameGlobals::events->subscribe<BoostEffectCreatedEvent>(*this);
-	GameGlobals::events->subscribe<SmokeCreatedEvent>(*this);
 	GameGlobals::events->subscribe<DeathEvent>(*this);
 	GameGlobals::events->subscribe<SetReadyEvent>(*this);
 	GameGlobals::events->subscribe<GameOverEvent>(*this);
@@ -113,6 +114,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<LavaSpotMarkedEvent>(*this);
 	GameGlobals::events->subscribe<LavaCreatedEvent>(*this);
 	GameGlobals::events->subscribe<SoundEvent>(*this);
+	GameGlobals::events->subscribe<JumpEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -303,11 +305,6 @@ void NetServer::receive(const BoostEffectCreatedEvent& evt)
 	broadcast(NetChannel::WORLD_RELIABLE, createBoostEffectPacket(evt.entity, evt.x, evt.y, evt.target));
 }
 
-void NetServer::receive(const SmokeCreatedEvent& evt)
-{
-	broadcast(NetChannel::WORLD_RELIABLE, createSmokePacket(evt.entity, evt.x, evt.y));
-}
-
 void NetServer::receive(const DeathEvent& evt)
 {
 	m_messageWriter.init(MessageType::DEATH);
@@ -406,6 +403,35 @@ void NetServer::receive(const SoundEvent& event)
 	m_messageWriter.init(MessageType::SOUND);
 	m_messageWriter.write<string>(event.name);
 	broadcast(NetChannel::SOUND, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const JumpEvent& event)
+{
+	auto entity = event.entity;
+	auto jump = entity.component<JumpComponent>();
+
+	m_messageWriter.init(MessageType::JUMP);
+	m_messageWriter.write<uint64_t>(entity.id().id());
+	m_messageWriter.write<bool>(jump);
+	if (jump)
+	{
+		m_messageWriter.write<Direction>(jump->direction);
+		m_messageWriter.write<uint8_t>(jump->fromX);
+		m_messageWriter.write<uint8_t>(jump->fromY);
+		m_messageWriter.write<uint8_t>(jump->toX);
+		m_messageWriter.write<uint8_t>(jump->toY);
+		m_messageWriter.write<float>(jump->totalTime);
+		m_messageWriter.write<float>(jump->timePassed);
+		m_messageWriter.write<float>(jump->startVelocity);
+		m_messageWriter.write<float>(jump->degreeX);
+		m_messageWriter.write<float>(jump->degreeY);
+		m_messageWriter.write<bool>(jump->isDegreeCalculated);
+		m_messageWriter.write<float>(jump->deltaTimeMultiplikator);
+		m_messageWriter.write<bool>(jump->targetIsBlocked);
+		m_messageWriter.write<bool>(jump->targetWasBlocked);
+		m_messageWriter.write<bool>(jump->wasBlocked);
+	}
+	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetServer::startCountdown()
@@ -554,7 +580,6 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 		sendItemEntities(evt.peer);
 		//Fixme: boost effects
 		sendExplosionEntities(evt.peer);
-		sendSmokeEntities(evt.peer);
 
 		Entity playerEntity = getFreeSlotEntity();
 		if (playerEntity.valid())
@@ -773,19 +798,6 @@ ENetPacket* NetServer::createBoostEffectPacket(Entity entity, uint8_t x, uint8_t
 	m_messageWriter.write<uint8_t>(x);
 	m_messageWriter.write<uint8_t>(y);
 	m_messageWriter.write<uint64_t>(target.id().id());
-	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
-}
-
-void NetServer::sendSmokeEntities(ENetPeer* peer)
-{
-}
-
-ENetPacket* NetServer::createSmokePacket(Entity entity, uint8_t x, uint8_t y)
-{
-	m_messageWriter.init(MessageType::CREATE_SMOKE);
-	m_messageWriter.write<uint64_t>(entity.id().id());
-	m_messageWriter.write<uint8_t>(x);
-	m_messageWriter.write<uint8_t>(y);
 	return m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE);
 }
 

@@ -246,6 +246,7 @@
     <ClInclude Include="..\..\Source\Events\ItemCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\ItemPickedUpEvent.h" />
     <ClInclude Include="..\..\Source\Events\JoinGameEvent.h" />
+    <ClInclude Include="..\..\Source\Events\JumpEvent.h" />
     <ClInclude Include="..\..\Source\Events\LavaCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\LavaSpotMarkedEvent.h" />
     <ClInclude Include="..\..\Source\Events\LobbyEvent.h" />
@@ -260,7 +261,6 @@
     <ClInclude Include="..\..\Source\Events\SendChatEvent.h" />
     <ClInclude Include="..\..\Source\Events\SetReadyEvent.h" />
     <ClInclude Include="..\..\Source\Events\SkillEvent.h" />
-    <ClInclude Include="..\..\Source\Events\SmokeCreatedEvent.h" />
     <ClInclude Include="..\..\Source\Events\SoundEvent.h" />
     <ClInclude Include="..\..\Source\Events\StartGameEvent.h" />
     <ClInclude Include="..\..\Source\Events\ThrowBombEvent.h" />

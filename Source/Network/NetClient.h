@@ -44,7 +44,6 @@ public:
 	void onCreatePortalMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateItemMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateBoostEffectMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
-	void onCreateSmokeMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDeathMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onDestroyEntityMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onUpdateDynamicMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
@@ -58,6 +57,7 @@ public:
 	void onMarkLavaSpotMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onSoundMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onJumpMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	
 private:
 	void mapEntity(uint64_t id, Entity entity);

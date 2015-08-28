@@ -30,7 +30,6 @@
 #include "Events/PortalCreatedEvent.h"
 #include "Events/ItemCreatedEvent.h"
 #include "Events/BoostEffectCreatedEvent.h"
-#include "Events/SmokeCreatedEvent.h"
 #include "Utils/AssetManagement/TexturePacker.h"
 #include "Utils/AssetManagement/AssetManager.h"
 #include "Animation/AnimatorManager.h"
@@ -414,6 +413,7 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 	entity.assign<ExplosionComponent>();
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<DestructionComponent>(0.55f);
+	entity.assign<NoNetComponent>();
 
 	entity.assign<DamageDealerComponent>(1);
 	entity.assign<CellComponent>(cellX, cellY);
@@ -476,7 +476,6 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY, entity
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(1.5f);
-	entity.assign<DynamicComponent>();
 	entity.assign<ParticleComponent>(ParticleEffects::itemSpawn(item));
 
 	if (!entity.component<ParticleComponent>()->emitter)
@@ -533,6 +532,7 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(3.f);
 	entity.assign<EffectComponent>();
+	entity.assign<NoNetComponent>();
 
 	auto emitter = ParticleEffects::smoke();
 
@@ -540,8 +540,6 @@ Entity EntityFactory::createSmoke(uint8_t cellX, uint8_t cellY)
 		entity.assign<ParticleComponent>(emitter);
 
 	m_layerManager->add(entity);
-
-	GameGlobals::events->emit<SmokeCreatedEvent>(entity, cellX, cellY);
 	return entity;
 }
 

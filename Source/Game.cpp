@@ -202,11 +202,10 @@ void Game::addSystems()
 	}
 	addSystem<BlinkSystem>(m_layerManager.get());
 	if (!client)
-	{
 		addSystem<PortalSystem>(m_layerManager.get());
-		addSystem<JumpSystem>(m_layerManager.get());
+	addSystem<JumpSystem>(m_layerManager.get(), isClient());
+	if (!client)
 		addSystem<BombKickSystem>(m_layerManager.get());
-	}
 	addSystem<AfterimageSystem>();
 	if (!client)
 	{
