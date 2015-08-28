@@ -20,6 +20,7 @@ public:
 protected:
 	void onCreateGame();
 	void onJoinGame();
+	void onDisconnect();
 	void onHelp();
 	void onCredits();
 	void onExit();
@@ -29,5 +30,7 @@ protected:
 	MenuPageJoinGame m_joinGamePage;
 	MenuPageHelp m_helpPage;
 	MenuPageCredits m_creditsPage;
-	tgui::Button::Ptr m_exitButton;
+	tgui::Button::Ptr m_createButton;
+	tgui::Button::Ptr m_joinButton;
+	tgui::Button::Ptr m_disconnectButton;
 };
