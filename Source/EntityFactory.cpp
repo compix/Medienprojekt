@@ -437,7 +437,6 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 	entity.assign<CellComponent>(cellX, cellY);
 
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
-	entity.assign<DynamicComponent>();
 
 	m_layerManager->add(entity);
 
@@ -471,6 +470,7 @@ Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(GameConstants::FLOOR_LAYER);
 	entity.assign<LavaComponent>();
+	entity.assign<NoNetComponent>();
 
 	m_layerManager->add(entity);
 
@@ -499,6 +499,7 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY)
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(1.5f);
+	entity.assign<NoNetComponent>();
 
 	m_layerManager->add(entity);
 
@@ -593,7 +594,6 @@ Entity EntityFactory::createBoostEffect(uint8_t cellX, uint8_t cellY, Entity tar
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(1.5f);
 	entity.assign<EffectComponent>();
-	entity.assign<DynamicComponent>();
 
 	auto manager = m_systemManager->system<ParticleSystem>()->getManager("light");
 	auto emitter = manager->spawnEmitter();
