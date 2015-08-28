@@ -83,6 +83,7 @@ void ParticleSpawnSystem::receive(const ItemCreatedEvent& e)
 {
 	if (e.entity)
 	{
-		GameGlobals::entityFactory->createItemSpawnEffect(e.x, e.y);
+		auto item = e.entity;
+		GameGlobals::entityFactory->createItemSpawnEffect(e.x, e.y, item);
 	}
 }

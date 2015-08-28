@@ -153,6 +153,9 @@ ParticleEmitter* ParticleEffects::itemSpawn(entityx::Entity& item)
 		return nullptr;
 
 	emitter->spawnTime(0.015f)
+		.follow(item)
+		.followSpeed(200.f)
+		.goalRadius(200.f)
 		.maxLifetime(1.f)
 		.gravityModifier(1.f)
 		.speedModifier(20.f)
@@ -189,6 +192,81 @@ ParticleEmitter* ParticleEffects::blockDeath()
 		.spawnHeight(15.f)
 		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
 		.sizeFunction(Gradient3<sf::Vector2f>(GradientType::REGRESS, sf::Vector2f(60, 60), sf::Vector2f(20, 20), sf::Vector2f(5, 5)));
+
+	return emitter;
+}
+
+ParticleEmitter* ParticleEffects::boostEffect(entityx::Entity& target)
+{
+	assert(m_particleSystem);
+
+	auto manager = m_particleSystem->getManager("light");
+	auto emitter = manager->spawnEmitter();
+
+	if (!emitter)
+		return nullptr;
+
+	emitter->spawnTime(0.008f)
+		.maxLifetime(0.9f)
+		.speedModifier(5.f)
+		.velocityFunction([](float t) { t = t*2.f - 1.f; return sf::Vector2f(t*5.f, t*t*t*t*t*15.f); })
+		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(5, 5)))
+		.spawnWidth(15)
+		.spawnHeight(50)
+		.spawnDuration(0.6f)
+		.transparencyFunction(Gradient<float>(GradientType::REGRESS, 255, 0))
+		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 255, 252), RGB(42, 255, 0)))
+		.follow(target);
+
+	return emitter;
+}
+
+ParticleEmitter* ParticleEffects::smoke()
+{
+	assert(m_particleSystem);
+
+	auto manager = m_particleSystem->getManager("smoke");
+	auto emitter = manager->spawnEmitter();
+
+	if (!emitter)
+		return nullptr;
+
+	emitter->spawnTime(15.1f)
+		.maxLifetime(1.f)
+		.speedModifier(5.5f)
+		.velocityFunction([](float t){ return t < 0.5f ? sf::Vector2f(cosf(t), sinf(t)) : sf::Vector2f(sinf(t)*5.f, sinf(t)*5.f); })
+		.spawnHeight(30)
+		.spawnWidth(30)
+		.burstParticleNumber(10)
+		.burstTime(0.25f)
+		.burstNumber(5)
+		.blendMode(sf::BlendAlpha)
+		.transparencyFunction([](float t) { return t < 0.5f ? 200.f*t : 200 - t * 200; })
+		.sizeFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(0, 0), sf::Vector2f(50, 50)));
+
+	return emitter;
+}
+
+ParticleEmitter* ParticleEffects::portal(const RGB& color)
+{
+	assert(m_particleSystem);
+
+	auto manager = m_particleSystem->getManager("light");
+	auto emitter = manager->spawnEmitter();
+
+	if (!emitter)
+		return nullptr;
+
+	emitter->spawnTime(0.005f)
+		.maxLifetime(1.f)
+		.speedModifier(2.2f)
+		.velocityFunction([](float t) { t = t * 2.f - 1.f; return sf::Vector2f(t, sinf(t)*50.f); })
+		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.15f))
+		.sizeFunction(Gradient3<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(5, 5), sf::Vector2f(30, 15), sf::Vector2f(5, 5)))
+		//.spawnDuration(5.f)
+		.transparencyFunction([](float t) { t = t * 2.f - 1.f; return 250 + t*100.f; })
+		.colorFunction(Gradient<RGB>(GradientType::SMOOTH, RGB(170, 255, 255), color));
 
 	return emitter;
 }

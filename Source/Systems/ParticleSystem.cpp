@@ -4,6 +4,7 @@
 #include "../Utils/AssetManagement/AssetManager.h"
 #include "../GameGlobals.h"
 #include "../Components/EffectComponent.h"
+#include "../Components/CellComponent.h"
 
 ParticleSystem::ParticleSystem()
 {

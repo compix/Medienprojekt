@@ -21,7 +21,6 @@ public:
 	~JumpSystem();
 	void configure(entityx::EventManager &event_manager) override;
 	void receive(const SkillEvent& event);
-	bool targetIsOutOfBounds(int toX, int toY);
 	void update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt) override;
 	
 	static void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction);

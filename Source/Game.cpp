@@ -217,8 +217,8 @@ void Game::addSystems(bool isClient)
 	if (!isClient)
 		addSystem<InputHandleSystem>(m_layerManager.get());
 	addSystem<AnimationSystem>();
-	addSystem<RenderSystem>(m_layerManager.get());
 	addSystem<ParticleSystem>();
+	addSystem<RenderSystem>(m_layerManager.get());
 	addSystem<LightSystem>();
 	addSystem<ParticleSpawnSystem>(m_systems.system<ParticleSystem>().get(), m_layerManager.get());
 	addSystem<ChatRenderSystem>();

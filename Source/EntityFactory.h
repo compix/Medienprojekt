@@ -51,7 +51,7 @@ public:
 
 	Entity createItem(uint8_t cellX, uint8_t cellY, ItemType type);
 
-	Entity createItemSpawnEffect(uint8_t cellX, uint8_t cellY);
+	Entity createItemSpawnEffect(uint8_t cellX, uint8_t cellY, entityx::Entity& item);
 
 	void markLavaSpot(uint8_t cellX, uint8_t cellY);
 

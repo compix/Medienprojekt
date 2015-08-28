@@ -14,6 +14,7 @@
 #include "../Components/PlayerComponent.h"
 #include "../Events/SkillEvent.h"
 #include "../Events/BombLandedOnEntityEvent.h"
+#include "../Utils/Math.h"
 
 JumpSystem::JumpSystem(LayerManager* layerManager)
 {
@@ -71,15 +72,10 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 			 deactivateCollisionForFlyingBodys(body);
 		}
 		
-		
-
-		
 		deactivateTimerForBombs(jumpingEntity, jumpComp);
 		jumpFunction(jumpingEntity, jumpComp, dt);
 
-		
-
-		if (jumpComp->timePassed == jumpComp->totalTime) //Wenn am Ziel angekommen
+		if (Math::nearEq(jumpComp->timePassed, jumpComp->totalTime)) //Wenn am Ziel angekommen
 		{
 			bool targetBlocked = jumpingEntity.component<JumpComponent>()->targetIsBlocked;
 			Direction lastDirection = jumpingEntity.component<JumpComponent>()->direction;
@@ -105,23 +101,20 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 					auto cell = entityWithInventory.component<CellComponent>();
 					assert(cell);
 					GameGlobals::events->emit<BombLandedOnEntityEvent>(entityWithInventory, cell->x, cell->y);
-
-					/*
-						item.assign<JumpComponent>(static_cast<Direction>(direction), cellComp->x, cellComp->y, cellComp->x + ((rand() % 6) - 5), 
-							cellComp->y + ((rand() % 6) - 5), 1, GameConstants::PUNCH_JUMPING_HEIGHT, GameConstants::PUNCH_JUMPING_SPEED);*/
 				}
 
 				auto roc = jumpingEntity.component<RenderOffsetComponent>();
 				float xOffset = roc->xOffset - deltaX;
-				float yOffset = roc->yOffset -deltaY;
+				float yOffset = roc->yOffset - deltaY;
 
 				jumpingEntity.remove<RenderOffsetComponent>();
 				jumpingEntity.assign<RenderOffsetComponent>(xOffset, yOffset);
 			}
-			else { // Sachen die wiederhergestellt werden müssen, wenn wirklich am Ziel angekommen ist
-				if (body){
+			else 
+			{ // Sachen die wiederhergestellt werden müssen, wenn wirklich am Ziel angekommen ist
+				if (body)
 					activateCollisionForFlyingBodys(body);
-				}
+
 				jumpingEntity.component<LayerComponent>()->layer = GameConstants::MAIN_LAYER;
 				activateTimerForBombs(jumpingEntity);
 			}
@@ -132,35 +125,33 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 
 void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt)
 {
+	int fromCheckX = jumpComp->fromX;
+	int fromCheckY = jumpComp->fromY;
+	int toCheckX = jumpComp->toX;
+	int toCheckY = jumpComp->toY;
+	adjustCellsIfOutOfBounds(&fromCheckX, &toCheckX, &fromCheckY, &toCheckY);
 
-		int fromCheckX = jumpComp->fromX;
-		int fromCheckY = jumpComp->fromY;
-		int toCheckX = jumpComp->toX;
-		int toCheckY = jumpComp->toY;
-		adjustCellsIfOutOfBounds(&fromCheckX, &toCheckX, &fromCheckY, &toCheckY);
-
-		EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, toCheckX, toCheckY);
-		bool targetBlocked = false;
-		for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
+	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, toCheckX, toCheckY);
+	bool targetBlocked = false;
+	for (auto it = entitiesOnTarget.begin(); it != entitiesOnTarget.end(); ++it)
+	{
+		if (jumpingEntity.has_component<ItemComponent>())
 		{
-			if (jumpingEntity.has_component<ItemComponent>())
-			{
-				if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>() && !it->has_component<PlayerComponent>())
-				{
-					targetBlocked = true;
-				}
-			}
-			else
-			if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>()){ //Wenn ein Hindernis außer die Bombe selbst es Blockiert
-					targetBlocked = true;
-				break;
-			}
+			if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>() && !it->has_component<PlayerComponent>())
+				targetBlocked = true;
 		}
+		else if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>())
+		{ 
+			// Wenn ein Hindernis außer die Bombe selbst es blockiert
+			targetBlocked = true;
+			break;
+		}
+	}
+
 	checkIfDegreeMustBeRecalculated(jumpComp, targetBlocked);
 
 	float beginHeight = 0, endHeight = 0, offHeight = GameConstants::CELL_HEIGHT / 4.f;
 	adjustHeightForBlockedTiles(jumpComp->wasBlocked, jumpComp->targetIsBlocked, &beginHeight, &endHeight, offHeight);
-	
 
 	if (!jumpComp->isDegreeCalculated)
 	{
@@ -175,16 +166,14 @@ void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponen
 		jumpComp->timePassed = jumpComp->totalTime;
 	}
 
-
 	float calculatedXPos, calculatedYPos;
 	calculateXY_ForOffset(&calculatedXPos, &calculatedYPos, jumpComp, beginHeight);
-
-
 
 	if (!jumpingEntity.has_component<RenderOffsetComponent>()) //Ein versatz des Renderings, damit das eigentliche Objekt nicht aus der Map gelangt.
 	{
 		jumpingEntity.assign<RenderOffsetComponent>(calculatedXPos, -calculatedYPos);
-	} else
+	} 
+	else
 	{
 		if (jumpComp->timePassed > jumpComp->totalTime/2.f)
 		{
@@ -198,8 +187,6 @@ void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponen
 		jumpingEntity.component<RenderOffsetComponent>()->xOffset = calculatedXPos;
 		jumpingEntity.component<RenderOffsetComponent>()->yOffset = -calculatedYPos;
 	}
-	
-
 }
 
 void JumpSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction, ComponentHandle<CellComponent> cellComponent, Entity* foundEntity)
@@ -417,26 +404,6 @@ void JumpSystem::removeRenderOffset(Entity jumping_entity)
 	if (jumping_entity.has_component<RenderOffsetComponent>())
 	{
 		auto roc = jumping_entity.component<RenderOffsetComponent>();
-		roc->remove = true;
+		roc->scheduledForRemoval = true;
 	}
-}
-
-bool JumpSystem::targetIsOutOfBounds(int toX, int toY)
-{
-	if (toX >= GameGlobals::game->getWidth() - 1){
-		return true;
-	}
-
-	if (toX <= 0){
-		return true;
-	}
-
-	if (toY >= GameGlobals::game->getHeight() - 1){
-		return true;
-	}
-
-	if (toY <= 0){
-		return true;
-	}
-	return false;
 }

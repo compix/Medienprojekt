@@ -14,8 +14,7 @@ void VisualLavaMarkSystem::update(entityx::EntityManager& entities, entityx::Eve
 		if (timer->seconds <= 0.f)
 			continue;
 
-		sprite.setColor(sf::Color(255, 
-								  sf::Uint8(255.f / GameConstants::LAVA_SPAWN_TIME * timer->seconds),
-								  sf::Uint8(255.f / GameConstants::LAVA_SPAWN_TIME * timer->seconds)));
+		sf::Uint8 c = sf::Uint8(255.f / GameConstants::LAVA_SPAWN_TIME * timer->seconds);
+		sprite.setColor(sf::Color(255, c, c));
 	}
 }
