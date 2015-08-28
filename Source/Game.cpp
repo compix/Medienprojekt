@@ -251,7 +251,6 @@ void LocalGame::initPlayers(const vector<CreateGamePlayerInfo> &players)
 
 void LocalGame::resetEntities()
 {
-	GameGlobals::input->reset();
 	BodyFactory::freeEntityIds();
 	m_entities.reset();
 	m_layerManager->reset();
