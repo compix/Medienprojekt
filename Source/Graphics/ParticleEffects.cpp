@@ -142,7 +142,7 @@ ParticleEmitter* ParticleEffects::lava()
 	return emitter;
 }
 
-ParticleEmitter* ParticleEffects::itemSpawn()
+ParticleEmitter* ParticleEffects::itemSpawn(entityx::Entity& item)
 {
 	assert(m_particleSystem);
 

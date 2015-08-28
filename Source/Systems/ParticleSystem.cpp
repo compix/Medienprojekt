@@ -49,7 +49,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		{
 			auto target = particleComponent->emitter->m_target;
 			
-			if (target.valid() && target.has_component<TransformComponent>() && e.has_component<EffectComponent>())
+			if (target.valid() && target.has_component<TransformComponent>())
 			{
 				auto targetTransform = target.component<TransformComponent>();
 				transform->x = targetTransform->x;

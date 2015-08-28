@@ -138,7 +138,7 @@ void ParticleEmitter::update(Particle& p, float deltaTime)
 	}
 
 	sf::Vector2f velocity = m_cachedVelocity;
-	Math::rotate(velocity, p.angle);
+	Math::rotate(velocity, p.directionAngle);
 
 	velocity *= m_speedModifier;
 	velocity.y += PARTICLE_GRAVITY * m_gravityModifier;
@@ -216,7 +216,7 @@ void ParticleEmitter::spawnParticle()
 		float y = Random::getFloat(-m_spawnHeight*0.5f, m_spawnHeight*0.5f);
 
 		particle.pos = sf::Vector2f(x, y);
-		particle.angle = angle;
+		particle.directionAngle = angle;
 		particle.goalReached = false;
 	}
 }

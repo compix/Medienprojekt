@@ -489,19 +489,18 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY)
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 16.f;
 
-	entity.assign<ParticleComponent>(ParticleEffects::itemSpawn());
-
-	if (!entity.component<ParticleComponent>()->emitter)
-		entity.remove<ParticleComponent>();
-
 	entity.assign<TransformComponent>(transformComponent);
 	entity.assign<CellComponent>(cellX, cellY);
 	entity.assign<LayerComponent>(GameConstants::MAIN_LAYER);
 	entity.assign<DestructionComponent>(1.5f);
 
+	entity.assign<ParticleComponent>(ParticleEffects::itemSpawn(entity));
+
+	if (!entity.component<ParticleComponent>()->emitter)
+		entity.remove<ParticleComponent>();
+
 	m_layerManager->add(entity);
 
-	GameGlobals::events->emit(LavaCreatedEvent(cellX, cellY));
 	return entity;
 }
 

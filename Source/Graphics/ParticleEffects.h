@@ -14,7 +14,7 @@ public:
 	static ParticleEmitter* ghostBomb();
 	static ParticleEmitter* normalBomb();
 	static ParticleEmitter* lava();
-	static ParticleEmitter* itemSpawn();
+	static ParticleEmitter* itemSpawn(entityx::Entity& item);
 	static ParticleEmitter* blockDeath();
 
 private:
