@@ -1,6 +1,6 @@
 #include "BodyFactory.h"
 #include "PhysixSystem.h"
-
+#include "Utils/make_unique.h"
 
 b2World* BodyFactory::m_World(new b2World(b2Vec2()));
 std::unordered_map<entityx::uint64_t, std::unique_ptr<entityx::uint64_t>> BodyFactory::m_entityIds;

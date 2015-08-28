@@ -1,5 +1,6 @@
 #pragma once
 #include<stdint.h>
+#include <stddef.h>
 
 enum class BombType : uint8_t;
 enum class ItemType : uint8_t;

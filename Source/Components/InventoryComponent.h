@@ -103,7 +103,7 @@ struct InventoryComponent
 	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order
 	ActiveQueue<BombType, BombTypeComparator> activeBombs;
 	// How many items the entity has of the given type
-	std::unordered_map<ItemType, uint8_t> itemCounts;
+	std::unordered_map<ItemType, uint8_t, EnumClassHash> itemCounts;
 	std::vector<ItemType> items;
 
 	inline void put(SkillType skillType) { activeSkills.put(Skill(skillType)); }
