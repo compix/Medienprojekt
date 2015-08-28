@@ -25,6 +25,7 @@
 #include "../Events/HoldingEvent.h"
 #include "../Events/Phase2StartedEvent.h"
 #include "../Events/LavaSpotMarkedEvent.h"
+#include "../Events/SoundEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -61,6 +62,7 @@ NetClient::NetClient()
 	m_handler.setCallback(MessageType::PHASE2_STARTED, &NetClient::onPhase2StartedMessage, this);
 	m_handler.setCallback(MessageType::MARK_LAVA_SPOT, &NetClient::onMarkLavaSpotMessage, this);
 	m_handler.setCallback(MessageType::CREATE_LAVA, &NetClient::onCreateLavaMessage, this);
+	m_handler.setCallback(MessageType::SOUND, &NetClient::onSoundMessage, this);
 	
 	m_connection.setHandler(&m_handler);
 	m_connection.setConnectCallback([this](ENetEvent &event)
@@ -423,6 +425,12 @@ void NetClient::onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEven
 	uint8_t cellX = reader.read<uint8_t>();
 	uint8_t cellY = reader.read<uint8_t>();
 	GameGlobals::entityFactory->createLava(cellX, cellY);
+}
+
+void NetClient::onSoundMessage(MessageReader<MessageType>& reader, ENetEvent& evt)
+{
+	std::string name = reader.read<string>();
+	GameGlobals::events->emit<SoundEvent>(name);
 }
 
 Entity NetClient::getEntity(uint64_t id)

@@ -41,6 +41,7 @@
 #include "../Components/NoNetComponent.h"
 #include "../Events/Phase2StartedEvent.h"
 #include "../Events/LavaCreatedEvent.h"
+#include "../Events/SoundEvent.h"
 
 using namespace std;
 using namespace NetCode;
@@ -111,6 +112,7 @@ NetServer::NetServer()
 	GameGlobals::events->subscribe<Phase2StartedEvent>(*this);
 	GameGlobals::events->subscribe<LavaSpotMarkedEvent>(*this);
 	GameGlobals::events->subscribe<LavaCreatedEvent>(*this);
+	GameGlobals::events->subscribe<SoundEvent>(*this);
 
 	m_handler.setCallback(MessageType::HANDSHAKE, &NetServer::onHandshakeMessage, this);
 	m_handler.setCallback(MessageType::INPUT_DIRECTION, &NetServer::onInputDirectionMessage, this);
@@ -397,6 +399,13 @@ void NetServer::receive(const LavaCreatedEvent& event)
 	m_messageWriter.write<uint8_t>(event.cellX);
 	m_messageWriter.write<uint8_t>(event.cellY);
 	broadcast(NetChannel::WORLD_RELIABLE, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
+}
+
+void NetServer::receive(const SoundEvent& event)
+{
+	m_messageWriter.init(MessageType::SOUND);
+	m_messageWriter.write<string>(event.name);
+	broadcast(NetChannel::SOUND, m_messageWriter.createPacket(ENET_PACKET_FLAG_RELIABLE));
 }
 
 void NetServer::startCountdown()

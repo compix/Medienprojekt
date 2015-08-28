@@ -57,6 +57,7 @@ public:
 	void onPhase2StartedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onMarkLavaSpotMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onSoundMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	
 private:
 	void mapEntity(uint64_t id, Entity entity);

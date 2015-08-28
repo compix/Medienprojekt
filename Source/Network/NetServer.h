@@ -21,6 +21,7 @@ struct DeathEvent;
 struct SmokeCreatedEvent;
 struct BoostEffectCreatedEvent;
 struct ItemCreatedEvent;
+struct SoundEvent;
 enum class ItemType : uint8_t;
 struct PortalCreatedEvent;
 struct SendChatEvent;
@@ -72,6 +73,8 @@ public:
 	void receive(const Phase2StartedEvent& event);
 	void receive(const LavaSpotMarkedEvent& event);
 	void receive(const LavaCreatedEvent& event);
+	void receive(const SoundEvent& event);
+	
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
 	void onInputDirectionMessage(MessageReader<MessageType>& reader, ENetEvent& evt);

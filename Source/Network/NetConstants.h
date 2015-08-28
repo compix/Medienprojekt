@@ -26,6 +26,7 @@ enum class MessageType : uint16_t
 	PHASE2_STARTED,
 	MARK_LAVA_SPOT,
 	CREATE_LAVA,
+	SOUND,
 	COUNTDOWN,
 	ALL_READY,
 	GAME_OVER,
@@ -45,6 +46,7 @@ enum class NetChannel : uint8_t
 	WORLD_UNRELIABLE,
 	INPUT_RELIABLE,
 	INPUT_UNRELIABLE,
+	SOUND,
 
 	COUNT
 };
