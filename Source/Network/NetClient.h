@@ -54,6 +54,10 @@ public:
 	void onResetGameMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onSkillMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	void onHoldingStatusMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onPhase2StartedMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onMarkLavaSpotMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onCreateLavaMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
+	void onSoundMessage(MessageReader<MessageType>& reader, ENetEvent& evt);
 	
 private:
 	void mapEntity(uint64_t id, Entity entity);
@@ -67,5 +71,6 @@ private:
 	std::map<uint64_t, Entity> entityMap;
 	Entity m_playerEntity;
 	uint8_t m_playerIndex = 0;
+	uint64_t m_inputPacketNumber = 0;
 	float m_nextSend = 0;
 };

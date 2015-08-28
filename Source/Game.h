@@ -43,6 +43,7 @@ public:
 	void refreshView();
 	inline const sf::View& getView() const { return m_view; }
 protected:
+	void addSystems(bool isClient);
 	virtual void addSystems() = 0;
 
 	template <typename S, typename ... Args>

@@ -6,8 +6,11 @@
 #include "../Events/ExplosionCreatedEvent.h"
 #include "NetPlayerInfo.h"
 #include "../GameConstants.h"
-#include "../Events/StartGameEvent.h"
+#include "../Events/LavaSpotMarkedEvent.h"
 
+struct LavaCreatedEvent;
+struct Phase2StartedEvent;
+struct StartGameEvent;
 struct HoldingStatusEvent;
 struct SkillEvent;
 enum class BombType : uint8_t;
@@ -18,6 +21,7 @@ struct DeathEvent;
 struct SmokeCreatedEvent;
 struct BoostEffectCreatedEvent;
 struct ItemCreatedEvent;
+struct SoundEvent;
 enum class ItemType : uint8_t;
 struct PortalCreatedEvent;
 struct SendChatEvent;
@@ -66,6 +70,10 @@ public:
 	void receive(const StartGameEvent& evt);
 	void receive(const SkillEvent &evt);
 	void receive(const HoldingStatusEvent &evt);
+	void receive(const Phase2StartedEvent& event);
+	void receive(const LavaSpotMarkedEvent& event);
+	void receive(const LavaCreatedEvent& event);
+	void receive(const SoundEvent& event);
 	
 
 	void onHandshakeMessage(MessageReader<MessageType> &reader, ENetEvent &evt);
