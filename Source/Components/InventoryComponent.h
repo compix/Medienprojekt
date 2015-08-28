@@ -97,6 +97,7 @@ struct InventoryComponent
 
 	bool isHoldingBomb;
 	BombType holdingBombType;
+	entityx::Entity holdingBombOwner;
 	uint8_t placedBombCount;
 	std::pair<entityx::Entity, entityx::Entity> placedPortals;
 	ActiveQueue<Skill, SkillComparator> activeSkills; // Currently active skills with a custom priority order

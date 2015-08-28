@@ -35,10 +35,10 @@ void InputHandleSystem::update(entityx::EntityManager& entityManager, entityx::E
 
 		if (input->bombButtonPressed)
 		{
-			Entity belowBomb;
-			if (inventory->canHoldBomb() && (belowBomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y)) && !inventory->isHoldingBomb)
+			Entity bomb = m_layerManager->getEntityWithComponent<BombComponent>(GameConstants::MAIN_LAYER, cell->x, cell->y);
+			if (bomb && inventory->canHoldBomb() && !inventory->isHoldingBomb)
 			{
-				GameGlobals::events->emit<HoldingEvent>(entity, belowBomb);
+				GameGlobals::events->emit<HoldingEvent>(entity, bomb);
 			}
 			else if (inventory->isHoldingBomb)
 			{

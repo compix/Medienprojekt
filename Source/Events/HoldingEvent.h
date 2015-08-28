@@ -4,10 +4,10 @@
 struct HoldingEvent
 {
 	HoldingEvent(entityx::Entity whoHolds, entityx::Entity wantToHold)
-		: whoHolds(whoHolds), wantToHold(wantToHold) {}
+		: whoHolds(whoHolds), bomb(wantToHold) {}
 
 	entityx::Entity whoHolds;
-	entityx::Entity wantToHold;
+	entityx::Entity bomb;
 };
 
 struct HoldingStatusEvent

@@ -7,6 +7,7 @@
 #include "../EntityFactory.h"
 #include "../Components/CellComponent.h"
 #include "JumpSystem.h"
+#include "../Components/OwnerComponent.h"
 
 using namespace entityx;
 
@@ -28,21 +29,24 @@ void HoldingSystem::receive(const HoldingEvent& holdEvent)
 {
 	assert(holdEvent.whoHolds.has_component<InventoryComponent>());
 	Entity holder = holdEvent.whoHolds;
-	Entity wantToHold = holdEvent.wantToHold;
+	Entity bomb = holdEvent.bomb;
 	auto inventory = holder.component<InventoryComponent>();
 	
-	if (wantToHold.has_component<BombComponent>() && !wantToHold.has_component<JumpComponent>())
+	if (bomb.has_component<BombComponent>() && !bomb.has_component<JumpComponent>())
 	{
-		if (wantToHold.has_component<BodyComponent>() && !(wantToHold.component<BodyComponent>()->body->GetLinearVelocity() == b2Vec2_zero)) return; //Bombe wurde gekickt, wer das dann noch halten kann ist Master ^^
+		if (bomb.has_component<BodyComponent>() && !(bomb.component<BodyComponent>()->body->GetLinearVelocity() == b2Vec2_zero)) return; //Bombe wurde gekickt, wer das dann noch halten kann ist Master ^^
 
 		if (!inventory->isHoldingBomb)
 		{
-			if (wantToHold.has_component<BombComponent>())
+			if (bomb.has_component<BombComponent>())
 			{
-				inventory->holdingBombType = wantToHold.component<BombComponent>()->type;
+				inventory->holdingBombType = bomb.component<BombComponent>()->type;
 			}
+
+			assert(bomb.has_component<OwnerComponent>());
+			inventory->holdingBombOwner = bomb.component<OwnerComponent>()->entity;
 			inventory->isHoldingBomb = true;
-			wantToHold.destroy();
+			bomb.destroy();
 			
 			GameGlobals::events->emit<HoldingStatusEvent>(holder, true);
 		}
@@ -59,7 +63,7 @@ void HoldingSystem::receive(const ThrowBombEvent& throwEvent)
 	if (inventory->isHoldingBomb)
 	{
 		auto cell = whoThrows.component<CellComponent>();
-		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, whoThrows, inventory->holdingBombType);
+		Entity bomb = GameGlobals::entityFactory->createBomb(cell->x, cell->y, inventory->holdingBombOwner, inventory->holdingBombType);
 		int x = 0, y = 0;
 		JumpSystem::adjustXY_RelatingToTheDirection(&x, &y, 
 													GameConstants::PUNCH_DISTANCE,

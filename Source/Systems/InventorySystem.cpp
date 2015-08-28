@@ -37,6 +37,7 @@ void InventorySystem::receive(const BombExplodedEvent& e)
 			return;
 
 		auto inventory = owner.component<InventoryComponent>();
-		--inventory->placedBombCount;
+		if (inventory->placedBombCount > 0)
+			--inventory->placedBombCount;
 	}
 }
