@@ -107,7 +107,7 @@ void NetClient::update(float deltaTime)
 		}
 
 		m_messageWriter.init(MessageType::INPUT_DIRECTION);
-		m_messageWriter.write<uint64_t>(input->packetNumber++);
+		m_messageWriter.write<uint64_t>(m_inputPacketNumber++);
 		m_messageWriter.write<float>(input->moveX);
 		m_messageWriter.write<float>(input->moveY);
 		send(NetChannel::INPUT_UNRELIABLE, m_messageWriter.createPacket(0));

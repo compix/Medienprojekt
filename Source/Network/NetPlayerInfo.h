@@ -19,6 +19,7 @@ struct NetPlayerInfo
 	std::string name = "Connecting...";
 	NetPlayerStatus status = NetPlayerStatus::DISCONNECTED;
 	entityx::Entity entity;
+	uint64_t inputPacketNumber = 0;
 	uint8_t playerIndex;
 	CreateGamePlayerType type;
 	ENetPeer *peer = nullptr;

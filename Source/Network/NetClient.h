@@ -70,5 +70,6 @@ private:
 	std::map<uint64_t, Entity> entityMap;
 	Entity m_playerEntity;
 	uint8_t m_playerIndex = 0;
+	uint64_t m_inputPacketNumber = 0;
 	float m_nextSend = 0;
 };

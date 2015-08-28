@@ -551,7 +551,7 @@ void NetServer::onHandshakeMessage(MessageReader<MessageType>& reader, ENetEvent
 		if (playerEntity.valid())
 		{
 			info->entity = playerEntity;
-			playerEntity.component<InputComponent>()->packetNumber = 0;
+			info->inputPacketNumber = 0;
 		}
 
 		sendStartGame(info);
@@ -593,9 +593,9 @@ void NetServer::onInputDirectionMessage(MessageReader<MessageType>& reader, ENet
 	if (info->entity.valid()) {
 		auto input = info->entity.component<InputComponent>();
 		auto packetNumber = reader.read<uint64_t>();
-		if (input->packetNumber >= packetNumber)
+		if (info->inputPacketNumber >= packetNumber)
 			return;
-		input->packetNumber = packetNumber;
+		info->inputPacketNumber = packetNumber;
 		input->moveX = reader.read<float>();
 		input->moveY = reader.read<float>();
 	}
