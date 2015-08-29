@@ -441,10 +441,10 @@ void NetClient::onJumpMessage(MessageReader<MessageType>& reader, ENetEvent& evt
 			auto jump = entity.assign<JumpComponent>();
 
 			jump->direction = reader.read<Direction>();
-			jump->fromX = reader.read<uint8_t>();
-			jump->fromY = reader.read<uint8_t>();
-			jump->toX = reader.read<uint8_t>();
-			jump->toY = reader.read<uint8_t>();
+			jump->fromX = reader.read<int8_t>();
+			jump->fromY = reader.read<int8_t>();
+			jump->toX = reader.read<int8_t>();
+			jump->toY = reader.read<int8_t>();
 			jump->totalTime = reader.read<float>();
 			jump->timePassed = reader.read<float>();
 			jump->startVelocity = reader.read<float>();

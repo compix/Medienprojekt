@@ -39,7 +39,7 @@ private:
 	void removeRenderOffset(Entity jumping_entity);
 	void jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt);
 	void adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direction direction, ComponentHandle<CellComponent> cellComponent, Entity* foundEntity);
-	void adjustCellsIfOutOfBounds(uint8_t* fromX, uint8_t* toX, uint8_t* fromY, uint8_t* toY);
+	void adjustCellsIfOutOfBounds(int8_t* fromX, int8_t* toX, int8_t* fromY, int8_t* toY);
 	void adjustHeightForBlockedTiles(const bool wasBlocked, const bool targetIsBlocked, float* beginHeight, float* endHeight, const float offHeight);
 	float getDeltaOf(float coord2, float coord1);
 	float getXCenterCoords(uint8_t cellX);

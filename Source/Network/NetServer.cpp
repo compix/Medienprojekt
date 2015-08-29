@@ -416,10 +416,10 @@ void NetServer::receive(const JumpEvent& event)
 	if (jump)
 	{
 		m_messageWriter.write<Direction>(jump->direction);
-		m_messageWriter.write<uint8_t>(jump->fromX);
-		m_messageWriter.write<uint8_t>(jump->fromY);
-		m_messageWriter.write<uint8_t>(jump->toX);
-		m_messageWriter.write<uint8_t>(jump->toY);
+		m_messageWriter.write<int8_t>(jump->fromX);
+		m_messageWriter.write<int8_t>(jump->fromY);
+		m_messageWriter.write<int8_t>(jump->toX);
+		m_messageWriter.write<int8_t>(jump->toY);
 		m_messageWriter.write<float>(jump->totalTime);
 		m_messageWriter.write<float>(jump->timePassed);
 		m_messageWriter.write<float>(jump->startVelocity);
