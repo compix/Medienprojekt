@@ -1,6 +1,6 @@
 {
     "explosion": "explosion.wav",
-	"explosion2": "explosion2.flac",
+	"explosion2": "explosion2.wav",
 	"explosion3": "explosion3.wav",
 	"portal_open": "portal_open.wav",
 	"portal_close": "portal_close.wav"
