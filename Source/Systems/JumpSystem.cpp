@@ -128,10 +128,10 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 
 void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponent, EntityManager> jumpComp, TimeDelta dt)
 {
-	uint8_t fromCheckX = jumpComp->fromX;
-	uint8_t fromCheckY = jumpComp->fromY;
-	uint8_t toCheckX = jumpComp->toX;
-	uint8_t toCheckY = jumpComp->toY;
+	int8_t fromCheckX = jumpComp->fromX;
+	int8_t fromCheckY = jumpComp->fromY;
+	int8_t toCheckX = jumpComp->toX;
+	int8_t toCheckY = jumpComp->toY;
 	adjustCellsIfOutOfBounds(&fromCheckX, &toCheckX, &fromCheckY, &toCheckY);
 
 	EntityCollection entitiesOnTarget = m_layerManager->getEntities(GameConstants::MAIN_LAYER, toCheckX, toCheckY);
@@ -236,7 +236,7 @@ void JumpSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direc
 	}
 }
 
-void JumpSystem::adjustCellsIfOutOfBounds(uint8_t* fromX, uint8_t* toX, uint8_t* fromY, uint8_t* toY)
+void JumpSystem::adjustCellsIfOutOfBounds(int8_t* fromX, int8_t* toX, int8_t* fromY, int8_t* toY)
 {
 	assert(fromX != nullptr || fromY != nullptr || toY != nullptr || toX != nullptr);
 	int deltaX = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toX), static_cast<float>(*fromX))));
