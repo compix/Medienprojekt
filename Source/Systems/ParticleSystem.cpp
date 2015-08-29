@@ -8,10 +8,10 @@
 
 ParticleSystem::ParticleSystem()
 {
-	createManager("light", 500, 500);
-	createManager("block", 500, 500);
-	createManager("smoke", 500, 500);
-	createManager("lava", 500, 1000);
+	createManager("light", 210, 500);
+	createManager("block", 100, 500);
+	createManager("smoke", 200, 500);
+	createManager("lava", 70, 1000);
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)
