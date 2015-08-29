@@ -1,14 +1,11 @@
 #pragma once
 #include "../PathFinding/PathEngine.h"
 
-struct GraphNode;
-struct AIPath;
-
-/**
-* Used to get out of dangerous situations.
-*/
-class RatePunchBomb
+class RateThrowBomb
 {
 public:
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
+
+private:
+	GraphNode* getExpectedBombLanding(PathEngine* pathEngine, GraphNode* startNode, Direction direction);
 };

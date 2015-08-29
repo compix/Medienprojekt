@@ -27,9 +27,10 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	goal->valid = false;
 
 	bool enemiesAffected = affectedEntities.isEnemyAffected(entity);
+	bool nearEnemy = goal->smell(SmellType::ENEMY) > 0;
 	bool itemsAffected = affectedEntities.numOfItems > 0;
 
-	if (!enemiesAffected || itemsAffected)
+	if ((!nearEnemy && !enemiesAffected) || (itemsAffected && !enemiesAffected))
 		found = false;
 
 	AIPath safePath;
@@ -64,10 +65,22 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 
 	if (found)
 	{
+		float ratingFactor = 1.f;
+
+		// Add a little bonus if an enemy is nearby
+		if (goal->smell(SmellType::ENEMY) > 0)
+			ratingFactor = 1.25f;
+
+		if (!enemiesAffected)
+		{
+			// Then obviously the bomb is just near the enemy so reduce the rating a little
+			ratingFactor = 0.75f;
+		}
+
 		auto& personality = entity.component<AIComponent>()->personality;
 		auto& desires = personality.desires;
 		auto& affinity = personality.affinity;
-		path.rating = (affinity.attackEnemy - timePerCell * path.nodes.size()) * desires.attackEnemy;
+		path.rating = ratingFactor * affinity.attackEnemy * desires.attackEnemy - timePerCell * path.nodes.size();
 	}
 
 	return found;

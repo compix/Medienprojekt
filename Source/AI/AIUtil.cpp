@@ -5,6 +5,7 @@
 #include "../PhysixSystem.h"
 #include "../Components/CellComponent.h"
 #include "../Components/TransformComponent.h"
+#include "../Systems/AISystem.h"
 
 float AIUtil::getTimePerCell(entityx::Entity& entity)
 {
@@ -104,6 +105,17 @@ bool AIUtil::isBlockedIgnoreLast(const AIPath& path)
 	return false;
 }
 
+bool AIUtil::isBlocked(const AIPath& path)
+{
+	for (uint32_t i = path.curNode + 1; i < path.nodes.size(); ++i)
+	{
+		if (!path.nodes[i]->valid)
+			return true;
+	}
+
+	return false;
+}
+
 bool AIUtil::isValidPath(const AIPath& path)
 {
 	for (uint32_t i = path.curNode; i < path.nodes.size() - 1; ++i)
@@ -117,4 +129,36 @@ bool AIUtil::isValidPath(const AIPath& path)
 	}
 
 	return true;
+}
+
+uint8_t AIUtil::distanceToClosestEnemy(entityx::Entity& self, uint8_t x, uint8_t y)
+{
+	std::vector<entityx::Entity> enemies;
+	getEnemies(self, enemies);
+	return distanceToClosestEnemy(x, y, enemies);
+}
+
+uint8_t AIUtil::distanceToClosestEnemy(uint8_t x, uint8_t y, std::vector<entityx::Entity>& enemies)
+{
+	uint8_t distance = 255;
+
+	for (auto& e : enemies)
+	{
+		assert(e.valid() && e.has_component<CellComponent>());
+		auto cell = e.component<CellComponent>();
+
+		uint8_t newDistance = abs(cell->x - x) + abs(cell->y - y);
+		if (newDistance < distance)
+			distance = newDistance;
+	}
+
+	return distance;
+}
+
+void AIUtil::getEnemies(entityx::Entity& self, std::vector<entityx::Entity>& outEnemies)
+{
+	outEnemies.clear();
+	for (auto e : GameGlobals::entities->entities_with_components<InventoryComponent>())
+		if (e != self)
+			outEnemies.push_back(e);
 }

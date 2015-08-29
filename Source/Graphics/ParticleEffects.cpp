@@ -270,3 +270,29 @@ ParticleEmitter* ParticleEffects::portal(const RGB& color)
 
 	return emitter;
 }
+
+ParticleEmitter* ParticleEffects::playerDeath()
+{
+	assert(m_particleSystem);
+
+	auto manager = m_particleSystem->getManager("blood");
+	auto emitter = manager->spawnEmitter();
+
+	if (!emitter)
+		return nullptr;
+
+	emitter->spawnTime(10.f)
+		.spawnDuration(1.0f)
+		.maxLifetime(0.9f)
+		.speedModifier(10.f)
+		.burstParticleNumber(100)
+		.velocityFunction(Gradient<sf::Vector2f>(GradientType::SMOOTH, sf::Vector2f(1, 1), sf::Vector2f(5, 5)))
+		.burstTime(0.01f)
+		.burstNumber(1)
+		.spawnWidth(15.f)
+		.spawnHeight(15.f)
+		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
+		.sizeFunction(Gradient3<sf::Vector2f>(GradientType::REGRESS, sf::Vector2f(60, 60), sf::Vector2f(20, 20), sf::Vector2f(5, 5)));
+
+	return emitter;
+}

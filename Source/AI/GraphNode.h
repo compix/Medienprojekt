@@ -1,8 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <assert.h>
-#include "../../Components/InventoryComponent.h"
-
+#include "../Components/InventoryComponent.h"
 
 struct GraphNode;
 
@@ -21,12 +20,14 @@ struct BombProperties
 
 enum class SmellType
 {
-	DYING_BLOCK
+	DYING_BLOCK,
+	ENEMY
 };
 
 struct Smells
 {
 	uint16_t dyingBlock; // <- Item could spawn.
+	uint16_t enemy;
 };
 
 struct NodeProperties
@@ -66,6 +67,8 @@ struct GraphNode
 		{
 		case SmellType::DYING_BLOCK:
 			return smells.dyingBlock;
+		case SmellType::ENEMY:
+			return smells.enemy;
 		default:
 			assert(false);
 			return smells.dyingBlock;

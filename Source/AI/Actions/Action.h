@@ -5,15 +5,15 @@
 #include "../Behaviors/FollowPath.h"
 #include <entityx/entityx.h>
 
-typedef std::function<bool(entityx::Entity& entity)> ActionActivationCondition;
+typedef std::function<bool(entityx::Entity& entity, float deltaTime)> ActionActivationCondition;
 
-class BaseAction
+class AbstractAction
 {
 public:
-	BaseAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false), 
-		m_activationCondition([](entityx::Entity& e){ return true; }) {}
+	AbstractAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false), 
+		m_activationCondition([](entityx::Entity& e, float dt){ return true; }) {}
 
-	virtual ~BaseAction() {}
+	virtual ~AbstractAction() {}
 
 	virtual bool valid(entityx::Entity& entity) = 0;
 	virtual void update(entityx::Entity& entity, float deltaTime) = 0;
@@ -30,7 +30,7 @@ public:
 	virtual inline bool isActive() { return m_active; }
 	virtual inline void setActivationCondition(ActionActivationCondition actionActivationCondition) { m_activationCondition = actionActivationCondition; }
 	
-	virtual inline void checkForActivation(entityx::Entity& entity) { m_active = m_activationCondition(entity); }
+	virtual inline void checkForActivation(entityx::Entity& entity, float deltaTime) { m_active = m_activationCondition(entity, deltaTime); }
 
 	virtual std::string logString(entityx::Entity& entity) { return ""; }
 protected:
@@ -42,9 +42,9 @@ protected:
 	ActionActivationCondition m_activationCondition;
 };
 
-typedef std::shared_ptr<BaseAction> ActionPtr;
+typedef std::shared_ptr<AbstractAction> ActionPtr;
 
-class Action : public BaseAction
+class Action : public AbstractAction
 {
 public:
 	Action();
@@ -68,7 +68,7 @@ public:
 	*/
 	void preparePath(entityx::Entity& entity) override;
 
-private:
+protected:
 	PathEngine* m_pathEngine;
 	PathRating m_pathRating;
 	Behavior m_behavior;

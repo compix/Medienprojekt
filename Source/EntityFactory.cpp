@@ -487,6 +487,33 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY, entity
 	return entity;
 }
 
+Entity EntityFactory::createPlayerDeathEffect(uint8_t cellX, uint8_t cellY)
+{
+	Entity entity = GameGlobals::entities->create();
+
+	TransformComponent transformComponent;
+
+	float width = float(GameConstants::CELL_WIDTH);
+	float height = float(GameConstants::CELL_HEIGHT);
+
+	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
+	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
+
+	entity.assign<TransformComponent>(transformComponent);
+	entity.assign<CellComponent>(cellX, cellY);
+	entity.assign<LayerComponent>(GameConstants::JUMP_LAYER);
+	entity.assign<DestructionComponent>(1.5f);
+	entity.assign<ParticleComponent>(ParticleEffects::playerDeath());
+	entity.assign<NoNetComponent>();
+
+	if (!entity.component<ParticleComponent>()->emitter)
+		entity.remove<ParticleComponent>();
+	
+	m_layerManager->add(entity);
+
+	return entity;
+}
+
 void EntityFactory::markLavaSpot(uint8_t cellX, uint8_t cellY)
 {
 	auto entity = m_layerManager->getEntityWithComponent<FloorComponent>(GameConstants::FLOOR_LAYER, cellX, cellY);

@@ -22,14 +22,9 @@ public:
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
 
 private:
-	int distanceToClosest(uint8_t x, uint8_t y);
-
 	bool isPotentialTrap(PathEngine* pathEngine, GraphNode* node, uint8_t range);
 	bool downUpBlocked(SimulationGraph* graph, GraphNode* node);
 	bool leftRightBlocked(SimulationGraph* graph, GraphNode* node);
 
 	bool isPotentialTrap(SimulationGraph* graph, GraphNode* node, Direction direction, uint8_t range);
-
-private:
-	std::vector<entityx::Entity> m_enemies;
 };

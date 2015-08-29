@@ -3,28 +3,28 @@
 	{
         "affinity":
 		{
-			"destroyBlock": 0,
-			"wait": 1,
+			"destroyBlock": 4,
+			"wait": 5,
 			"attackEnemy": 5,
 			"placePortal": 1,
-			"getItem": 5,
-			"getSafe": 1
+			"getItem": 10,
+			"getSafe": 6
 		},
 		"desires":
 		{
-			"destroyBlock": 1,
-			"wait": 1,
-			"attackEnemy": 1,
+			"destroyBlock": 2,
+			"wait": 3,
+			"attackEnemy": 4,
 			"placePortal": 1,
-			"getItem": 1,
-			"getSafe": 1
+			"getItem": 2,
+			"getSafe": 3
 		},
 		"changePerSecond":
 		{
 			"destroyBlock": 0,
 			"wait": 0,
-			"attackEnemy": 0,
-			"placePortal": 0,
+			"attackEnemy": 0.03,
+			"placePortal": 0.02,
 			"getItem": 0,
 			"getSafe": 0
 		},
@@ -33,69 +33,103 @@
 
 
 
-	    "John": 
+	"John": 
 	{
         "affinity":
 		{
 			"destroyBlock": 2,
-			"wait": 1,
-			"attackEnemy": 5,
+			"wait": 5,
+			"attackEnemy": 8,
 			"placePortal": 1,
-			"getItem": 5,
-			"getSafe": 1
+			"getItem": 10,
+			"getSafe": 5
 		},
 		"desires":
 		{
 			"destroyBlock": 1.5,
-			"wait": 2,
-			"attackEnemy": 0.5,
+			"wait": 3,
+			"attackEnemy": 2,
 			"placePortal": 1,
-			"getItem": 1,
-			"getSafe": 1
+			"getItem": 2,
+			"getSafe": 4
 		},
 		"changePerSecond":
 		{
 			"destroyBlock": 0,
 			"wait": 0,
-			"attackEnemy": 0,
-			"placePortal": 0,
+			"attackEnemy": 0.02,
+			"placePortal": 0.02,
 			"getItem": 0,
 			"getSafe": 0
 		},
 		"favoriteSkill": []
     },
-
-
-
-	    "Kevin": 
+	
+	
+	
+	"Kevin": 
 	{
         "affinity":
 		{
-			"destroyBlock": 0,
-			"wait": 1,
-			"attackEnemy": 5,
+			"destroyBlock": 5,
+			"wait": 4,
+			"attackEnemy": 8,
 			"placePortal": 1,
 			"getItem": 5,
-			"getSafe": 0
+			"getSafe": 5
 		},
 		"desires":
 		{
 			"destroyBlock": 1.5,
-			"wait": 1,
+			"wait": 3,
 			"attackEnemy": 3,
 			"placePortal": 1,
-			"getItem": 2,
+			"getItem": 3,
 			"getSafe": 0.5
 		},
 		"changePerSecond":
 		{
 			"destroyBlock": 0,
 			"wait": 0,
-			"attackEnemy": 0,
-			"placePortal": 0,
+			"attackEnemy": 0.03,
+			"placePortal": 0.02,
 			"getItem": 0,
 			"getSafe": 0
 		},
-		"favoriteSkill": ["PUNCH"]
+		"favoriteSkill": ["BLINK"]
+    },
+	
+	
+	
+	"Bob": 
+	{
+        "affinity":
+		{
+			"destroyBlock": 2,
+			"wait": 5,
+			"attackEnemy": 8,
+			"placePortal": 4,
+			"getItem": 10,
+			"getSafe": 5
+		},
+		"desires":
+		{
+			"destroyBlock": 1.5,
+			"wait": 3,
+			"attackEnemy": 2,
+			"placePortal": 2,
+			"getItem": 2,
+			"getSafe": 4
+		},
+		"changePerSecond":
+		{
+			"destroyBlock": 0,
+			"wait": 0,
+			"attackEnemy": 0.03,
+			"placePortal": 0.03,
+			"getItem": 0,
+			"getSafe": 0
+		},
+		"favoriteSkill": ["PLACE_PORTAL"]
     }
 }

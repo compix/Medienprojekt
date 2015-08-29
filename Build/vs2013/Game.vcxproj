@@ -136,6 +136,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AI\Actions\AttackEnemy.h" />
+    <ClInclude Include="..\..\Source\AI\Actions\BlinkAction.h" />
     <ClInclude Include="..\..\Source\AI\AIUtil.h" />
     <ClInclude Include="..\..\Source\AI\AIVisualizer.h" />
     <ClInclude Include="..\..\Source\AI\Actions\Action.h" />
@@ -146,17 +148,18 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\DoNothing.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\FollowPath.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h" />
+    <ClInclude Include="..\..\Source\AI\Behaviors\ThrowBomb.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h" />
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h" />
+    <ClInclude Include="..\..\Source\AI\Graph.h" />
+    <ClInclude Include="..\..\Source\AI\GraphNode.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h" />
-    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h" />
-    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\NodePathInfo.h" />
     <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h" />
-    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateAttackEnemy.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateBlink.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.h" />
@@ -169,8 +172,10 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RatePunchBomb.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateRiskySafety.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h" />
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateThrowBomb.h" />
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h" />
     <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h" />
+    <ClInclude Include="..\..\Source\AI\SimulationGraph.h" />
     <ClInclude Include="..\..\Source\Animation\AnimationType.h" />
     <ClInclude Include="..\..\Source\Animation\Animator.h" />
     <ClInclude Include="..\..\Source\Animation\AnimatorManager.h" />
@@ -352,6 +357,8 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AI\Actions\AttackEnemy.cpp" />
+    <ClCompile Include="..\..\Source\AI\Actions\BlinkAction.cpp" />
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp" />
     <ClCompile Include="..\..\Source\AI\AIVisualizer.cpp" />
     <ClCompile Include="..\..\Source\AI\Actions\Action.cpp" />
@@ -359,15 +366,16 @@
     <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\FollowPath.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp" />
+    <ClCompile Include="..\..\Source\AI\Behaviors\ThrowBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp" />
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp" />
+    <ClCompile Include="..\..\Source\AI\Graph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp" />
-    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\NodePathInfo.cpp" />
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp" />
-    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateBlink.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDesperateSaveAttempt.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateDestroyBlockSpot.cpp" />
@@ -380,8 +388,10 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RatePunchBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateRiskySafety.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp" />
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateThrowBomb.cpp" />
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp" />
     <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp" />
+    <ClCompile Include="..\..\Source\AI\SimulationGraph.cpp" />
     <ClCompile Include="..\..\Source\Animation\Animator.cpp" />
     <ClCompile Include="..\..\Source\Animation\AnimatorManager.cpp" />
     <ClCompile Include="..\..\Source\Animation\States\IdleState.cpp" />

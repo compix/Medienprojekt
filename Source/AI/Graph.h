@@ -3,10 +3,10 @@
 #include <vector>
 #include <stdint.h>
 #include <entityx/entityx.h>
-#include "../../EntityLayer.h"
-#include "../../Utils/Common.h"
-#include "../../LayerManager.h"
-#include "../../GameConstants.h"
+#include "../EntityLayer.h"
+#include "../Utils/Common.h"
+#include "../LayerManager.h"
+#include "../GameConstants.h"
 
 struct AffectedByExplosion
 {
@@ -69,6 +69,7 @@ public:
 
 	inline GraphNode* getNode(uint8_t x, uint8_t y) { assert(x < m_width && y < m_height); return &m_nodeGrid[x][y]; }
 	GraphNode* getNeighbor(const GraphNode* node, const Direction& neighbor);
+	GraphNode* getNeighborIgnorePortal(const GraphNode* node, const Direction& neighbor);
 	bool hasNeighbor(const GraphNode* node, Direction neighbor);
 	GraphNode* getPortalNeighbor(uint8_t x, uint8_t y);
 
@@ -78,11 +79,13 @@ public:
 	bool inLine(uint8_t x, uint8_t y, uint8_t range);
 
 	void resetMarks();
+	void spreadEnemySmells(entityx::Entity& self);
 
 	inline std::vector<entityx::Entity>& getAffectedBlocks() { return m_blocksAffectedByExplosion; }
 
 	void reset();
 protected:
+	void resetEnemySmells();
 	void explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* affectedByExplosion = nullptr);
 	virtual void setOnFire(uint8_t x, uint8_t y, float explosionTime);
 

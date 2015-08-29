@@ -15,29 +15,38 @@ bool RateTrapDanger::operator()(PathEngine* pathEngine, AIPath& path, entityx::E
 	if (!goal->valid)
 		return false;
 
-	AISystem::getEnemies(entity, m_enemies);
+	std::vector<entityx::Entity> enemies;
+	AIUtil::getEnemies(entity, enemies);
+
 	auto graph = pathEngine->getSimGraph();
 	uint8_t range = 2;
 
-	bool trap = isPotentialTrap(pathEngine, goal, range) ||
-				isPotentialTrap(graph, goal, Direction::DOWN, range) ||
-				isPotentialTrap(graph, goal, Direction::UP, range)   ||
-				isPotentialTrap(graph, goal, Direction::LEFT, range) ||
-				isPotentialTrap(graph, goal, Direction::RIGHT, range);	
+	bool trap = false;
+
+	// Check only for a trap if an enemy is nearby
+	if (goal->smell(SmellType::ENEMY) > 0)
+	{
+		// Check current node
+		trap = isPotentialTrap(pathEngine, goal, range);
+
+		// Check in all directions if it's a potential trap
+		for (uint8_t i = 0; !trap && i < 4; ++i)
+		{
+			Direction direction = static_cast<Direction>(i);
+			trap = isPotentialTrap(graph, goal, direction, range);
+		}
+	}
 
 	auto& personality = entity.component<AIComponent>()->personality;
 	auto& desires = personality.desires;
 	auto& affinity = personality.affinity;
-	path.rating = trap ? (1.f / affinity.getSafe / personality.desires.getSafe) : (affinity.getSafe * personality.desires.getSafe);
+	path.rating = (affinity.getSafe * desires.getSafe) * (trap ? -1.f : 1.f);
 
 	return true;
 }
 
 bool RateTrapDanger::isPotentialTrap(PathEngine* pathEngine, GraphNode* node, uint8_t range)
 {
-	if (distanceToClosest(node->x, node->y) > range)
-		return false;
-
 	auto graph = pathEngine->getSimGraph();
 
 	bool upBlocked    = !graph->hasNeighbor(node, Direction::UP);
@@ -58,8 +67,6 @@ bool RateTrapDanger::isPotentialTrap(SimulationGraph* graph, GraphNode* node, Di
 		for (uint8_t i = 0; graph->hasNeighbor(curNode, direction) && i < range; ++i)
 		{
 			curNode = graph->getNeighbor(curNode, direction);
-			if (distanceToClosest(curNode->x, curNode->y) > range)
-				return false;
 
 			if (downUpBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))
 				return true;
@@ -71,8 +78,6 @@ bool RateTrapDanger::isPotentialTrap(SimulationGraph* graph, GraphNode* node, Di
 		for (uint8_t i = 0; graph->hasNeighbor(curNode, direction) && i < range; ++i)
 		{
 			curNode = graph->getNeighbor(curNode, direction);
-			if (distanceToClosest(curNode->x, curNode->y) > range)
-				return false;
 
 			if (leftRightBlocked(graph, curNode) && !graph->hasNeighbor(curNode, direction))
 				return true;
@@ -91,23 +96,3 @@ bool RateTrapDanger::leftRightBlocked(SimulationGraph* graph, GraphNode* node)
 {
 	return !graph->hasNeighbor(node, Direction::LEFT) && !graph->hasNeighbor(node, Direction::RIGHT);
 }
-
-int RateTrapDanger::distanceToClosest(uint8_t x, uint8_t y)
-{
-	int distance = 500;
-
-	for (auto& e : m_enemies)
-	{
-		assert(e.valid() && e.has_component<CellComponent>());
-		auto cell = e.component<CellComponent>();
-
-		int newDistance = abs(cell->x - x) + abs(cell->y - y);
-		if (newDistance < distance)
-		{
-			distance = newDistance;
-		}
-	}
-
-	return distance;
-}
-

@@ -1,7 +1,7 @@
 #include "AIVisualizer.h"
 #include "../game.h"
-#include "PathFinding/GraphNode.h"
-#include "PathFinding/Graph.h"
+#include "GraphNode.h"
+#include "Graph.h"
 #include "../Events/ExitEvent.h"
 #include "PathFinding/AIPath.h"
 #include "../Components/AIComponent.h"
@@ -342,6 +342,7 @@ void AIVisualizer::visualizeSmells()
 	offsetY(false);
 	drawText("Smell Legend", m_rightXOffset, offsetY(false));
 	drawText("Affected Blocks", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(255, 140, 0));
+	drawText("Affected Blocks", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(0, 255, 255));
 
 	m_circle.setRadius(20.f);
 	m_circle.setOrigin(10, 10);
@@ -356,6 +357,12 @@ void AIVisualizer::visualizeSmells()
 			if (node.smells.dyingBlock > 0)
 			{
 				m_circle.setFillColor(sf::Color(255, 140, 0, 25 * node.smells.dyingBlock));
+				GameGlobals::window->draw(m_circle);
+			}
+
+			if (node.smells.enemy > 0)
+			{
+				m_circle.setFillColor(sf::Color(0, 255, 255, 25 * node.smells.enemy));
 				GameGlobals::window->draw(m_circle);
 			}
 		}

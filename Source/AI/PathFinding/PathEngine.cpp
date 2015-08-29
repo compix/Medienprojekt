@@ -1,7 +1,6 @@
 #include "PathEngine.h"
 #include <queue>
 #include "../../Game.h"
-#include "SimulationGraph.h"
 #include "AIPath.h"
 #include "NodePathInfo.h"
 #include "../../Components/AIComponent.h"

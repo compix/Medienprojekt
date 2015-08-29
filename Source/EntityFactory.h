@@ -53,6 +53,8 @@ public:
 
 	Entity createItemSpawnEffect(uint8_t cellX, uint8_t cellY, entityx::Entity& item);
 
+	Entity createPlayerDeathEffect(uint8_t cellX, uint8_t cellY);
+
 	void markLavaSpot(uint8_t cellX, uint8_t cellY);
 
 	void initAI(Entity& entity, uint8_t id);

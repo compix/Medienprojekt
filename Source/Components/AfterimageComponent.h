@@ -1,6 +1,5 @@
 #pragma once
 
-//Only Flag
 struct AfterimageComponent
 {
 	AfterimageComponent(float totalTime)

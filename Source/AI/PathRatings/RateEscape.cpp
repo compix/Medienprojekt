@@ -9,7 +9,7 @@ bool RateEscape::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entit
 	if (!path.goal()->valid)
 		return false;
 
-	AISystem::getEnemies(entity, m_entitiesToAvoid);
+	AIUtil::getEnemies(entity, m_entitiesToAvoid);
 
 	auto goal = path.goal();
 	int newDistanceToEnemies = computeDistanceToEnemies(goal->x, goal->y);

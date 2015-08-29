@@ -1,17 +1,17 @@
 #include "Graph.h"
-#include "../../LayerManager.h"
-#include "../../GameConstants.h"
-#include "../../Game.h"
-#include "../../Components/BlockComponent.h"
-#include "../../Components/SolidBlockComponent.h"
-#include "../../Components/CellComponent.h"
-#include "../../Components/BombComponent.h"
-#include "../../Components/TimerComponent.h"
-#include "../../Components/InventoryComponent.h"
-#include "../../Components/PortalComponent.h"
-#include "../../Components/DestructionComponent.h"
+#include "../LayerManager.h"
+#include "../GameConstants.h"
+#include "../Game.h"
+#include "../Components/BlockComponent.h"
+#include "../Components/SolidBlockComponent.h"
+#include "../Components/CellComponent.h"
+#include "../Components/BombComponent.h"
+#include "../Components/TimerComponent.h"
+#include "../Components/InventoryComponent.h"
+#include "../Components/PortalComponent.h"
+#include "../Components/DestructionComponent.h"
 #include <queue>
-#include "../../Components/LavaComponent.h"
+#include "../Components/LavaComponent.h"
 
 Graph::Graph(LayerManager* layerManager)
 	:m_layerManager(layerManager)
@@ -55,6 +55,7 @@ void Graph::update(float deltaTime)
 			m_nodeGrid[x][y].properties.affectedByExplosion = false;
 			m_nodeGrid[x][y].properties.timeTillExplosion = 0.f;
 			m_nodeGrid[x][y].smells.dyingBlock = 0;
+			m_nodeGrid[x][y].smells.enemy = 0;
 		}
 	}
 
@@ -267,7 +268,7 @@ void Graph::spreadSmell(SmellType smellType, uint8_t startX, uint8_t startY, uin
 		{
 			GraphNode* neighbor = getNeighbor(curNode, static_cast<Direction>(i));
 
-			if (!neighbor || !neighbor->valid)
+			if (!neighbor || (!neighbor->properties.hasBomb && !neighbor->valid))
 				continue;
 			
 			// If there is already a higher smell value of the given type on the cell then skip this node
@@ -304,6 +305,30 @@ void Graph::resetMarks()
 		for (auto y = 0; y < m_height; ++y)
 		{
 			m_nodeGrid[x][y].marked = false;
+		}
+	}
+}
+
+void Graph::spreadEnemySmells(entityx::Entity& self)
+{
+	resetEnemySmells();
+	for (auto entity : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
+	{
+		if (entity == self)
+			continue;
+
+		auto cell = entity.component<CellComponent>();
+		spreadSmell(SmellType::ENEMY, cell->x, cell->y, 5);
+	}
+}
+
+void Graph::resetEnemySmells()
+{
+	for (auto x = 1; x < m_width - 1; ++x)
+	{
+		for (auto y = 1; y < m_height - 1; ++y)
+		{
+			m_nodeGrid[x][y].smells.enemy = 0;
 		}
 	}
 }
@@ -469,6 +494,36 @@ GraphNode* Graph::getNeighbor(const GraphNode* node, const Direction& neighbor)
 		portalNode = getPortalNeighbor(node->x, node->y + 1);
 		return portalNode ? portalNode : &m_nodeGrid[node->x][node->y + 1];
 	default: 
+		assert(false); // Invalid neighbor input.
+		return nullptr;
+	}
+}
+
+GraphNode* Graph::getNeighborIgnorePortal(const GraphNode* node, const Direction& neighbor)
+{
+	switch (neighbor)
+	{
+	case Direction::LEFT:
+		if (node->x == 0)
+			return nullptr;
+
+		return &m_nodeGrid[node->x - 1][node->y];
+	case Direction::RIGHT:
+		if (node->x == m_width - 1)
+			return nullptr;
+
+		return &m_nodeGrid[node->x + 1][node->y];
+	case Direction::UP:
+		if (node->y == 0)
+			return nullptr;
+
+		return &m_nodeGrid[node->x][node->y - 1];
+	case Direction::DOWN:
+		if (node->y == m_height - 1)
+			return nullptr;
+
+		return &m_nodeGrid[node->x][node->y + 1];
+	default:
 		assert(false); // Invalid neighbor input.
 		return nullptr;
 	}

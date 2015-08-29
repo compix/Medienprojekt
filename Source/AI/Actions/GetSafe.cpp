@@ -8,8 +8,8 @@
 #include "../PathRatings/RateTrapDanger.h"
 #include "../PathRatings/RatePunchBomb.h"
 #include "../Behaviors/UseDirectionSkill.h"
-#include "../PathRatings/RateBlink.h"
 #include <sstream>
+#include "../PathRatings/RateBlinkToSafety.h"
 
 bool GetSafe::done()
 {
@@ -38,7 +38,7 @@ GetSafe::GetSafe(PathEngine* pathEngine, LayerManager* layerManager)
 	m_tryToSurviveAction->setNumOfChecks(20);
 	m_tryToSurviveAction->setRandomPaths(false);
 
-	m_blink = std::make_shared<Action>(pathEngine, RateBlink() , UseDirectionSkill(), layerManager);
+	m_blink = std::make_shared<Action>(pathEngine, RateBlinkToSafety() , UseDirectionSkill(), layerManager);
 	m_blink->setRandomPaths(false);
 	m_blink->setNumOfChecks(10);
 }

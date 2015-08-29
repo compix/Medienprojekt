@@ -2,7 +2,7 @@
 #include <vector>
 #include <float.h>
 #include <iostream>
-#include "GraphNode.h"
+#include "../GraphNode.h"
 #include "../AIUtil.h"
 
 struct AIPath

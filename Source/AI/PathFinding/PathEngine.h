@@ -1,7 +1,7 @@
 #pragma once
-#include "Graph.h"
+#include "../Graph.h"
 #include <memory>
-#include "SimulationGraph.h"
+#include "../SimulationGraph.h"
 #include "AIPath.h"
 #include "../PathRatings/PathRating.h"
 

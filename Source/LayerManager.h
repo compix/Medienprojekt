@@ -2,7 +2,6 @@
 #include "EntityLayer.h"
 #include <memory>
 #include <map>
-#include <type_traits>
 
 using std::vector;
 

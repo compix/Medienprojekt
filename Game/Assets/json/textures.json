@@ -23,5 +23,6 @@
 	"ghost_bomb_item" : "GhostBombItem.png",
 	"lightning_bomb":  "LightningBomb.png",
 	"lightning_bomb_item" : "LightningBombItem.png",
-	"lava" : "lava.png"
+	"lava" : "lava.png",
+	"blood": "blood.png"
 }

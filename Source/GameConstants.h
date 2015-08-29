@@ -22,7 +22,6 @@ namespace GameConstants
 	const int MAX_PLAYERS = 4;
 	extern const float PLAYER_SPEED;			// Normale Geschwindigkeit des Players
 	extern const float INIT_SPEED_MULTI;		// SPEED Multiplikator zu Beginn, !!sollte nicht geringer als 1 sein!!
-	extern const float SPEED_MULTI_CAP;			// Grenze des SPEED Multiplikators
 	extern const float SPEED_MULTI_INC;			// Um wie viel die Geschwindigkeit des Players bei jedem Aufsammeln erhoeht wird
 	extern const bool INIT_PLAYERS_CAN_KICK;	// Ob zu beginn Spieler bereits Bomben kicken können 
 	extern const bool INIT_PLAYERS_CAN_HOLD_BOMB;

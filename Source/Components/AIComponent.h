@@ -16,7 +16,7 @@ struct AIComponent
 	bool hasAction(ActionType type) { return actions.count(type) > 0; }
 
 	std::unordered_map<ActionType, ActionPtr, EnumClassHash> actions;
-	BaseAction* currentAction;
+	AbstractAction* currentAction;
 	ActionType currentActionType;
 	uint8_t id;
 

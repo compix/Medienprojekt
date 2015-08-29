@@ -12,6 +12,7 @@ ParticleSystem::ParticleSystem()
 	createManager("block", 100, 500);
 	createManager("smoke", 200, 500);
 	createManager("lava", 70, 1000);
+	createManager("blood", 100, 4);
 }
 
 void ParticleSystem::configure(entityx::EventManager& events)

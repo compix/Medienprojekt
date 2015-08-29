@@ -19,19 +19,15 @@ public:
 	void configure(entityx::EventManager& eventManager) override;
 	void receive(const DeathEvent& deathEvent);
 	void receive(const BombCreatedEvent& bombCreatedEvent);
-
-	static void getEnemies(Entity self, std::vector<Entity>& outEnemies);
-
-	void getCloseEnemies(Entity self, std::vector<Entity>& outEnemies);
+	void receive(const PortalCreatedEvent& portalCreatedEvent);
 
 	void init();
 	void reset();
-
-	template<class C, class... Args>
-	bool doEntitiesExistWithComponents();
 private:
 	void log(entityx::Entity& entity);
 	void log(entityx::Entity& entity, const std::string& txt);
+
+	void updateAIDesires(entityx::Entity& entity, float deltaTime);
 private:
 	std::unique_ptr<PathEngine> m_pathEngine;
 	LayerManager* m_layerManager;
@@ -39,13 +35,5 @@ private:
 	float m_updateTimer;
 
 	AIVisualizer m_visualizer;
+	bool m_forceRecomputation;
 };
-
-template <class C, class ... Args>
-bool AISystem::doEntitiesExistWithComponents()
-{
-	for (auto entity : GameGlobals::entities->entities_with_components<C, Args...>())
-		return true;
-
-	return false;
-}

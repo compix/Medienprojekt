@@ -70,7 +70,7 @@ bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, enti
 		auto& personality = entity.component<AIComponent>()->personality;
 		auto& desires = personality.desires;
 		auto& affinity = personality.affinity;
-		path.rating = (affinity.destroyBlock + numOfAffectedBlocks - timePerCell * path.nodes.size()) * desires.destroyBlock;
+		path.rating = (affinity.destroyBlock + numOfAffectedBlocks) * desires.destroyBlock - timePerCell * path.nodes.size();
 	}
 
 	return found;

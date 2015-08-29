@@ -15,6 +15,8 @@
 #include "../Events/ItemPickedUpEvent.h"
 #include "../Events/ItemCreatedEvent.h"
 #include "ParticleEffects.h"
+#include "../Components/BlockComponent.h"
+#include "../Components/InventoryComponent.h"
 
 ParticleSpawnSystem::ParticleSpawnSystem(ParticleSystem* particleSystem, LayerManager* layerManager)
 	:m_particleSystem(particleSystem), m_layerManager(layerManager)
@@ -39,15 +41,21 @@ void ParticleSpawnSystem::receive(const DeathEvent& deathEvent)
 		return;
 
 	auto entity = deathEvent.dyingEntity;
-
-	if (entity.has_component<SpriteComponent>())
-		entity.remove<SpriteComponent>();
 	
-	if (!entity.has_component<ParticleComponent>())
+	if (entity.has_component<BlockComponent>() && !entity.has_component<ParticleComponent>())
 	{
+		if (entity.has_component<SpriteComponent>())
+			entity.remove<SpriteComponent>();
+
 		auto emitter = ParticleEffects::blockDeath();
 		if (emitter)
 			entity.assign<ParticleComponent>(emitter);
+	}
+
+	if (entity.has_component<InventoryComponent>() && entity.has_component<CellComponent>())
+	{
+		auto cell = entity.component<CellComponent>();
+		GameGlobals::entityFactory->createPlayerDeathEffect(cell->x, cell->y);
 	}
 }
 

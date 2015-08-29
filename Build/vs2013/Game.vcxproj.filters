@@ -102,19 +102,10 @@
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\Graph.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\GraphNode.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathFinding\NodePathInfo.h">
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathFinding\PathEngine.h">
-      <Filter>AI\PathFinding</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathFinding\SimulationGraph.h">
       <Filter>AI\PathFinding</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\PathRating.h">
@@ -683,6 +674,30 @@
     <ClInclude Include="..\..\Source\Components\SoundComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Graph.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\GraphNode.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\SimulationGraph.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\BlinkAction.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\AttackEnemy.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateThrowBomb.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\ThrowBomb.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -715,16 +730,10 @@
     <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp">
       <Filter>AI\PathFinding</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\Graph.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathFinding\NodePathInfo.cpp">
       <Filter>AI\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathFinding\PathEngine.cpp">
-      <Filter>AI\PathFinding</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathFinding\SimulationGraph.cpp">
       <Filter>AI\PathFinding</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateAttackEnemy.cpp">
@@ -1003,6 +1012,27 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Graph.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\SimulationGraph.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\BlinkAction.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\AttackEnemy.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateThrowBomb.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\ThrowBomb.cpp">
+      <Filter>AI\Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

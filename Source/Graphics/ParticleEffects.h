@@ -20,6 +20,7 @@ public:
 	static ParticleEmitter* boostEffect(entityx::Entity& target);
 	static ParticleEmitter* smoke();
 	static ParticleEmitter* portal(const RGB& color);
+	static ParticleEmitter* playerDeath();
 
 private:
 	static ParticleSystem*  m_particleSystem;

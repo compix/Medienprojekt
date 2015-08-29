@@ -5,7 +5,6 @@
 #include "../Components/InventoryComponent.h"
 #include "../AI/PathFinding/PathEngine.h"
 #include "../GameConstants.h"
-#include "../Game.h"
 #include "../AI/PathRatings/RateSafety.h"
 #include "../AI/PathRatings/RateItem.h"
 #include "../AI/PathRatings/RateDestroyBlockSpot.h"
@@ -29,9 +28,11 @@
 #include "../AI/Behaviors/UseDirectionSkill.h"
 #include "../Components/LayerComponent.h"
 #include "../Components/BlockComponent.h"
+#include "../AI/Actions/BlinkAction.h"
+#include "../AI/Actions/AttackEnemy.h"
 
 AISystem::AISystem(LayerManager* layerManager)
-	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME)
+	: m_layerManager(layerManager), m_updateTimer(GameConstants::AI_UPDATE_TIME), m_forceRecomputation(false)
 {
 	m_pathEngine = std::make_unique<PathEngine>(layerManager);
 	m_visualizer.setPathEngine(m_pathEngine.get());
@@ -49,8 +50,8 @@ void AISystem::init()
 		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
 
-		PathRating attackEnemyRating = RateCombination({ RateAttackEnemy(), RateEscape(), RateTrapDanger() });
-		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<Action>(m_pathEngine.get(), attackEnemyRating, PlaceBomb(), m_layerManager);
+		
+		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<AttackEnemy>(m_pathEngine.get(), m_layerManager);
 
 		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks(), RateTrapDanger() });
 		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
@@ -59,12 +60,12 @@ void AISystem::init()
 		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
 
-		//aiComponent->actions[ActionType::BLINK] = std::make_shared<Action>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
+		aiComponent->actions[ActionType::BLINK] = std::make_shared<BlinkAction>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 
 		aiComponent->actions[ActionType::GET_SAFE] = std::make_shared<GetSafe>(m_pathEngine.get(), m_layerManager);
 
 		// Set the activation conditions
-		aiComponent->actions[ActionType::PLACE_PORTAL]->setActivationCondition([&](entityx::Entity& e)
+		aiComponent->actions[ActionType::PLACE_PORTAL]->setActivationCondition([&](entityx::Entity& e, float dt)
 		{
 			if (e.has_component<InventoryComponent>())
 			{
@@ -75,9 +76,13 @@ void AISystem::init()
 			return false;
 		});
 
-		aiComponent->actions[ActionType::WAIT]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<BlockComponent>(); });
-		aiComponent->actions[ActionType::DESTROY_BLOCK]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<BlockComponent>(); });
-		aiComponent->actions[ActionType::GET_ITEM]->setActivationCondition([&](entityx::Entity& e){return doEntitiesExistWithComponents<ItemComponent>(); });
+		aiComponent->actions[ActionType::WAIT]->setActivationCondition([&](entityx::Entity& e, float dt){return AIUtil::doEntitiesExistWithComponents<BlockComponent>(); });
+		aiComponent->actions[ActionType::DESTROY_BLOCK]->setActivationCondition([&](entityx::Entity& e, float dt)
+		{
+			auto inventory = e.component<InventoryComponent>();
+			return !inventory->isHoldingBomb && AIUtil::doEntitiesExistWithComponents<BlockComponent>();
+		});
+		aiComponent->actions[ActionType::GET_ITEM]->setActivationCondition([&](entityx::Entity& e, float dt){return AIUtil::doEntitiesExistWithComponents<ItemComponent>(); });
 	}
 }
 
@@ -163,6 +168,20 @@ void AISystem::log(entityx::Entity& entity, const std::string& txt)
 	Logger::log(txt, serviceId);
 }
 
+void AISystem::updateAIDesires(entityx::Entity& entity, float deltaTime)
+{
+	auto aiComponent = entity.component<AIComponent>();
+	auto& desires = aiComponent->personality.desires;
+	auto& changePerSecond = aiComponent->personality.changePerSecond;
+
+	desires.getSafe += changePerSecond.getSafe * deltaTime;
+	desires.attackEnemy += changePerSecond.attackEnemy * deltaTime;
+	desires.destroyBlock += changePerSecond.destroyBlock * deltaTime;
+	desires.getItem += changePerSecond.getItem * deltaTime;
+	desires.wait += changePerSecond.wait * deltaTime;
+	desires.placePortal += changePerSecond.placePortal * deltaTime;
+}
+
 void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
 	m_updateTimer -= static_cast<float>(dt);
@@ -174,10 +193,15 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		auto aiComponent = entity.component<AIComponent>();
 		auto input = entity.component<InputComponent>();
 
+		updateAIDesires(entity, float(dt));
+
+		m_pathEngine->getGraph()->spreadEnemySmells(entity);
+		m_pathEngine->getSimGraph()->spreadEnemySmells(entity);
+
 		// Action activation routine: No need to always run the PathFinding algorithm -> deactivate actions
 		// Example: No blocks in level -> No need to find a path to destroy blocks -> deactivate path finding action
 		for (auto& pair : aiComponent->actions)
-			pair.second->checkForActivation(entity);
+			pair.second->checkForActivation(entity, float(dt));
 
 		// Reset inputs
 		input->moveX = 0.f;
@@ -186,7 +210,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		input->skillButtonPressed = false;
 
 		bool currentActionValid = aiComponent->currentAction ? aiComponent->currentAction->valid(entity) : false;
-		if (!aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !currentActionValid)))
+		if (m_forceRecomputation || !aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !currentActionValid)))
 		{
 			auto lastAction = aiComponent->currentAction;
 
@@ -203,23 +227,16 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 				action->preparePath(entity);
 
-				if (!bestAction || bestAction->getRating() < action->getRating())
+				if (!bestAction || (bestAction->getRating() < action->getRating()))
 				{
 					bestAction = action;
 					bestActionType = pair.first;
 				}
 			}
 
-			/*
-			// No need to do the same action type again if it's still valid
-			if (currentActionValid && aiComponent->lastActionType == aiComponent->currentActionType)
-			{
-				aiComponent->currentAction->rest();
+			if (!bestAction)
 				continue;
-			}
-			*/
 
-			assert(bestAction);
 			aiComponent->currentAction = bestAction.get();
 			aiComponent->behaviorNode = bestAction->path().behaviorNode;
 			aiComponent->currentActionType = bestActionType;
@@ -242,6 +259,8 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 
 	if (m_updateTimer <= 0.f)
 		m_updateTimer = GameConstants::AI_UPDATE_TIME;
+
+	m_forceRecomputation = false;
 }
 
 void AISystem::configure(entityx::EventManager& eventManager)
@@ -289,29 +308,8 @@ void AISystem::receive(const BombCreatedEvent& bombCreatedEvent)
 	}
 }
 
-void AISystem::getEnemies(Entity self, std::vector<Entity>& outEnemies)
+void AISystem::receive(const PortalCreatedEvent& portalCreatedEvent)
 {
-	outEnemies.clear();
-	for(auto e : GameGlobals::entities->entities_with_components<InventoryComponent>())
-	{
-		if (e != self)
-			outEnemies.push_back(e);
-	}
-}
-
-void AISystem::getCloseEnemies(Entity self, std::vector<Entity>& outEnemies)
-{
-	assert(self.valid() && self.has_component<CellComponent>() && self.has_component<InventoryComponent>());
-
-	auto selfCell = self.component<CellComponent>();
-	outEnemies.clear();
-
-	for (auto e : GameGlobals::entities->entities_with_components<InventoryComponent, CellComponent>())
-	{
-		auto cell = e.component<CellComponent>();
-		uint32_t distance = abs(selfCell->x - cell->x) + abs(selfCell->y - cell->y);
-		if (e != self && distance < 4)
-			outEnemies.push_back(e);
-			
-	}
+	// Portals can cause the paths to be invalid. That's an easy fix for it
+	m_forceRecomputation = true;
 }

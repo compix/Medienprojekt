@@ -3,11 +3,9 @@
 #include "Components/CellComponent.h"
 #include "Components/TransformComponent.h"
 #include "GameConstants.h"
-#include "Components/SolidBlockComponent.h"
 #include "Components/LayerComponent.h"
 #include "GameGlobals.h"
 #include "Components/DynamicComponent.h"
-#include "AI/PathFinding/Graph.h"
 
 EntityLayer* LayerManager::createLayer(uint8_t width, uint8_t height, int layer)
 {

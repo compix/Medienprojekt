@@ -1,5 +1,5 @@
 #pragma once
-#include "GraphNode.h"
+#include <stdint.h>
 
 enum class NodeState
 {
