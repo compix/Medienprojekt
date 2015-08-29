@@ -42,8 +42,8 @@ private:
 	void adjustCellsIfOutOfBounds(int8_t* fromX, int8_t* toX, int8_t* fromY, int8_t* toY);
 	void adjustHeightForBlockedTiles(const bool wasBlocked, const bool targetIsBlocked, float* beginHeight, float* endHeight, const float offHeight);
 	float getDeltaOf(float coord2, float coord1);
-	float getXCenterCoords(uint8_t cellX);
-	float getYCenterCoords(uint8_t cellY);
-	float getXCoords(uint8_t cellX);
-	float getYCoords(uint8_t cellY);
+	float getXCenterCoords(int8_t cellX);
+	float getYCenterCoords(int8_t cellY);
+	float getXCoords(int8_t cellX);
+	float getYCoords(int8_t cellY);
 };

@@ -284,22 +284,22 @@ float JumpSystem::getDeltaOf(float coord2, float coord1)
 	return coord2 - coord1;
 }
 
-float JumpSystem::getXCenterCoords(uint8_t cellX)
+float JumpSystem::getXCenterCoords(int8_t cellX)
 {
 	return cellX*GameConstants::CELL_WIDTH + GameConstants::CELL_WIDTH / 2.f;
 }
 
-float  JumpSystem::getYCenterCoords(uint8_t cellY)
+float  JumpSystem::getYCenterCoords(int8_t cellY)
 {
 	return cellY * GameConstants::CELL_HEIGHT + GameConstants::CELL_HEIGHT / 2.f;
 }
 
-float JumpSystem::getXCoords(uint8_t cellX)
+float JumpSystem::getXCoords(int8_t cellX)
 {
 	return static_cast<float>(cellX*GameConstants::CELL_WIDTH);
 }
 
-float  JumpSystem::getYCoords(uint8_t cellY)
+float  JumpSystem::getYCoords(int8_t cellY)
 {
 	return static_cast<float>(cellY * GameConstants::CELL_HEIGHT);
 }
