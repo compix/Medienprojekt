@@ -5,6 +5,9 @@ struct AIPath;
 struct GraphNode;
 class PathEngine;
 
+/**
+* Currently not used.
+*/
 class RateEscape
 {
 public:

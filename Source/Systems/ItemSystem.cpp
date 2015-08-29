@@ -189,7 +189,7 @@ void ItemSystem::receive(const BombLandedOnEntityEvent& bombLandedOnEntityEvent)
 
 		if (m_freeCells.size() > 0)
 		{
-			size_t random = size_t(Random::getInt(0, m_freeCells.size()));
+			size_t random = size_t(Random::getInt(0, m_freeCells.size() - 1));
 			dropItemOnCell(LevelCell(cell->x, cell->y), m_freeCells[random], itemType);
 		}
 	}

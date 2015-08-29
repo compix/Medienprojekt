@@ -44,13 +44,12 @@ void AISystem::init()
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		
-		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateEscape(), RateTrapDanger(), RateDistanceToItems() });
+		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
 
 		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
 
-		
 		aiComponent->actions[ActionType::ATTACK_ENEMY] = std::make_shared<AttackEnemy>(m_pathEngine.get(), m_layerManager);
 
 		PathRating waitRating = RateCombination({ RateSafety(), RateDistanceToAffectedBlocks(), RateTrapDanger() });

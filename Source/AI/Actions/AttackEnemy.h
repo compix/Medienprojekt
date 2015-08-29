@@ -9,12 +9,12 @@ class AttackEnemy : public ActionSelector
 {
 public:
 	AttackEnemy(PathEngine* pathEngine, LayerManager* layerManager);
-	bool valid(entityx::Entity& entity) override;
 	void preparePath(entityx::Entity& entity) override;
 
 	void update(entityx::Entity& entity, float deltaTime) override;
 	bool done() override;
 private:
+	PathEngine* m_pathEngine;
 	ActionPtr m_placeBomb;
 	ActionPtr m_throwBomb;
 

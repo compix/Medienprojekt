@@ -8,7 +8,13 @@ bool RateThrowBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::En
 		return false;
 
 	auto inventory = entity.component<InventoryComponent>();
-	if (inventory->getAvailableBombCount() == 0)
+	if (inventory->getAvailableBombCount() == 0 || !inventory->canHoldBomb())
+		return false;
+
+	if (!AIUtil::isSafePath(entity, path))
+		return false;
+
+	if (goal->smell(SmellType::ENEMY) == 0)
 		return false;
 
 	auto graph = pathEngine->getSimGraph();
@@ -17,11 +23,14 @@ bool RateThrowBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::En
 	for (uint8_t i = 0; i < 4; ++i)
 	{
 		Direction direction = static_cast<Direction>(i);
-		auto expectedNode = getExpectedBombLanding(pathEngine, goal, direction);
-		if (expectedNode)
+		uint8_t throwDistance;
+		auto expectedNode = getExpectedBombLanding(pathEngine, goal, direction, throwDistance);
+		// Don't throw the bomb too far
+		if (expectedNode && throwDistance <= 4)
 		{
 			RateAttackEnemy rateAttackEnemy;
-			AIPath attackPath = path;
+			AIPath attackPath;
+			attackPath.nodes.push_back(expectedNode);
 			if (rateAttackEnemy(pathEngine, attackPath, entity))
 			{
 				path.rating = attackPath.rating;
@@ -34,15 +43,17 @@ bool RateThrowBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::En
 	return false;
 }
 
-GraphNode* RateThrowBomb::getExpectedBombLanding(PathEngine* pathEngine, GraphNode* startNode, Direction direction)
+GraphNode* RateThrowBomb::getExpectedBombLanding(PathEngine* pathEngine, GraphNode* startNode, Direction direction, uint8_t& outThrowDistance)
 {
 	int range = GameConstants::PUNCH_DISTANCE;
 	auto node = startNode;
 	auto graph = pathEngine->getSimGraph();
+	outThrowDistance = 0;
 
 	while (node && (!node->valid || range > 0))
 	{
 		--range;
+		++outThrowDistance;
 
 		// Bomb flies over poratls so ignore portals
 		if (range > 0)

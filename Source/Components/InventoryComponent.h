@@ -91,8 +91,6 @@ struct InventoryComponent
 		itemCounts[ItemType::BLINK_SKILL] = 0;
 		itemCounts[ItemType::GHOST_BOMB] = 0;
 		itemCounts[ItemType::LIGHTNING_BOMB] = 0;
-
-		//put(BombType::LIGHTNING);
 	}
 
 	bool isHoldingBomb;

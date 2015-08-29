@@ -9,29 +9,26 @@
 #include "../../Utils/Random.h"
 
 AttackEnemy::AttackEnemy(PathEngine* pathEngine, LayerManager* layerManager)
-	:m_throwStarted(false)
+	:m_throwStarted(false), m_pathEngine(pathEngine)
 {
 	m_currentAction = nullptr;
-	m_placeBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateAttackEnemy(), RateEscape(), RateTrapDanger() }), PlaceBomb(), layerManager);
-	m_throwBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateThrowBomb(), RateEscape(), RateTrapDanger() }), ThrowBomb(layerManager), layerManager);
-}
+	m_placeBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateAttackEnemy(), RateTrapDanger() }), PlaceBomb(), layerManager);
+	m_throwBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateThrowBomb(), RateTrapDanger() }), ThrowBomb(layerManager), layerManager);
 
-bool AttackEnemy::valid(entityx::Entity& entity)
-{
-	return m_currentAction &&
-		m_currentAction->path().nodes.size() > 0 &&
-		!AIUtil::isBlocked(m_currentAction->path()) &&
-		AIUtil::isValidPath(m_currentAction->path()) &&
-		AIUtil::isOnPath(entity, m_currentAction->path()) &&
-		AIUtil::isSafePath(entity, m_currentAction->path());
+	setActivationCondition([&](entityx::Entity& entity, float deltaTime)
+	{
+		auto inventory = entity.component<InventoryComponent>();
+		return inventory->getAvailableBombCount() > 0;
+	});
 }
 
 void AttackEnemy::preparePath(entityx::Entity& entity)
 {
 	auto inventory = entity.component<InventoryComponent>();
-	int random = Random::getInt(0, 4);
+	int random = Random::getInt(1, 100);
 
-	if (random == 0 || inventory->isHoldingBomb)
+	// 5% chance to throw a bomb
+	if (inventory->canHoldBomb() && (random <= 5 || inventory->isHoldingBomb))
 	{
 		m_currentAction = m_throwBomb.get();
 		m_currentAction->preparePath(entity);

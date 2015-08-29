@@ -353,9 +353,9 @@ void EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, uint8_t range,
 		explosions[i] = createExplosion(cellX, cellY, direction, range, spreadTime, bombType);
 	}
 
-	// Don't teleport if placed on a portal
+	// Don't teleport if placed on a portal - it's too confusing otherwise
 	auto portal = m_layerManager->getEntityWithComponent<PortalComponent>(GameConstants::MAIN_LAYER, cellX, cellY);
-	if (portal)
+	if (portal && bombType != BombType::LIGHTNING_PEAK)
 	{
 		for (auto e : explosions)
 			e.assign<PortalMarkerComponent>(portal.id());

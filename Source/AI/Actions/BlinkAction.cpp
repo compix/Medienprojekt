@@ -15,6 +15,10 @@ void BlinkAction::update(entityx::Entity& entity, float deltaTime)
 
 bool BlinkAction::isBlinkReady(entityx::Entity& entity, float deltaTime)
 {
+	auto inventory = entity.component<InventoryComponent>();
+	if (!inventory->isActive(SkillType::BLINK))
+		return false;
+
 	if (!blinked)
 		return true;
 
