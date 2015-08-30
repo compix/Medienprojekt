@@ -23,6 +23,8 @@ MenuPageCredits::MenuPageCredits(Menu &menu)
 	y = 400;
 	createSection(x, y, "Sounds:");
 	createSubsection(x, y, "Dennis Grass");
+	createSubsection(x, y, "qubodup");
+	createSubsection(x, y, "Quaker540");
 
 	y = 400;
 	createSection(x2, y, "Music:");
