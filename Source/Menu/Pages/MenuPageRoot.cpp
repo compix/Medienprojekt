@@ -9,6 +9,8 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_helpPage(menu), m_creditsPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/background.png");
+	auto label = createLabel(470, 20, GameConstants::WINDOW_TITLE);
+	label->getLabel()->setTextColor(sf::Color(81, 125, 25));
 
 	auto x = 300.0f;
 	auto y = 150.0f;
