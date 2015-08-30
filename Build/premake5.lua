@@ -49,7 +49,7 @@ filter { "system:windows" }
 filter { "action:vs*" }
 	defines {"_CRT_SECURE_NO_DEPRECATE" }
 
-filter { "action:gmake" }
+filter { "action:gmake", "language:C++" }
 	buildoptions {"-std=c++11"}
 
 filter { "Debug" }
