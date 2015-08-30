@@ -61,6 +61,7 @@ public:
 
 	static const char *getKeyName(int code);
 	static int getKeyCode(const char *name);
+	static const char *getAxisName(sf::Joystick::Axis axis);
 	static sf::Joystick::Axis getAxis(const char *name);
 
 	void receive(const sf::Event &evt);

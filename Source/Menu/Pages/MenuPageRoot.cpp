@@ -6,7 +6,7 @@
 #include "../../Events/CreateGameEvent.h"
 
 MenuPageRoot::MenuPageRoot(Menu &menu)
-	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_helpPage(menu), m_creditsPage(menu)
+	:MenuPage(menu), m_createGamePage(menu), m_joinGamePage(menu), m_helpPage(menu), m_settingsPage(menu), m_creditsPage(menu)
 {
 	createPicture(800, 600, "Assets/ui/background.png");
 	auto label = createLabel(470, 20, GameConstants::WINDOW_TITLE);
@@ -32,6 +32,10 @@ MenuPageRoot::MenuPageRoot(Menu &menu)
 	y += stepY;
 	tgui::Button::Ptr button = createButton(x, y, width, height, "Help");
 	button->bindCallback(&MenuPageRoot::onHelp, this, tgui::Button::LeftMouseClicked);
+
+	y += stepY;
+	button = createButton(x, y, width, height, "Input Helper");
+	button->bindCallback(&MenuPageRoot::onSettings, this, tgui::Button::LeftMouseClicked);
 
 	y += stepY;
 	button = createButton(x, y, width, height, "Credits");
@@ -77,6 +81,11 @@ void MenuPageRoot::onDisconnect()
 void MenuPageRoot::onHelp()
 {
 	m_menu.pushPage(&m_helpPage);
+}
+
+void MenuPageRoot::onSettings()
+{
+	m_menu.pushPage(&m_settingsPage);
 }
 
 void MenuPageRoot::onCredits()

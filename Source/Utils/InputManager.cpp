@@ -429,6 +429,11 @@ int InputManager::getKeyCode(const char *name)
 	return -1;
 }
 
+const char* InputManager::getAxisName(sf::Joystick::Axis axis)
+{
+	return axisNames[axis];
+}
+
 sf::Joystick::Axis InputManager::getAxis(const char *name)
 {
 	if (name)

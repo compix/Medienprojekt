@@ -18,6 +18,8 @@ void Menu::draw()
 {
 	if (!m_pageStack.empty())
 		m_gui.draw(false);
+	if (!m_pageStack.empty())
+		m_pageStack.top()->update();
 }
 
 void Menu::receive(const sf::Event &evt)

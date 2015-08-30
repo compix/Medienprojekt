@@ -58,6 +58,7 @@ public:
 	MenuPage(Menu &menu);
 	virtual ~MenuPage();
 
+	virtual void update() {}
 	virtual void show();
 	virtual void hide() { m_panel->hide(); }
 	virtual void close();
