@@ -19,8 +19,8 @@ MenuPageHelp::MenuPageHelp(Menu &menu)
 
 	panel = createPanel("Active Skills");
 	createItem(panel, "portal_skill", "Portals", "Character can spawn 2 portals (1 at a time) at his\nposition.");
-	createItem(panel, "punch_skill", "Punch", "Punch bombs 1 tile in front of the character.");
-	createItem(panel, "holding_skill", "Bomb-Pickup", "Character can pick up 1 bomb if he is on top of the\nbomb (bomb pos = player pos).");
+	createItem(panel, "punch_skill", "Punch", "Punch bombs 3 tiles in front of the character.");
+	createItem(panel, "holding_skill", "Bomb-Pickup", "Character can pick up 1 bomb if he is on top of the\nbomb (bomb pos = player pos) and then throw it.");
 	createItem(panel, "blink_skill", "Blink", "Fast teleportation/blink in the facing direction\n(not instant).");
 
 
