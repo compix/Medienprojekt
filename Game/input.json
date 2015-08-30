@@ -1,23 +1,23 @@
 [
 	{
-		"BOMB": "Space",
+		"BOMB": "Left Shift",
 		"SKILL": "Left Control",
-		"UP": "Up Arrow",
-		"DOWN": "Down Arrow",
-		"LEFT": "Left Arrow",
-		"RIGHT": "Right Arrow"
-	},
-	{
-		"BOMB": "Right Control",
-		"SKILL": "Right Shift",
 		"UP": "W",
 		"DOWN": "S",
 		"LEFT": "A",
 		"RIGHT": "D"
 	},
 	{
-		"BOMB": "Numpad 0",
-		"SKILL": "Numpad 5",
+		"BOMB": "Right Shift",
+		"SKILL": "Right Control",
+		"UP": "Up Arrow",
+		"DOWN": "Down Arrow",
+		"LEFT": "Left Arrow",
+		"RIGHT": "Right Arrow"
+	},
+	{
+		"BOMB": "Numpad 7",
+		"SKILL": "Numpad 1",
 		"UP": "Numpad 8",
 		"DOWN": "Numpad 2",
 		"LEFT": "Numpad 4",
