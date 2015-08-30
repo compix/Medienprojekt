@@ -3,7 +3,7 @@
 	{
         "affinity":
 		{
-			"destroyBlock": 4,
+			"destroyBlock": 5,
 			"wait": 5,
 			"attackEnemy": 5,
 			"placePortal": 1,
@@ -16,12 +16,12 @@
 			"wait": 3,
 			"attackEnemy": 4,
 			"placePortal": 1,
-			"getItem": 2,
+			"getItem": 2.5,
 			"getSafe": 3
 		},
 		"changePerSecond":
 		{
-			"destroyBlock": 0,
+			"destroyBlock": -0.007,
 			"wait": 0,
 			"attackEnemy": 0.03,
 			"placePortal": 0.02,
@@ -37,7 +37,7 @@
 	{
         "affinity":
 		{
-			"destroyBlock": 2,
+			"destroyBlock": 4,
 			"wait": 5,
 			"attackEnemy": 8,
 			"placePortal": 1,
@@ -50,12 +50,12 @@
 			"wait": 3,
 			"attackEnemy": 2,
 			"placePortal": 1,
-			"getItem": 2,
+			"getItem": 2.5,
 			"getSafe": 4
 		},
 		"changePerSecond":
 		{
-			"destroyBlock": 0,
+			"destroyBlock": -0.007,
 			"wait": 0,
 			"attackEnemy": 0.02,
 			"placePortal": 0.02,
@@ -84,12 +84,12 @@
 			"wait": 3,
 			"attackEnemy": 3,
 			"placePortal": 1,
-			"getItem": 3,
+			"getItem": 4.5,
 			"getSafe": 0.5
 		},
 		"changePerSecond":
 		{
-			"destroyBlock": 0,
+			"destroyBlock": -0.01,
 			"wait": 0,
 			"attackEnemy": 0.03,
 			"placePortal": 0.02,
@@ -105,7 +105,7 @@
 	{
         "affinity":
 		{
-			"destroyBlock": 2,
+			"destroyBlock": 5,
 			"wait": 5,
 			"attackEnemy": 8,
 			"placePortal": 4,
@@ -118,12 +118,12 @@
 			"wait": 3,
 			"attackEnemy": 2,
 			"placePortal": 2,
-			"getItem": 2,
+			"getItem": 2.5,
 			"getSafe": 4
 		},
 		"changePerSecond":
 		{
-			"destroyBlock": 0,
+			"destroyBlock": -0.007,
 			"wait": 0,
 			"attackEnemy": 0.03,
 			"placePortal": 0.03,

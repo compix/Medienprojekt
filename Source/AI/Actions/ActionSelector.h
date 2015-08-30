@@ -1,6 +1,9 @@
 #pragma once
 #include "Action.h"
 
+/**
+* Selects the first valid action.
+*/
 class ActionSelector : public AbstractAction
 {
 public:

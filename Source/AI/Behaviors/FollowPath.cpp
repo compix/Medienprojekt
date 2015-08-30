@@ -48,14 +48,18 @@ bool FollowPath::operator()(entityx::Entity& entity)
 	int botAvoidance   = (cell->y - static_cast<int>((transform->y - playerRadius) / GameConstants::CELL_HEIGHT));
 	int topAvoidance   = (cell->y - static_cast<int>((transform->y + playerRadius) / GameConstants::CELL_HEIGHT));
 
-	// Check if the entity reached a new cell on the path
-	auto n1 = m_path.nodes[m_path.curNode];
-	if (cell->x != n1->x || cell->y != n1->y)
-		m_path.curNode = std::min(static_cast<unsigned int>(m_path.curNode + 1), m_path.nodes.size() - 1);
+	// Check if the entity reached the next cell on the path
+	if (static_cast<unsigned int>(m_path.curNode + 1) < m_path.nodes.size())
+	{
+		auto nextNode = m_path.nodes[m_path.curNode + 1];
+		if (cell->x == nextNode->x && cell->y == nextNode->y)
+			m_path.curNode++;
+	}	
 
 	if (m_path.curNode < m_path.nodes.size() - 1)
 	{
 		// Follow path
+		auto n1 = m_path.nodes[m_path.curNode];
 		auto n2 = m_path.nodes[m_path.curNode + 1];	
 
 		int moveX = n2->x - n1->x;

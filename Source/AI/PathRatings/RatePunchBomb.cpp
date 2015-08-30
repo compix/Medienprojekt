@@ -32,7 +32,7 @@ bool RatePunchBomb::operator()(PathEngine* pathEngine, AIPath& path, entityx::En
 
 	if (bestBomb)
 	{
-		path.rating = bestBomb->bombProperties.explosionTime - path.nodes.size() * AIUtil::getTimePerCell(entity);
+		path.rating = bestBomb->bombProperties.explosionTime - path.requiredTime(entity);
 		path.behaviorNode = bestBomb;
 		return true;
 	}

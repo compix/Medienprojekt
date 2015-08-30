@@ -48,57 +48,66 @@ void GetSafe::preparePath(entityx::Entity& entity)
 	auto cell = entity.component<CellComponent>();
 
 	// No need to get safe if already safe...
-	if (m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
+	if (!m_pathEngine->getGraph()->getNode(cell->x, cell->y)->properties.affectedByExplosion)
 	{
-		AIPath safePath;
-		NodeCondition safeSpotCondition = [](const GraphNode* node) { return !node->properties.affectedByExplosion; };
-		m_pathEngine->breadthFirstSearch(cell->x, cell->y, safeSpotCondition, safePath);
-		if (safePath.nodes.size() > 0)
+		m_currentAction = nullptr;
+		return;
+	}
+
+	auto inventory = entity.component<InventoryComponent>();
+
+	// Check if a path to safety exists first
+	AIPath safePath;
+	NodeCondition safeSpotCondition = [](const GraphNode* node) { return !node->properties.affectedByExplosion; };
+	m_pathEngine->breadthFirstSearch(cell->x, cell->y, safeSpotCondition, safePath);
+	if (safePath.nodes.size() > 0)
+	{
+		m_getSafeAction->preparePath(entity);
+
+		if (m_getSafeAction->path().nodes.size() > 0)
 		{
-			m_getSafeAction->preparePath(entity);
+			// All good so just take the path to safety
+			m_currentAction = m_getSafeAction.get();
+			return;
+		}
 
-			if (m_getSafeAction->path().nodes.size() > 0)
-			{
-				// All good so just take the path to safety
-				m_currentAction = m_getSafeAction.get();
-				return;
-			}
-
+		if (inventory->isActive(SkillType::BLINK))
+		{
 			m_blink->preparePath(entity);
 			if (m_blink->path().nodes.size() > 0)
 			{
 				m_currentAction = m_blink.get();
 				return;
 			}
-
-			// The risky path will certainly lead to death. Try to survive by waiting on a cell which is most promising. 
-			// Wait for a bomb to explode and maybe it will be possible to escape after.
-			m_currentAction = m_tryToSurviveAction.get();
-			m_currentAction->preparePath(entity);
-			return;
 		}
 
-		// There is no path out so try to kick a bomb to make one
-		m_currentAction = m_kickBombAction.get();
+		// The risky path will certainly lead to death. Try to survive by waiting on a cell which is most promising. 
+		// Wait for a bomb to explode and maybe it will be possible to escape after.
+		m_currentAction = m_tryToSurviveAction.get();
 		m_currentAction->preparePath(entity);
-
-		if (m_currentAction->path().nodes.size() == 0)
-		{
-			// Couldn't kick the bomb, try to punch it
-			m_currentAction = m_punchBomb.get();
-			m_currentAction->preparePath(entity);
-		}
-
-		if (m_currentAction->path().nodes.size() == 0)
-		{
-			m_currentAction = m_tryToSurviveAction.get();
-			m_currentAction->preparePath(entity);
-		}
-
 		return;
 	}
 
-	m_currentAction = nullptr;
+	// There is no path out so try to kick a bomb to make one
+	if (inventory->canKickBomb())
+	{
+		m_currentAction = m_kickBombAction.get();
+		m_currentAction->preparePath(entity);
+	}
+
+	if (inventory->isActive(SkillType::PUNCH) && (!m_currentAction || m_currentAction->path().nodes.size() == 0))
+	{
+		// Couldn't kick the bomb, try to punch it
+		m_currentAction = m_punchBomb.get();
+		m_currentAction->preparePath(entity);
+	}
+
+	if (!m_currentAction || m_currentAction->path().nodes.size() == 0)
+	{
+		// Everything failed. Just try to survive.
+		m_currentAction = m_tryToSurviveAction.get();
+		m_currentAction->preparePath(entity);
+	}
 }
 
 void GetSafe::update(entityx::Entity& entity, float deltaTime)

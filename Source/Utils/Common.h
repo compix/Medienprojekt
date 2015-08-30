@@ -35,6 +35,7 @@ namespace CommonUtil
 
 	bool isSkill(ItemType itemType);
 	bool isBomb(ItemType itemType);
+	bool isRare(ItemType itemType);
 }
 
 struct EnumClassHash

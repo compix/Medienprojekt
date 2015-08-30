@@ -342,7 +342,7 @@ void AIVisualizer::visualizeSmells()
 	offsetY(false);
 	drawText("Smell Legend", m_rightXOffset, offsetY(false));
 	drawText("Affected Blocks", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(255, 140, 0));
-	drawText("Affected Blocks", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(0, 255, 255));
+	drawText("Enemies", m_rightXOffset, offsetY(false), TextShapeType::CIRCLE, sf::Color(0, 255, 255));
 
 	m_circle.setRadius(20.f);
 	m_circle.setOrigin(10, 10);

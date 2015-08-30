@@ -19,7 +19,7 @@ bool RateBlink::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity
 	float bestRating = -FLT_MAX;
 	GraphNode* behaviorNode = nullptr;
 
-	// Check in all directions if a safe line exists
+	// Check in all directions if a promising line exists (Will I get items or closer to an enemy to attack him?)
 	for (uint8_t i = 0; i < 4; ++i)
 	{
 		Direction direction = static_cast<Direction>(i);
@@ -34,7 +34,7 @@ bool RateBlink::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity
 			auto& affinity = personality.affinity;
 			float rating = (numItems + (numItems > 0 ? affinity.getItem : 0.f)) * desires.getItem;
 			if (goal->smell(SmellType::ENEMY) == 0 && endNode->smell(SmellType::ENEMY) > 0)
-				rating += affinity.attackEnemy * desires.attackEnemy * 0.3f;
+				rating += affinity.attackEnemy * desires.attackEnemy * 0.3f; // * 0.3f to lower the influence (the AI is not attacking but just getting closer thus the rating should be lower)
 
 			// Consider if it's a trap
 			RateTrapDanger rateTrapDanger;

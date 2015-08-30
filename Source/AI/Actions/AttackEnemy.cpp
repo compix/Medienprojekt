@@ -15,6 +15,7 @@ AttackEnemy::AttackEnemy(PathEngine* pathEngine, LayerManager* layerManager)
 	m_placeBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateAttackEnemy(), RateTrapDanger() }), PlaceBomb(), layerManager);
 	m_throwBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateThrowBomb(), RateTrapDanger() }), ThrowBomb(layerManager), layerManager);
 
+	// Activate only if the AI can place bombs.
 	setActivationCondition([&](entityx::Entity& entity, float deltaTime)
 	{
 		auto inventory = entity.component<InventoryComponent>();
@@ -54,6 +55,7 @@ void AttackEnemy::update(entityx::Entity& entity, float deltaTime)
 
 	if (m_throwStarted)
 	{
+		// The action fails if the enemy didn't place the bomb yet and has no bombs to place
 		if (!m_placedBomb && inventory->getAvailableBombCount() == 0)
 		{
 			m_currentAction = nullptr;
@@ -61,6 +63,7 @@ void AttackEnemy::update(entityx::Entity& entity, float deltaTime)
 			return;
 		}
 
+		// First place the bomb then pick it up
 		// Picking up the bomb is the same input so placeBomb behavior will work too
 		PlaceBomb placeBomb;
 		placeBomb(entity);

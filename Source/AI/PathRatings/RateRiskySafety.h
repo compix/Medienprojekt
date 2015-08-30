@@ -8,5 +8,10 @@
 class RateRiskySafety
 {
 public:
+	RateRiskySafety();
+
 	bool operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity);
+private:
+	float m_exploTimeInfluence;
+	float m_pathDurationInfluence;
 };

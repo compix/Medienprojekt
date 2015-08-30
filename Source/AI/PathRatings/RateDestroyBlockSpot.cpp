@@ -6,6 +6,7 @@
 #include "../../Components/InventoryComponent.h"
 #include "../../Components/AIComponent.h"
 
+// Almost the same as the attack enemy implementation
 bool RateDestroyBlockSpot::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	auto goal = path.goal();

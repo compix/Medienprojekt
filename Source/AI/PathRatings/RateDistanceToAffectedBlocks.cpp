@@ -5,6 +5,7 @@
 
 bool RateDistanceToAffectedBlocks::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
+	// If there is no smell of dying blocks then the path fails
 	if (!path.goal() || path.goal()->smells.dyingBlock == 0)
 		return false;
 

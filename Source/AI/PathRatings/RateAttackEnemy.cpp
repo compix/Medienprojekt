@@ -11,12 +11,11 @@ bool RateAttackEnemy::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 	if (!goal->valid)
 		return false;
 
-	// If the AI can't place more bombs or the path isn't safe then it fails
+	// If the AI can't place bombs or the path isn't safe then it fails
 	auto inventory = entity.component<InventoryComponent>();
 	if (inventory->getAvailableBombCount() == 0 || !AIUtil::isSafePath(entity, path))
 		return false;
 
-	// Bomb should affect enemies but no items
 	bool found = true;
 	float timePerCell = AIUtil::getTimePerCell(entity);
 	bool spotAffectedByExplosion = goal->properties.affectedByExplosion;

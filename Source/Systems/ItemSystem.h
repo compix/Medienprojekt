@@ -22,6 +22,7 @@ public:
 	void receive(const ItemPickedUpEvent& pickedUpEvent);
 	void receive(const BombLandedOnEntityEvent& bombLandedOnEntityEvent);
 	
+	static bool needsItem(entityx::Entity& entity, ItemType itemType);
 private:
 	void dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType);
 	void getFreeCells(std::vector<LevelCell>& outFreeCells);
@@ -38,7 +39,7 @@ private:
 private:
 	LayerManager* m_layerManager;
 
-	std::unordered_map<ItemType, uint8_t, EnumClassHash> m_maxItemCounts;
-	std::unordered_map<ItemType, uint8_t, EnumClassHash> m_minItemCounts;
+	static std::unordered_map<ItemType, uint8_t, EnumClassHash> m_maxItemCounts;
+	static std::unordered_map<ItemType, uint8_t, EnumClassHash> m_minItemCounts;
 };
 

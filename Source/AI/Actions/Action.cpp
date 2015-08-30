@@ -25,9 +25,6 @@ void Action::update(entityx::Entity& entity, float deltaTime)
 {
 	assert(entity && entity.has_component<CellComponent>() && entity.has_component<TransformComponent>() && entity.has_component<AIComponent>());
 
-	if (m_resting)
-		return;
-
 	if (m_followPath(entity) && !m_behaviorExecuted)
 		m_behaviorExecuted = m_behavior(entity);
 }
@@ -40,12 +37,11 @@ void Action::preparePath(entityx::Entity& entity)
 	AIPath path;
 	
 	if (m_randomPaths)
-		m_pathEngine->searchRandom(entity, cell->x, cell->y, path, m_pathRating, m_numOfChecks);
+		m_pathEngine->searchRandom(entity, cell->x, cell->y, path, m_pathRating, m_numOfPaths);
 	else
-		m_pathEngine->searchBest(entity, cell->x, cell->y, path, m_pathRating, m_numOfChecks);
+		m_pathEngine->searchBest(entity, cell->x, cell->y, path, m_pathRating, m_numOfPaths);
 	
 	m_followPath.setPath(path);
 
 	m_behaviorExecuted = false;
-	m_resting = false;
 }

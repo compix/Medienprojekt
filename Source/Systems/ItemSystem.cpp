@@ -15,6 +15,10 @@
 #include "../Components/LavaComponent.h"
 #include "../Events/JumpEvent.h"
 
+
+std::unordered_map<ItemType, uint8_t, EnumClassHash> ItemSystem::m_maxItemCounts;
+std::unordered_map<ItemType, uint8_t, EnumClassHash> ItemSystem::m_minItemCounts;
+
 ItemSystem::ItemSystem(LayerManager* layerManager)
 	: m_layerManager(layerManager)
 {
@@ -193,6 +197,13 @@ void ItemSystem::receive(const BombLandedOnEntityEvent& bombLandedOnEntityEvent)
 			dropItemOnCell(LevelCell(cell->x, cell->y), m_freeCells[random], itemType);
 		}
 	}
+}
+
+bool ItemSystem::needsItem(entityx::Entity& entity, ItemType itemType)
+{
+	auto inventory = entity.component<InventoryComponent>();
+	assert(inventory);
+	return (inventory->itemCounts[itemType] == 0) || (inventory->itemCounts[itemType] < m_maxItemCounts[itemType]);
 }
 
 void ItemSystem::dropItemOnCell(LevelCell from, LevelCell to, ItemType itemType)

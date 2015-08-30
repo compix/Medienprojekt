@@ -55,6 +55,9 @@ public:
 	*/
 	void searchRandom(entityx::Entity& entity, uint8_t startX, uint8_t startY, AIPath& pathOut, PathRating ratePath, uint8_t outOf = 5);
 
+	/**
+	* Updates the graphs.
+	*/
 	void update(float deltaTime);
 
 	inline Graph* getGraph() const { return m_graph.get(); }

@@ -114,7 +114,6 @@ struct InventoryComponent
 	inline void remove(BombType bombType) { activeBombs.remove(bombType); }
 
 	inline float speed() { return (GameConstants::INIT_SPEED_MULTI + GameConstants::SPEED_MULTI_INC * itemCounts[ItemType::SPEED_MULTIPLICATOR]) * GameConstants::PLAYER_SPEED; }
-	inline bool canPunchBomb() { return itemCounts[ItemType::PUNCH_SKILL] > 0; }
 	inline bool canHoldBomb() { return itemCounts[ItemType::HOLD_BOMB_SKILL] > 0; }
 	inline bool canKickBomb() { return itemCounts[ItemType::BOMB_KICK_SKILL] > 0; }
 	inline bool hasAntiMagnet() { return itemCounts[ItemType::ANTI_MAGNET_SKILL] > 0; }

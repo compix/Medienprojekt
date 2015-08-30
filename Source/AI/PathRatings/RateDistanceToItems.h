@@ -2,7 +2,8 @@
 #include "../PathFinding/PathEngine.h"
 
 /**
-* Use only in combination. It doesn't make sense on its own.
+* To get closer to items -> destroy blocks to make a path to get an item for example.
+* Note: Use only in combination. It doesn't make sense on its own.
 */
 class RateDistanceToItems
 {

@@ -60,6 +60,9 @@ namespace GameConstants
 
 	// Relating to AI
 	extern const float AI_UPDATE_TIME;
+	extern const float FAVORITE_SKILL_BONUS;
+	extern const float ITEM_RARITY_BONUS;
+	extern const float NO_NEED_FOR_ITEM_INFLUENCE;
 
 	// Relating to timing Events
 	extern const float LOBBY_COUNTDOWN;			// Seconds to count down before forcing all players ready

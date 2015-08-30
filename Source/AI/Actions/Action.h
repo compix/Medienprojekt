@@ -5,12 +5,15 @@
 #include "../Behaviors/FollowPath.h"
 #include <entityx/entityx.h>
 
+/**
+* Functor for the action activations. If this condition returns true then the action will be activated and considered in the computation.
+*/
 typedef std::function<bool(entityx::Entity& entity, float deltaTime)> ActionActivationCondition;
 
 class AbstractAction
 {
 public:
-	AbstractAction() : m_numOfChecks(5), m_randomPaths(true), m_resting(false), 
+	AbstractAction() : m_numOfPaths(5), m_randomPaths(true),
 		m_activationCondition([](entityx::Entity& e, float dt){ return true; }) {}
 
 	virtual ~AbstractAction() {}
@@ -22,10 +25,8 @@ public:
 	virtual void resetRating() = 0;
 	virtual AIPath& path() = 0;
 	virtual void preparePath(entityx::Entity& entity) = 0;
-	virtual inline void setNumOfChecks(uint8_t num) { m_numOfChecks = num; };
+	virtual inline void setNumOfChecks(uint8_t num) { m_numOfPaths = num; };
 	virtual inline void setRandomPaths(bool randomPaths) { m_randomPaths = randomPaths; }
-	virtual inline void rest() { m_resting = true; }
-	virtual inline bool isResting() { return m_resting; }
 	virtual inline void activate(bool active) { m_active = active; }
 	virtual inline bool isActive() { return m_active; }
 	virtual inline void setActivationCondition(ActionActivationCondition actionActivationCondition) { m_activationCondition = actionActivationCondition; }
@@ -34,11 +35,11 @@ public:
 
 	virtual std::string logString(entityx::Entity& entity) { return ""; }
 protected:
-	uint8_t m_numOfChecks;
-	uint8_t m_randomPaths;
-	bool m_resting;
-	bool m_active;
+	uint8_t m_numOfPaths; // How many valid paths to consider (no need to find all viable paths)
+	bool m_randomPaths; // true: a random path will be chosen, false: the best path will be chosen
+	bool m_active; // Indicates if the action is currently active. Inactive actions won't be executed.
 
+	// The condition to activate/deactivate actions
 	ActionActivationCondition m_activationCondition;
 };
 
@@ -55,16 +56,19 @@ public:
 	*/
 	bool valid(entityx::Entity& entity) override;
 
+	/**
+	* Path following and behavior execution.
+	*/
 	void update(entityx::Entity& entity, float deltaTime) override;
 
-	inline bool done() override { return m_resting || m_behaviorExecuted; }
+	inline bool done() override { return m_behaviorExecuted; }
 
 	inline float getRating() override { return m_followPath.path().rating; }
 	inline void resetRating() override { m_followPath.path().resetRating(); }
 	inline AIPath& path() override { return m_followPath.path(); }
 	
 	/**
-	* Compute the best path with the given path rating and prepare it for update.
+	* Compute the best or a random path with the given path rating and prepare it for update.
 	*/
 	void preparePath(entityx::Entity& entity) override;
 

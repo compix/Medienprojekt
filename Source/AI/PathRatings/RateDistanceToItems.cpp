@@ -11,8 +11,9 @@ bool RateDistanceToItems::operator()(PathEngine* pathEngine, AIPath& path, entit
 	auto& personality = entity.component<AIComponent>()->personality;
 	auto& desires = personality.desires;
 	auto& affinity = personality.affinity;
+	float influence = 0.4f;
 	path.rating = affinity.getItem + inverseDistanceToItems(path.goal());
-	path.rating *= desires.getItem;
+	path.rating *= desires.getItem * influence;
 	return true;
 }
 

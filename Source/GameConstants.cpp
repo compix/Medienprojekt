@@ -59,6 +59,9 @@ namespace GameConstants
 
 	// Relating to AI
 	extern const float AI_UPDATE_TIME = 1.f / 30.f;
+	extern const float FAVORITE_SKILL_BONUS = 5.f;
+	extern const float ITEM_RARITY_BONUS = 3.f;
+	extern const float NO_NEED_FOR_ITEM_INFLUENCE = -5.f;
 
 	// Relating to timing Events
 	extern const float LOBBY_COUNTDOWN = 120;

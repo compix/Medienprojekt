@@ -70,8 +70,6 @@ protected:
 	ShaderManager m_shaderManager;
 
 	sf::Vector2f m_mousePos;
-
-	ParticleEmitter* m_particleEmitter;
 };
 
 template <typename S, typename ... Args>

@@ -114,3 +114,8 @@ bool CommonUtil::isBomb(ItemType itemType)
 		return false;
 	}
 }
+
+bool CommonUtil::isRare(ItemType itemType)
+{
+	return itemType != ItemType::BOMB_CAP_BOOST && itemType != ItemType::BOMB_RANGE_BOOST && itemType != ItemType::SPEED_MULTIPLICATOR;
+}

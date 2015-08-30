@@ -3,9 +3,17 @@
 #include "../AIUtil.h"
 #include "RateSafety.h"
 #include "../../Components/AIComponent.h"
+#include "../../Components/ItemComponent.h"
+#include "../../Systems/ItemSystem.h"
+
+RateItem::RateItem(LayerManager* layerManager)
+	:m_layerManager(layerManager)
+{
+}
 
 bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
+	assert(m_layerManager);
 	auto goal = path.goal();
 
 	if (!goal->valid)
@@ -13,31 +21,41 @@ bool RateItem::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity&
 
 	if (goal->properties.hasItem)
 	{
-		// TODO: Consider item rarity/value
-		float timePerCell = AIUtil::getTimePerCell(entity);
-		float minExploTime;
+		// Check the full path to the item and back to safety
+		AIPath safePath;
+		pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
 
-		// Check if the path is safe
-		if (AIUtil::isSafePath(entity, path))
+		AIPath fullPath;
+		fullPath.attach(path);
+		fullPath.attach(safePath);
+
+		if (AIUtil::isSafePath(entity, fullPath))
 		{
-			// Check if the path from that spot will be safe too by checking the full path
-			AIPath safePath;
-			pathEngine->searchBest(entity, goal->x, goal->y, safePath, RateSafety(), 1);
+			auto aiComponent = entity.component<AIComponent>();
+			auto& personality = aiComponent->personality;
+			auto& desires = personality.desires;
+			auto& affinity = personality.affinity;
+			path.rating = affinity.getItem;
 
-			AIPath fullPath;
-			fullPath.attach(path);
-			fullPath.attach(safePath);
+			auto item = m_layerManager->getEntityWithComponent<ItemComponent>(GameConstants::MAIN_LAYER, goal->x, goal->y);
+			auto itemType = item.component<ItemComponent>()->type;
 
-			if (AIUtil::isSafePath(entity, fullPath, &minExploTime))
+			// If the AI doesn't need the item then reduce the rating (NO_NEED_FOR_ITEM_INFLUENCE is negative)
+			if (!ItemSystem::needsItem(entity, itemType))
+				path.rating += GameConstants::NO_NEED_FOR_ITEM_INFLUENCE;
+			else
 			{
-				auto& personality = entity.component<AIComponent>()->personality;
-				auto& desires = personality.desires;
-				auto& affinity = personality.affinity;
-				path.rating = affinity.getItem + minExploTime - path.nodes.size() * timePerCell;
-				path.rating *= desires.getItem;
-				return true;
-			}			
-		}
+				if (CommonUtil::isRare(itemType))
+					path.rating += GameConstants::ITEM_RARITY_BONUS;
+
+				if (CommonUtil::isSkill(itemType) && personality.hasFavorite(CommonUtil::toSkill(itemType)))
+					path.rating += GameConstants::FAVORITE_SKILL_BONUS;
+			}
+
+			path.rating *= desires.getItem;
+			path.rating -= path.requiredTime(entity);
+			return true;
+		}			
 	}
 
 	return false;

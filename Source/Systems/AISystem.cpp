@@ -40,12 +40,17 @@ AISystem::AISystem(LayerManager* layerManager)
 
 void AISystem::init()
 {
+	bool first = true;
 	for (auto entity : GameGlobals::entities->entities_with_components<AIComponent, CellComponent, InputComponent, InventoryComponent>())
 	{
 		auto aiComponent = entity.component<AIComponent>();
 		
 		PathRating destroyBlockRating = RateCombination({ RateDestroyBlockSpot(), RateTrapDanger(), RateDistanceToItems() });
 		aiComponent->actions[ActionType::DESTROY_BLOCK] = std::make_shared<Action>(m_pathEngine.get(), destroyBlockRating, PlaceBomb(), m_layerManager);
+
+		if (first) // First AI destroys blocks more efficiently
+			aiComponent->actions[ActionType::DESTROY_BLOCK]->setRandomPaths(false);
+		first = false;
 
 		PathRating placePortalRating = RateCombination({ RateSafety(), RatePortalSpot(), RateTrapDanger() });
 		aiComponent->actions[ActionType::PLACE_PORTAL] = std::make_shared<Action>(m_pathEngine.get(), placePortalRating, UseSkill(), m_layerManager);
@@ -56,8 +61,9 @@ void AISystem::init()
 		aiComponent->actions[ActionType::WAIT] = std::make_shared<Action>(m_pathEngine.get(), waitRating, DoNothing(), m_layerManager);
 		aiComponent->actions[ActionType::WAIT]->setRandomPaths(false);
 
-		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(), RateTrapDanger() });
+		PathRating getItemRating = RateCombination({ RateSafety(), RateItem(m_layerManager), RateTrapDanger() });
 		aiComponent->actions[ActionType::GET_ITEM] = std::make_shared<Action>(m_pathEngine.get(), getItemRating, DoNothing(), m_layerManager);
+		aiComponent->actions[ActionType::GET_ITEM]->setRandomPaths(false);
 
 		aiComponent->actions[ActionType::BLINK] = std::make_shared<BlinkAction>(m_pathEngine.get(), RateBlink(), UseDirectionSkill(), m_layerManager);
 

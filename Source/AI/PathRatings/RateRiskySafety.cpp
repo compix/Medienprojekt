@@ -3,6 +3,11 @@
 #include "../AIUtil.h"
 #include "../../Components/AIComponent.h"
 
+RateRiskySafety::RateRiskySafety()
+	:m_exploTimeInfluence(0.2f), m_pathDurationInfluence(0.5f)
+{
+}
+
 bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::Entity& entity)
 {
 	if (!path.goal()->valid)
@@ -19,7 +24,7 @@ bool RateRiskySafety::operator()(PathEngine* pathEngine, AIPath& path, entityx::
 		auto& personality = entity.component<AIComponent>()->personality;
 		auto& desires = personality.desires;
 		auto& affinity = personality.affinity;
-		path.rating = (minExploTime / 5.f + affinity.getSafe - timePerCell * path.nodes.size() * 0.5f) * desires.getSafe;
+		path.rating = (minExploTime * m_exploTimeInfluence + affinity.getSafe - path.requiredTime(entity) * m_pathDurationInfluence) * desires.getSafe;
 		return true;
 	}
 

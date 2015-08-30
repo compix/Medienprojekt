@@ -118,27 +118,6 @@ void Game::init(uint8_t width, uint8_t height)
 	addSystems();
 	m_systems.configure();
 
-	//m_light.create(sf::Vector2f(35.f, 60.f), sf::Color::Yellow, 200.f, 360.f, 0.f);
-
-	auto particleSystem = m_systems.system<ParticleSystem>();
-	m_particleEmitter = particleSystem->getManager("light")->spawnEmitter();
-
-	// This Particle Emitter is just for tests.
-	m_particleEmitter->
-		position(GameGlobals::window->getSize().x*0.5f, GameGlobals::window->getSize().y*0.5f)
-		.spawnTime(0.0015f)
-		.maxLifetime(0.3f)
-		.gravityModifier(1.f)
-		.velocityFunction([](float t) { return sf::Vector2f(t, t*t*t*100.f); })
-		.angularVelocityFunction(Gradient<float>(GradientType::SMOOTH, 0, Math::PI*0.05f))
-		.sizeFunction(Gradient<sf::Vector2f>(GradientType::LINEAR, sf::Vector2f(15, 15), sf::Vector2f(20, 20)))
-		.burstParticleNumber(10)
-		.burstTime(0.5f)
-		.spawnWidth(50 - 5)
-		.spawnHeight(50)
-		.spawnDuration(0.3f)
-		.colorFunction(Gradient<RGB>(GradientType::REGRESS, RGB(0, 252, 255), RGB(0, 84, 255)));
-
 	ParticleEffects::init(m_systems.system<ParticleSystem>().get());
 	initialized = true;
 }
@@ -155,17 +134,7 @@ void Game::update(TimeDelta dt)
 	for (auto& system : m_orderedSystems)
 		system->update(m_entities, *GameGlobals::events, dt);
 
-
-	//m_PhysixSystem->DrawDebug();
 	m_layerManager->update();
-
-	//m_light.create(sf::Vector2f(m_mousePos.x, m_mousePos.y), sf::Color::Yellow, 200.f, 360.f, 0.f);
-	//m_light.setShader(m_shaderManager.getLightShader());
-
-	//GameGlobals::window->draw(m_light);
-	GameGlobals::window->draw(*m_particleEmitter);
-
-	//m_systems.system<AISystem>()->visualize();
 }
 
 void Game::refreshView()
