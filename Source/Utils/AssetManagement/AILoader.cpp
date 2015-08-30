@@ -19,7 +19,7 @@ bool AILoader::load(const string& key, const Json::Value& jsonValue)
 		else if (jsKey == "favoriteSkill")
 		{
 			auto skillArray = *it;
-			for (size_t i = 0; i < it->size(); ++i)
+			for (Json::ArrayIndex i = 0; i < it->size(); ++i)
 			{
 				auto skillType = skillArray[i].asString();
 

@@ -137,7 +137,6 @@ solution "Game"
 		-- no filter
 		filter {}
 			links {
-				"openal32",
 				"sndfile",
 				"GLEW",
 				"freetype",
@@ -145,6 +144,7 @@ solution "Game"
 			}
 			if isWindows then
 				links {
+					"openal32",
 					"winmm",
 					"ws2_32",
 					"gdi32",
@@ -152,6 +152,7 @@ solution "Game"
 				}
 			else
 				links {
+					"openal",
 					"GL",
 					"X11",
 					"Xrandr",

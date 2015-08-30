@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -78,6 +78,12 @@
     <ClInclude Include="..\..\Source\AI\Actions\ActionType.h">
       <Filter>AI\Actions</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\AttackEnemy.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Actions\BlinkAction.h">
+      <Filter>AI\Actions</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\Actions\GetSafe.h">
       <Filter>AI\Actions</Filter>
     </ClInclude>
@@ -93,11 +99,20 @@
     <ClInclude Include="..\..\Source\AI\Behaviors\PlaceBomb.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Behaviors\ThrowBomb.h">
+      <Filter>AI\Behaviors</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\Behaviors\UseDirectionSkill.h">
       <Filter>AI\Behaviors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\Behaviors\UseSkill.h">
       <Filter>AI\Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\Graph.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\GraphNode.h">
+      <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathFinding\AIPath.h">
       <Filter>AI\PathFinding</Filter>
@@ -115,6 +130,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateBlink.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateCombination.h">
@@ -153,11 +171,17 @@
     <ClInclude Include="..\..\Source\AI\PathRatings\RateSafety.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\AI\PathRatings\RateThrowBomb.h">
+      <Filter>AI\PathRatings</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AI\PathRatings\RateTrapDanger.h">
       <Filter>AI\PathRatings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AI\Personality\AIPersonality.h">
       <Filter>AI\Personality</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AI\SimulationGraph.h">
+      <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Animation\AnimationType.h">
       <Filter>Animation</Filter>
@@ -299,6 +323,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\SolidBlockComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Components\SoundComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Components\SpriteComponent.h">
@@ -671,33 +698,6 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\SoundComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Graph.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\GraphNode.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\SimulationGraph.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\BlinkAction.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Actions\AttackEnemy.h">
-      <Filter>AI\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\PathRatings\RateThrowBomb.h">
-      <Filter>AI\PathRatings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AI\Behaviors\ThrowBomb.h">
-      <Filter>AI\Behaviors</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -712,6 +712,12 @@
     <ClCompile Include="..\..\Source\AI\Actions\ActionSelector.cpp">
       <Filter>AI\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\AttackEnemy.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Actions\BlinkAction.cpp">
+      <Filter>AI\Actions</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\Actions\GetSafe.cpp">
       <Filter>AI\Actions</Filter>
     </ClCompile>
@@ -721,11 +727,17 @@
     <ClCompile Include="..\..\Source\AI\Behaviors\PlaceBomb.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Behaviors\ThrowBomb.cpp">
+      <Filter>AI\Behaviors</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\UseDirectionSkill.cpp">
       <Filter>AI\Behaviors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\Behaviors\UseSkill.cpp">
       <Filter>AI\Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\Graph.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathFinding\AIPath.cpp">
       <Filter>AI\PathFinding</Filter>
@@ -740,6 +752,9 @@
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateBlink.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateCombination.cpp">
@@ -778,11 +793,17 @@
     <ClCompile Include="..\..\Source\AI\PathRatings\RateSafety.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AI\PathRatings\RateThrowBomb.cpp">
+      <Filter>AI\PathRatings</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AI\PathRatings\RateTrapDanger.cpp">
       <Filter>AI\PathRatings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AI\Personality\AIPersonality.cpp">
       <Filter>AI\Personality</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\AI\SimulationGraph.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Animation\Animator.cpp">
       <Filter>Animation</Filter>
@@ -1012,27 +1033,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Graph.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\SimulationGraph.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathRatings\RateBlinkToSafety.cpp">
-      <Filter>AI\PathRatings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Actions\BlinkAction.cpp">
-      <Filter>AI\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Actions\AttackEnemy.cpp">
-      <Filter>AI\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\PathRatings\RateThrowBomb.cpp">
-      <Filter>AI\PathRatings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AI\Behaviors\ThrowBomb.cpp">
-      <Filter>AI\Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

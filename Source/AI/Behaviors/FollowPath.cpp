@@ -51,7 +51,7 @@ bool FollowPath::operator()(entityx::Entity& entity)
 	// Check if the entity reached a new cell on the path
 	auto n1 = m_path.nodes[m_path.curNode];
 	if (cell->x != n1->x || cell->y != n1->y)
-		m_path.curNode = std::min(static_cast<unsigned int>(m_path.curNode + 1), m_path.nodes.size() - 1);
+		m_path.curNode = std::min(static_cast<unsigned int>(m_path.curNode + 1), static_cast<unsigned int>(m_path.nodes.size() - 1));
 
 	if (m_path.curNode < m_path.nodes.size() - 1)
 	{
