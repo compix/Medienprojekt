@@ -1,5 +1,5 @@
 #include "AIVisualizer.h"
-#include "../game.h"
+#include "../Game.h"
 #include "GraphNode.h"
 #include "Graph.h"
 #include "../Events/ExitEvent.h"

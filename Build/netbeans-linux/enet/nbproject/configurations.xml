@@ -140,5 +140,59 @@
 			<item path="../../../ThirdParty/enet/packet.c" ex="false" tool="0" flavor2="0"></item>
 			<item path="../../../ThirdParty/enet/list.c" ex="false" tool="0" flavor2="0"></item>
 		</conf>
+		<conf name="profile" type="3">
+			<toolsSet>
+				<remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+				<compilerSet>default</compilerSet>
+				<dependencyChecking>true</dependencyChecking>
+				<rebuildPropChanged>false</rebuildPropChanged>
+			</toolsSet>
+			<compileType>
+				<cTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/enet/include</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>HAS_SOCKLEN_T</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</cTool>
+				<ccTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/enet/include</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>HAS_SOCKLEN_T</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</ccTool>
+				<archiverTool>
+					<output>../../../Lib/netbeans/libenet-s-p.a</output>
+				</archiverTool>
+			</compileType>
+			<item path="../../../ThirdParty/enet/include/enet/callbacks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/win32.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/time.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/utility.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/types.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/list.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/enet.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/unix.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/include/enet/protocol.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/peer.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/unix.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/host.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/callbacks.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/compress.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/protocol.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/packet.c" ex="false" tool="0" flavor2="0"></item>
+			<item path="../../../ThirdParty/enet/list.c" ex="false" tool="0" flavor2="0"></item>
+		</conf>
 	</confs>
 </configurationDescriptor>

@@ -8,9 +8,10 @@ if not _ACTION then
 end
 
 -- Check for supported action
+isGmake = _ACTION == "gmake"
 isNetbeans = _ACTION == "netbeans"
 isVisualStudio = _ACTION == "vs2013"
-if not isNetbeans and not isVisualStudio then
+if not isNetbeans and not isVisualStudio and not isGmake then
 	printf("Error: %s is not supported yet", _ACTION)
 	return
 end
@@ -47,6 +48,9 @@ filter { "system:windows" }
 
 filter { "action:vs*" }
 	defines {"_CRT_SECURE_NO_DEPRECATE" }
+
+filter { "action:gmake", "language:C++" }
+	buildoptions {"-std=c++11"}
 
 filter { "Debug" }
 	defines { isVisualStudio and "_DEBUG" or "DEBUG"}
@@ -137,7 +141,6 @@ solution "Game"
 		-- no filter
 		filter {}
 			links {
-				"openal32",
 				"sndfile",
 				"GLEW",
 				"freetype",
@@ -145,6 +148,7 @@ solution "Game"
 			}
 			if isWindows then
 				links {
+					"openal32",
 					"winmm",
 					"ws2_32",
 					"gdi32",
@@ -152,6 +156,7 @@ solution "Game"
 				}
 			else
 				links {
+					"openal",
 					"GL",
 					"X11",
 					"Xrandr",

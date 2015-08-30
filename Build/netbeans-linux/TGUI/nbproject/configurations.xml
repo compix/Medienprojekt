@@ -212,5 +212,85 @@
 			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/FormBuilder.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/Form.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
+		<conf name="profile" type="3">
+			<toolsSet>
+				<remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+				<compilerSet>default</compilerSet>
+				<dependencyChecking>true</dependencyChecking>
+				<rebuildPropChanged>false</rebuildPropChanged>
+			</toolsSet>
+			<compileType>
+				<cTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/TGUI/include</pElem>
+						<pElem>../../../ThirdParty/SFML/include</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>SFML_STATIC</Elem>
+						<Elem>GLEW_STATIC</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</cTool>
+				<ccTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/TGUI/include</pElem>
+						<pElem>../../../ThirdParty/SFML/include</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>SFML_STATIC</Elem>
+						<Elem>GLEW_STATIC</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</ccTool>
+				<archiverTool>
+					<output>../../../Lib/netbeans/libTGUI-s-p.a</output>
+				</archiverTool>
+			</compileType>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ChatBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/EditBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Transformable.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/TextBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ComboBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/TextureManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/MenuBar.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ConfigFile.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ChildWindow.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/SpriteSheet.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/LoadingBar.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Slider.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Gui.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/MessageBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/SpinButton.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Widget.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Canvas.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Tab.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Slider2d.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Checkbox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ListBox.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/ClickableWidget.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Grid.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Panel.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Picture.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Knob.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/AnimatedPicture.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/RadioButton.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Clipboard.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Scrollbar.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Button.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Callback.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Global.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Label.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/Container.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/main.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/MenuBar.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/FormBuilder.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/TGUI/src/TGUI/FormBuilder/Form.cpp" ex="false" tool="1" flavor2="0"></item>
+		</conf>
 	</confs>
 </configurationDescriptor>

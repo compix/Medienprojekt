@@ -3,47 +3,219 @@
 <configurationDescriptor version="88">
 	<logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
 		<logicalFolder name="sourceFiles" displayName="Source Files" projectFiles="true">
+			<logicalFolder name="AI" displayName="AI" projectFiles="true">
+				<itemPath>../../../Source/AI/AIUtil.cpp</itemPath>
+				<itemPath>../../../Source/AI/AIUtil.h</itemPath>
+				<itemPath>../../../Source/AI/AIVisualizer.cpp</itemPath>
+				<itemPath>../../../Source/AI/AIVisualizer.h</itemPath>
+				<logicalFolder name="Actions" displayName="Actions" projectFiles="true">
+					<itemPath>../../../Source/AI/Actions/Action.cpp</itemPath>
+					<itemPath>../../../Source/AI/Actions/Action.h</itemPath>
+					<itemPath>../../../Source/AI/Actions/ActionSelector.cpp</itemPath>
+					<itemPath>../../../Source/AI/Actions/ActionSelector.h</itemPath>
+					<itemPath>../../../Source/AI/Actions/ActionType.h</itemPath>
+					<itemPath>../../../Source/AI/Actions/AttackEnemy.cpp</itemPath>
+					<itemPath>../../../Source/AI/Actions/AttackEnemy.h</itemPath>
+					<itemPath>../../../Source/AI/Actions/BlinkAction.cpp</itemPath>
+					<itemPath>../../../Source/AI/Actions/BlinkAction.h</itemPath>
+					<itemPath>../../../Source/AI/Actions/GetSafe.cpp</itemPath>
+					<itemPath>../../../Source/AI/Actions/GetSafe.h</itemPath>
+				</logicalFolder>
+				<logicalFolder name="Behaviors" displayName="Behaviors" projectFiles="true">
+					<itemPath>../../../Source/AI/Behaviors/Behavior.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/DoNothing.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/FollowPath.cpp</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/FollowPath.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/PlaceBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/PlaceBomb.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/ThrowBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/ThrowBomb.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/UseDirectionSkill.cpp</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/UseDirectionSkill.h</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/UseSkill.cpp</itemPath>
+					<itemPath>../../../Source/AI/Behaviors/UseSkill.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/AI/Graph.cpp</itemPath>
+				<itemPath>../../../Source/AI/Graph.h</itemPath>
+				<itemPath>../../../Source/AI/GraphNode.h</itemPath>
+				<logicalFolder name="PathFinding" displayName="PathFinding" projectFiles="true">
+					<itemPath>../../../Source/AI/PathFinding/AIPath.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathFinding/AIPath.h</itemPath>
+					<itemPath>../../../Source/AI/PathFinding/NodePathInfo.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathFinding/NodePathInfo.h</itemPath>
+					<itemPath>../../../Source/AI/PathFinding/PathEngine.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathFinding/PathEngine.h</itemPath>
+				</logicalFolder>
+				<logicalFolder name="PathRatings" displayName="PathRatings" projectFiles="true">
+					<itemPath>../../../Source/AI/PathRatings/PathRating.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateAttackEnemy.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateAttackEnemy.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateBlink.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateBlink.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateBlinkToSafety.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateBlinkToSafety.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateCombination.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateCombination.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDestroyBlockSpot.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToItems.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateDistanceToItems.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateEscape.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateEscape.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateItem.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateItem.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateKickBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateKickBomb.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePortalSpot.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePortalSpot.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePunchBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RatePunchBomb.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateRiskySafety.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateRiskySafety.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateSafety.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateSafety.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateThrowBomb.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateThrowBomb.h</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateTrapDanger.cpp</itemPath>
+					<itemPath>../../../Source/AI/PathRatings/RateTrapDanger.h</itemPath>
+				</logicalFolder>
+				<logicalFolder name="Personality" displayName="Personality" projectFiles="true">
+					<itemPath>../../../Source/AI/Personality/AIPersonality.cpp</itemPath>
+					<itemPath>../../../Source/AI/Personality/AIPersonality.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/AI/SimulationGraph.cpp</itemPath>
+				<itemPath>../../../Source/AI/SimulationGraph.h</itemPath>
+			</logicalFolder>
+			<logicalFolder name="Animation" displayName="Animation" projectFiles="true">
+				<itemPath>../../../Source/Animation/AnimationType.h</itemPath>
+				<itemPath>../../../Source/Animation/Animator.cpp</itemPath>
+				<itemPath>../../../Source/Animation/Animator.h</itemPath>
+				<itemPath>../../../Source/Animation/AnimatorManager.cpp</itemPath>
+				<itemPath>../../../Source/Animation/AnimatorManager.h</itemPath>
+				<logicalFolder name="States" displayName="States" projectFiles="true">
+					<itemPath>../../../Source/Animation/States/AnimationState.h</itemPath>
+					<itemPath>../../../Source/Animation/States/IdleState.cpp</itemPath>
+					<itemPath>../../../Source/Animation/States/IdleState.h</itemPath>
+					<itemPath>../../../Source/Animation/States/WalkingState.cpp</itemPath>
+					<itemPath>../../../Source/Animation/States/WalkingState.h</itemPath>
+				</logicalFolder>
+			</logicalFolder>
 			<itemPath>../../../Source/BodyFactory.cpp</itemPath>
 			<itemPath>../../../Source/BodyFactory.h</itemPath>
 			<logicalFolder name="Components" displayName="Components" projectFiles="true">
+				<itemPath>../../../Source/Components/AIComponent.h</itemPath>
+				<itemPath>../../../Source/Components/AfterimageComponent.h</itemPath>
 				<itemPath>../../../Source/Components/AnimationComponent.h</itemPath>
+				<itemPath>../../../Source/Components/BlinkComponent.h</itemPath>
+				<itemPath>../../../Source/Components/BlockComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BodyComponent.h</itemPath>
 				<itemPath>../../../Source/Components/BombComponent.h</itemPath>
 				<itemPath>../../../Source/Components/CellComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ColorComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DamageDealerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DestructionComponent.h</itemPath>
 				<itemPath>../../../Source/Components/DestructionDelayComponent.h</itemPath>
+				<itemPath>../../../Source/Components/DirectionComponent.h</itemPath>
+				<itemPath>../../../Source/Components/DynamicComponent.h</itemPath>
+				<itemPath>../../../Source/Components/EffectComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ExplosionComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ExplosionStopComponent.h</itemPath>
+				<itemPath>../../../Source/Components/FloorComponent.h</itemPath>
+				<itemPath>../../../Source/Components/FreeSlotComponent.h</itemPath>
 				<itemPath>../../../Source/Components/HealthComponent.h</itemPath>
+				<itemPath>../../../Source/Components/HoldingComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InputComponent.h</itemPath>
 				<itemPath>../../../Source/Components/InventoryComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ItemComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ItemSpawnerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/JumpComponent.h</itemPath>
+				<itemPath>../../../Source/Components/LavaComponent.h</itemPath>
 				<itemPath>../../../Source/Components/LayerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/LightComponent.h</itemPath>
 				<itemPath>../../../Source/Components/LinkComponent.h</itemPath>
+				<itemPath>../../../Source/Components/LocalInputComponent.h</itemPath>
+				<itemPath>../../../Source/Components/MarkedLavaSpotComponent.h</itemPath>
+				<itemPath>../../../Source/Components/NoNetComponent.h</itemPath>
 				<itemPath>../../../Source/Components/OwnerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/ParticleComponent.h</itemPath>
+				<itemPath>../../../Source/Components/PlayerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/PortalComponent.h</itemPath>
+				<itemPath>../../../Source/Components/PortalMarkerComponent.h</itemPath>
+				<itemPath>../../../Source/Components/RenderOffsetComponent.h</itemPath>
 				<itemPath>../../../Source/Components/ShaderComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SolidBlockComponent.h</itemPath>
+				<itemPath>../../../Source/Components/SoundComponent.h</itemPath>
 				<itemPath>../../../Source/Components/SpriteComponent.h</itemPath>
 				<itemPath>../../../Source/Components/TimerComponent.h</itemPath>
 				<itemPath>../../../Source/Components/TransformComponent.h</itemPath>
 			</logicalFolder>
+			<itemPath>../../../Source/ContactListener.cpp</itemPath>
+			<itemPath>../../../Source/ContactListener.h</itemPath>
 			<itemPath>../../../Source/EntityFactory.cpp</itemPath>
 			<itemPath>../../../Source/EntityFactory.h</itemPath>
 			<itemPath>../../../Source/EntityLayer.cpp</itemPath>
 			<itemPath>../../../Source/EntityLayer.h</itemPath>
 			<logicalFolder name="Events" displayName="Events" projectFiles="true">
+				<itemPath>../../../Source/Events/BombCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/BombExplodedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/BombLandedOnEntityEvent.h</itemPath>
+				<itemPath>../../../Source/Events/BoostEffectCreatedEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ChatEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ClientStateEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ConnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CountdownEvent.h</itemPath>
+				<itemPath>../../../Source/Events/CreateGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/DeathEvent.h</itemPath>
+				<itemPath>../../../Source/Events/DisconnectEvent.h</itemPath>
 				<itemPath>../../../Source/Events/EntityGotHitEvent.h</itemPath>
 				<itemPath>../../../Source/Events/ExitEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ExplosionCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ForceDisconnectEvent.h</itemPath>
+				<itemPath>../../../Source/Events/GameOverEvent.h</itemPath>
+				<itemPath>../../../Source/Events/HoldingEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ItemCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ItemPickedUpEvent.h</itemPath>
+				<itemPath>../../../Source/Events/JoinGameEvent.h</itemPath>
+				<itemPath>../../../Source/Events/JumpEvent.h</itemPath>
+				<itemPath>../../../Source/Events/LavaCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/LavaSpotMarkedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/LobbyEvent.h</itemPath>
 				<itemPath>../../../Source/Events/MenuShowEvent.h</itemPath>
+				<itemPath>../../../Source/Events/MusicEvent.h</itemPath>
+				<itemPath>../../../Source/Events/Phase2StartedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PlayerJoinEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PortalCreatedEvent.h</itemPath>
+				<itemPath>../../../Source/Events/PreloadEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ReadyEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ResetGameEvent.h</itemPath>
 				<itemPath>../../../Source/Events/SendChatEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SetReadyEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SkillEvent.h</itemPath>
+				<itemPath>../../../Source/Events/SoundEvent.h</itemPath>
+				<itemPath>../../../Source/Events/StartGameEvent.h</itemPath>
+				<itemPath>../../../Source/Events/ThrowBombEvent.h</itemPath>
 				<itemPath>../../../Source/Events/TimeoutEvent.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/Game.cpp</itemPath>
 			<itemPath>../../../Source/Game.h</itemPath>
+			<itemPath>../../../Source/GameConstants.cpp</itemPath>
 			<itemPath>../../../Source/GameConstants.h</itemPath>
+			<itemPath>../../../Source/GameGlobals.h</itemPath>
+			<logicalFolder name="Graphics" displayName="Graphics" projectFiles="true">
+				<itemPath>../../../Source/Graphics/Particle.h</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleEffects.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleEffects.h</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleEmitter.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleEmitter.h</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleManager.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleManager.h</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleSpawnSystem.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/ParticleSpawnSystem.h</itemPath>
+			</logicalFolder>
 			<itemPath>../../../Source/LayerManager.cpp</itemPath>
 			<itemPath>../../../Source/LayerManager.h</itemPath>
 			<logicalFolder name="Lighting" displayName="Lighting" projectFiles="true">
@@ -51,6 +223,7 @@
 				<itemPath>../../../Source/Lighting/Light.h</itemPath>
 			</logicalFolder>
 			<itemPath>../../../Source/Main.cpp</itemPath>
+			<itemPath>../../../Source/Main.h</itemPath>
 			<logicalFolder name="Menu" displayName="Menu" projectFiles="true">
 				<itemPath>../../../Source/Menu/Menu.cpp</itemPath>
 				<itemPath>../../../Source/Menu/Menu.h</itemPath>
@@ -59,16 +232,20 @@
 				<logicalFolder name="Pages" displayName="Pages" projectFiles="true">
 					<itemPath>../../../Source/Menu/Pages/MenuPageChat.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageChat.h</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageCreateServer.cpp</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageCreateServer.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageConnecting.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageConnecting.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCreateGame.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageCreateGame.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageCredits.h</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageJoinServer.cpp</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageJoinServer.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageHelp.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageHelp.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageJoinGame.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageJoinGame.h</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLoading.cpp</itemPath>
+					<itemPath>../../../Source/Menu/Pages/MenuPageLoading.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageLobby.h</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageLocalGame.cpp</itemPath>
-					<itemPath>../../../Source/Menu/Pages/MenuPageLocalGame.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageRoot.cpp</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageRoot.h</itemPath>
 					<itemPath>../../../Source/Menu/Pages/MenuPageSettings.cpp</itemPath>
@@ -83,6 +260,7 @@
 				<itemPath>../../../Source/Network/NetClient.cpp</itemPath>
 				<itemPath>../../../Source/Network/NetClient.h</itemPath>
 				<itemPath>../../../Source/Network/NetConstants.h</itemPath>
+				<itemPath>../../../Source/Network/NetPlayerInfo.h</itemPath>
 				<itemPath>../../../Source/Network/NetServer.cpp</itemPath>
 				<itemPath>../../../Source/Network/NetServer.h</itemPath>
 			</logicalFolder>
@@ -91,57 +269,117 @@
 			<itemPath>../../../Source/SFMLDebugDraw.cpp</itemPath>
 			<itemPath>../../../Source/SFMLDebugDraw.h</itemPath>
 			<logicalFolder name="Systems" displayName="Systems" projectFiles="true">
+				<itemPath>../../../Source/Systems/AISystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/AISystem.h</itemPath>
+				<itemPath>../../../Source/Systems/AfterimageSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/AfterimageSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/AnimationSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/AnimationSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/BlinkSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/BlinkSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BodySystem.h</itemPath>
+				<itemPath>../../../Source/Systems/BombKickSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/BombKickSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/BombSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ChatRenderSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ChatRenderSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DamageSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/DamageSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DeathSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/DeathSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/DestructionSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/DestructionSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/DynamicPredictionSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/DynamicPredictionSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/ExplosionSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/ExplosionSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/HealthSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/HealthSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/HoldingSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/HoldingSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/InputHandleSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/InputHandleSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/InputSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/InputSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/InventorySystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/InventorySystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ItemSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ItemSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/JumpSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/JumpSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/LavaSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/LavaSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/LightSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/LightSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/MusicSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/MusicSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/NotificationSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/NotificationSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/ParticleSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/ParticleSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/PortalSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/PortalSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/RenderSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/SoundSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/SoundSystem.h</itemPath>
 				<itemPath>../../../Source/Systems/TimerSystem.cpp</itemPath>
 				<itemPath>../../../Source/Systems/TimerSystem.h</itemPath>
+				<itemPath>../../../Source/Systems/VisualLavaMarkSystem.cpp</itemPath>
+				<itemPath>../../../Source/Systems/VisualLavaMarkSystem.h</itemPath>
 			</logicalFolder>
 			<logicalFolder name="Utils" displayName="Utils" projectFiles="true">
-				<itemPath>../../../Source/Utils/AssetLoader.h</itemPath>
+				<itemPath>../../../Source/Utils/ActiveQueue.h</itemPath>
+				<logicalFolder name="AssetManagement" displayName="AssetManagement" projectFiles="true">
+					<itemPath>../../../Source/Utils/AssetManagement/AILoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AILoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AnimationLoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AnimationLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AssetLoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AssetLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AssetManager.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/AssetManager.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/Assets.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/MusicLoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/MusicLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/SoundLoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/SoundLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/TextureLoader.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/TextureLoader.h</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/TexturePacker.cpp</itemPath>
+					<itemPath>../../../Source/Utils/AssetManagement/TexturePacker.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/Utils/Colors.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Colors.h</itemPath>
+				<itemPath>../../../Source/Utils/Common.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Common.h</itemPath>
 				<itemPath>../../../Source/Utils/Exceptions.h</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/FpsCalculator.h</itemPath>
+				<itemPath>../../../Source/Utils/Functions.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Functions.h</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.cpp</itemPath>
 				<itemPath>../../../Source/Utils/InputManager.h</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.cpp</itemPath>
 				<itemPath>../../../Source/Utils/LevelGenerator.h</itemPath>
+				<logicalFolder name="Logging" displayName="Logging" projectFiles="true">
+					<itemPath>../../../Source/Utils/Logging/Logger.cpp</itemPath>
+					<itemPath>../../../Source/Utils/Logging/Logger.h</itemPath>
+					<itemPath>../../../Source/Utils/Logging/LoggingService.cpp</itemPath>
+					<itemPath>../../../Source/Utils/Logging/LoggingService.h</itemPath>
+				</logicalFolder>
+				<itemPath>../../../Source/Utils/Math.cpp</itemPath>
+				<itemPath>../../../Source/Utils/Math.h</itemPath>
 				<itemPath>../../../Source/Utils/Random.cpp</itemPath>
 				<itemPath>../../../Source/Utils/Random.h</itemPath>
 				<itemPath>../../../Source/Utils/ShaderManager.cpp</itemPath>
 				<itemPath>../../../Source/Utils/ShaderManager.h</itemPath>
 				<itemPath>../../../Source/Utils/SystemUtils.cpp</itemPath>
 				<itemPath>../../../Source/Utils/SystemUtils.h</itemPath>
-				<itemPath>../../../Source/Utils/TextureLoader.cpp</itemPath>
-				<itemPath>../../../Source/Utils/TextureLoader.h</itemPath>
 				<itemPath>../../../Source/Utils/make_unique.h</itemPath>
 			</logicalFolder>
-			<itemPath>../../../Source/debugrender.cpp</itemPath>
-			<itemPath>../../../Source/debugrender.h</itemPath>
 		</logicalFolder>
 		<logicalFolder name="ExternalFiles" displayName="Important Files" projectFiles="false" kind="IMPORTANT_FILES_FOLDER">
 			<itemPath>Makefile</itemPath>
@@ -163,12 +401,12 @@
 				<cTool>
 					<standard>8</standard>
 					<incDir>
-						<pElem>../../../Source</pElem>
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -181,12 +419,12 @@
 				<ccTool>
 					<standard>8</standard>
 					<incDir>
-						<pElem>../../../Source</pElem>
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -206,11 +444,13 @@
 						<linkerLibLibItem>enet-s-d</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s-d</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s-d</linkerLibLibItem>
+						<linkerLibLibItem>cppformat-s-d</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s-d</linkerLibLibItem>
 						<linkerLibLibItem>sndfile</linkerLibLibItem>
 						<linkerLibLibItem>GLEW</linkerLibLibItem>
 						<linkerLibLibItem>freetype</linkerLibLibItem>
 						<linkerLibLibItem>jpeg</linkerLibLibItem>
+						<linkerLibLibItem>openal</linkerLibLibItem>
 						<linkerLibLibItem>GL</linkerLibLibItem>
 						<linkerLibLibItem>X11</linkerLibLibItem>
 						<linkerLibLibItem>Xrandr</linkerLibLibItem>
@@ -222,88 +462,230 @@
 				</linkerTool>
 			</compileType>
 			<item path="../../../Source/BodyFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/debugrender.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SoundComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/EffectComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InventoryComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/JumpComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/NoNetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PlayerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalMarkerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DirectionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AfterimageComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/MarkedLavaSpotComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ColorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FloorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DynamicComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AIComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LightComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/RenderOffsetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionStopComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LavaComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LocalInputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FreeSlotComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HoldingComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemSpawnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/ActiveQueue.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/Assets.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetPlayerInfo.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputHandleSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/HealthSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/ExplosionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/GraphNode.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/PathRating.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/DoNothing.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/Behavior.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CountdownEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombLandedOnEntityEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LobbyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JumpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/Phase2StartedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ClientStateEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaSpotMarkedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/HoldingEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ResetGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombExplodedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SkillEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/debugrender.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SoundEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/GameOverEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimationType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/AnimationState.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -311,37 +693,111 @@
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputHandleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/ExplosionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/HealthSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
 		<conf name="release" type="1">
 			<toolsSet>
@@ -355,12 +811,12 @@
 					<developmentMode>5</developmentMode>
 					<standard>8</standard>
 					<incDir>
-						<pElem>../../../Source</pElem>
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -374,12 +830,12 @@
 					<developmentMode>5</developmentMode>
 					<standard>8</standard>
 					<incDir>
-						<pElem>../../../Source</pElem>
 						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
 						<pElem>../../../ThirdParty/TGUI/include</pElem>
 						<pElem>../../../ThirdParty/SFML/include</pElem>
 						<pElem>../../../ThirdParty/enet/include</pElem>
 						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
 						<pElem>../../../ThirdParty/entityx</pElem>
 					</incDir>
 					<preprocessorList>
@@ -399,11 +855,13 @@
 						<linkerLibLibItem>enet-s</linkerLibLibItem>
 						<linkerLibLibItem>jsoncpp-s</linkerLibLibItem>
 						<linkerLibLibItem>entityx-s</linkerLibLibItem>
+						<linkerLibLibItem>cppformat-s</linkerLibLibItem>
 						<linkerLibLibItem>SFML-s</linkerLibLibItem>
 						<linkerLibLibItem>sndfile</linkerLibLibItem>
 						<linkerLibLibItem>GLEW</linkerLibLibItem>
 						<linkerLibLibItem>freetype</linkerLibLibItem>
 						<linkerLibLibItem>jpeg</linkerLibLibItem>
+						<linkerLibLibItem>openal</linkerLibLibItem>
 						<linkerLibLibItem>GL</linkerLibLibItem>
 						<linkerLibLibItem>X11</linkerLibLibItem>
 						<linkerLibLibItem>Xrandr</linkerLibLibItem>
@@ -415,88 +873,230 @@
 				</linkerTool>
 			</compileType>
 			<item path="../../../Source/BodyFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/debugrender.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SoundComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/EffectComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InventoryComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/JumpComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/NoNetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PlayerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalMarkerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DirectionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AfterimageComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/MarkedLavaSpotComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ColorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FloorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DynamicComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AIComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/LightComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/RenderOffsetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionStopComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LavaComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LocalInputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FreeSlotComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HoldingComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemSpawnerComponent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Utils/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Utils/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/ActiveQueue.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/Assets.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetPlayerInfo.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputHandleSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/HealthSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/ExplosionSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/GraphNode.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/PathRating.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/DoNothing.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/Behavior.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CountdownEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombLandedOnEntityEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LobbyEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JumpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/Phase2StartedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ClientStateEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaSpotMarkedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/HoldingEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ResetGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/BombExplodedEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SkillEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/debugrender.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SoundEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/GameOverEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimationType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/AnimationState.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/EntityLayer.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -504,37 +1104,522 @@
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageJoinServer.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageCreateServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Menu/Pages/MenuPageLocalGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Utils/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputHandleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/ExplosionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/HealthSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InventorySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
+		</conf>
+		<conf name="profile" type="1">
+			<toolsSet>
+				<remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+				<compilerSet>default</compilerSet>
+				<dependencyChecking>true</dependencyChecking>
+				<rebuildPropChanged>false</rebuildPropChanged>
+			</toolsSet>
+			<compileType>
+				<cTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
+						<pElem>../../../ThirdParty/TGUI/include</pElem>
+						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
+						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
+						<pElem>../../../ThirdParty/entityx</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>SFML_STATIC</Elem>
+						<Elem>GLEW_STATIC</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</cTool>
+				<ccTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
+						<pElem>../../../ThirdParty/TGUI/include</pElem>
+						<pElem>../../../ThirdParty/SFML/include</pElem>
+						<pElem>../../../ThirdParty/enet/include</pElem>
+						<pElem>../../../ThirdParty/jsoncpp/include</pElem>
+						<pElem>../../../ThirdParty/cppformat</pElem>
+						<pElem>../../../ThirdParty/entityx</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+						<Elem>SFML_STATIC</Elem>
+						<Elem>GLEW_STATIC</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</ccTool>
+				<linkerTool>
+					<linkerAddLib>
+						<pElem>../../../Lib/netbeans</pElem>
+					</linkerAddLib>
+					<linkerLibItems>
+						<linkerLibLibItem>TGUI-s-p</linkerLibLibItem>
+						<linkerLibLibItem>Box2D-s-p</linkerLibLibItem>
+						<linkerLibLibItem>enet-s-p</linkerLibLibItem>
+						<linkerLibLibItem>jsoncpp-s-p</linkerLibLibItem>
+						<linkerLibLibItem>entityx-s-p</linkerLibLibItem>
+						<linkerLibLibItem>cppformat-s-p</linkerLibLibItem>
+						<linkerLibLibItem>SFML-s-p</linkerLibLibItem>
+						<linkerLibLibItem>sndfile</linkerLibLibItem>
+						<linkerLibLibItem>GLEW</linkerLibLibItem>
+						<linkerLibLibItem>freetype</linkerLibLibItem>
+						<linkerLibLibItem>jpeg</linkerLibLibItem>
+						<linkerLibLibItem>openal</linkerLibLibItem>
+						<linkerLibLibItem>GL</linkerLibLibItem>
+						<linkerLibLibItem>X11</linkerLibLibItem>
+						<linkerLibLibItem>Xrandr</linkerLibLibItem>
+						<linkerLibLibItem>pthread</linkerLibLibItem>
+						<linkerLibLibItem>udev</linkerLibLibItem>
+					</linkerLibItems>
+					<commandLine></commandLine>
+					<output>../../../Game/Game</output>
+				</linkerTool>
+			</compileType>
+			<item path="../../../Source/BodyFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/EntityFactory.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameGlobals.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Game.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/LayerManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/EntityLayer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SoundComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/EffectComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/InventoryComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/JumpComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/NoNetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PlayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ShaderComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/PortalMarkerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/TransformComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DirectionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AnimationComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/InputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AfterimageComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/MarkedLavaSpotComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BlinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ParticleComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BombComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/TimerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ColorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FloorComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DynamicComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LinkComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/AIComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LayerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/BodyComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LightComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/RenderOffsetComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ExplosionStopComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DamageDealerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionDelayComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SolidBlockComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LavaComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/LocalInputComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/FreeSlotComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/DestructionComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HealthComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/HoldingComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/SpriteComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/OwnerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/CellComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Components/ItemSpawnerComponent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Message.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/NetCode/Connection.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Exceptions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/InputManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/ShaderManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/LevelGenerator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/ActiveQueue.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Random.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/make_unique.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/Assets.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetPlayerInfo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetConstants.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/RenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/InputHandleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/InputSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/InventorySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/AnimationSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BodySystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Systems/LightSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/GraphNode.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/PathRating.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/DoNothing.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/Behavior.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CountdownEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DeathEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombLandedOnEntityEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MenuShowEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LobbyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SendChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JumpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PreloadEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ExplosionCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/Phase2StartedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ConnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ChatEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ClientStateEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PlayerJoinEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/CreateGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ForceDisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SetReadyEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/LavaSpotMarkedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/HoldingEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ResetGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BombExplodedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/EntityGotHitEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/BoostEffectCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SkillEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemPickedUpEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/MusicEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ItemCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/PortalCreatedEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/JoinGameEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/SoundEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/GameOverEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Events/DisconnectEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimationType.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/AnimationState.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Main.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/LayerManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/PhysixSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/GameConstants.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/BodyFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/ContactListener.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/EntityFactory.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/SFMLDebugDraw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/EntityLayer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Game.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/MenuPage.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCredits.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageHelp.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageChat.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageConnecting.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageRoot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageJoinGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageCreateGame.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLobby.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageSettings.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Menu/Pages/MenuPageLoading.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/FpsCalculator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/LevelGenerator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Random.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/InputManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/SystemUtils.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Common.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Functions.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Math.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Colors.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/ShaderManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/MusicLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TextureLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AnimationLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/TexturePacker.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AssetLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/AILoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/AssetManagement/SoundLoader.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/Logger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Utils/Logging/LoggingService.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetClient.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Network/NetServer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BlinkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/InputHandleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/JumpSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/RenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombKickSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/SoundSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/MusicSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BodySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/LavaSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AfterimageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DamageSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AnimationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/NotificationSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/VisualLavaMarkSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ItemSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ExplosionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HealthSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DestructionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/LightSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/TimerSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/InventorySystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/HoldingSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ChatRenderSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DynamicPredictionSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/DeathSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/ParticleSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/PortalSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/AISystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/BombSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Systems/InputSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/SimulationGraph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIUtil.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Graph.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/AIVisualizer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Personality/AIPersonality.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePortalSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToItems.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDistanceToAffectedBlocks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateAttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateRiskySafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlink.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDesperateSaveAttempt.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateBlinkToSafety.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateKickBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateEscape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateItem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateCombination.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateDestroyBlockSpot.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RateTrapDanger.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathRatings/RatePunchBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/PathEngine.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/NodePathInfo.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/PathFinding/AIPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/Action.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/GetSafe.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/ActionSelector.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/AttackEnemy.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Actions/BlinkAction.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/FollowPath.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/PlaceBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/ThrowBomb.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/AI/Behaviors/UseDirectionSkill.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/Animator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
 	</confs>
 </configurationDescriptor>

@@ -374,5 +374,133 @@
 			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2CircleContact.cpp" ex="false" tool="1" flavor2="0"></item>
 		</conf>
+		<conf name="profile" type="3">
+			<toolsSet>
+				<remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+				<compilerSet>default</compilerSet>
+				<dependencyChecking>true</dependencyChecking>
+				<rebuildPropChanged>false</rebuildPropChanged>
+			</toolsSet>
+			<compileType>
+				<cTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</cTool>
+				<ccTool>
+					<developmentMode>5</developmentMode>
+					<standard>8</standard>
+					<incDir>
+						<pElem>../../../ThirdParty/Box2D/Box2D</pElem>
+					</incDir>
+					<preprocessorList>
+						<Elem>NDEBUG</Elem>
+					</preprocessorList>
+					<commandLine>-MMD -MP -g -O3</commandLine>
+				</ccTool>
+				<archiverTool>
+					<output>../../../Lib/netbeans/libBox2D-s-p.a</output>
+				</archiverTool>
+			</compileType>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Box2D.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Math.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Timer.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Settings.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2StackAllocator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2GrowableStack.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2BlockAllocator.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Draw.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2DynamicTree.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2TimeOfImpact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2Distance.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2Collision.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2BroadPhase.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2PolygonShape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2EdgeShape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2CircleShape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2Shape.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Rope/b2Rope.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2ContactManager.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2WorldCallbacks.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Body.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Island.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2TimeStep.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Fixture.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2World.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2GearJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PulleyJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MotorJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RopeJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2FrictionJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2DistanceJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2Joint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WheelJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MouseJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WeldJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RevoluteJoint.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2Contact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ContactSolver.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2CircleContact.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Math.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Settings.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Timer.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2BlockAllocator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2StackAllocator.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Common/b2Draw.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2BroadPhase.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2CollidePolygon.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2TimeOfImpact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2Collision.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2CollideEdge.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2Distance.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2DynamicTree.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/b2CollideCircle.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2EdgeShape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2CircleShape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2PolygonShape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Rope/b2Rope.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Body.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2WorldCallbacks.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Island.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2Fixture.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2ContactManager.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/b2World.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MouseJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2DistanceJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PulleyJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2GearJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MotorJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WheelJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RopeJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WeldJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2Joint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Joints/b2FrictionJoint.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ContactSolver.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2Contact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../ThirdParty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2CircleContact.cpp" ex="false" tool="1" flavor2="0"></item>
+		</conf>
 	</confs>
 </configurationDescriptor>
