@@ -24,9 +24,9 @@
 		"RIGHT": "Numpad 6"
 	},
 	{
-		"Joystick": "Saitek Cyborg Rumble Pad",
+		"Joystick": "Controller (XBOX 360 For Windows)",
 		"BOMB": 0,
-		"SKILL": 1,
+		"SKILL": 2,
 		"X-Axis": "PovX",
 		"Y-Axis": "PovY",
 		"scaleX": 1,
