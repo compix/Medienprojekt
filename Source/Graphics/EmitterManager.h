@@ -9,14 +9,14 @@ class ParticleEmitter;
 
 const float PARTICLE_UPDATE_FREQUENCY = 1.f/60.f;
 
-class ParticleManager 
+class EmitterManager 
 {
 	typedef std::vector<std::shared_ptr<ParticleEmitter>> EmitterContainer;
 	friend class ParticleEmitter;
 public:
-	ParticleManager();
-	ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters);
-	ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters);
+	EmitterManager();
+	EmitterManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters);
+	EmitterManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters);
 	void update(float deltaTime);
 
 	void setTexture(uint32_t maxParticles);

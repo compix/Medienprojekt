@@ -276,7 +276,7 @@
     <ClInclude Include="..\..\Source\Graphics\Particle.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEffects.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleEmitter.h" />
-    <ClInclude Include="..\..\Source\Graphics\ParticleManager.h" />
+    <ClInclude Include="..\..\Source\Graphics\EmitterManager.h" />
     <ClInclude Include="..\..\Source\Graphics\ParticleSpawnSystem.h" />
     <ClInclude Include="..\..\Source\LayerManager.h" />
     <ClInclude Include="..\..\Source\Lighting\Light.h" />
@@ -404,7 +404,7 @@
     <ClCompile Include="..\..\Source\GameConstants.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleEmitter.cpp" />
-    <ClCompile Include="..\..\Source\Graphics\ParticleManager.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\EmitterManager.cpp" />
     <ClCompile Include="..\..\Source\Graphics\ParticleSpawnSystem.cpp" />
     <ClCompile Include="..\..\Source\LayerManager.cpp" />
     <ClCompile Include="..\..\Source\Lighting\Light.cpp" />

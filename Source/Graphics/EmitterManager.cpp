@@ -1,28 +1,28 @@
-#include "ParticleManager.h"
+#include "EmitterManager.h"
 #include "../Utils/Math.h"
 #include "ParticleEmitter.h"
 #include "../Utils/Colors.h"
 #include <iostream>
 
-ParticleManager::ParticleManager() : ParticleManager(10000, 50)
+EmitterManager::EmitterManager() : EmitterManager(10000, 50)
 {
 
 }
 
-ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters)
+EmitterManager::EmitterManager(uint32_t defaultParticlesPerEmitter, uint16_t maxEmitters)
 	: m_defaultParticlesPerEmitter(defaultParticlesPerEmitter), m_timeTillUpdate(PARTICLE_UPDATE_FREQUENCY), m_texture(nullptr)
 {
 	createEmitters(defaultParticlesPerEmitter, maxEmitters);
 }
 
-ParticleManager::ParticleManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters)
-	: ParticleManager(defaultParticlesPerEmitter, maxEmitters)
+EmitterManager::EmitterManager(uint32_t defaultParticlesPerEmitter, Assets::Texture* texture, uint16_t maxEmitters)
+	: EmitterManager(defaultParticlesPerEmitter, maxEmitters)
 {
 	m_texture = texture;
 	setTexture(defaultParticlesPerEmitter);
 }
 
-void ParticleManager::update(float deltaTime)
+void EmitterManager::update(float deltaTime)
 {
 	m_timeTillUpdate -= deltaTime;
 
@@ -55,7 +55,7 @@ void ParticleManager::update(float deltaTime)
 	}
 }
 
-void ParticleManager::setTexture(uint32_t maxParticles)
+void EmitterManager::setTexture(uint32_t maxParticles)
 {
 	auto& emitters = m_emitterContainerMap[maxParticles];
 
@@ -63,7 +63,7 @@ void ParticleManager::setTexture(uint32_t maxParticles)
 		e->setTexture(m_texture);
 }
 
-ParticleEmitter* ParticleManager::spawnEmitter()
+ParticleEmitter* EmitterManager::spawnEmitter()
 {
 	return spawnEmitter(m_defaultParticlesPerEmitter);
 }
@@ -72,7 +72,7 @@ ParticleEmitter* ParticleManager::spawnEmitter()
  * @brief	Don't use this dynamically if the given number of particles wasn't created at startup.
  * 			Use createEmitters() in the ParticleSystem with the max number of particles.
  */
-ParticleEmitter* ParticleManager::spawnEmitter(uint32_t maxParticles)
+ParticleEmitter* EmitterManager::spawnEmitter(uint32_t maxParticles)
 {
 	if (m_emitterContainerMap.count(maxParticles) == 0)
 	{
@@ -94,7 +94,7 @@ ParticleEmitter* ParticleManager::spawnEmitter(uint32_t maxParticles)
 	return e.get();
 }
 
-void ParticleManager::createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters)
+void EmitterManager::createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters)
 {
 	if (m_emitterContainerMap.count(maxParticlesPerEmitter) > 0)
 	{

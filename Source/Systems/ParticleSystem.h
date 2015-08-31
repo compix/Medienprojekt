@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/System.h>
-#include "../Graphics/ParticleManager.h"
+#include "../Graphics/EmitterManager.h"
 
 struct DeathEvent;
 
@@ -10,7 +10,7 @@ public:
 	ParticleSystem();
 	void update(entityx::EntityManager &entityManager, entityx::EventManager &eventManager, entityx::TimeDelta dt) override;
 
-	ParticleManager* getManager(const std::string& textureName);
+	EmitterManager* getManager(const std::string& textureName);
 
 	void configure(entityx::EventManager& events) override;
 
@@ -20,6 +20,6 @@ private:
 	void createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters);
 
 private:
-	std::unordered_map<std::string, ParticleManager> m_particleManagers;
+	std::unordered_map<std::string, EmitterManager> m_particleManagers;
 };
 

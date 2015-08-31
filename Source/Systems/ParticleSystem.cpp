@@ -37,7 +37,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 
 void ParticleSystem::createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters)
 {
-	m_particleManagers.insert({ textureName, ParticleManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
+	m_particleManagers.insert({ textureName, EmitterManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -72,7 +72,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 /**
  * @brief	Make sure the manager for the given texture exists. Create it in the ParticleSystem if not.
  */
-ParticleManager* ParticleSystem::getManager(const std::string& textureName)
+EmitterManager* ParticleSystem::getManager(const std::string& textureName)
 {
 	assert(m_particleManagers.count(textureName) != 0);
 
