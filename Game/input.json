@@ -8,8 +8,8 @@
 		"RIGHT": "D"
 	},
 	{
-		"BOMB": "Right Shift",
-		"SKILL": "Right Control",
+		"BOMB": "=",
+		"SKILL": "/",
 		"UP": "Up Arrow",
 		"DOWN": "Down Arrow",
 		"LEFT": "Left Arrow",
