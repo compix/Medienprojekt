@@ -20,6 +20,6 @@ private:
 	void createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters);
 
 private:
-	std::unordered_map<std::string, EmitterManager> m_particleManagers;
+	std::unordered_map<std::string, EmitterManager> m_emitterManagers;
 };
 

@@ -37,7 +37,7 @@ void ParticleSystem::receive(const entityx::EntityDestroyedEvent& e)
 
 void ParticleSystem::createManager(const std::string& textureName, uint32_t maxParticles, uint16_t maxEmitters)
 {
-	m_particleManagers.insert({ textureName, EmitterManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
+	m_emitterManagers.insert({ textureName, EmitterManager(maxParticles, GameGlobals::assetManager->getTexture(textureName), maxEmitters) });
 }
 
 void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
@@ -63,7 +63,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		particleComponent->emitter->position(transform->x, transform->y);
 	}
 
-	for (auto& m : m_particleManagers)
+	for (auto& m : m_emitterManagers)
 	{
 		m.second.update((float)dt);
 	}
@@ -74,7 +74,7 @@ void ParticleSystem::update(entityx::EntityManager& entityManager, entityx::Even
  */
 EmitterManager* ParticleSystem::getManager(const std::string& textureName)
 {
-	assert(m_particleManagers.count(textureName) != 0);
+	assert(m_emitterManagers.count(textureName) != 0);
 
-	return &m_particleManagers[textureName];
+	return &m_emitterManagers[textureName];
 }
