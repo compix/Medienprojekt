@@ -48,12 +48,12 @@ bool AIUtil::isSafePath(entityx::Entity& entity, AIPath& path, float* minExplosi
 		int cellY = int(transform->y / GameConstants::CELL_HEIGHT);
 
 		// If the entity is on that cell
-		if (n1->x == cellX && n1->y == cellY && (abs(dx) + abs(dy) == 1))
+		if (n1->x == cellX && n1->y == cellY && (std::abs(dx) + std::abs(dy) == 1))
 		{
 			float xBorder = float(n2->x * GameConstants::CELL_WIDTH + (dx == 1 ? 0 : GameConstants::CELL_WIDTH));
 			float yBorder = float(n2->y * GameConstants::CELL_HEIGHT + (dy == 1 ? 0 : GameConstants::CELL_HEIGHT));
 
-			float distance = (abs(dx) == 1) ? abs(transform->x - xBorder) : abs(transform->y - yBorder);
+			float distance = (std::abs(dx) == 1) ? std::abs(transform->x - xBorder) : std::abs(transform->y - yBorder);
 			timeToNext = distance / speed;
 		}
 	}
@@ -122,7 +122,7 @@ bool AIUtil::isValidPath(const AIPath& path)
 	{
 		auto n1 = path.nodes[i];
 		auto n2 = path.nodes[i + 1];
-		int distance = abs(n1->x - n2->x) + abs(n1->y - n2->y);
+		int distance = std::abs(n1->x - n2->x) + std::abs(n1->y - n2->y);
 
 		if (distance > 1 && !n2->properties.otherPortal)
 			return false; // portal disappeared, there is a jump in cell distance now
@@ -147,7 +147,7 @@ uint8_t AIUtil::distanceToClosestEnemy(uint8_t x, uint8_t y, std::vector<entityx
 		assert(e.valid() && e.has_component<CellComponent>());
 		auto cell = e.component<CellComponent>();
 
-		uint8_t newDistance = abs(cell->x - x) + abs(cell->y - y);
+		uint8_t newDistance = std::abs(cell->x - x) + std::abs(cell->y - y);
 		if (newDistance < distance)
 			distance = newDistance;
 	}

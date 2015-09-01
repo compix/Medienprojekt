@@ -12,8 +12,7 @@ public:
 	~PhysixSystem();
 
 	static float m_Scale, m_InvScale;
-	
-	void SetWorld(b2World b2_world);
+
 	//void SetScale(float scale);
 	void SetDebugDrawer(SFMLDebugDraw* debugDraw);
 	void SetGravity(b2Vec2 gravity);

@@ -182,7 +182,7 @@ void Graph::explosionSpread(const ExplosionSpread& spread, AffectedByExplosion* 
 				// A block already affected by an explosion could potentially have an item. Another bomb could destroy this item
 				if (currentNode->properties.affectedByExplosion && affectedEntities)
 				{
-					if (abs(currentNode->properties.timeTillExplosion - explosionTime) >= 0.25f)
+					if (std::abs(currentNode->properties.timeTillExplosion - explosionTime) >= 0.25f)
 						affectedEntities->numOfItems++;
 
 					if (currentNode->properties.timeTillExplosion <= explosionTime)

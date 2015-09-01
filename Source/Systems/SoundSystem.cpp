@@ -22,7 +22,7 @@ void SoundSystem::update(entityx::EntityManager& entities, entityx::EventManager
 		auto soundComponent = entity.component<SoundComponent>();
 		auto input = entity.component<InputComponent>();
 
-		bool moving = abs(input->moveX) + abs(input->moveY) > 0; 
+		bool moving = std::abs(input->moveX) + std::abs(input->moveY) > 0;
 		if (!moving)
 		{
 			soundComponent->remaining *= 0.5f;

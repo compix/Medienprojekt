@@ -239,8 +239,8 @@ void JumpSystem::adjustXY_RelatingToTheDirection(int* x, int* y, int step, Direc
 void JumpSystem::adjustCellsIfOutOfBounds(int8_t* fromX, int8_t* toX, int8_t* fromY, int8_t* toY)
 {
 	assert(fromX != nullptr || fromY != nullptr || toY != nullptr || toX != nullptr);
-	int deltaX = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toX), static_cast<float>(*fromX))));
-	int deltaY = static_cast<int>(abs(getDeltaOf(static_cast<float>(*toY), static_cast<float>(*fromY))));
+	int deltaX = static_cast<int>(std::abs(getDeltaOf(static_cast<float>(*toX), static_cast<float>(*fromX))));
+	int deltaY = static_cast<int>(std::abs(getDeltaOf(static_cast<float>(*toY), static_cast<float>(*fromY))));
 	
 	if (*toX >= GameGlobals::game->getWidth()){
 		*toX = deltaX-1;

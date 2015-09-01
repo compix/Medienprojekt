@@ -5,12 +5,6 @@
 b2World* BodyFactory::m_World(new b2World(b2Vec2()));
 std::unordered_map<entityx::uint64_t, std::unique_ptr<entityx::uint64_t>> BodyFactory::m_entityIds;
 
-BodyFactory::BodyFactory(b2World b2_world)
-{
-	m_World = &b2_world;
-}
-
-
 BodyFactory::~BodyFactory()
 {
 }

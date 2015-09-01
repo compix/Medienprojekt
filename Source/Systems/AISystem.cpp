@@ -220,7 +220,7 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 			auto lastAction = aiComponent->currentAction;
 
 			ActionPtr bestAction;
-			ActionType bestActionType;
+			ActionType bestActionType = ActionType::NONE;
 
 			// Prepare path and choose the best action
 			for (auto& pair : aiComponent->actions)

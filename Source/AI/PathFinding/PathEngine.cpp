@@ -16,6 +16,8 @@ PathEngine::PathEngine(LayerManager* layerManager)
 	m_graph = std::make_unique<Graph>(layerManager);
 	m_simGraph = std::make_unique<SimulationGraph>(layerManager, m_graph.get());
 
+	assert(m_graph->m_width > 0 && m_graph->m_height > 0);
+
 	for (uint8_t i = 0; i < PATH_ENGINE_MAX_TASK_NUM; ++i)
 	{
 		m_nodeInfo[i] = new NodePathInfo*[m_graph->m_width];
@@ -46,7 +48,7 @@ PathEngine::~PathEngine()
 		for (uint8_t j = 0; j < m_graph->m_width; ++j)
 			delete[] m_nodeInfo[i][j];
 
-		delete m_nodeInfo[i];
+		delete[] m_nodeInfo[i];
 	}
 }
 
@@ -239,9 +241,10 @@ void PathEngine::search(entityx::Entity& entity, uint8_t startX, uint8_t startY,
 		for (uint8_t i = 0; i < 4; ++i)
 		{
 			GraphNode* neighborNode = m_simGraph->getNeighbor(curNode, static_cast<Direction>(i));
-			NodePathInfo& neighbor = m_nodeInfo[taskNum][neighborNode->x][neighborNode->y];
 			if (!neighborNode || (!neighborNode->properties.hasBomb && !neighborNode->valid))
 				continue;
+
+			NodePathInfo& neighbor = m_nodeInfo[taskNum][neighborNode->x][neighborNode->y];
 
 			if (neighbor.state == NodeState::UNVISITED)
 			{

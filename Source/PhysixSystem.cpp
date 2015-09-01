@@ -20,11 +20,6 @@ b2World* PhysixSystem::GetWorld()
 	return &m_World;
 }
 
-void PhysixSystem::SetWorld(b2World b2_world)
-{
-	m_World = b2_world;
-}
-
 /*void PhysixSystem::SetScale(float scale)
 {
 	PhysixSystem::m_Scale = scale;

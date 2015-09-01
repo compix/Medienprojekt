@@ -314,6 +314,3 @@ solution "Thirdparty"
 				thirdPartyDir .. "/SFML/src/SFML/Main/SFMLActivity.cpp"
 			}
 		end
-		if not isVisualStudio then 
-			buildoptions  { "-U__STRICT_ANSI__" }
-		end

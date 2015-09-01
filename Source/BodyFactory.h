@@ -24,8 +24,6 @@ public:
 		BOMB_RADAR  = 0x0200
 	};
 
-
-	BodyFactory(b2World b2_world);
 	~BodyFactory();
 
 	static b2Body* CreateBox(Entity entity, float posX, float posY, float width, float height, b2BodyType type, uint16 isA, uint16 collideWith, bool isSensor = false);

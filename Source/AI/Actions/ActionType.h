@@ -10,5 +10,6 @@ enum class ActionType
 	TRY_TO_SURVIVE,
 	PLACE_PORTAL,
 	ATTACK_ENEMY,
-	BLINK
+	BLINK,
+	NONE
 };

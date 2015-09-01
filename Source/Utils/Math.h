@@ -36,5 +36,5 @@ namespace Math
 	inline float toRadians(float degree) { return degree * PI / 180.f; }
 	inline float toDegrees(float radians) { return radians * 180.f / PI; }
 
-	inline bool nearEq(float n1, float n2) { return abs(n1 - n2) <= EPSILON; }
+	inline bool nearEq(float n1, float n2) { return std::abs(n1 - n2) <= EPSILON; }
 }
