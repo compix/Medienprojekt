@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="AI">
@@ -460,6 +460,9 @@
     <ClInclude Include="..\..\Source\Game.h" />
     <ClInclude Include="..\..\Source\GameConstants.h" />
     <ClInclude Include="..\..\Source\GameGlobals.h" />
+    <ClInclude Include="..\..\Source\Graphics\EmitterManager.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Graphics\Particle.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -695,9 +698,6 @@
     <ClInclude Include="..\..\Source\Utils\make_unique.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Graphics\EmitterManager.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AI\AIUtil.cpp">
@@ -823,6 +823,9 @@
     <ClCompile Include="..\..\Source\EntityLayer.cpp" />
     <ClCompile Include="..\..\Source\Game.cpp" />
     <ClCompile Include="..\..\Source\GameConstants.cpp" />
+    <ClCompile Include="..\..\Source\Graphics\EmitterManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Graphics\ParticleEffects.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -1030,9 +1033,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Utils\SystemUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Graphics\EmitterManager.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

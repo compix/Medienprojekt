@@ -206,13 +206,13 @@
 			<itemPath>../../../Source/GameConstants.h</itemPath>
 			<itemPath>../../../Source/GameGlobals.h</itemPath>
 			<logicalFolder name="Graphics" displayName="Graphics" projectFiles="true">
+				<itemPath>../../../Source/Graphics/EmitterManager.cpp</itemPath>
+				<itemPath>../../../Source/Graphics/EmitterManager.h</itemPath>
 				<itemPath>../../../Source/Graphics/Particle.h</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEffects.cpp</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEffects.h</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEmitter.cpp</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleEmitter.h</itemPath>
-				<itemPath>../../../Source/Graphics/ParticleManager.cpp</itemPath>
-				<itemPath>../../../Source/Graphics/ParticleManager.h</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleSpawnSystem.cpp</itemPath>
 				<itemPath>../../../Source/Graphics/ParticleSpawnSystem.h</itemPath>
 			</logicalFolder>
@@ -604,10 +604,10 @@
 			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
@@ -731,9 +731,9 @@
 			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -1017,10 +1017,10 @@
 			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
@@ -1144,9 +1144,9 @@
 			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>
@@ -1430,10 +1430,10 @@
 			<item path="../../../Source/Events/StartGameEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/ThrowBombEvent.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Events/TimeoutEvent.h" ex="false" tool="3" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/Particle.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.h" ex="false" tool="3" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.h" ex="false" tool="3" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.h" ex="false" tool="3" flavor2="0"></item>
@@ -1557,9 +1557,9 @@
 			<item path="../../../Source/Animation/AnimatorManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/IdleState.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Animation/States/WalkingState.cpp" ex="false" tool="1" flavor2="0"></item>
+			<item path="../../../Source/Graphics/EmitterManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEffects.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleEmitter.cpp" ex="false" tool="1" flavor2="0"></item>
-			<item path="../../../Source/Graphics/ParticleManager.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Graphics/ParticleSpawnSystem.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Lighting/Light.cpp" ex="false" tool="1" flavor2="0"></item>
 			<item path="../../../Source/Menu/Menu.cpp" ex="false" tool="1" flavor2="0"></item>

@@ -314,3 +314,8 @@ solution "Thirdparty"
 				thirdPartyDir .. "/SFML/src/SFML/Main/SFMLActivity.cpp"
 			}
 		end
+
+		--fixme: if windows and gcc would be more precise (in case any other IDE will be supported)
+		if isWindows and isNetbeans then 
+			buildoptions  { "-U__STRICT_ANSI__" }
+		end
