@@ -12,7 +12,7 @@ MenuPageCredits::MenuPageCredits(Menu &menu)
 	float y = 200;
 	createSection(x, y, "Developers: ");
 	createSubsection(x, y, "Dennis Grass");
-	createSubsection(x, y, "Wladimir Kröker");
+	createSubsection(x, y, "Wladimir KrÃ¶ker");
 	createSubsection(x, y, "Santo Pfingsten");
 
 	y = 200;
@@ -28,7 +28,7 @@ MenuPageCredits::MenuPageCredits(Menu &menu)
 
 	y = 400;
 	createSection(x2, y, "Music:");
-	createSubsection(x2, y, "Jana Stürenburg");
+	createSubsection(x2, y, "Jana StÃ¼renburg");
 }
 
 void MenuPageCredits::createSection(float x, float &y, const std::string& name)

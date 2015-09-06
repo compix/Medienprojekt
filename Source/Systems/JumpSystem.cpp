@@ -114,7 +114,7 @@ void JumpSystem::update(EntityManager &entityManager, EventManager &eventManager
 				jumpingEntity.assign<RenderOffsetComponent>(xOffset, yOffset);
 			}
 			else 
-			{ // Sachen die wiederhergestellt werden m¸ssen, wenn wirklich am Ziel angekommen ist
+			{ // Sachen die wiederhergestellt werden m√ºssen, wenn wirklich am Ziel angekommen ist
 				if (body)
 					activateCollisionForFlyingBodys(body);
 
@@ -145,7 +145,7 @@ void JumpSystem::jumpFunction(Entity jumpingEntity, ComponentHandle<JumpComponen
 		}
 		else if (it->id() != jumpingEntity.id() && it->has_component<BodyComponent>())
 		{ 
-			// Wenn ein Hindernis auﬂer die Bombe selbst es blockiert
+			// Wenn ein Hindernis au√üer die Bombe selbst es blockiert
 			targetBlocked = true;
 			break;
 		}
@@ -321,7 +321,7 @@ void JumpSystem::calculateXY_ForOffset(float* xPos, float* yPos, ComponentHandle
 
 void JumpSystem::checkIfDegreeMustBeRecalculated(ComponentHandle<JumpComponent, EntityManager> jumpComp, bool targetBlocked)
 {
-	if (targetBlocked) //Reagier auf ‰nderungen des Ziel Tiles (Ob die Bombe etwas hˆher landet oder nicht, wegen Blockierung)
+	if (targetBlocked) //Reagier auf √§nderungen des Ziel Tiles (Ob die Bombe etwas h√∂her landet oder nicht, wegen Blockierung)
 	{
 		jumpComp->targetIsBlocked = true;
 		if (jumpComp->targetIsBlocked != jumpComp->targetWasBlocked)

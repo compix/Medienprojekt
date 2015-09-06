@@ -15,10 +15,10 @@ struct JumpComponent
 	Direction direction;
 	int8_t fromX, fromY;
 	int8_t toX, toY;
-	float totalTime, timePassed = 0;	//Je höher totalTime um so höher fliegt der Ball.
+	float totalTime, timePassed = 0;	//Je hÃ¶her totalTime um so hÃ¶her fliegt der Ball.
 	float startVelocity;
 	float degreeX, degreeY;
 	bool isDegreeCalculated=false;
-	float deltaTimeMultiplikator;		//Einfluß auf die Simulationsgeschwindigkeit, bei hohen werten ist der Sprung schnell
+	float deltaTimeMultiplikator;		//EinfluÃŸ auf die Simulationsgeschwindigkeit, bei hohen werten ist der Sprung schnell
 	bool targetIsBlocked, targetWasBlocked, wasBlocked = false; //Die ersten zwei bezihen sich auf das Ziel, wasBlocked bezieht sich auf die Zelle von dem er kommt.
 };

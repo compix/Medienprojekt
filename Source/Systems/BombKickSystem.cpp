@@ -48,7 +48,7 @@ void BombKickSystem::update(entityx::EntityManager& entityManager, entityx::Even
 		b2Body* body = bombs.component<BodyComponent>()->body;
 		b2Vec2 velo = body->GetLinearVelocity();
 
-		if (velo.Length() != 0){ // Wenn Geschwindigkeits Vektorlänge nicht null ist, also sich bewegt.
+		if (velo.Length() != 0){ // Wenn Geschwindigkeits VektorlÃ¤nge nicht null ist, also sich bewegt.
 
 			const int cellDistance = 1;
 			auto leftWall = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cellComponent->x - cellDistance, cellComponent->y);
@@ -145,7 +145,7 @@ void BombKickSystem::kickBomb(b2Body* sensor, b2Body* notSensor, Direction direc
 				case Direction::RIGHT:	force.x = forcePower;	break;
 				default: break;
 				}
-				if (entity.component<InventoryComponent>()->canKickBomb() && entity.component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus übereinstimmt.
+				if (entity.component<InventoryComponent>()->canKickBomb() && entity.component<DirectionComponent>()->direction == direction) //Wenn das Item aufgenommen wurde und die Richtung des Players, mit der Position der Bombe vom Spieler aus Ã¼bereinstimmt.
 				{
 					sensor->SetLinearVelocity(force);
 				}

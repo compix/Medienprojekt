@@ -33,7 +33,7 @@ void PortalSystem::configure(entityx::EventManager& events)
 
 void PortalSystem::update(entityx::EntityManager& entityManager, entityx::EventManager& eventManager, entityx::TimeDelta dt)
 {
-	// MARKER entfernen falls nötig
+	// MARKER entfernen falls nÃ¶tig
 	for (auto markedEntity : entityManager.entities_with_components<PortalMarkerComponent, CellComponent, LayerComponent>())
 	{
 		auto mark = markedEntity.component<PortalMarkerComponent>();
@@ -81,7 +81,7 @@ void PortalSystem::update(entityx::EntityManager& entityManager, entityx::EventM
 				}
 					
 				teleport(e, cell->x, cell->y);
-				e.assign<PortalMarkerComponent>(linkedPortal.id()); // Marker wird zum Gegenstück erstellt, da die Entity sich schon dort befindet.
+				e.assign<PortalMarkerComponent>(linkedPortal.id()); // Marker wird zum GegenstÃ¼ck erstellt, da die Entity sich schon dort befindet.
 			}
 		}
 	}
