@@ -9,7 +9,7 @@
 #include "../../Utils/Random.h"
 
 AttackEnemy::AttackEnemy(PathEngine* pathEngine, LayerManager* layerManager)
-	:m_throwStarted(false), m_pathEngine(pathEngine)
+    :m_throwStarted(false), m_placedBomb(false), m_pathEngine(pathEngine)
 {
 	m_currentAction = nullptr;
 	m_placeBomb = std::make_shared<Action>(pathEngine, RateCombination({ RateAttackEnemy(), RateTrapDanger() }), PlaceBomb(), layerManager);

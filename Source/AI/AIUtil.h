@@ -33,7 +33,7 @@ template<class C, class... Args>
 static bool AIUtil::doEntitiesExistWithComponents()
 {
 	for (auto entity : GameGlobals::entities->entities_with_components<C, Args...>())
-		return true;
+        return entity.valid();
 
 	return false;
 }

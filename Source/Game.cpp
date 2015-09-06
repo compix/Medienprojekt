@@ -70,7 +70,8 @@ void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, floa
 }
 
 Game::Game()
-	:m_timer(1.f), m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events), m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
+    :m_entities(*GameGlobals::events), m_systems(m_entities, *GameGlobals::events),
+      m_debugDraw(*GameGlobals::window), m_PhysixSystem(nullptr)
 {
 	GameGlobals::entities = &m_entities;
 
@@ -103,14 +104,11 @@ void Game::init(uint8_t width, uint8_t height)
 	}
 	/*Setup PhysixSystem End*/
 
-
 	m_layerManager = std::make_unique<LayerManager>();
 	m_layerManager->createLayer(width, height, GameConstants::MAIN_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::FLOOR_LAYER);
 	m_layerManager->createLayer(width, height, GameConstants::JUMP_LAYER);
 	m_layerManager->configure(*GameGlobals::events);
-
-	
 
 	m_entityFactory = std::make_unique<EntityFactory>(isClient(), m_layerManager.get(), &m_shaderManager, &m_systems);
 	GameGlobals::entityFactory = m_entityFactory.get();

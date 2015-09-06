@@ -48,16 +48,15 @@ void BodySystem::update(EntityManager &entityManager, EventManager &eventManager
 	ComponentHandle<BodyComponent> body;
 	ComponentHandle<TransformComponent> transform;
 	ComponentHandle<SpriteComponent> sprite;
-	
-	float scale = PhysixSystem::m_Scale;
 
 	for (Entity entity : entityManager.entities_with_components(body, transform, sprite))
 	{
 		transform->x = (PhysixSystem::toWorld(body->body->GetPosition().x));
 		transform->y = (PhysixSystem::toWorld(body->body->GetPosition().y));
-		auto dynamic = entity.component<DynamicComponent>();
-		if (dynamic.valid())
+
+        if (entity.has_component<DynamicComponent>())
 		{
+            auto dynamic = entity.component<DynamicComponent>();
 			auto v = body->body->GetLinearVelocity();
 			dynamic->velX = PhysixSystem::toWorld(v.x);
 			dynamic->velY = PhysixSystem::toWorld(v.y);

@@ -1,6 +1,6 @@
 #pragma once
 #include <entityx/entityx.h>
-#include<Box2D/Box2D.h>
+#include <Box2D/Box2D.h>
 #include "Utils/AssetManagement/TextureLoader.h"
 #include "PhysixSystem.h"
 #include "LayerManager.h"

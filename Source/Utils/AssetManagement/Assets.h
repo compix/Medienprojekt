@@ -11,8 +11,8 @@ namespace Assets
 		inline const sf::IntRect& getRect() const { return m_textureRect; }
 		inline const sf::Texture* get() const { return m_tex; }
 	private:
+        sf::Texture* m_tex;
 		sf::IntRect m_textureRect;
-		sf::Texture* m_tex;
 	};
 
 	struct Animation

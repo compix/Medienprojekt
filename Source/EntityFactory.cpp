@@ -375,9 +375,6 @@ Entity EntityFactory::createExplosion(uint8_t cellX, uint8_t cellY, Direction di
 
 	TransformComponent transformComponent;
 
-	float width = float(GameConstants::CELL_WIDTH);
-	float height = float(GameConstants::CELL_HEIGHT);
-
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;
 
@@ -436,9 +433,6 @@ Entity EntityFactory::createLava(uint8_t cellX, uint8_t cellY)
 
 	TransformComponent transformComponent;
 
-	float width = float(GameConstants::CELL_WIDTH);
-	float height = float(GameConstants::CELL_HEIGHT);
-
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 16.f;
 
@@ -466,9 +460,6 @@ Entity EntityFactory::createItemSpawnEffect(uint8_t cellX, uint8_t cellY, entity
 
 	TransformComponent transformComponent;
 
-	float width = float(GameConstants::CELL_WIDTH);
-	float height = float(GameConstants::CELL_HEIGHT);
-
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f + 16.f;
 
@@ -492,9 +483,6 @@ Entity EntityFactory::createPlayerDeathEffect(uint8_t cellX, uint8_t cellY)
 	Entity entity = GameGlobals::entities->create();
 
 	TransformComponent transformComponent;
-
-	float width = float(GameConstants::CELL_WIDTH);
-	float height = float(GameConstants::CELL_HEIGHT);
 
 	transformComponent.x = GameConstants::CELL_WIDTH * cellX + GameConstants::CELL_WIDTH*0.5f;
 	transformComponent.y = GameConstants::CELL_HEIGHT * cellY + GameConstants::CELL_HEIGHT*0.5f;

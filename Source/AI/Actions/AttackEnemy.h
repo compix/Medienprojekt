@@ -14,10 +14,9 @@ public:
 	void update(entityx::Entity& entity, float deltaTime) override;
 	bool done() override;
 private:
+    bool m_throwStarted;
+    bool m_placedBomb;
 	PathEngine* m_pathEngine;
 	ActionPtr m_placeBomb;
 	ActionPtr m_throwBomb;
-
-	bool m_throwStarted;
-	bool m_placedBomb;
 };

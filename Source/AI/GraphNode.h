@@ -13,9 +13,8 @@ struct BombProperties
 
 	bool explosionSimulated;
 	uint8_t explosionRange;
+    float explosionTime;
 	BombType type;
-
-	float explosionTime;
 };
 
 enum class SmellType
@@ -32,8 +31,10 @@ struct Smells
 
 struct NodeProperties
 {
-	NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), hasItem(false), 
-		hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false), otherPortal(nullptr), hasSolidBlock(false) {}
+    NodeProperties() : affectedByExplosion(false), timeTillExplosion(0.f), otherPortal(nullptr), hasItem(false),
+        hasBomb(false), hasPlayer(false), hasPortal(false), hasBlock(false),  hasSolidBlock(false) {}
+
+    bool affectedByExplosion;
 
 	float timeTillExplosion;
 
@@ -45,8 +46,6 @@ struct NodeProperties
 	bool hasPortal;
 	bool hasBlock;
 	bool hasSolidBlock;
-
-	bool affectedByExplosion;
 };
 
 struct GraphNode

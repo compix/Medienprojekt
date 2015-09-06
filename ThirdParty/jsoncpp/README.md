@@ -1,3 +1,6 @@
+Modifications by compix:
+- CMakeLists.txt disabled tests
+
 Introduction
 ------------
 

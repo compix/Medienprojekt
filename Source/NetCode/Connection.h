@@ -84,6 +84,7 @@ namespace NetCode
 					case ENET_EVENT_TYPE_CONNECT: onConnect(m_event); break;
 					case ENET_EVENT_TYPE_RECEIVE: onReceive(m_event); break;
 					case ENET_EVENT_TYPE_DISCONNECT: onDisconnect(m_event); break;
+                    default: break;
 					}
 				}
 

@@ -114,7 +114,6 @@ void ItemSystem::update(entityx::EntityManager& entityManager, entityx::EventMan
 		auto entityWithInventory = m_layerManager->getEntityWithComponent<InventoryComponent>(layerComponent->layer, cellComponent->x, cellComponent->y);
 		if (entityWithInventory.valid() && !item.has_component<JumpComponent>())
 		{
-			auto inventory = entityWithInventory.component<InventoryComponent>();
 			addItem(entityWithInventory, itemComponent->type);
 			eventManager.emit<ItemPickedUpEvent>(item, entityWithInventory);
 		}

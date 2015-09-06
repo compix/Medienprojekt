@@ -25,11 +25,11 @@ struct AnimationComponent
 	uint8_t frameCount;
 	float frameDuration;
 	float timeTillNextFrame;
+    PlayMode playMode;
+    int8_t currentFrame;
 	uint8_t startFrame;
-	int8_t currentFrame;
-	PlayMode playMode;
+    AnimationType currentAnimation;
 
 	Animator* animator;
 	AnimationState* state;
-	AnimationType currentAnimation;
 };

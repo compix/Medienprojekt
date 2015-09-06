@@ -36,7 +36,7 @@ struct Gradient
 template<class T>
 struct Gradient3
 {
-	Gradient3(GradientType type, const T& start, const T& mid, const T& end) : type(type), mid(mid), start(start), end(end) {}
+    Gradient3(GradientType type, const T& start, const T& mid, const T& end) : type(type), start(start), mid(mid), end(end) {}
 	T operator()(float t)
 	{
 		const T* s;

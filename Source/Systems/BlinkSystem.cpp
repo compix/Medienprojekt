@@ -43,25 +43,20 @@ void BlinkSystem::update(EntityManager &entityManager, entityx::EventManager &ev
 			auto layerComponent = entity.component<LayerComponent>();
 			auto cell = entity.component<CellComponent>();
 			auto direction = entity.component<DirectionComponent>();
-			Entity blocks;
-			int x = 0, y = 0;
+            Entity blocks;
 			switch (direction->direction)
 			{
 			case Direction::UP:
 				blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x, cell->y - 1);
-				y = -1;
 				break;
 			case Direction::DOWN:
 				blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x, cell->y + 1);
-				y = 1;
 				break;
 			case Direction::LEFT:
 				blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x - 1, cell->y);
-				x = -1;
 				break;
 			case Direction::RIGHT:
 				blocks = m_layerManager->getEntityWithComponent<BodyComponent>(layerComponent->layer, cell->x + 1, cell->y);
-				x = 1;
 				break;
 			default: break;
 			}

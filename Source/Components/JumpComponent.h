@@ -15,8 +15,8 @@ struct JumpComponent
 	Direction direction;
 	int8_t fromX, fromY;
 	int8_t toX, toY;
-	float totalTime, timePassed = 0;	//Je höher totalTime um so höher fliegt der Ball.
-	float startVelocity;
+    float startVelocity;
+    float totalTime, timePassed = 0;	//Je höher totalTime um so höher fliegt der Ball.
 	float degreeX, degreeY;
 	bool isDegreeCalculated=false;
 	float deltaTimeMultiplikator;		//Einfluß auf die Simulationsgeschwindigkeit, bei hohen werten ist der Sprung schnell

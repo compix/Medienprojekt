@@ -132,8 +132,8 @@ namespace NetCode
 
 	private:
 		const uint8_t *m_data;
+        size_t m_limit;
 		size_t m_position;
-		size_t m_limit;
 		MT m_type;
 	};
 

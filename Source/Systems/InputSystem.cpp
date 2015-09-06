@@ -7,11 +7,11 @@
 
 void InputSystem::update(EntityManager &entityManager, EventManager &eventManager, TimeDelta dt)
 {
-	ComponentHandle<InputComponent> input;
-	ComponentHandle<LocalInputComponent> localInput;
-	auto entities = entityManager.entities_with_components(input, localInput);
-	for (auto entity : entities)
+    for (auto entity : entityManager.entities_with_components<InputComponent, LocalInputComponent>())
 	{
+        auto input = entity.component<InputComponent>();
+        auto localInput = entity.component<LocalInputComponent>();
+
 		if (input->disabled)
 			continue;
 		auto &playerInput = GameGlobals::input->getPlayerInput(localInput->inputIndex);

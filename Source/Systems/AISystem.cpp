@@ -217,8 +217,6 @@ void AISystem::update(entityx::EntityManager& entityManager, entityx::EventManag
 		bool currentActionValid = aiComponent->currentAction ? aiComponent->currentAction->valid(entity) : false;
 		if (m_forceRecomputation || !aiComponent->currentAction || (m_updateTimer <= 0.f && (aiComponent->currentAction->done() || !currentActionValid)))
 		{
-			auto lastAction = aiComponent->currentAction;
-
 			ActionPtr bestAction;
 			ActionType bestActionType = ActionType::NONE;
 

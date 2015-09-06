@@ -8,8 +8,8 @@ struct BombCreatedEvent
 		: entity(entity), x(x), y(y), owner(owner), type(type) {}
 
 	Entity entity;
-	Entity owner;
 	uint8_t x;
 	uint8_t y;
+    Entity owner;
 	BombType type;
 };

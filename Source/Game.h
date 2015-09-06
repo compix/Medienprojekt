@@ -54,18 +54,15 @@ protected:
 	bool initialized = false;
 	EntityManager m_entities;
 	SystemManager m_systems;
+    SFMLDebugDraw m_debugDraw;
+    PhysixSystem* m_PhysixSystem;
 	// Order depends on the order they are added with addSystem()
 	std::vector<std::shared_ptr<entityx::BaseSystem>> m_orderedSystems;
 	unique_ptr<EntityFactory> m_entityFactory;
 	unique_ptr<LayerManager> m_layerManager;
-	PhysixSystem* m_PhysixSystem;
-	SFMLDebugDraw m_debugDraw;
 	ContactListener listener;
 	uint8_t m_width;
 	uint8_t m_height;
-
-	Light m_light;
-	float m_timer;
 
 	ShaderManager m_shaderManager;
 

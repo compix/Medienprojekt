@@ -14,8 +14,9 @@ AIVisualizer::AIVisualizer()
 }
 
 AIVisualizer::AIVisualizer(PathEngine* pathEngine)
-	: m_pathEngine(pathEngine), m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false), m_visualizeDangerZones(false), m_keyPressed(false), 
-	m_visualizeActions(false), m_messageTime(2.f), m_messageTimer(m_messageTime), m_showingMessage(false), m_visualizeSmells(false),
+    : m_pathEngine(pathEngine), m_visualizeNodes(false), m_visualizeProperties(false), m_visualizePathInfo(false),
+      m_visualizeDangerZones(false), m_visualizeActions(false), m_visualizeSmells(false), m_keyPressed(false),
+     m_messageTime(2.f), m_messageTimer(m_messageTime), m_showingMessage(false),
 	m_leftXOffset(-100.f), m_rightXOffset(float(21 * GameConstants::CELL_WIDTH))
 {
 	if (!m_font.loadFromFile("Assets/fonts/DejaVuSans.ttf"))
@@ -231,7 +232,6 @@ void AIVisualizer::visualizePathInfo(uint8_t task)
 void AIVisualizer::visualizeNodeProperties()
 {
 	// Draw the legend
-	float yoc = -5;
 	m_rect.setRotation(0.f);
 	m_rect.setSize(sf::Vector2f(5, 5));
 

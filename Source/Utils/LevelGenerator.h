@@ -77,7 +77,7 @@ class LevelGenerator
 	struct LevelPosition
 	{
 		LevelPosition(int cellX, int cellY) : cellX(cellX), cellY(cellY) {}
-		LevelPosition() {};
+        LevelPosition() {}
 
 		bool operator==(const LevelPosition& other) { return cellX == other.cellX && cellY == other.cellY; }
 		int cellX;
@@ -101,13 +101,13 @@ private:
 	void spawnItems();
 
 private:
+    LevelConfig m_levelConfig;
+    uint8_t m_width;
+    uint8_t m_height;
+
 	std::vector<LevelPosition> m_characterPositions;
 	std::vector<entityx::Entity> m_destructibleBlocks;
 
 	int m_playerIndex = 0;
-	uint8_t m_width;
-	uint8_t m_height;
-
-	LevelConfig m_levelConfig;
 };
 

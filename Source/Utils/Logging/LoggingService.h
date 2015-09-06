@@ -34,16 +34,16 @@ private:
 
 	inline std::thread& getThread() { return m_thread; }
 private:
+    std::string m_filename;
+
+    std::queue<std::string>* m_readBuffer;
+    std::queue<std::string>* m_writeBuffer;
+
+    std::atomic<bool> m_readyForFlip;
+    std::atomic<bool> m_active;
+
+    std::thread m_thread;
+
 	std::queue<std::string> m_requestBuffer1;
 	std::queue<std::string> m_requestBuffer2;
-
-	std::queue<std::string>* m_readBuffer;
-	std::queue<std::string>* m_writeBuffer;
-
-	std::string m_filename;
-
-	std::atomic<bool> m_readyForFlip;
-	std::atomic<bool> m_active;
-
-	std::thread m_thread;
 };

@@ -7,7 +7,7 @@
 
 struct AIPath
 {
-	AIPath() : cost(0), rating(-FLT_MAX), curNode(0), behaviorNode(nullptr) {}
+    AIPath() : cost(0), curNode(0), behaviorNode(nullptr), rating(-FLT_MAX) {}
 
 	void attach(AIPath& path);
 

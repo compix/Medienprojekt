@@ -1,3 +1,6 @@
+Modifications by compix:
+	- Removed add_subdirectory(test) and enable_testing() in CMakeLists.txt
+
 C++ Format
 ==========
 

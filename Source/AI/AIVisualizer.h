@@ -62,15 +62,14 @@ private:
 	bool m_visualizeSmells;
 	bool m_keyPressed;
 
+    float const m_messageTime;
 	float m_messageTimer;
-	float const m_messageTime;
 	bool m_showingMessage;
 	std::string m_message;
 	sf::Text m_textMessage;
 
+    float m_leftXOffset;
+    float m_rightXOffset;
 	float m_leftYOffset;
 	float m_rightYOffset;
-
-	float m_leftXOffset;
-	float m_rightXOffset;
 };

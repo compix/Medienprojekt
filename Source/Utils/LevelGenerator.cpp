@@ -124,7 +124,6 @@ void LevelGenerator::spawnItems()
 	}
 
 	std::shuffle(m_destructibleBlocks.begin(), m_destructibleBlocks.end(), Random::RNG());
-	uint16_t itemNum = 0;
 
 	for (auto& block : m_destructibleBlocks)
 	{

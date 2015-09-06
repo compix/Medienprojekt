@@ -35,6 +35,6 @@ namespace GameGlobals
 	extern sf::View *menuView;
 	extern sf::View *screenView;
 	extern sf::View *gameView;
-};
+}
 
 void fitViewInto(sf::View &view, float sourceW, float sourceH, float destW, float destH);

@@ -170,10 +170,8 @@ NetServer::~NetServer()
 	{
 		auto &peer = host->peers[i];
 		if (peer.data)
-		{
-			NetPlayerInfo *info = static_cast<NetPlayerInfo *>(peer.data);
 			peer.data = nullptr;
-		}
+
 	}
 	m_connection.disconnectNow();
 	cout << "Connection closed" << endl;

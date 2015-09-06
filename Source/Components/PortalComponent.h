@@ -1,5 +1,5 @@
 #pragma once
-#include "../entityx/entityx/entityx.h"
+#include <entityx/entityx.h>
 
 struct PortalComponent
 {

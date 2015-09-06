@@ -14,7 +14,7 @@ private:
 	bool isBlinkReady(entityx::Entity& entity, float deltaTime);
 
 private:
+    const float m_blinkTime;
 	float m_remaining;
-	const float m_blinkTime;
 	bool blinked;
 };

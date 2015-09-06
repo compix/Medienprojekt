@@ -16,7 +16,6 @@ void DamageSystem::update(entityx::EntityManager& entities, entityx::EventManage
 	{
 		auto cell = damageDealer.component<CellComponent>();
 		auto ddComponent = damageDealer.component<DamageDealerComponent>();
-		auto layer = damageDealer.component<LayerComponent>();
 
 		// damage all other entities with a health component on that cell (main layer)
 		for (auto entity : m_layerManager->getEntities(GameConstants::MAIN_LAYER, cell->x, cell->y))

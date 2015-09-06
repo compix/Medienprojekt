@@ -1,7 +1,7 @@
 ﻿#include "ContactListener.h"
 #include <iostream>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include "../../Source/BodyFactory.h"
+#include "BodyFactory.h"
 #include <entityx/Entity.h>
 #include "Components/OwnerComponent.h"
 #include "Components/BlinkComponent.h"

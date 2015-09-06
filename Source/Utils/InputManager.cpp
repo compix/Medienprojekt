@@ -148,6 +148,8 @@ void InputManager::receive(const sf::Event& evt)
 	case sf::Event::JoystickDisconnected:
 		onJoystickDisconnected(evt.joystickConnect.joystickId);
 		break;
+    default:
+        break;
 	}
 }
 
@@ -193,6 +195,8 @@ void InputManager::onKeyPressed(int code)
 		case PlayerButton::RIGHT:
 			updatePlayerMove(player);
 			break;
+        default:
+            break;
 		}
 	}
 //	cout << "Key pressed: " << getKeyName(code) << endl;
@@ -203,16 +207,17 @@ void InputManager::onKeyReleased(int code)
 	auto it = m_keycodeMap.find(code);
 	if (it != m_keycodeMap.end())
 	{
+        auto &player = m_playerInputs[it->second.playerIndex];
 		switch (it->second.button)
 		{
 		case PlayerButton::UP:
 		case PlayerButton::DOWN:
 		case PlayerButton::LEFT:
-		case PlayerButton::RIGHT:
-			auto &player = m_playerInputs[it->second.playerIndex];
+		case PlayerButton::RIGHT:		
 			player.buttonPressed[it->second.button] = false;
 			updatePlayerMove(player);
 			break;
+        default: break;
 		}
 	}
 //	cout << "Key released: " << getKeyName(code) << endl;
@@ -411,7 +416,7 @@ static_assert(keyNamesLength == sf::Keyboard::Key::KeyCount, "sf::Keyboard::Key:
 
 const char *InputManager::getKeyName(int code)
 {
-	if (code >= 0 && code < sizeof (keyNames))
+    if (code >= 0 && code < int(sizeof (keyNames)))
 		return keyNames[code];
 	return nullptr;
 }

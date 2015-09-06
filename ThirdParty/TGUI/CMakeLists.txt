@@ -43,7 +43,7 @@ endif()
 if (SFML_OS_WINDOWS)
     tgui_set_option( TGUI_BUILD_FORM_BUILDER FALSE BOOL "Build the TGUI Form Builder" )
 else()
-    tgui_set_option( TGUI_BUILD_FORM_BUILDER TRUE BOOL "Build the TGUI Form Builder" )
+    tgui_set_option( TGUI_BUILD_FORM_BUILDER FALSE BOOL "Build the TGUI Form Builder" )
 endif()
 
 # Set some useful compile flags.
@@ -121,47 +121,11 @@ if (SFML_OS_MACOSX)
     endif()
 endif()
 
-# Link to the static sfml libraries when building tgui statically
-if(NOT TGUI_SHARED_LIBS)
-    set(SFML_STATIC_LIBRARIES TRUE)
-
-    # Attempt to find the SFML dependencies when linking statically
-    if (SFML_ROOT)
-        if (SFML_OS_WINDOWS)
-            set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${SFML_ROOT}/extlibs/headers")
-            if(SFML_COMPILER_GCC)
-                if(ARCH_32BITS)
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/libs-mingw/x86")
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/bin/x86")
-                elseif(ARCH_64BITS)
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/libs-mingw/x64")
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/bin/x64")
-                endif()
-            elseif(SFML_COMPILER_MSVC)
-                if(ARCH_32BITS)
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/libs-msvc/x86")
-                elseif(ARCH_64BITS)
-                    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/libs-msvc/x64")
-                endif()
-            endif()
-        elseif(SFML_OS_MACOSX)
-            set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${SFML_ROOT}/extlibs/headers")
-            set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SFML_ROOT}/extlibs/libs-osx/lib/")
-        endif()
-    endif()
-endif()
-
 # Find sfml (also look for the main component when using Visual Studio)
 if (SFML_OS_WINDOWS AND SFML_COMPILER_MSVC)
-    find_package( SFML 2 COMPONENTS main graphics window system )
+    set(SFML_LIBRARIES sfml-main sfml-system sfml-graphics sfml-window)
 else()
-    find_package( SFML 2 COMPONENTS graphics window system )
-endif()
-
-# FindSFML couldn't find SFML.
-if( NOT SFML_FOUND )
-    set( SFML_ROOT "" CACHE PATH "SFML root directory" )
-    message( FATAL_ERROR "CMake couldn't find SFML. Set the SFML_ROOT entry to SFML's root directory (containing \"include\" and \"lib\" directories)." )
+    set(SFML_LIBRARIES sfml-system sfml-graphics sfml-window)
 endif()
 
 # Set the path for the libraries

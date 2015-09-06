@@ -9,7 +9,7 @@ struct ItemCreatedEvent
 		: entity(entity), x(x), y(y), type(type) {}
 
 	Entity entity;
-	ItemType type;
 	uint8_t x;
 	uint8_t y;
+    ItemType type;
 };

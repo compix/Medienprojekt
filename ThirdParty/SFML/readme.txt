@@ -1,3 +1,6 @@
+Modifications by compix:
+- Removed examples from CMakeLists.txt
+
 SFML - Simple and Fast Multimedia Library
 =========================================
 

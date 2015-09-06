@@ -49,9 +49,6 @@ The input configurations can be changed in the file input.json");
 
 void MenuPageSettings::update()
 {
-	if (m_joystickId == -1)
-		return;
-
 	for (int j = 0; j<sf::Joystick::AxisCount; j++)
 	{
 		if (sf::Joystick::hasAxis(m_joystickId, (sf::Joystick::Axis)j))
@@ -99,5 +96,6 @@ void MenuPageSettings::receive(const sf::Event& evt)
 			m_joystickName->setText("");
 		}
 		break;
+    default: break;
 	}
 }

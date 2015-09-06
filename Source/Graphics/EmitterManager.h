@@ -25,13 +25,10 @@ public:
 	void createEmitters(uint32_t maxParticlesPerEmitter, uint16_t maxEmitters);
 
 private:
+    uint32_t m_defaultParticlesPerEmitter;
+    float m_timeTillUpdate;
 	Assets::Texture* m_texture;
-
-	uint32_t m_defaultParticlesPerEmitter;
 
 	std::unordered_map<uint32_t, uint16_t> m_activeMap;
 	std::unordered_map<uint32_t, EmitterContainer> m_emitterContainerMap;
-
-
-	float m_timeTillUpdate;
 };

@@ -24,7 +24,7 @@ private:
 	sf::Text m_text;
 
 	std::string m_message;
+    const float m_messageTime;
 	float m_messageTimer;
-	const float m_messageTime;
 	bool m_showingMessage;
 };

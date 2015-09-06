@@ -9,8 +9,9 @@ struct SoundComponent
 	SoundComponent(float playFrequency, const std::string& soundName, float volume)
 		: playFrequency(playFrequency), soundName(soundName), volume(volume) {}
 
-	std::string soundName;
+
 	float playFrequency; // In seconds
+    std::string soundName;
+    float volume;
 	float remaining; // In seconds
-	float volume;
 };

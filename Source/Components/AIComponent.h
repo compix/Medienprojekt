@@ -11,7 +11,7 @@ enum class BehaviorType
 
 struct AIComponent
 {
-	AIComponent(uint8_t id) : id(id), currentAction(nullptr) {}
+    AIComponent(uint8_t id) : currentAction(nullptr), id(id) {}
 
 	bool hasAction(ActionType type) { return actions.count(type) > 0; }
 

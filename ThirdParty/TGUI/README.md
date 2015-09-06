@@ -1,3 +1,7 @@
+Moficiations by compix:
+- Removed the find_package in CMakeLists.txt. SFML is included in the project and is linked directly.
+- Disabled FormBuilder building on all Systems in CMakeLists.txt
+
 TGUI - Texus's Graphical User Interface
 =======================================
 

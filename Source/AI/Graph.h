@@ -28,7 +28,7 @@ struct AffectedByExplosion
 enum class BombType : uint8_t;
 struct Bomb
 {
-	Bomb() : range(1), explosionTime(3.f), x(0), y(0) {}
+    Bomb() : Bomb(0, 0, GameConstants::INIT_BOMB_RANGE, GameConstants::EXPLOSION_TIME, BombType::NORMAL) {}
 	Bomb(uint8_t x, uint8_t y, uint8_t range, float explosionTime, BombType type) 
 		: x(x), y(y), range(range), explosionTime(explosionTime), type(type) {}
 
@@ -40,7 +40,7 @@ struct Bomb
 
 struct ExplosionSpread
 {
-	ExplosionSpread() : range(1), explosionTime(3.f), x(0), y(0) {}
+    ExplosionSpread() : ExplosionSpread(0, 0, GameConstants::INIT_BOMB_RANGE, GameConstants::EXPLOSION_TIME, Direction::DOWN, BombType::NORMAL) {}
 	ExplosionSpread(uint8_t x, uint8_t y, uint8_t range, float explosionTime, Direction direction, BombType bombType)
 		: x(x), y(y), range(range), explosionTime(explosionTime), direction(direction), bombType(bombType) {}
 

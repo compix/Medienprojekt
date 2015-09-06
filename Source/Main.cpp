@@ -35,7 +35,7 @@ namespace GameGlobals
 	sf::View *menuView = nullptr;
 	sf::View *screenView = nullptr;
 	sf::View *gameView = nullptr;
-};
+}
 
 void changeToGameDir()
 {
