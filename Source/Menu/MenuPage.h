@@ -16,8 +16,9 @@ public:
 
 	void setText(const string &text)
 	{
-		m_shadow->setText(text);
-		m_label->setText(text);
+		auto str = sf::String::fromUtf8(text.begin(), text.end());
+		m_shadow->setText(str);
+		m_label->setText(str);
 	}
 
 	void setPosition(float x, float y, float shadowOffset)
