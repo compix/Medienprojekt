@@ -38,7 +38,7 @@ struct HSV
 	HSV() {}
 
 	/**
-	* @brief	Hue in [0, 360]°. s, v in [0, 100]%
+	* @brief	Hue in [0, 360]Â°. s, v in [0, 100]%
 	*/
 	HSV(float h, float s, float v) : h(h), s(s), v(v) {}
 	operator RGB() const { return Convert::HSVtoRGB(*this); }
