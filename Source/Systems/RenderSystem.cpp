@@ -33,7 +33,7 @@ void RenderSystem::update(EntityManager &entityManager, EventManager &eventManag
 		render(layer.second.get());
 	}
 
-//	updateAndShowFrameStats((float)dt);
+	updateAndShowFrameStats((float)dt);
 }
 
 void RenderSystem::render(EntityLayer* layer)

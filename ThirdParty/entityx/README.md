@@ -1,5 +1,5 @@
 Modifications by compix:
-- CMakeLists: disabled ENTITYX_BUILD_TESTING
+- CMakeLists: disabled ENTITYX_BUILD_TESTING, changed default to static libs
 
 # EntityX - A fast, type-safe C++ Entity Component System [![Build Status](https://travis-ci.org/alecthomas/entityx.png)](https://travis-ci.org/alecthomas/entityx) [![Build status](https://ci.appveyor.com/api/projects/status/qc8s0pqb5ci092iv/branch/master)](https://ci.appveyor.com/project/alecthomas/entityx/branch/master)
 
