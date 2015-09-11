@@ -4,11 +4,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-message(STATUS ${CMAKE_CXX_COMPILER_ID})
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    message(STATUS ${CMAKE_CXX_COMPILER_ID})
-endif()
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 set(ROOT_DIR ${CMAKE_SOURCE_DIR})
 set(SFML_INCLUDE_DIR ThirdParty/SFML/include)
